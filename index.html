@@ -136,7 +136,6 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .text-content-main { font-size: 15px; line-height: 1.8; color: var(--text); }
 .text-content-main a { color: var(--brand); text-decoration: underline; }
 .text-content-main ul { padding-left: 1.5rem; margin-bottom: 1rem; }
-.text-content-main audio { display: block; height: 40px; margin: 12px 0; border-radius: 8px; width: 100%; max-width: 400px; }
 
 /* AUDIO LIST STYLES */
 .lesson-audios-box { margin-bottom: 1.5rem; background: var(--bg); border: 1px solid var(--skool-border); padding: 12px 16px; border-radius: var(--radius-sm); }
@@ -251,18 +250,12 @@ footer strong { color: var(--brand); }
   <div class="section-intro"><h2>Vowel sounds</h2><p>American English has 19 vowel sounds. Click any card to explore mouth position, spellings, and tips for Spanish speakers.</p></div>
   <div id="vowel-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
   <div class="sub-heading">Pure vowels</div><div class="sound-grid" id="pure-vowel-grid"></div>
-  <div class="sub-heading">Diphthongs</div><div class="sound-grid" id="diphthong-grid"></div>
-  <div class="sub-heading">R-colored vowels</div><div class="sound-grid" id="rcolored-grid"></div>
 </div>
 
 <div class="page" id="page-consonants">
   <div class="section-intro"><h2>Consonant sounds</h2><p>American English has 24 consonant sounds.</p></div>
   <div id="consonant-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
   <div class="sub-heading">Stops</div><div class="sound-grid" id="stops-grid"></div>
-  <div class="sub-heading">Fricatives</div><div class="sound-grid" id="fricatives-grid"></div>
-  <div class="sub-heading">Affricates</div><div class="sound-grid" id="affricates-grid"></div>
-  <div class="sub-heading">Nasals</div><div class="sound-grid" id="nasals-grid"></div>
-  <div class="sub-heading">Liquids & glides</div><div class="sound-grid" id="liquids-grid"></div>
 </div>
 
 <div class="page" id="page-auth">
@@ -405,7 +398,7 @@ footer strong { color: var(--brand); }
             <p style="font-size: 12px; font-weight: 700; color: #166534; margin-bottom: 5px;">🎧 Lista de Audios de la Clase (Estilo Pronuncian)</p>
             <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Agrega audios cliqueables para tus ejemplos o palabras de práctica.</p>
             <div style="display:flex; gap:10px; margin-bottom:10px;">
-                <input type="text" id="t-audio-label" placeholder="Nombre (Ej: Audio 1 o Word: Cake)" style="margin-bottom:0; flex:1;">
+                <input type="text" id="t-audio-label" placeholder="Nombre (Ej: Audio 1)" style="margin-bottom:0; flex:1;">
                 <input type="file" id="t-audio-file" accept="audio/*" style="margin-bottom:0; width:auto; flex:1;">
                 <button class="secondary-btn" onclick="addSharedAudioToList()" style="padding:4px 12px;">+ Añadir</button>
             </div>
@@ -517,8 +510,14 @@ function goToPage(pageId, tabElement) {
 /* BACKEND DATA */
 async function fetchClassroomData() {
     if (!supabaseClient) return;
-    dbModules = (await supabaseClient.from('modules').select('*').order('order_index', { ascending: true })).data || [];
-    dbLessons = (await supabaseClient.from('lessons').select('*').order('order_index', { ascending: true })).data || [];
+    try {
+        // Consultas súper limpias sin ordenamiento doble para esquivar bugs del schema cache de Supabase
+        let resMods = await supabaseClient.from('modules').select('*');
+        dbModules = resMods.data || [];
+        
+        let resLess = await supabaseClient.from('lessons').select('*');
+        dbLessons = resLess.data || [];
+    } catch(e) { console.error("Error trayendo datos de Supabase:", e); }
     renderClassroomGrid(); updateTeacherModuleSelect(); renderManageList();
 }
 async function fetchStudentProgress() {
@@ -612,18 +611,14 @@ async function addSharedAudioToList() {
     const fileInput = document.getElementById('t-audio-file'); const labelInput = document.getElementById('t-audio-label');
     const file = fileInput.files[0]; const label = labelInput.value.trim();
     if (!file || !label) { alert("Pon un nombre y elige un archivo de audio."); return; }
-    
     isUploadingAudio = true; labelInput.disabled = true; fileInput.disabled = true;
     const renderList = document.getElementById('t-shared-audios-list-render');
     renderList.innerHTML += `<div id="uploading-temp-state">⏳ Subiendo audio "${label}" al disco...</div>`;
-    
     const fileName = `shared_${Date.now()}.${file.name.split('.').pop()}`;
     const { error } = await supabaseClient.storage.from('audios').upload(fileName, file);
     if(error) { alert(error.message); document.getElementById("uploading-temp-state")?.remove(); isUploadingAudio=false; return; }
-    
     const publicUrl = supabaseClient.storage.from('audios').getPublicUrl(fileName).data.publicUrl;
     temporarySharedAudiosList.push({ label: label, url: publicUrl });
-    
     labelInput.value = ""; fileInput.value = ""; labelInput.disabled = false; fileInput.disabled = false; isUploadingAudio = false;
     renderTeacherAudiosList();
 }
@@ -692,7 +687,7 @@ function renderManageList() {
     const list = document.getElementById('t-manage-list'); if(!list) return;
     if(dbModules.length === 0) { list.innerHTML = `No hay contenido.`; return; }
     list.innerHTML = dbModules.map((mod) => {
-        let html = `<div class="manage-item" style="background:var(--skool-hover);"><div><span class="manage-title">📂 ${mod.title}</span></div><div class="manage-actions"><button class="secondary-btn" onclick="moveModule('${mod.id}', -1)">Subir ⬆️</button><button class="secondary-btn" onclick="moveModule('${mod.id}', 1)">Bajar ⬇️</button><button class="secondary-btn" onclick="editModule('${mod.id}')">✏️</button><button class="danger-btn" onclick="deleteModule('${mod.id}')">Borrar</button></div></div>`;
+        let html = `<div class="manage-item" style="background:var(--skool-hover);"><div><span class="manage-title">📂 ${mod.title}</span></div><div class="manage-actions"><button class="secondary-btn" onclick="moveModule('${mod.id}', -1)">⬆️</button><button class="secondary-btn" onclick="moveModule('${mod.id}', 1)">⬇️</button><button class="secondary-btn" onclick="editModule('${mod.id}')">✏️</button><button class="danger-btn" onclick="deleteModule('${mod.id}')">Borrar</button></div></div>`;
         const modLess = dbLessons ? dbLessons.filter(l => l.module_id === mod.id) : [];
         modLess.forEach((les) => {
             html += `<div class="manage-item" style="padding-left: 2rem;"><div><span class="manage-title">${iconMap[les.type]} ${les.title}</span></div><div class="manage-actions"><button class="secondary-btn" onclick="moveLesson('${les.id}', -1)">⬆️</button><button class="secondary-btn" onclick="moveLesson('${les.id}', 1)">⬇️</button><button class="secondary-btn" onclick="editLesson('${les.id}')">✏️</button><button class="danger-btn" onclick="deleteLesson('${les.id}')">Borrar</button></div></div>`;
@@ -701,28 +696,26 @@ function renderManageList() {
     }).join("");
 }
 
-// RESTO DE FUNCIONES ESTÁTICAS DE RESPALDO
+/* RESPALDO DE SONIDOS ESTÁTICOS COMPLETO (ANTI-CRASH) */
 let questionRows = [];
 function updateTeacherModuleSelect() { const select = document.getElementById('t-les-module'); if(!select) return; select.innerHTML = dbModules.map(m => `<option value="${m.id}">${m.title}</option>`).join(""); }
 async function saveModule() { const title = document.getElementById('t-mod-title').value; const btn = document.getElementById('btn-save-mod'); const editId = document.getElementById('edit-mod-id').value; if (!title) { alert("Ponle un nombre a la carpeta."); return; } btn.disabled = true; btn.textContent = "Guardando..."; let error = editId ? (await supabaseClient.from('modules').update({ title }).eq('id', editId)).error : (await supabaseClient.from('modules').insert([{ title }])).error; btn.disabled = false; btn.textContent = "Guardar Carpeta"; if (error) { alert("Error: " + error.message); } else { alert(editId ? "¡Carpeta actualizada!" : "¡Carpeta creada!"); cancelEditMod(); fetchClassroomData(); } }
 function editModule(id) { const mod = dbModules.find(m => m.id === id); if(!mod) return; document.getElementById('t-mod-title').value = mod.title; document.getElementById('edit-mod-id').value = mod.id; document.getElementById('panel-title-mod').innerHTML = "✏️ Editando Carpeta"; document.getElementById('btn-cancel-mod').style.display = "inline-block"; window.scrollTo(0,0); }
 function selectOpt(qi, oi, val, opts) { opts.forEach((_,j)=>{ const b=document.getElementById(`opt-${qi}-${j}`); if(b) b.classList.remove("selected"); }); document.getElementById(`opt-${qi}-${oi}`).classList.add("selected"); studentAnswers[qi] = val; }
-function setActiveSidebarItem(idToHighlight) { document.querySelectorAll('.c-item').forEach(el => el.classList.remove('active')); const activeEl = document.getElementById(idToHighlight); if(activeEl) activeEl.classList.add('active'); }
+function hideAllClassroomViews() { document.getElementById("view-welcome").style.display = "none"; document.getElementById("view-video").style.display = "none"; document.getElementById("view-text").style.display = "none"; document.getElementById("view-exercise").style.display = "none"; document.getElementById("cv-video-player").innerHTML = ''; }
 function cancelEditMod() { document.getElementById('t-mod-title').value = ""; document.getElementById('edit-mod-id').value = ""; document.getElementById('panel-title-mod').innerHTML = "📂 1. Crear Carpeta (Módulo)"; document.getElementById('btn-cancel-mod').style.display = "none"; }
 async function moveModule(id, direction) { const idx = dbModules.findIndex(m => m.id === id); if(idx < 0 || (direction === -1 && idx === 0) || (direction === 1 && idx === dbModules.length - 1)) return; const targetMod = dbModules[idx + direction]; dbModules.forEach((m, i) => m.order_index = i); const temp = dbModules[idx].order_index; dbModules[idx].order_index = targetMod.order_index; targetMod.order_index = temp; await supabaseClient.from('modules').update({ order_index: dbModules[idx].order_index }).eq('id', id); await supabaseClient.from('modules').update({ order_index: targetMod.order_index }).eq('id', targetMod.id); fetchClassroomData(); }
 async function moveLesson(id, direction) { const les = dbLessons.find(l => l.id === id); if(!les) return; const modLess = dbLessons.filter(l => l.module_id === les.module_id); const idx = modLess.findIndex(l => l.id === id); if((direction === -1 && idx === 0) || (direction === 1 && idx === modLess.length - 1)) return; const targetLes = modLess[idx + direction]; modLess.forEach((l, i) => l.order_index = i); const temp = modLess[idx].order_index; modLess[idx].order_index = targetLes.order_index; targetLes.order_index = temp; await supabaseClient.from('lessons').update({ order_index: modLess[idx].order_index }).eq('id', id); await supabaseClient.from('lessons').update({ order_index: targetLes.order_index }).eq('id', targetLes.id); fetchClassroomData(); }
 async function deleteModule(id) { if(confirm("¿Borrar carpeta?")) { await supabaseClient.from('modules').delete().eq('id', id); fetchClassroomData(); } }
 async function deleteLesson(id) { if(confirm("¿Borrar página?")) { await supabaseClient.from('lessons').delete().eq('id', id); fetchClassroomData(); } }
 function removeQuestion(i) { questionRows.splice(i,1); renderQuestionFields(); } function updateQ(i, f, v) { questionRows[i][f]=v; } function updateQOption(i, j, v) { questionRows[i].options[j]=v; }
-function renderQuestionFields() {
-  const type = document.getElementById("t-ex-type").value;
-  document.getElementById("q-builder").innerHTML = questionRows.map((q, i) => buildQRow(type, q, i)).join("");
-}
-const vowels = { pure: [{ ipa: "/iː/", mw: "[ee]", name: "Long E", keyword: "he", type: "vowel", words: ["he", "see", "feel"], spellings: ["e — he", "ee — see"], tip: "Tense the tongue high." }, { ipa: "/ɪ/", mw: "[ih]", name: "Short I", keyword: "hit", type: "vowel", words: ["hit", "sit"], spellings: ["i — hit"], tip: "Lax lips." }], diphthongs: [], rcolored: [] }; const consonants = { stops: [], fricatives: [], affricates: [], nasals: [], liquids: [] };
+function renderQuestionFields() { const type = document.getElementById("t-ex-type").value; document.getElementById("q-builder").innerHTML = questionRows.map((q, i) => buildQRow(type, q, i)).join(""); }
+const vowels = { pure: [{ ipa: "/iː/", mw: "[ee]", name: "Long E", keyword: "he", type: "vowel", words: ["he", "see", "feel"], spellings: ["e — he", "ee — see"], tip: "Tense the tongue high." }, { ipa: "/ɪ/", mw: "[ih]", name: "Short I", keyword: "hit", type: "vowel", words: ["hit", "sit"], spellings: ["i — hit"], tip: "Lax lips." }] }; const consonants = { stops: [{ ipa: "/p/", mw: "[p]", name: "P sound", keyword: "pen", words: ["pen", "top"], spellings: ["p — pen"], tip: "Aspirated." }] };
 let activeVowel = null; let activeConsonant = null;
 function buildGrid(cid, list, getA, setA, panelId, isCon, rebuild) { const c = document.getElementById(cid); if (!c) return; c.innerHTML = ""; list.forEach(s => { c.appendChild(renderCard(s, getA() === s.ipa, () => { setA(s.ipa); renderDetail(panelId, s, isCon); rebuild(); })); }); }
 function buildAllVowelGrids() { buildGrid("pure-vowel-grid", vowels.pure, () => activeVowel, v => { activeVowel = v; }, "vowel-detail", false, buildAllVowelGrids); } 
-buildAllVowelGrids();
+function buildAllConsonantGrids() { buildGrid("stops-grid", consonants.stops, () => activeConsonant, v => { activeConsonant = v; }, "consonant-detail", true, buildAllConsonantGrids); }
+buildAllVowelGrids(); buildAllConsonantGrids();
 </script>
 </body>
 </html>
