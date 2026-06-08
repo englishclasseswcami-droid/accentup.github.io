@@ -103,7 +103,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .gate-toggle { margin-top: 14px; font-size: 13px; color: var(--brand); font-weight: 600; cursor: pointer; }
 .gate-toggle:hover { text-decoration: underline; }
 
-/* CLASSROOM */
+/* CLASSROOM & SIDEBAR */
 .course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
 .course-card { background: var(--surface); border: 1px solid var(--skool-border); border-radius: var(--radius); padding: 1.5rem; cursor: pointer; transition: all .2s; box-shadow: 0 2px 8px rgba(0,0,0,.03); }
 .course-card:hover { transform: translateY(-3px); border-color: var(--brand); box-shadow: 0 8px 24px rgba(0,0,0,.07); }
@@ -116,11 +116,16 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .c-progress-box { background: var(--surface); border: 1px solid var(--skool-border); border-radius: var(--radius-sm); padding: 1rem 1.1rem; margin-bottom: 1rem; }
 .c-course-title { font-size: 15px; font-weight: 800; color: var(--text); }
 .c-nav-list { display: flex; flex-direction: column; gap: 4px; }
-.c-item { padding: 9px 12px; font-size: 13px; font-weight: 500; color: var(--text-muted); cursor: pointer; border-radius: var(--radius-sm); transition: all .15s; display: flex; align-items: center; gap: 8px; border-left: 2px solid transparent; justify-content: space-between; }
+.c-subfolder-group { margin-bottom: 12px; }
+.c-subfolder-header { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 4px; }
+.c-subfolder-prog { background: var(--skool-border); padding: 2px 6px; border-radius: 10px; color: var(--text); font-size: 10px; }
+.c-subfolder-prog.done { background: var(--green-light); color: var(--green-dark); }
+.c-item { padding: 9px 12px; font-size: 13px; font-weight: 500; color: var(--text-muted); cursor: pointer; border-radius: var(--radius-sm); transition: all .15s; display: flex; align-items: center; gap: 8px; border-left: 2px solid transparent; justify-content: space-between; margin-bottom:2px; }
 .c-item:hover { background: var(--surface); color: var(--brand); border-left-color: var(--brand); }
 .c-item.active { background: var(--surface); color: var(--brand); font-weight: 700; border: 1px solid var(--brand-light); border-left: 2px solid var(--brand); }
 .c-item-title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.c-main { flex: 1; background: var(--surface); border: 1px solid var(--skool-border); border-radius: var(--radius); padding: 1.75rem; min-height: 500px; }
+
+.c-main { flex: 1; background: var(--surface); border: 1px solid var(--skool-border); border-radius: var(--radius); padding: 1.75rem; min-height: 500px; width: 100%; overflow: hidden; }
 .c-empty-state { text-align: center; color: var(--text-light); padding: 4rem 1rem; font-size: 14px; }
 .lesson-title-main { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 1.25rem; }
 .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #000; border-radius: var(--radius); margin-bottom: 1.5rem; }
@@ -139,7 +144,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .resource-link { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; background: var(--bg); border: 1px solid var(--skool-border); border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; color: var(--brand); text-decoration: none; transition: all .15s; }
 .resource-link:hover { background: var(--brand-light); border-color: var(--brand); }
 
-/* EXERCISE PLAYER */
+/* EXERCISE PLAYER & DRAG AND DROP */
 .ex-question-block { background: var(--bg); border: 1px solid var(--skool-border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
 .ex-q-num { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-light); margin-bottom: 6px; }
 .ex-q-text { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 1rem; line-height: 1.5; }
@@ -156,12 +161,31 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .fitb-input.wrong { border-color: var(--red); background: var(--red-light); }
 .dictation-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-family: 'Inter',sans-serif; color: var(--text); outline: none; min-height: 80px; resize: vertical; }
 .dictation-input:focus { border-color: var(--brand); }
+
+/* Drag and Drop UI */
+.dnd-instruction { font-size: 12px; color: var(--brand); margin-bottom: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.dnd-bank { display: flex; flex-wrap: wrap; gap: 8px; padding: 15px; background: var(--surface); border: 2px dashed var(--border); border-radius: var(--radius-sm); min-height: 70px; margin-bottom: 1.5rem; transition: background .2s; }
+.dnd-bank.active-drop { background: var(--brand-light); border-color: var(--brand); }
+.dnd-chip { padding: 8px 14px; background: var(--surface); border: 1.5px solid var(--skool-border); border-radius: 20px; font-size: 14px; font-weight: 600; cursor: grab; user-select: none; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: all 0.2s; }
+.dnd-chip:active { cursor: grabbing; transform: scale(0.95); }
+.dnd-chip.selected { border-color: var(--brand); background: var(--brand-light); color: var(--brand); box-shadow: 0 0 0 2px var(--brand); }
+.dnd-chip.correct { border-color: var(--green); background: var(--green-light); color: var(--green-dark); cursor: default; }
+.dnd-chip.wrong { border-color: var(--red); background: var(--red-light); color: var(--red-dark); }
+.dnd-cols { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; }
+.dnd-col { flex: 1; min-width: 140px; background: var(--surface); border-radius: var(--radius-sm); border: 1.5px solid var(--border); display: flex; flex-direction: column; cursor: pointer; transition: all 0.2s; }
+.dnd-col:hover { border-color: var(--brand); box-shadow: 0 4px 12px rgba(45, 42, 232, 0.05); }
+.dnd-col.active-drop { border-color: var(--brand); background: var(--brand-light); }
+.dnd-col-header { padding: 12px 10px; font-weight: 800; text-align: center; border-bottom: 1.5px solid var(--border); background: var(--bg); border-radius: var(--radius-sm) var(--radius-sm) 0 0; color: var(--text); }
+.dnd-col-body { padding: 10px; flex: 1; min-height: 120px; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+
+/* Matching fallback */
 .matching-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .match-col-label { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-light); margin-bottom: 8px; }
 .match-chip { padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; cursor: pointer; transition: all .15s; background: var(--surface); margin-bottom: 8px; }
 .match-chip.selected { border-color: var(--brand); background: var(--brand-light); color: var(--brand); }
 .match-chip.matched { border-color: var(--green); background: var(--green-light); color: var(--green-dark); cursor: default; }
 .match-chip.wrong-match { border-color: var(--red); background: var(--red-light); color: var(--red-dark); }
+
 .player-footer { display: flex; align-items: center; gap: 10px; margin-top: 1.5rem; flex-wrap: wrap; }
 .submit-btn { padding: 10px 24px; border-radius: var(--radius-sm); background: var(--brand); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; font-family: 'Inter',sans-serif; transition: background .15s; }
 .submit-btn:hover { background: var(--brand-dark); }
@@ -211,7 +235,7 @@ textarea { resize: vertical; min-height: 70px; }
 .secondary-btn:hover { border-color: var(--brand); color: var(--brand); }
 .danger-btn { background: transparent; color: var(--red); border: 1px solid var(--red-light); padding: 6px 12px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; cursor: pointer; font-family: 'Inter',sans-serif; }
 .danger-btn:hover { background: var(--red-light); }
-/* Mejoras en el Editor Quill (Skool Style) */
+
 #quill-editor-container { min-height: 350px; background: var(--surface); border-radius: 0 0 var(--radius-sm) var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 15px; }
 .ql-toolbar { border-radius: var(--radius-sm) var(--radius-sm) 0 0 !important; background: var(--bg); border-color: var(--border) !important; }
 .ql-container { border-color: var(--border) !important; }
@@ -341,26 +365,45 @@ footer strong { color: var(--brand); }
 <div class="page" id="page-teacher">
   <div class="teacher-header">
     <h2>Teacher Dashboard</h2>
-    <p>Organize your content in Folders (Modules) and Pages (Lessons).</p>
+    <p>Organize your content in Folders, Subfolders (Sets), and Lessons.</p>
   </div>
   <div class="teacher-layout">
     <div>
+      
       <div class="t-panel">
-        <h3 id="panel-title-mod">📂 Create folder</h3>
+        <h3 id="panel-title-mod">📂 1. Create Module (Course)</h3>
         <input type="hidden" id="edit-mod-id" value=""/>
-        <span class="field-label">Folder name</span>
-        <input type="text" id="t-mod-title" placeholder="e.g. Module 1 — The American R"/>
+        <span class="field-label">Module name</span>
+        <input type="text" id="t-mod-title" placeholder="e.g. Pronunciation Basics"/>
         <div style="display:flex;gap:8px;">
-          <button class="primary-btn" onclick="saveModule()">Save folder</button>
+          <button class="primary-btn" onclick="saveModule()">Save module</button>
           <button class="secondary-btn" id="btn-cancel-mod" style="display:none;margin-top:.9rem;" onclick="cancelEditMod()">Cancel</button>
         </div>
       </div>
 
       <div class="t-panel">
-        <h3 id="panel-title-les">📝 Add lesson</h3>
+        <h3 id="panel-title-sub">📁 2. Create Subfolder (Category)</h3>
+        <input type="hidden" id="edit-sub-id" value=""/>
+        <span class="field-label">Inside Module:</span>
+        <select id="t-sub-parent"></select>
+        <span class="field-label">Subfolder name</span>
+        <input type="text" id="t-sub-title" placeholder="e.g. 1. The American R"/>
+        <div style="display:flex;gap:8px;">
+          <button class="primary-btn" style="background:var(--brand-mid)" onclick="saveSubmodule()">Save subfolder</button>
+          <button class="secondary-btn" id="btn-cancel-sub" style="display:none;margin-top:.9rem;" onclick="cancelEditSub()">Cancel</button>
+        </div>
+      </div>
+
+      <div class="t-panel">
+        <h3 id="panel-title-les">📝 3. Add Lesson</h3>
         <input type="hidden" id="edit-les-id" value=""/>
-        <span class="field-label">Save in folder</span>
-        <select id="t-les-module"></select>
+        
+        <span class="field-label">Module</span>
+        <select id="t-les-module" onchange="updateSubfolderSelect()"></select>
+        
+        <span class="field-label">Subfolder</span>
+        <select id="t-les-submodule"></select>
+
         <span class="field-label">Lesson type</span>
         <select id="t-les-type" onchange="toggleLessonFields()">
           <option value="video">📺 Video</option>
@@ -384,6 +427,7 @@ footer strong { color: var(--brand); }
         <div id="fields-task" style="display:none;">
           <span class="field-label">Exercise type</span>
           <select id="t-ex-type" onchange="renderQuestionFields()">
+            <option value="drag_drop">Drag and Drop (Categorize)</option>
             <option value="open_answer">Open Answer</option>
             <option value="multiple_choice">Multiple choice</option>
             <option value="fill_in_blank">Fill in the blank</option>
@@ -393,9 +437,9 @@ footer strong { color: var(--brand); }
           <span class="field-label">General audio for exercise (optional)</span>
           <input type="file" id="t-ex-audio" accept="audio/*"/>
           <div id="t-ex-audio-current" style="font-size:11px;color:var(--text-muted);margin-top:-4px;margin-bottom:8px;"></div>
-          <span class="field-label">Questions</span>
+          <span class="field-label">Questions / Items</span>
           <div id="q-builder"></div>
-          <button class="add-q-btn" onclick="addQuestion()">+ Add question</button>
+          <button class="add-q-btn" onclick="addQuestion()">+ Add item</button>
         </div>
 
         <div style="margin-top:1.25rem;background:#F0FDF4;padding:14px;border-radius:var(--radius-sm);border:1px solid #BBF7D0;">
@@ -443,20 +487,17 @@ const SUPABASE_URL = 'https://flfyifdaitfnxncoxzxe.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsZnlpZmRhaXRmbnhuY294enhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4Njc0NTQsImV4cCI6MjA5NjQ0MzQ1NH0.wKMJk0EIYi1hRwoE1EN5lfEGIn2c9YrJhPi_UO2w2gI';
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-let currentUser = null;
-let isLoginMode = true;
-let dbModules = [], dbLessons = [], dbProgress = [];
+let currentUser = null, isLoginMode = true;
+let dbModules = [], dbSubmodules = [], dbLessons = [], dbProgress = [];
 let currentLesson = null, activeModuleId = null;
 let studentAnswers = {}, matchState = { leftSel: null, pairs: {} };
 let questionRows = [], tempAudios = [], isUploadingAudio = false;
 let quillEditor = null;
+let selectedDragChip = null; // Para Drag & Drop
 
 function safeParseJSON(data) {
   if (Array.isArray(data)) return data;
-  if (typeof data === 'string') {
-    try { return JSON.parse(data);
-    } catch(e) { return []; }
-  }
+  if (typeof data === 'string') { try { return JSON.parse(data); } catch(e) { return []; } }
   return [];
 }
 
@@ -465,60 +506,32 @@ function safeParseJSON(data) {
 ══════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
   quillEditor = new Quill('#quill-editor-container', {
-    theme: 'snow',
-    placeholder: 'Write your lesson content here...',
-    modules: {
-      toolbar: [
-        [{ 'header': [1, 2, 3, 4, false] }],
-        ['bold', 'italic', 'strike', 'code', 'blockquote', 'code-block'],
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-        ['link', 'image', 'video'],
-        ['clean']
-      ]
-    }
+    theme: 'snow', placeholder: 'Write your lesson content here...',
+    modules: { toolbar: [ [{ 'header': [1, 2, 3, 4, false] }], ['bold', 'italic', 'strike', 'code', 'blockquote', 'code-block'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link', 'image', 'video'], ['clean'] ] }
   });
   sb.auth.onAuthStateChange((_e, session) => {
-    currentUser = session?.user || null;
-    updateAuthUI();
+    currentUser = session?.user || null; updateAuthUI();
     if (currentUser) { fetchData(); }
   });
-  renderQFields();
-  toggleLessonFields();
+  renderQFields(); toggleLessonFields();
 });
 
 /* ══════════════════════════════════════════
-   AUTH
+   AUTH & NAV
 ══════════════════════════════════════════ */
-function handleNavAuth() {
-  if (currentUser) { sb.auth.signOut(); } else { goToPage('auth');
-  }
-}
-
+function handleNavAuth() { if (currentUser) sb.auth.signOut(); else goToPage('auth'); }
 function updateAuthUI() {
-  const btn = document.getElementById('nav-auth-btn');
-  const teacherTab = document.getElementById('nav-teacher-tab');
+  const btn = document.getElementById('nav-auth-btn'); const teacherTab = document.getElementById('nav-teacher-tab');
   if (currentUser) {
-    btn.textContent = 'Log out';
-    btn.classList.add('logout-btn-nav');
-    btn.classList.remove('auth-btn');
-    if (currentUser.email === TEACHER_EMAIL) {
-      teacherTab.style.display = 'inline-block';
-    }
-    if (document.getElementById('page-auth').classList.contains('active')) {
-      goToPage('classroom');
-    }
+    btn.textContent = 'Log out'; btn.classList.add('logout-btn-nav'); btn.classList.remove('auth-btn');
+    if (currentUser.email === TEACHER_EMAIL) teacherTab.style.display = 'inline-block';
+    if (document.getElementById('page-auth').classList.contains('active')) goToPage('classroom');
   } else {
-    btn.textContent = 'Log in';
-    btn.classList.remove('logout-btn-nav');
-    btn.classList.add('auth-btn');
-    teacherTab.style.display = 'none';
+    btn.textContent = 'Log in'; btn.classList.remove('logout-btn-nav'); btn.classList.add('auth-btn'); teacherTab.style.display = 'none';
     const activePage = document.querySelector('.page.active')?.id;
-    if (activePage === 'page-classroom' || activePage === 'page-teacher') {
-      goToPage('vowels');
-    }
+    if (activePage === 'page-classroom' || activePage === 'page-teacher') goToPage('vowels');
   }
 }
-
 function toggleAuthMode() {
   isLoginMode = !isLoginMode;
   document.getElementById('auth-title').textContent = isLoginMode ? 'Welcome back' : 'Create account';
@@ -528,302 +541,223 @@ function toggleAuthMode() {
   document.getElementById('auth-submit-btn').textContent = isLoginMode ? 'Log in' : 'Create account';
   document.getElementById('auth-error').style.display = 'none';
 }
-
 async function handleAuth() {
-  const email = document.getElementById('auth-email').value.trim();
-  const pw = document.getElementById('auth-pw').value;
-  const code = document.getElementById('auth-code').value.trim();
-  const errEl = document.getElementById('auth-error');
-  errEl.style.display = 'none';
-  if (!isLoginMode && code !== STUDENT_ACCESS_CODE) {
-    errEl.textContent = 'Incorrect invitation code.';
-    errEl.style.display = 'block'; return;
-  }
-  const btn = document.getElementById('auth-submit-btn');
-  btn.disabled = true; btn.textContent = 'Loading...';
-  const res = isLoginMode
-    ? await sb.auth.signInWithPassword({ email, password: pw })
-    : await sb.auth.signUp({ email, password: pw });
+  const email = document.getElementById('auth-email').value.trim(); const pw = document.getElementById('auth-pw').value;
+  const code = document.getElementById('auth-code').value.trim(); const errEl = document.getElementById('auth-error'); errEl.style.display = 'none';
+  if (!isLoginMode && code !== STUDENT_ACCESS_CODE) { errEl.textContent = 'Incorrect invitation code.'; errEl.style.display = 'block'; return; }
+  const btn = document.getElementById('auth-submit-btn'); btn.disabled = true; btn.textContent = 'Loading...';
+  const res = isLoginMode ? await sb.auth.signInWithPassword({ email, password: pw }) : await sb.auth.signUp({ email, password: pw });
   btn.disabled = false; btn.textContent = isLoginMode ? 'Log in' : 'Create account';
-  if (res.error) { errEl.textContent = res.error.message;
-    errEl.style.display = 'block'; }
+  if (res.error) { errEl.textContent = res.error.message; errEl.style.display = 'block'; }
 }
 
-/* ══════════════════════════════════════════
-   NAV
-══════════════════════════════════════════ */
 document.querySelectorAll('.nav-tab[data-page]').forEach(tab => {
-  tab.onclick = () => {
-    const page = tab.dataset.page;
-    if ((page === 'classroom' || page === 'teacher') && !currentUser) {
-      goToPage('auth'); return;
-    }
-    goToPage(page);
-  };
+  tab.onclick = () => { const page = tab.dataset.page; if ((page === 'classroom' || page === 'teacher') && !currentUser) { goToPage('auth'); return; } goToPage(page); };
 });
 function goToPage(pageId) {
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const tab = document.querySelector(`.nav-tab[data-page="${pageId}"]`);
-  if (tab) tab.classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const tab = document.querySelector(`.nav-tab[data-page="${pageId}"]`); if (tab) tab.classList.add('active');
   document.getElementById('page-' + pageId).classList.add('active');
-  const hiddenHero = ['classroom','teacher','auth'];
-  document.getElementById('hero-banner').style.display = hiddenHero.includes(pageId) ? 'none' : 'block';
+  const hiddenHero = ['classroom','teacher','auth']; document.getElementById('hero-banner').style.display = hiddenHero.includes(pageId) ? 'none' : 'block';
   if (pageId === 'classroom') renderClassroomGrid();
   if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); }
   window.scrollTo(0, 0);
 }
 
 /* ══════════════════════════════════════════
-   DATA
+   DATA FETCH
 ══════════════════════════════════════════ */
 async function fetchData() {
   if (!currentUser) return;
-  const [resMod, resLes, resProg] = await Promise.all([
+  const [resMod, resSub, resLes, resProg] = await Promise.all([
     sb.from('modules').select('*').order('order_index'),
+    sb.from('submodules').select('*').order('order_index'),
     sb.from('lessons').select('*').order('order_index'),
     sb.from('student_progress').select('*').eq('user_id', currentUser.id)
   ]);
-  dbModules = resMod.data || [];
-  dbLessons = resLes.data || [];
-  dbProgress = resProg.data || [];
-  renderClassroomGrid();
-  updateModuleSelect();
-  renderManageList();
+  dbModules = resMod.data || []; dbSubmodules = resSub.data || []; dbLessons = resLes.data || []; dbProgress = resProg.data || [];
+  renderClassroomGrid(); updateModuleSelect(); renderManageList();
 }
 
 /* ══════════════════════════════════════════
-   CLASSROOM
+   CLASSROOM UI
 ══════════════════════════════════════════ */
 function renderClassroomGrid() {
-  const grid = document.getElementById('classroom-modules-grid');
-  if (!grid) return;
-  if (!currentUser) { grid.innerHTML = '<div style="color:var(--text-light);font-size:14px;text-align:center;padding:3rem 0;grid-column:1/-1;">Log in to access the classroom.</div>'; return;
-  }
-  if (!dbModules.length) { grid.innerHTML = '<div style="color:var(--text-light);font-size:14px;text-align:center;padding:3rem 0;grid-column:1/-1;">No content yet — your teacher will add modules soon!</div>'; return;
-  }
+  const grid = document.getElementById('classroom-modules-grid'); if (!grid) return;
+  if (!currentUser) { grid.innerHTML = '<div style="color:var(--text-light);font-size:14px;text-align:center;padding:3rem 0;grid-column:1/-1;">Log in to access the classroom.</div>'; return; }
+  if (!dbModules.length) { grid.innerHTML = '<div style="color:var(--text-light);font-size:14px;text-align:center;padding:3rem 0;grid-column:1/-1;">No content yet — your teacher will add modules soon!</div>'; return; }
   grid.innerHTML = dbModules.map(m => {
     const count = dbLessons.filter(l => l.module_id === m.id).length;
-    return `<div class="course-card" onclick="openModule('${m.id}')">
-      <div class="course-card-title">${m.title}</div>
-      <div class="course-card-desc">${count} lesson${count !== 1 ? 's' : ''}</div>
-    </div>`;
+    return `<div class="course-card" onclick="openModule('${m.id}')"><div class="course-card-title">${m.title}</div><div class="course-card-desc">${count} lesson${count !== 1 ? 's' : ''}</div></div>`;
   }).join('');
 }
-
 function openModule(moduleId) {
-  activeModuleId = moduleId;
-  document.getElementById('classroom-grid-view').style.display = 'none';
-  document.getElementById('classroom-player-view').style.display = 'block';
+  activeModuleId = moduleId; document.getElementById('classroom-grid-view').style.display = 'none'; document.getElementById('classroom-player-view').style.display = 'block';
   document.getElementById('sidebar-mod-title').textContent = dbModules.find(m => m.id === moduleId)?.title || '';
-  renderSidebar(moduleId);
-  hideAllViews();
-  document.getElementById('view-welcome').style.display = 'block';
+  renderSidebar(moduleId); hideAllViews(); document.getElementById('view-welcome').style.display = 'block';
 }
-
-function backToClassroomGrid() {
-  document.getElementById('classroom-grid-view').style.display = 'block';
-  document.getElementById('classroom-player-view').style.display = 'none';
-  hideAllViews();
-  activeModuleId = null;
-}
+function backToClassroomGrid() { document.getElementById('classroom-grid-view').style.display = 'block'; document.getElementById('classroom-player-view').style.display = 'none'; hideAllViews(); activeModuleId = null; }
 
 function renderSidebar(moduleId) {
   const sidebar = document.getElementById('sidebar-render');
-  const lessons = dbLessons.filter(l => l.module_id === moduleId);
+  const subs = dbSubmodules.filter(s => s.module_id === moduleId);
+  const orphanLessons = dbLessons.filter(l => l.module_id === moduleId && !l.submodule_id);
   const iconMap = { video: '📺', text: '📄', task: '📝' };
-  if (!lessons.length) { sidebar.innerHTML = '<div style="font-size:12px;color:var(--text-light);text-align:center;margin-top:1rem;">Empty folder</div>'; return;
-  }
-  sidebar.innerHTML = lessons.map(l => {
-    const done = dbProgress.some(p => p.lesson_id === l.id);
-    return `<div class="c-item" id="item-${l.id}" onclick="showLesson('${l.id}')">
-      <div style="display:flex;align-items:center;gap:8px;overflow:hidden;">
-        <span>${iconMap[l.type] || '📄'}</span>
-        <span class="c-item-title">${l.title}</span>
-      </div>
-      ${l.type === 'task' && done ? '<span>✅</span>' : ''}
-    </div>`;
-  }).join('');
-}
-
-function setActiveSidebarItem(id) {
-  document.querySelectorAll('.c-item').forEach(el => el.classList.remove('active'));
-  document.getElementById(id)?.classList.add('active');
-}
-
-function hideAllViews() {
-  ['view-welcome','view-video','view-text','view-exercise'].forEach(id => {
-    const el = document.getElementById(id); if (el) el.style.display = 'none';
+  
+  let html = '';
+  // 1. Render Subfolders (Categorías)
+  subs.forEach(sub => {
+     const subLessons = dbLessons.filter(l => l.submodule_id === sub.id);
+     if(subLessons.length === 0) return;
+     const doneCount = subLessons.filter(l => dbProgress.some(p => p.lesson_id === l.id)).length;
+     const pct = Math.round((doneCount / subLessons.length) * 100);
+     html += `
+      <div class="c-subfolder-group">
+        <div class="c-subfolder-header">
+           <span>${sub.title}</span>
+           <span class="c-subfolder-prog ${pct===100?'done':''}">${pct}%</span>
+        </div>
+        ${subLessons.map(l => {
+           const isDone = dbProgress.some(p => p.lesson_id === l.id);
+           return `<div class="c-item" id="item-${l.id}" onclick="showLesson('${l.id}')">
+             <div style="display:flex;align-items:center;gap:8px;overflow:hidden;"><span>${iconMap[l.type] || '📄'}</span><span class="c-item-title">${l.title}</span></div>
+             ${l.type === 'task' && isDone ? '<span>✅</span>' : ''}
+           </div>`;
+        }).join('')}
+      </div>`;
   });
-  const vp = document.getElementById('cv-video-player'); if (vp) vp.innerHTML = '';
+  // 2. Render Orphan Lessons (Sin subcarpeta)
+  if(orphanLessons.length > 0) {
+      html += `<div class="c-subfolder-group">
+        ${orphanLessons.map(l => {
+           const isDone = dbProgress.some(p => p.lesson_id === l.id);
+           return `<div class="c-item" id="item-${l.id}" onclick="showLesson('${l.id}')"><div style="display:flex;align-items:center;gap:8px;overflow:hidden;"><span>${iconMap[l.type] || '📄'}</span><span class="c-item-title">${l.title}</span></div>${l.type === 'task' && isDone ? '<span>✅</span>' : ''}</div>`;
+        }).join('')}
+      </div>`;
+  }
+  if (!html) html = '<div style="font-size:12px;color:var(--text-light);text-align:center;margin-top:1rem;">Empty folder</div>';
+  sidebar.innerHTML = html;
 }
 
-function renderAudios(panelId, list) {
-  const el = document.getElementById(panelId);
-  if (!el) return;
-  const arr = safeParseJSON(list);
-  if (!arr.length) { el.style.display = 'none'; return; }
-  el.style.display = 'block';
-  el.innerHTML = arr.map(a => `<div class="lesson-audio-row"><span class="lesson-audio-label">🔊 ${a.label}</span><audio controls src="${a.url}"></audio></div>`).join('');
-}
-
-function renderResources(panelId, list) {
-  const el = document.getElementById(panelId);
-  if (!el) return;
-  const arr = safeParseJSON(list);
-  if (!arr.length) { el.style.display = 'none'; return; }
-  el.style.display = 'block';
-  el.innerHTML = `<div class="resources-heading">Resources</div><div class="resources-list">${arr.map(r => `<a href="${r.url}" target="_blank" class="resource-link">📎 ${r.name}</a>`).join('')}</div>`;
-}
+function setActiveSidebarItem(id) { document.querySelectorAll('.c-item').forEach(el => el.classList.remove('active')); document.getElementById(id)?.classList.add('active'); }
+function hideAllViews() { ['view-welcome','view-video','view-text','view-exercise'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; }); const vp = document.getElementById('cv-video-player'); if (vp) vp.innerHTML = ''; }
+function renderAudios(panelId, list) { const el = document.getElementById(panelId); if (!el) return; const arr = safeParseJSON(list); if (!arr.length) { el.style.display = 'none'; return; } el.style.display = 'block'; el.innerHTML = arr.map(a => `<div class="lesson-audio-row"><span class="lesson-audio-label">🔊 ${a.label}</span><audio controls src="${a.url}"></audio></div>`).join(''); }
+function renderResources(panelId, list) { const el = document.getElementById(panelId); if (!el) return; const arr = safeParseJSON(list); if (!arr.length) { el.style.display = 'none'; return; } el.style.display = 'block'; el.innerHTML = `<div class="resources-heading">Resources</div><div class="resources-list">${arr.map(r => `<a href="${r.url}" target="_blank" class="resource-link">📎 ${r.name}</a>`).join('')}</div>`; }
 
 function showLesson(lessonId) {
-  hideAllViews();
-  setActiveSidebarItem('item-' + lessonId);
-  currentLesson = dbLessons.find(l => l.id === lessonId);
-  if (!currentLesson) return;
+  hideAllViews(); setActiveSidebarItem('item-' + lessonId);
+  currentLesson = dbLessons.find(l => l.id === lessonId); if (!currentLesson) return;
+  const audios = safeParseJSON(currentLesson.content); const resources = safeParseJSON(currentLesson.resources);
 
-  const audios = safeParseJSON(currentLesson.content);
-  const resources = safeParseJSON(currentLesson.resources);
   if (currentLesson.type === 'video') {
-    document.getElementById('view-video').style.display = 'block';
-    document.getElementById('cv-video-title').textContent = currentLesson.title;
+    document.getElementById('view-video').style.display = 'block'; document.getElementById('cv-video-title').textContent = currentLesson.title;
     const embedUrl = formatYouTubeUrl(currentLesson.video_url);
-    if (embedUrl) {
-      document.getElementById('cv-video-player').innerHTML = `<iframe src="${embedUrl}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
-    } else {
-      document.getElementById('cv-video-player').innerHTML = '<div style="color:#fff;padding:2rem;text-align:center;">No video URL saved.</div>';
-    }
-    
-    // MUESTRO EL TEXTO DEL VIDEO SI LO HAY
+    if (embedUrl) document.getElementById('cv-video-player').innerHTML = `<iframe src="${embedUrl}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+    else document.getElementById('cv-video-player').innerHTML = '<div style="color:#fff;padding:2rem;text-align:center;">No video URL saved.</div>';
     document.getElementById('cv-video-text').innerHTML = currentLesson.text_content || '';
-
-    renderAudios('cv-video-audios', audios);
-    renderResources('cv-video-resources', resources);
+    renderAudios('cv-video-audios', audios); renderResources('cv-video-resources', resources);
   }
   else if (currentLesson.type === 'text') {
-    document.getElementById('view-text').style.display = 'block';
-    document.getElementById('cv-text-title').textContent = currentLesson.title;
+    document.getElementById('view-text').style.display = 'block'; document.getElementById('cv-text-title').textContent = currentLesson.title;
     document.getElementById('cv-text-content').innerHTML = currentLesson.text_content || '';
-    renderAudios('cv-text-audios', audios);
-    renderResources('cv-text-resources', resources);
+    renderAudios('cv-text-audios', audios); renderResources('cv-text-resources', resources);
   }
   else if (currentLesson.type === 'task') {
-    studentAnswers = {};
-    matchState = { leftSel: null, pairs: {} };
-    document.getElementById('view-exercise').style.display = 'block';
-    document.getElementById('player-title').textContent = currentLesson.title;
+    studentAnswers = {}; matchState = { leftSel: null, pairs: {} }; selectedDragChip = null;
+    document.getElementById('view-exercise').style.display = 'block'; document.getElementById('player-title').textContent = currentLesson.title;
     const audioEl = document.getElementById('player-audio');
-    if (currentLesson.audio_url) { audioEl.src = currentLesson.audio_url; audioEl.style.display = 'block'; }
-    else { audioEl.style.display = 'none';
-    }
-    document.getElementById('submit-btn').disabled = false;
-    document.getElementById('submit-btn').style.display = 'inline-block';
-    document.getElementById('retry-btn').style.display = 'none';
-    document.getElementById('score-area').innerHTML = '';
-    
-    renderAudios('cv-task-audios', audios);
-    renderPlayerQuestions();
-    renderResources('cv-task-resources', resources);
-    
-    const prev = dbProgress.find(p => p.lesson_id === lessonId);
-    if (prev) showScore(prev.score, prev.total_questions, [], true);
+    if (currentLesson.audio_url) { audioEl.src = currentLesson.audio_url; audioEl.style.display = 'block'; } else audioEl.style.display = 'none';
+    document.getElementById('submit-btn').disabled = false; document.getElementById('submit-btn').style.display = 'inline-block'; document.getElementById('retry-btn').style.display = 'none'; document.getElementById('score-area').innerHTML = '';
+    renderAudios('cv-task-audios', audios); renderPlayerQuestions(); renderResources('cv-task-resources', resources);
+    const prev = dbProgress.find(p => p.lesson_id === lessonId); if (prev) showScore(prev.score, prev.total_questions, [], true);
   }
 }
+function formatYouTubeUrl(url) { if (!url || url.trim() === '') return ''; url = url.trim(); if (url.includes('youtube.com/embed/')) return url; if (url.includes('youtu.be/')) return `https://www.youtube.com/embed/${url.split('youtu.be/')[1].split('?')[0].split('&')[0]}`; if (url.includes('youtube.com/watch')) return new URL(url).searchParams.get('v') ? `https://www.youtube.com/embed/${new URL(url).searchParams.get('v')}` : url; return url; }
 
 /* ══════════════════════════════════════════
-   VIDEO URL HELPER
-══════════════════════════════════════════ */
-function formatYouTubeUrl(url) {
-  if (!url || url.trim() === '') return '';
-  url = url.trim();
-  if (url.includes('youtube.com/embed/')) return url;
-  if (url.includes('youtu.be/')) {
-    const id = url.split('youtu.be/')[1].split('?')[0].split('&')[0];
-    return `https://www.youtube.com/embed/${id}`;
-  }
-  if (url.includes('youtube.com/watch')) {
-    const params = new URL(url).searchParams;
-    const id = params.get('v');
-    return id ?
-    `https://www.youtube.com/embed/${id}` : url;
-  }
-  return url;
-}
-
-/* ══════════════════════════════════════════
-   EXERCISE PLAYER
+   EXERCISE PLAYER & DRAG/DROP
 ══════════════════════════════════════════ */
 function renderPlayerQuestions() {
-  const wrap = document.getElementById('player-questions');
-  const content = safeParseJSON(currentLesson.task_content);
+  const wrap = document.getElementById('player-questions'); const content = safeParseJSON(currentLesson.task_content);
   
+  if (currentLesson.task_type === 'drag_drop') {
+      const q = content[0] || { prompt: '', categories: [], items: [] };
+      const words = shuffle([...(q.items||[])]);
+      const cats = q.categories || [];
+      wrap.innerHTML = `
+        <div class="ex-question-block">
+          <div class="ex-q-text">${q.prompt}</div>
+          <div class="dnd-instruction">☝️ Tap a word, then tap a box below to sort it.</div>
+          <div class="dnd-bank" id="dnd-bank" onclick="dndZoneClick(this)">
+             ${words.map((w,i) => `<div class="dnd-chip" id="dnd-chip-${i}" onclick="event.stopPropagation(); dndChipClick(this)">${w.word}</div>`).join('')}
+          </div>
+          <div class="dnd-cols">
+             ${cats.map((c,i) => `
+                <div class="dnd-col" onclick="dndZoneClick(this)" data-cat="${esc(c)}">
+                   <div class="dnd-col-header">${c}</div>
+                   <div class="dnd-col-body"></div>
+                </div>
+             `).join('')}
+          </div>
+        </div>`;
+      return;
+  }
+
   if (currentLesson.task_type === 'matching') {
-    const lefts = content.map(q => q.left);
-    const rights = shuffle([...content.map(q => q.right)]);
-    wrap.innerHTML = `<div class="ex-question-block"><div class="matching-cols">
-      <div><div class="match-col-label">Words</div>${lefts.map((l,i) => `<div class="match-chip" id="ml-${i}" onclick="matchLeft(${i},'${esc(l)}')">${l}</div>`).join('')}</div>
-      <div><div class="match-col-label">Sounds / meanings</div>${rights.map((r,i) => `<div class="match-chip" id="mr-${i}" onclick="matchRight(${i},'${esc(r)}')">${r}</div>`).join('')}</div>
-    </div></div>`;
-    return;
+    const lefts = content.map(q => q.left); const rights = shuffle([...content.map(q => q.right)]);
+    wrap.innerHTML = `<div class="ex-question-block"><div class="matching-cols"><div><div class="match-col-label">Words</div>${lefts.map((l,i) => `<div class="match-chip" id="ml-${i}" onclick="matchLeft(${i},'${esc(l)}')">${l}</div>`).join('')}</div><div><div class="match-col-label">Sounds / meanings</div>${rights.map((r,i) => `<div class="match-chip" id="mr-${i}" onclick="matchRight(${i},'${esc(r)}')">${r}</div>`).join('')}</div></div></div>`; return;
   }
   
   wrap.innerHTML = content.map((q, i) => {
     const qAudio = q.audio_url ? `<audio controls src="${q.audio_url}" style="width:100%;height:36px;margin-bottom:10px;border-radius:20px;"></audio>` : '';
-    
-    if (currentLesson.task_type === 'fill_in_blank') {
-      return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${q.prompt}</div><input class="fitb-input" id="fitb-${i}" type="text" placeholder="Your answer…" autocomplete="off" oninput="studentAnswers[${i}]=this.value"/></div>`;
-    }
-    if (currentLesson.task_type === 'dictation') {
-      return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${q.prompt}</div><textarea class="dictation-input" id="dict-${i}" placeholder="Write what you hear…" oninput="studentAnswers[${i}]=this.value"></textarea></div>`;
-    }
-    if (currentLesson.task_type === 'open_answer') {
-      return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${q.prompt}</div><textarea class="dictation-input" id="oa-${i}" placeholder="Type your answer here..." oninput="studentAnswers[${i}]=this.value"></textarea></div>`;
-    }
-    
-    const rawOpts = Array.isArray(q.options) ? q.options : [];
-    const opts = rawOpts.filter(o => o && o.trim() !== '');
-    const shuffled = (currentLesson.task_type === 'multiple_choice') ? shuffle([...opts]) : opts;
-    
-    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${q.prompt}</div>
-      <div class="options-grid">${shuffled.map((o, j) => `<button class="opt-btn" id="opt-${i}-${j}" onclick="selectOpt(${i},${j},'${esc(o)}',${JSON.stringify(shuffled).replace(/"/g,'&quot;')})">${o}</button>`).join('')}</div>
-    </div>`;
+    if (currentLesson.task_type === 'fill_in_blank') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${q.prompt}</div><input class="fitb-input" id="fitb-${i}" type="text" placeholder="Your answer…" autocomplete="off" oninput="studentAnswers[${i}]=this.value"/></div>`;
+    if (currentLesson.task_type === 'dictation') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${q.prompt}</div><textarea class="dictation-input" id="dict-${i}" placeholder="Write what you hear…" oninput="studentAnswers[${i}]=this.value"></textarea></div>`;
+    if (currentLesson.task_type === 'open_answer') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${q.prompt}</div><textarea class="dictation-input" id="oa-${i}" placeholder="Type your answer here..." oninput="studentAnswers[${i}]=this.value"></textarea></div>`;
+    const rawOpts = Array.isArray(q.options) ? q.options : []; const opts = rawOpts.filter(o => o && o.trim() !== ''); const shuffled = (currentLesson.task_type === 'multiple_choice') ? shuffle([...opts]) : opts;
+    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${q.prompt}</div><div class="options-grid">${shuffled.map((o, j) => `<button class="opt-btn" id="opt-${i}-${j}" onclick="selectOpt(${i},${j},'${esc(o)}',${JSON.stringify(shuffled).replace(/"/g,'&quot;')})">${o}</button>`).join('')}</div></div>`;
   }).join('');
 }
 
-function selectOpt(qi, oi, val, opts) {
-  opts.forEach((_, j) => { const b = document.getElementById(`opt-${qi}-${j}`); if (b) b.classList.remove('selected'); });
-  document.getElementById(`opt-${qi}-${oi}`)?.classList.add('selected');
-  studentAnswers[qi] = val;
+/* Drag & Drop Interactivity (Touch & Click Friendly) */
+function dndChipClick(chipEl) {
+   document.querySelectorAll('.dnd-chip').forEach(c => c.classList.remove('selected'));
+   document.querySelectorAll('.dnd-col, .dnd-bank').forEach(c => c.classList.add('active-drop'));
+   selectedDragChip = chipEl;
+   chipEl.classList.add('selected');
 }
-function matchLeft(i, val) {
-  if (matchState.pairs[i] !== undefined) return;
-  document.querySelectorAll(".match-chip[id^='ml-']").forEach(el => { if (!el.classList.contains('matched')) el.classList.remove('selected'); });
-  matchState.leftSel = { i, val };
-  document.getElementById('ml-' + i)?.classList.add('selected');
-}
-function matchRight(i, val) {
-  if (!matchState.leftSel) return;
-  const li = matchState.leftSel.i;
-  if (matchState.pairs[li] !== undefined) return;
-  matchState.pairs[li] = val; studentAnswers[li] = val;
-  document.getElementById('ml-' + li)?.classList.remove('selected');
-  document.getElementById('ml-' + li)?.classList.add('matched');
-  document.getElementById('mr-' + i)?.classList.add('matched');
-  matchState.leftSel = null;
+function dndZoneClick(zoneEl) {
+   if (!selectedDragChip) return;
+   const body = zoneEl.classList.contains('dnd-bank') ? zoneEl : zoneEl.querySelector('.dnd-col-body');
+   body.appendChild(selectedDragChip);
+   selectedDragChip.classList.remove('selected');
+   selectedDragChip = null;
+   document.querySelectorAll('.dnd-col, .dnd-bank').forEach(c => c.classList.remove('active-drop'));
 }
 
+/* Other Interactions */
+function selectOpt(qi, oi, val, opts) { opts.forEach((_, j) => { const b = document.getElementById(`opt-${qi}-${j}`); if (b) b.classList.remove('selected'); }); document.getElementById(`opt-${qi}-${oi}`)?.classList.add('selected'); studentAnswers[qi] = val; }
+function matchLeft(i, val) { if (matchState.pairs[i] !== undefined) return; document.querySelectorAll(".match-chip[id^='ml-']").forEach(el => { if (!el.classList.contains('matched')) el.classList.remove('selected'); }); matchState.leftSel = { i, val }; document.getElementById('ml-' + i)?.classList.add('selected'); }
+function matchRight(i, val) { if (!matchState.leftSel) return; const li = matchState.leftSel.i; if (matchState.pairs[li] !== undefined) return; matchState.pairs[li] = val; studentAnswers[li] = val; document.getElementById('ml-' + li)?.classList.remove('selected'); document.getElementById('ml-' + li)?.classList.add('matched'); document.getElementById('mr-' + i)?.classList.add('matched'); matchState.leftSel = null; }
+
 async function submitExercise() {
-  const content = safeParseJSON(currentLesson.task_content);
-  let correct = 0; const results = [];
-  if (currentLesson.task_type === 'matching') {
-    content.forEach((q, i) => {
-      const given = studentAnswers[i]; const ok = given === q.right; if (ok) correct++;
-      if (!ok) document.getElementById('ml-' + i)?.classList.add('wrong-match');
-      results.push({ prompt: q.left, answer: q.right, given, ok });
-    });
+  const content = safeParseJSON(currentLesson.task_content); let correct = 0; let totalQ = content.length; const results = [];
+  
+  if (currentLesson.task_type === 'drag_drop') {
+      const q = content[0]; totalQ = q.items.length;
+      document.querySelectorAll('.dnd-chip').forEach(chip => {
+          const word = chip.textContent; const expectedCat = q.items.find(x => x.word === word)?.category;
+          const parentCol = chip.closest('.dnd-col'); const actualCat = parentCol ? parentCol.dataset.cat : null;
+          chip.onclick = null; // deshabilitar
+          if (actualCat === expectedCat) { correct++; chip.classList.add('correct'); }
+          else { chip.classList.add('wrong'); }
+          results.push({ prompt: word, answer: expectedCat, given: actualCat || 'Unassigned', ok: actualCat === expectedCat });
+      });
+      document.querySelectorAll('.dnd-col, .dnd-bank').forEach(c => c.onclick = null);
+  }
+  else if (currentLesson.task_type === 'matching') {
+    content.forEach((q, i) => { const given = studentAnswers[i]; const ok = given === q.right; if (ok) correct++; if (!ok) document.getElementById('ml-' + i)?.classList.add('wrong-match'); results.push({ prompt: q.left, answer: q.right, given, ok }); });
   } else {
     content.forEach((q, i) => {
-      // Tomamos la respuesta oficial, si no existe usamos la primera del array como backup
       const correctAns = q.answer || (Array.isArray(q.options) && q.options[q.correctIndex || 0]) || (Array.isArray(q.options) && q.options[0]) || '';
       let given = '';
       if (currentLesson.task_type === 'fill_in_blank') given = document.getElementById('fitb-' + i)?.value.trim() || '';
@@ -833,280 +767,151 @@ async function submitExercise() {
       
       const ok = currentLesson.task_type === 'open_answer' ? given.length > 0 : given.toLowerCase() === correctAns.toLowerCase();
       if (ok) correct++;
-      
       if (currentLesson.task_type === 'fill_in_blank') { const el = document.getElementById('fitb-'+i); if(el){el.classList.add(ok?'correct':'wrong');el.disabled=true;} }
       else if (currentLesson.task_type === 'open_answer') { const el = document.getElementById('oa-'+i); if(el){el.style.borderColor = 'var(--brand)'; el.disabled=true;} }
-      else if (currentLesson.task_type !== 'dictation') { document.querySelectorAll(`[id^="opt-${i}-"]`).forEach(b=>{b.disabled=true;if(b.textContent===correctAns)b.classList.add('correct');else if(b.classList.contains('selected'))b.classList.add('wrong');});
-      }
+      else if (currentLesson.task_type !== 'dictation') { document.querySelectorAll(`[id^="opt-${i}-"]`).forEach(b=>{b.disabled=true;if(b.textContent===correctAns)b.classList.add('correct');else if(b.classList.contains('selected'))b.classList.add('wrong');}); }
       results.push({ prompt: q.prompt, answer: correctAns, given, ok });
     });
   }
-  showScore(correct, content.length, results, false);
-  document.getElementById('submit-btn').disabled = true;
-  document.getElementById('submit-btn').style.display = 'none';
-  document.getElementById('retry-btn').style.display = 'inline-block';
-  if (currentUser && currentLesson) {
-    await sb.from('student_progress').upsert({ user_id: currentUser.id, lesson_id: currentLesson.id, score: correct, total_questions: content.length }, { onConflict: 'user_id,lesson_id' });
-    await fetchData();
-    if (activeModuleId) renderSidebar(activeModuleId);
-  }
+  showScore(correct, totalQ, results, false);
+  document.getElementById('submit-btn').disabled = true; document.getElementById('submit-btn').style.display = 'none'; document.getElementById('retry-btn').style.display = 'inline-block';
+  if (currentUser && currentLesson) { await sb.from('student_progress').upsert({ user_id: currentUser.id, lesson_id: currentLesson.id, score: correct, total_questions: totalQ }, { onConflict: 'user_id,lesson_id' }); await fetchData(); if (activeModuleId) renderSidebar(activeModuleId); }
 }
 
 function retryExercise() { showLesson(currentLesson.id); }
 
 function showScore(correct, total, results, readonly) {
-  const pct = total > 0 ?
-  Math.round(correct / total * 100) : 0;
-  const cls = pct >= 80 ? 'great' : pct >= 50 ?
-  'ok' : 'low';
-  const msg = pct >= 80 ? '¡Great work! 🎉' : pct >= 50 ?
-  'Good effort — keep practicing!' : 'Review and try again.';
+  const pct = total > 0 ? Math.round(correct / total * 100) : 0; const cls = pct >= 80 ? 'great' : pct >= 50 ? 'ok' : 'low';
+  const msg = pct >= 80 ? '¡Great work! 🎉' : pct >= 50 ? 'Good effort — keep practicing!' : 'Review and try again.';
   const rows = results.map(r => `<div class="score-row ${r.ok?'c':'w'}">${r.ok?'✓':'✗'} <em>${r.prompt}</em> → <strong>${r.answer}</strong>${!r.ok&&r.given?`<span class="ans"> (your answer: ${r.given})</span>`:''}</div>`).join('');
-  document.getElementById('score-area').innerHTML = `
-    <div class="score-panel">
-      <div class="score-top">
-        <div class="score-circle ${cls}"><div class="pct">${pct}%</div><div class="frac">${correct}/${total}</div></div>
-        <div class="score-msg">${readonly ?
-  'Previously completed' : msg}<div class="sub">${correct} correct out of ${total}</div></div>
-      </div>
-      ${rows ?
-  `<div class="score-details">${rows}</div>` : ''}
-    </div>`;
+  document.getElementById('score-area').innerHTML = `<div class="score-panel"><div class="score-top"><div class="score-circle ${cls}"><div class="pct">${pct}%</div><div class="frac">${correct}/${total}</div></div><div class="score-msg">${readonly ? 'Previously completed' : msg}<div class="sub">${correct} correct out of ${total}</div></div></div>${rows ? `<div class="score-details">${rows}</div>` : ''}</div>`;
   document.getElementById('score-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 /* ══════════════════════════════════════════
-   TEACHER — MODULES
+   TEACHER
 ══════════════════════════════════════════ */
-async function saveModule() {
-  const title = document.getElementById('t-mod-title').value.trim();
-  const editId = document.getElementById('edit-mod-id').value;
-  if (!title) { alert('Add a folder name.'); return; }
-  const orderIndex = editId ? undefined : dbModules.length;
-  const payload = editId ? { title } : { title, order_index: orderIndex };
-  const res = editId
-    ? await sb.from('modules').update(payload).eq('id', editId)
-    : await sb.from('modules').insert([payload]);
-  if (res.error) { alert('Error: ' + res.error.message); return; }
-  await fetchData();
-  alert(editId ? 'Folder updated!' : 'Folder created!');
-  cancelEditMod();
-}
-function editModule(id) {
-  const m = dbModules.find(x => x.id === id); if (!m) return;
-  document.getElementById('t-mod-title').value = m.title;
-  document.getElementById('edit-mod-id').value = m.id;
-  document.getElementById('panel-title-mod').textContent = '✏️ Edit folder';
-  document.getElementById('btn-cancel-mod').style.display = 'inline-block';
-  window.scrollTo(0, 0);
-}
-function cancelEditMod() {
-  document.getElementById('t-mod-title').value = '';
-  document.getElementById('edit-mod-id').value = '';
-  document.getElementById('panel-title-mod').textContent = '📂 Create folder';
-  document.getElementById('btn-cancel-mod').style.display = 'none';
-}
-async function deleteModule(id) {
-  if (!confirm('Delete this folder and all its lessons?')) return;
-  await sb.from('lessons').delete().eq('module_id', id);
-  await sb.from('modules').delete().eq('id', id);
-  fetchData();
-}
-async function moveModule(id, dir) {
-  const idx = dbModules.findIndex(m => m.id === id);
-  const target = dbModules[idx + dir]; if (!target) return;
-  await sb.from('modules').update({ order_index: target.order_index }).eq('id', id);
-  await sb.from('modules').update({ order_index: dbModules[idx].order_index }).eq('id', target.id);
-  fetchData();
-}
+async function saveModule() { const title = document.getElementById('t-mod-title').value.trim(); const editId = document.getElementById('edit-mod-id').value; if (!title) { alert('Add a folder name.'); return; } const payload = editId ? { title } : { title, order_index: dbModules.length }; const res = editId ? await sb.from('modules').update(payload).eq('id', editId) : await sb.from('modules').insert([payload]); if (res.error) { alert('Error: ' + res.error.message); return; } await fetchData(); alert(editId ? 'Folder updated!' : 'Folder created!'); cancelEditMod(); }
+function editModule(id) { const m = dbModules.find(x => x.id === id); if (!m) return; document.getElementById('t-mod-title').value = m.title; document.getElementById('edit-mod-id').value = m.id; document.getElementById('panel-title-mod').textContent = '✏️ Edit module'; document.getElementById('btn-cancel-mod').style.display = 'inline-block'; window.scrollTo(0, 0); }
+function cancelEditMod() { document.getElementById('t-mod-title').value = ''; document.getElementById('edit-mod-id').value = ''; document.getElementById('panel-title-mod').textContent = '📂 1. Create Module (Course)'; document.getElementById('btn-cancel-mod').style.display = 'none'; }
+async function deleteModule(id) { if (!confirm('Delete this folder and all its content?')) return; await sb.from('modules').delete().eq('id', id); fetchData(); }
+async function moveModule(id, dir) { const idx = dbModules.findIndex(m => m.id === id); const target = dbModules[idx + dir]; if (!target) return; await sb.from('modules').update({ order_index: target.order_index }).eq('id', id); await sb.from('modules').update({ order_index: dbModules[idx].order_index }).eq('id', target.id); fetchData(); }
 
-/* ══════════════════════════════════════════
-   TEACHER — LESSONS
-══════════════════════════════════════════ */
-function toggleLessonFields() {
-  const type = document.getElementById('t-les-type').value;
-  document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none';
-  document.getElementById('fields-text').style.display = (type === 'text' || type === 'video') ? 'block' : 'none';
-  document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none';
+/* Submodules */
+async function saveSubmodule() { const title = document.getElementById('t-sub-title').value.trim(); const modId = document.getElementById('t-sub-parent').value; const editId = document.getElementById('edit-sub-id').value; if (!title || !modId) { alert('Select module and add name.'); return; } const payload = editId ? { title, module_id: modId } : { title, module_id: modId, order_index: dbSubmodules.filter(s=>s.module_id===modId).length }; const res = editId ? await sb.from('submodules').update(payload).eq('id', editId) : await sb.from('submodules').insert([payload]); if (res.error) { alert('Error: ' + res.error.message); return; } await fetchData(); alert(editId ? 'Subfolder updated!' : 'Subfolder created!'); cancelEditSub(); }
+function editSubmodule(id) { const s = dbSubmodules.find(x => x.id === id); if (!s) return; document.getElementById('t-sub-title').value = s.title; document.getElementById('t-sub-parent').value = s.module_id; document.getElementById('edit-sub-id').value = s.id; document.getElementById('panel-title-sub').textContent = '✏️ Edit subfolder'; document.getElementById('btn-cancel-sub').style.display = 'inline-block'; window.scrollTo(0, 0); }
+function cancelEditSub() { document.getElementById('t-sub-title').value = ''; document.getElementById('edit-sub-id').value = ''; document.getElementById('panel-title-sub').textContent = '📁 2. Create Subfolder (Category)'; document.getElementById('btn-cancel-sub').style.display = 'none'; }
+async function deleteSubmodule(id) { if (!confirm('Delete this subfolder? Lessons inside will be moved to the main module.')) return; await sb.from('submodules').delete().eq('id', id); fetchData(); }
+async function moveSubmodule(id, dir) { const sub = dbSubmodules.find(s => s.id === id); const siblings = dbSubmodules.filter(s => s.module_id === sub.module_id); const idx = siblings.findIndex(s => s.id === id); const target = siblings[idx + dir]; if (!target) return; await sb.from('submodules').update({ order_index: target.order_index }).eq('id', id); await sb.from('submodules').update({ order_index: sub.order_index }).eq('id', target.id); fetchData(); }
+
+/* Lessons */
+function toggleLessonFields() { const type = document.getElementById('t-les-type').value; document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none'; document.getElementById('fields-text').style.display = (type === 'text' || type === 'video') ? 'block' : 'none'; document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none'; }
+function updateModuleSelect() { 
+   const mHtml = dbModules.map(m => `<option value="${m.id}">${m.title}</option>`).join('');
+   document.getElementById('t-les-module').innerHTML = mHtml; document.getElementById('t-sub-parent').innerHTML = mHtml;
+   updateSubfolderSelect();
 }
-function updateModuleSelect() {
-  const sel = document.getElementById('t-les-module'); if (!sel) return;
-  sel.innerHTML = dbModules.map(m => `<option value="${m.id}">${m.title}</option>`).join('');
+function updateSubfolderSelect() {
+   const modId = document.getElementById('t-les-module').value;
+   const subs = dbSubmodules.filter(s => s.module_id === modId);
+   document.getElementById('t-les-submodule').innerHTML = `<option value="">-- No subfolder (Main module) --</option>` + subs.map(s => `<option value="${s.id}">${s.title}</option>`).join('');
 }
 async function saveLesson() {
-  if (isUploadingAudio) { alert('Wait for audio uploads to finish.');
-  return; }
-  const editId = document.getElementById('edit-les-id').value;
-  const moduleId = document.getElementById('t-les-module').value;
-  const type = document.getElementById('t-les-type').value;
-  const title = document.getElementById('t-les-title').value.trim();
+  if (isUploadingAudio) { alert('Wait for audio uploads to finish.'); return; }
+  const editId = document.getElementById('edit-les-id').value; const moduleId = document.getElementById('t-les-module').value; const submodId = document.getElementById('t-les-submodule').value; const type = document.getElementById('t-les-type').value; const title = document.getElementById('t-les-title').value.trim();
   if (!moduleId || !title) { alert('Fill in folder and title.'); return; }
-  const btn = document.getElementById('btn-save-les'); btn.disabled = true;
-  btn.textContent = 'Saving...';
-
-  let payload = { module_id: moduleId, type, title, content: tempAudios };
-  if (type === 'video') {
-    payload.video_url = formatYouTubeUrl(document.getElementById('t-les-video-url').value.trim());
-    payload.text_content = quillEditor.root.innerHTML;
-  } else if (type === 'text') {
-    payload.text_content = quillEditor.root.innerHTML;
-  } else if (type === 'task') {
+  const btn = document.getElementById('btn-save-les'); btn.disabled = true; btn.textContent = 'Saving...';
+  let payload = { module_id: moduleId, submodule_id: submodId || null, type, title, content: tempAudios };
+  if (type === 'video') { payload.video_url = formatYouTubeUrl(document.getElementById('t-les-video-url').value.trim()); payload.text_content = quillEditor.root.innerHTML; }
+  else if (type === 'text') { payload.text_content = quillEditor.root.innerHTML; }
+  else if (type === 'task') {
     payload.task_type = document.getElementById('t-ex-type').value;
-    payload.task_content = questionRows;
+    // DND save parse
+    if(payload.task_type === 'drag_drop') {
+       const catsStr = document.getElementById('dnd-cats-input').value; const cats = catsStr.split(',').map(s=>s.trim()).filter(Boolean);
+       const dndItems = []; document.querySelectorAll('.dnd-item-row').forEach(row => { const w = row.querySelector('.dnd-w').value.trim(); const c = row.querySelector('.dnd-c').value; if(w&&c) dndItems.push({word:w, category:c}); });
+       payload.task_content = [{ prompt: document.getElementById('dnd-prompt').value, categories: cats, items: dndItems }];
+    } else { payload.task_content = questionRows; }
+    
     const audioFile = document.getElementById('t-ex-audio').files[0];
-    if (audioFile) {
-      const fn = `ex_${Date.now()}.${audioFile.name.split('.').pop()}`;
-      await sb.storage.from('audios').upload(fn, audioFile);
-      payload.audio_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
-    } else if (editId) {
-      payload.audio_url = dbLessons.find(l => l.id === editId)?.audio_url || null;
-    }
+    if (audioFile) { const fn = `ex_${Date.now()}.${audioFile.name.split('.').pop()}`; await sb.storage.from('audios').upload(fn, audioFile); payload.audio_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl; }
+    else if (editId) { payload.audio_url = dbLessons.find(l => l.id === editId)?.audio_url || null; }
   }
-
-  const resFiles = document.getElementById('t-les-resources').files;
-  let resources = editId ? safeParseJSON(dbLessons.find(l => l.id === editId)?.resources) : [];
-  if (resFiles.length) {
-    for (const f of resFiles) {
-      const fn = `res_${Date.now()}_${f.name.replace(/\s+/g, '_')}`;
-      const { error } = await sb.storage.from('audios').upload(fn, f);
-      if (!error) resources.push({ name: f.name, url: sb.storage.from('audios').getPublicUrl(fn).data.publicUrl });
-    }
-  }
+  const resFiles = document.getElementById('t-les-resources').files; let resources = editId ? safeParseJSON(dbLessons.find(l => l.id === editId)?.resources) : [];
+  if (resFiles.length) { for (const f of resFiles) { const fn = `res_${Date.now()}_${f.name.replace(/\s+/g, '_')}`; const { error } = await sb.storage.from('audios').upload(fn, f); if (!error) resources.push({ name: f.name, url: sb.storage.from('audios').getPublicUrl(fn).data.publicUrl }); } }
   payload.resources = resources;
-  if (!editId) payload.order_index = dbLessons.filter(l => l.module_id === moduleId).length;
-  const res = editId
-    ? await sb.from('lessons').update(payload).eq('id', editId)
-    : await sb.from('lessons').insert([payload]);
-  
-  await fetchData();
-  btn.disabled = false; btn.textContent = 'Save lesson';
-  if (res.error) { alert('Error: ' + res.error.message); return;
-  }
-  
-  alert('Lesson saved!'); 
-  cancelEditLes(); 
+  if (!editId) payload.order_index = dbLessons.filter(l => l.module_id === moduleId && l.submodule_id === (submodId||null)).length;
+  const res = editId ? await sb.from('lessons').update(payload).eq('id', editId) : await sb.from('lessons').insert([payload]);
+  await fetchData(); btn.disabled = false; btn.textContent = 'Save lesson'; if (res.error) { alert('Error: ' + res.error.message); return; } alert('Lesson saved!'); cancelEditLes(); 
 }
 
 function editLesson(id) {
-  const l = dbLessons.find(x => x.id === id);
-  if (!l) return;
-  document.getElementById('edit-les-id').value = l.id;
-  document.getElementById('t-les-module').value = l.module_id;
-  document.getElementById('t-les-type').value = l.type;
-  document.getElementById('t-les-title').value = l.title;
-  toggleLessonFields();
-  if (l.type === 'video') {
-      document.getElementById('t-les-video-url').value = l.video_url || '';
-      quillEditor.root.innerHTML = l.text_content || '';
-  }
+  const l = dbLessons.find(x => x.id === id); if (!l) return;
+  document.getElementById('edit-les-id').value = l.id; document.getElementById('t-les-module').value = l.module_id; updateSubfolderSelect(); document.getElementById('t-les-submodule').value = l.submodule_id || ''; document.getElementById('t-les-type').value = l.type; document.getElementById('t-les-title').value = l.title; toggleLessonFields();
+  if (l.type === 'video') { document.getElementById('t-les-video-url').value = l.video_url || ''; quillEditor.root.innerHTML = l.text_content || ''; }
   if (l.type === 'text') quillEditor.root.innerHTML = l.text_content || '';
   if (l.type === 'task') { 
       document.getElementById('t-ex-type').value = l.task_type || 'open_answer'; 
-      questionRows = safeParseJSON(l.task_content); 
+      if(l.task_type === 'drag_drop') { questionRows = safeParseJSON(l.task_content); } else { questionRows = safeParseJSON(l.task_content); }
       renderQFields();
   }
-  
-  tempAudios = safeParseJSON(l.content);
-  renderTempAudios();
-  
-  const resArr = safeParseJSON(l.resources);
-  document.getElementById('t-les-resources-current').textContent = resArr.length ?
-  `${resArr.length} file(s) already attached` : '';
-  document.getElementById('t-ex-audio-current').textContent = l.audio_url ? 'Audio already saved' : '';
-  document.getElementById('panel-title-les').textContent = '✏️ Edit lesson';
-  document.getElementById('btn-cancel-les').style.display = 'inline-block';
-  window.scrollTo(0, 0);
+  tempAudios = safeParseJSON(l.content); renderTempAudios();
+  const resArr = safeParseJSON(l.resources); document.getElementById('t-les-resources-current').textContent = resArr.length ? `${resArr.length} file(s) already attached` : ''; document.getElementById('t-ex-audio-current').textContent = l.audio_url ? 'Audio already saved' : '';
+  document.getElementById('panel-title-les').textContent = '✏️ Edit lesson'; document.getElementById('btn-cancel-les').style.display = 'inline-block'; window.scrollTo(0, 0);
 }
+function cancelEditLes() { document.getElementById('edit-les-id').value = ''; document.getElementById('t-les-title').value = ''; document.getElementById('t-les-video-url').value = ''; document.getElementById('t-ex-audio').value = ''; document.getElementById('t-les-resources').value = ''; document.getElementById('t-les-resources-current').textContent = ''; document.getElementById('t-ex-audio-current').textContent = ''; quillEditor.root.innerHTML = ''; questionRows = []; tempAudios = []; renderQFields(); renderTempAudios(); document.getElementById('panel-title-les').textContent = '📝 3. Add lesson'; document.getElementById('btn-cancel-les').style.display = 'none'; }
+async function deleteLesson(id) { if (!confirm('Delete this lesson?')) return; await sb.from('lessons').delete().eq('id', id); fetchData(); }
+async function moveLesson(id, dir) { const les = dbLessons.find(l => l.id === id); if (!les) return; const siblings = dbLessons.filter(l => l.module_id === les.module_id && l.submodule_id === les.submodule_id); const idx = siblings.findIndex(l => l.id === id); const target = siblings[idx + dir]; if (!target) return; await sb.from('lessons').update({ order_index: target.order_index }).eq('id', id); await sb.from('lessons').update({ order_index: les.order_index }).eq('id', target.id); fetchData(); }
 
-function cancelEditLes() {
-  document.getElementById('edit-les-id').value = '';
-  document.getElementById('t-les-title').value = '';
-  document.getElementById('t-les-video-url').value = '';
-  document.getElementById('t-ex-audio').value = '';
-  document.getElementById('t-les-resources').value = '';
-  document.getElementById('t-les-resources-current').textContent = '';
-  document.getElementById('t-ex-audio-current').textContent = '';
-  quillEditor.root.innerHTML = '';
-  questionRows = [];
-  tempAudios = [];
-  renderQFields(); renderTempAudios();
-  document.getElementById('panel-title-les').textContent = '📝 Add lesson';
-  document.getElementById('btn-cancel-les').style.display = 'none';
-}
-
-async function deleteLesson(id) {
-  if (!confirm('Delete this lesson?')) return;
-  await sb.from('lessons').delete().eq('id', id);
-  fetchData();
-}
-
-async function moveLesson(id, dir) {
-  const les = dbLessons.find(l => l.id === id); if (!les) return;
-  const modLess = dbLessons.filter(l => l.module_id === les.module_id);
-  const idx = modLess.findIndex(l => l.id === id);
-  const target = modLess[idx + dir]; if (!target) return;
-  await sb.from('lessons').update({ order_index: target.order_index }).eq('id', id);
-  await sb.from('lessons').update({ order_index: les.order_index }).eq('id', target.id);
-  fetchData();
-}
+/* Audios Compartidos */
+async function addSharedAudio() { const label = document.getElementById('t-audio-label').value.trim(); const file = document.getElementById('t-audio-file').files[0]; if (!label || !file) { alert('Add a label and choose an audio file.'); return; } isUploadingAudio = true; const btn = document.getElementById('btn-add-audio'); btn.disabled = true; btn.textContent = 'Uploading...'; const fn = `aud_${Date.now()}.${file.name.split('.').pop()}`; const { error } = await sb.storage.from('audios').upload(fn, file); btn.disabled = false; btn.textContent = '+ Add'; isUploadingAudio = false; if (error) { alert('Upload error: ' + error.message); return; } const url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl; tempAudios.push({ label, url }); document.getElementById('t-audio-label').value = ''; document.getElementById('t-audio-file').value = ''; renderTempAudios(); }
+function renderTempAudios() { document.getElementById('t-shared-audios-render').innerHTML = tempAudios.map((a, i) => `<div class="audio-saved-item"><span>🔊 ${a.label}</span><button class="danger-btn" style="padding:2px 8px;font-size:10px;" onclick="tempAudios.splice(${i},1);renderTempAudios();">Remove</button></div>`).join(''); }
 
 /* ══════════════════════════════════════════
-   TEACHER — AUDIOS
-══════════════════════════════════════════ */
-async function addSharedAudio() {
-  const label = document.getElementById('t-audio-label').value.trim();
-  const file = document.getElementById('t-audio-file').files[0];
-  if (!label || !file) { alert('Add a label and choose an audio file.'); return;
-  }
-  isUploadingAudio = true;
-  const btn = document.getElementById('btn-add-audio'); btn.disabled = true; btn.textContent = 'Uploading...';
-  const fn = `aud_${Date.now()}.${file.name.split('.').pop()}`;
-  const { error } = await sb.storage.from('audios').upload(fn, file);
-  btn.disabled = false; btn.textContent = '+ Add'; isUploadingAudio = false;
-  if (error) { alert('Upload error: ' + error.message); return; }
-  const url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
-  tempAudios.push({ label, url });
-  document.getElementById('t-audio-label').value = '';
-  document.getElementById('t-audio-file').value = '';
-  renderTempAudios();
-}
-function renderTempAudios() {
-  document.getElementById('t-shared-audios-render').innerHTML = tempAudios.map((a, i) =>
-    `<div class="audio-saved-item"><span>🔊 ${a.label}</span><button class="danger-btn" style="padding:2px 8px;font-size:10px;" onclick="tempAudios.splice(${i},1);renderTempAudios();">Remove</button></div>`
-  ).join('');
-}
-
-/* ══════════════════════════════════════════
-   TEACHER — QUESTIONS (NUEVO CREADOR DINÁMICO)
+   TEACHER — CREADOR DINÁMICO DE PREGUNTAS
 ══════════════════════════════════════════ */
 function renderQFields() {
   const type = document.getElementById('t-ex-type').value;
-  document.getElementById('q-builder').innerHTML = questionRows.map((q, i) => buildQRow(type, q, i)).join('');
-}
-
-function updateQOption(i, j, v) {
-  questionRows[i].options[j] = v;
-  if (questionRows[i].correctIndex === j) {
-    questionRows[i].answer = v;
+  const wrap = document.getElementById('q-builder');
+  
+  if (type === 'drag_drop') {
+      const q = questionRows[0] || { prompt: '', categories: ['/t/', '/d/', '/id/'], items: [{word:'', category:''}] };
+      if (!questionRows.length) questionRows.push(q);
+      const catsStr = q.categories.join(', ');
+      
+      let html = `<div class="q-row">
+         <span class="field-label">Instruction text</span>
+         <input type="text" id="dnd-prompt" placeholder="e.g. Sort the -ed sounds" value="${esc(q.prompt)}"/>
+         <span class="field-label" style="margin-top:10px">Categories (Comma separated)</span>
+         <input type="text" id="dnd-cats-input" placeholder="e.g. /t/, /d/, /id/" value="${esc(catsStr)}" onchange="updateDndCats(this.value)"/>
+         <span class="field-label" style="margin-top:10px">Words to sort</span>
+         <div id="dnd-items-wrap">`;
+      
+      q.items.forEach((item, idx) => {
+         html += `<div class="dnd-item-row" style="display:flex;gap:8px;margin-bottom:8px;">
+            <input type="text" class="dnd-w" placeholder="Word" value="${esc(item.word)}" style="flex:2;margin:0;"/>
+            <select class="dnd-c" style="flex:1;margin:0;">
+               ${q.categories.map(c => `<option value="${esc(c)}" ${item.category===c?'selected':''}>${c}</option>`).join('')}
+            </select>
+            <button class="danger-btn" style="padding:4px 8px" onclick="removeDndItem(${idx})">×</button>
+         </div>`;
+      });
+      html += `</div><button class="secondary-btn" style="padding:6px;font-size:11px;" onclick="addDndItem()">+ Add word</button></div>`;
+      wrap.innerHTML = html;
+      return;
   }
+  wrap.innerHTML = questionRows.map((q, i) => buildQRow(type, q, i)).join('');
 }
 
-function addQOption(i) {
-  questionRows[i].options.push('');
-  renderQFields();
-}
+/* Helper para DND Builder */
+function updateDndCats(val) { questionRows[0].categories = val.split(',').map(s=>s.trim()).filter(Boolean); renderQFields(); }
+function addDndItem() { questionRows[0].items.push({word:'', category:questionRows[0].categories[0]||''}); renderQFields(); }
+function removeDndItem(i) { questionRows[0].items.splice(i,1); renderQFields(); }
 
-function removeQOption(i, j) {
-  if (questionRows[i].options.length <= 2) {
-    alert('You need at least 2 options for this type of question.');
-  return;
-  }
-  questionRows[i].options.splice(j, 1);
-  if (questionRows[i].correctIndex === j) questionRows[i].correctIndex = 0;
-  else if (questionRows[i].correctIndex > j) questionRows[i].correctIndex--;
-  questionRows[i].answer = questionRows[i].options[questionRows[i].correctIndex];
-  renderQFields();
-}
+function updateQOption(i, j, v) { questionRows[i].options[j] = v; if (questionRows[i].correctIndex === j) { questionRows[i].answer = v; } }
+function addQOption(i) { questionRows[i].options.push(''); renderQFields(); }
+function removeQOption(i, j) { if (questionRows[i].options.length <= 2) { alert('You need at least 2 options.'); return; } questionRows[i].options.splice(j, 1); if (questionRows[i].correctIndex === j) questionRows[i].correctIndex = 0; else if (questionRows[i].correctIndex > j) questionRows[i].correctIndex--; questionRows[i].answer = questionRows[i].options[questionRows[i].correctIndex]; renderQFields(); }
+function removeQ(i) { questionRows.splice(i,1); renderQFields(); }
 
 function buildQRow(type, q, i) {
   if (type === 'matching') return `<div class="q-row"><div class="q-row-label">Pair ${i+1}</div><button class="remove-q" onclick="removeQ(${i})">×</button><input type="text" placeholder="Word (left)" value="${q.left||''}" oninput="questionRows[${i}].left=this.value"/><input type="text" placeholder="Sound / meaning (right)" value="${q.right||''}" oninput="questionRows[${i}].right=this.value"/></div>`;
@@ -1114,217 +919,70 @@ function buildQRow(type, q, i) {
   if (type === 'dictation') return `<div class="q-row"><div class="q-row-label">Question ${i+1}</div><button class="remove-q" onclick="removeQ(${i})">×</button><textarea placeholder="Instruction for student" oninput="questionRows[${i}].prompt=this.value">${q.prompt||''}</textarea><input type="text" placeholder="Expected answer" value="${q.answer||''}" oninput="questionRows[${i}].answer=this.value"/><span class="field-label">Audio for this question (optional)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/><div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted);">${q.audio_url?'Audio saved':''}</div></div>`;
   if (type === 'open_answer') return `<div class="q-row"><div class="q-row-label">Question ${i+1}</div><button class="remove-q" onclick="removeQ(${i})">×</button><textarea placeholder="Ask your question here..." oninput="questionRows[${i}].prompt=this.value">${q.prompt||''}</textarea><textarea placeholder="Provide an expected answer or keywords (for student self-correction)" oninput="questionRows[${i}].answer=this.value">${q.answer||''}</textarea><span class="field-label">Audio for this question (optional)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/><div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted);">${q.audio_url?'✅ Audio saved':''}</div></div>`;
 
-  q.options = q.options || ['',''];
-  q.correctIndex = q.correctIndex !== undefined ? q.correctIndex : 0;
-  if (q.correctIndex >= q.options.length) q.correctIndex = 0;
-  let optsHtml = q.options.map((o, j) => `
-    <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px; background:var(--bg); padding:6px 10px; border-radius:var(--radius-sm); border:1px solid ${q.correctIndex === j ? 'var(--green)' : 'var(--border)'};">
-      <input type="radio" name="correct_${i}" value="${j}" ${q.correctIndex === j ? 'checked' : ''} onchange="questionRows[${i}].correctIndex = ${j}; questionRows[${i}].answer = questionRows[${i}].options[${j}]; renderQFields();" title="Mark as correct answer" style="margin:0; width:16px; height:16px; accent-color:var(--green); cursor:pointer;">
-      <input type="text" placeholder="Option ${j+1}" value="${esc(o)}" oninput="updateQOption(${i},${j},this.value)" style="margin:0; flex:1; border:none; background:transparent;">
-      <button class="danger-btn" style="padding:4px 8px; font-size:12px; border:none;" onclick="removeQOption(${i},${j})">×</button>
-    </div>
-  `).join('');
+  q.options = q.options || ['','']; q.correctIndex = q.correctIndex !== undefined ? q.correctIndex : 0; if (q.correctIndex >= q.options.length) q.correctIndex = 0;
+  let optsHtml = q.options.map((o, j) => `<div style="display:flex; gap:8px; align-items:center; margin-bottom:8px; background:var(--bg); padding:6px 10px; border-radius:var(--radius-sm); border:1px solid ${q.correctIndex === j ? 'var(--green)' : 'var(--border)'};"><input type="radio" name="correct_${i}" value="${j}" ${q.correctIndex === j ? 'checked' : ''} onchange="questionRows[${i}].correctIndex = ${j}; questionRows[${i}].answer = questionRows[${i}].options[${j}]; renderQFields();" title="Mark as correct answer" style="margin:0; width:16px; height:16px; accent-color:var(--green); cursor:pointer;"><input type="text" placeholder="Option ${j+1}" value="${esc(o)}" oninput="updateQOption(${i},${j},this.value)" style="margin:0; flex:1; border:none; background:transparent;"><button class="danger-btn" style="padding:4px 8px; font-size:12px; border:none;" onclick="removeQOption(${i},${j})">×</button></div>`).join('');
   let audioUploadHtml = `<div style="margin-top:10px;"><span class="field-label">Audio for this question (optional)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/><div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted);">${q.audio_url?'✅ Audio saved':''}</div></div>`;
-  return `<div class="q-row">
-    <div class="q-row-label">Question ${i+1} <span style="text-transform:none; font-weight:500; color:var(--text-muted);">(Select the radio button for the correct answer)</span></div>
-    <button class="remove-q" onclick="removeQ(${i})">×</button>
-    <textarea placeholder="Question prompt..." oninput="questionRows[${i}].prompt=this.value" style="margin-bottom:12px;">${q.prompt||''}</textarea>
-    ${optsHtml}
-    <button class="secondary-btn" style="font-size:11px; padding:6px 10px; margin-bottom:8px;"
-  onclick="addQOption(${i})">+ Add option</button>
-    ${audioUploadHtml}
-  </div>`;
+  return `<div class="q-row"><div class="q-row-label">Question ${i+1} <span style="text-transform:none; font-weight:500; color:var(--text-muted);">(Select the radio button for the correct answer)</span></div><button class="remove-q" onclick="removeQ(${i})">×</button><textarea placeholder="Question prompt..." oninput="questionRows[${i}].prompt=this.value" style="margin-bottom:12px;">${q.prompt||''}</textarea>${optsHtml}<button class="secondary-btn" style="font-size:11px; padding:6px 10px; margin-bottom:8px;" onclick="addQOption(${i})">+ Add option</button>${audioUploadHtml}</div>`;
 }
 
 function addQuestion() {
   const type = document.getElementById('t-ex-type').value;
-  questionRows.push(
-    type === 'matching' ? {left:'', right:''} :
-    type === 'fill_in_blank' ? {prompt:'', answer:'', hint:''} :
-    type === 'dictation' ? {prompt:'', answer:'', audio_url:''} :
-    type === 'open_answer' ? {prompt:'', answer:'', audio_url:''} :
-    {prompt:'', options:['',''], correctIndex:0, answer:'', audio_url:''}
-  );
+  if(type === 'drag_drop') return; // DND only uses 1 big block
+  questionRows.push( type === 'matching' ? {left:'', right:''} : type === 'fill_in_blank' ? {prompt:'', answer:'', hint:''} : type === 'dictation' ? {prompt:'', answer:'', audio_url:''} : type === 'open_answer' ? {prompt:'', answer:'', audio_url:''} : {prompt:'', options:['',''], correctIndex:0, answer:'', audio_url:''} );
   renderQFields();
 }
 
-function removeQ(i) { questionRows.splice(i,1); renderQFields(); }
-
 async function uploadQAudio(event, i) {
-  const file = event.target.files[0]; if (!file) return;
-  isUploadingAudio = true;
-  const fn = `qa_${Date.now()}.${file.name.split('.').pop()}`;
-  const { error } = await sb.storage.from('audios').upload(fn, file);
-  isUploadingAudio = false;
-  if (error) { alert('Upload error: ' + error.message); return; }
-  questionRows[i].audio_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
-  const el = document.getElementById('q-audio-' + i);
-  if (el) el.textContent = '✅ Audio uploaded';
+  const file = event.target.files[0]; if (!file) return; isUploadingAudio = true; const fn = `qa_${Date.now()}.${file.name.split('.').pop()}`; const { error } = await sb.storage.from('audios').upload(fn, file); isUploadingAudio = false; if (error) { alert('Upload error: ' + error.message); return; } questionRows[i].audio_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl; const el = document.getElementById('q-audio-' + i); if (el) el.textContent = '✅ Audio uploaded';
 }
 
 /* ══════════════════════════════════════════
    TEACHER — MANAGE LIST
 ══════════════════════════════════════════ */
 function renderManageList() {
-  const list = document.getElementById('t-manage-list');
-  if (!list) return;
-  if (!dbModules.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center;">No content yet.</div>'; return;
-  }
+  const list = document.getElementById('t-manage-list'); if (!list) return;
+  if (!dbModules.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center;">No content yet.</div>'; return; }
   const iconMap = { video:'📺', text:'📄', task:'📝' };
-  list.innerHTML = dbModules.map(m => {
-    const lessons = dbLessons.filter(l => l.module_id === m.id);
-    return `<div class="manage-item" style="background:var(--skool-hover);border-radius:var(--radius-sm);margin-bottom:4px;">
-      <span class="manage-title">📂 ${m.title}</span>
-      <div class="manage-actions">
-        <button class="secondary-btn" onclick="moveModule('${m.id}',-1)">↑</button>
-        <button class="secondary-btn" onclick="moveModule('${m.id}',1)">↓</button>
-        <button class="secondary-btn" onclick="editModule('${m.id}')">Edit</button>
-        <button class="danger-btn" onclick="deleteModule('${m.id}')">Delete</button>
-      </div>
-    </div>
-    ${lessons.map(l => `<div class="manage-item" style="padding-left:1.5rem;">
+  
+  let html = '';
+  dbModules.forEach(m => {
+     html += `<div class="manage-item" style="background:var(--skool-hover);border-radius:var(--radius-sm);margin-bottom:4px;border:1px solid var(--border)"><span class="manage-title">📘 ${m.title}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveModule('${m.id}',-1)">↑</button><button class="secondary-btn" onclick="moveModule('${m.id}',1)">↓</button><button class="secondary-btn" onclick="editModule('${m.id}')">Edit</button><button class="danger-btn" onclick="deleteModule('${m.id}')">Delete</button></div></div>`;
      
-      <span class="manage-title">${iconMap[l.type]||'📄'} ${l.title}</span>
-      <div class="manage-actions">
-        <button class="secondary-btn" onclick="moveLesson('${l.id}',-1)">↑</button>
-        <button class="secondary-btn" onclick="moveLesson('${l.id}',1)">↓</button>
-        <button class="secondary-btn" onclick="editLesson('${l.id}')">Edit</button>
-        <button class="danger-btn" onclick="deleteLesson('${l.id}')">Delete</button>
-      </div>
-    </div>`).join('')}`;
-  }).join('');
+     // Subfolders in this module
+     const subs = dbSubmodules.filter(s => s.module_id === m.id);
+     subs.forEach(sub => {
+        html += `<div class="manage-item" style="background:var(--bg);margin-left:1.5rem;border-left:2px solid var(--brand);margin-bottom:2px;"><span class="manage-title">📁 ${sub.title}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveSubmodule('${sub.id}',-1)">↑</button><button class="secondary-btn" onclick="moveSubmodule('${sub.id}',1)">↓</button><button class="secondary-btn" onclick="editSubmodule('${sub.id}')">Edit</button><button class="danger-btn" onclick="deleteSubmodule('${sub.id}')">Delete</button></div></div>`;
+        
+        // Lessons in this subfolder
+        const subLessons = dbLessons.filter(l => l.submodule_id === sub.id);
+        subLessons.forEach(l => {
+           html += `<div class="manage-item" style="padding-left:3rem;"><span class="manage-title" style="color:var(--text-muted)">${iconMap[l.type]||'📄'} ${l.title}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveLesson('${l.id}',-1)">↑</button><button class="secondary-btn" onclick="moveLesson('${l.id}',1)">↓</button><button class="secondary-btn" onclick="editLesson('${l.id}')">Edit</button><button class="danger-btn" onclick="deleteLesson('${l.id}')">Delete</button></div></div>`;
+        });
+     });
+
+     // Orphan lessons (in module but no subfolder)
+     const orphanLessons = dbLessons.filter(l => l.module_id === m.id && !l.submodule_id);
+     orphanLessons.forEach(l => {
+         html += `<div class="manage-item" style="padding-left:1.5rem;"><span class="manage-title" style="color:var(--text-muted)">${iconMap[l.type]||'📄'} ${l.title}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveLesson('${l.id}',-1)">↑</button><button class="secondary-btn" onclick="moveLesson('${l.id}',1)">↓</button><button class="secondary-btn" onclick="editLesson('${l.id}')">Edit</button><button class="danger-btn" onclick="deleteLesson('${l.id}')">Delete</button></div></div>`;
+     });
+  });
+  list.innerHTML = html;
 }
 
-/* ══════════════════════════════════════════
-   SOUND DATA — COMPLETE
-══════════════════════════════════════════ */
-const vowels = {
-  pure:[
-    {ipa:"/iː/",mw:"[ee]",name:"Long E",keyword:"he",type:"vowel",words:["he","see","feel","team","people","key","ski","machine","belief"],spellings:["e — he, me","ee — see, feel","ea — team, read","ie — belief","ey — key","i — ski, machine"],tip:"Similar to Spanish /i/ but held slightly longer. Tense the tongue high and spread the lips slightly."},
-    {ipa:"/ɪ/",mw:"[ih]",name:"Short I",keyword:"hit",type:"vowel",words:["hit","sit","win","big","quick","busy","women","build","gym"],spellings:["i — hit, sit","y — gym, symbol","ui — build","u — busy","o — women"],tip:"Not the Spanish /i/. The lips are relaxed — not spread. Much shorter and laxer."},
-    {ipa:"/ɛ/",mw:"[eh]",name:"Short E",keyword:"head",type:"vowel",words:["head","bed","said","friend","many","any","weather","says"],spellings:["e — bed","ea — head, weather","ai — said","ie — friend","a — many, any"],tip:"Close to Spanish /e/ but a little lower and more open."},
-    {ipa:"/æ/",mw:"[a]",name:"Short A",keyword:"cap",type:"vowel",words:["cap","cat","man","bad","apple","laugh","plaid","half"],spellings:["a — cap, cat","au — laugh","ai — plaid"],tip:"Doesn't exist in Spanish. Open the mouth wide, push the tongue forward and low. Tense and bright."},
-    {ipa:"/ɑ/",mw:"[ah]",name:"Open A",keyword:"cop",type:"vowel",words:["cop","hot","father","calm","palm","spa","watch","want"],spellings:["o — cop, hot","a — father, calm","al — palm","wa — watch, want"],tip:"Wide-open, relaxed /a/ pushed back in the throat. The mouth is fully open."},
-    {ipa:"/ə/ or /ʌ/",mw:"[uh]",name:"Schwa",keyword:"cup",type:"vowel",words:["cup","fun","done","love","about","sofa","button","pencil"],spellings:["u — cup, fun","o — love, done","a — about (unstressed)","o — sofa (unstressed)"],tip:"The most common sound in English! Every unstressed syllable tends to become /ə/."},
-    {ipa:"/uː/",mw:"[u]",name:"Long OO",keyword:"who",type:"vowel",words:["who","food","moon","true","blue","school","through","suit"],spellings:["oo — food, moon","ue — true, blue","ew — chew, brew","ou — through","ui — suit"],tip:"Similar to Spanish /u/ but sometimes starts with a /j/ glide. Lips tightly rounded."},
-    {ipa:"/ʊ/",mw:"[uu]",name:"Short OO",keyword:"took",type:"vowel",words:["took","book","foot","good","could","would","pull","put"],spellings:["oo — book, foot","ou — could, would","u — pull, put","o — wolf"],tip:"A short, relaxed version of /uː/. Practice the difference: 'food' vs 'foot'."},
-    {ipa:"/ɔː/",mw:"[aw]",name:"AW sound",keyword:"law",type:"vowel",words:["law","call","also","thought","caught","ball","walk","water"],spellings:["aw — law, saw","al — call, ball, walk","au — caught, water","ou — thought","o — also"],tip:"A mid-back rounded vowel. Lips are loosely rounded."},
-  ],
-  diphthongs:[
-    {ipa:"/eɪ/",mw:"[ei]",name:"Long A",keyword:"hey",type:"diphthong",words:["hey","day","made","great","they","vein","weigh","eight"],spellings:["ay — day, say","a_e — made, late","ey — they, hey","ei — vein, eight","ai — rain"],tip:"Must glide upward — the mouth closes as you say it. Not a flat Spanish /e/."},
-    {ipa:"/oʊ/",mw:"[ou]",name:"Long O",keyword:"home",type:"diphthong",words:["home","go","know","phone","road","though","toe","boat"],spellings:["o — go, so","o_e — home, phone","ow — know, show","oa — road, boat","ou — though"],tip:"Starts in the center and glides toward a rounded /ʊ/ at the end."},
-    {ipa:"/aɪ/",mw:"[ai]",name:"Long I",keyword:"hi",type:"diphthong",words:["hi","my","time","high","fly","night","buy","pie","guide"],spellings:["i_e — time, bike","y — my, fly","igh — night, high","uy — buy","ie — pie"],tip:"Starts with a wide open /ɑ/ and glides up toward /ɪ/."},
-    {ipa:"/aʊ/",mw:"[au]",name:"OW sound",keyword:"how",type:"diphthong",words:["how","now","loud","down","about","crowd","out","mouth"],spellings:["ow — how, now, crowd","ou — loud, out, about, mouth"],tip:"Starts open and the lips round at the end toward /ʊ/."},
-    {ipa:"/ɔɪ/",mw:"[oi]",name:"OY sound",keyword:"boy",type:"diphthong",words:["boy","voice","coin","toy","oil","noise","royal","joint"],spellings:["oy — boy, toy, royal","oi — coin, oil, voice, noise"],tip:"Starts with rounded lips /ɔ/ and glides up toward /ɪ/."},
-  ],
-  rcolored:[
-    {ipa:"/ɝ/",mw:"[er]",name:"Stressed ER",keyword:"her",type:"rcolored",words:["her","bird","word","nurse","earth","first","hurt","work"],spellings:["er — her, fern","ir — bird, first","ur — nurse, hurt","or — word, work","ear — earth, learn"],tip:"The tongue curls back while the vowel is produced. No equivalent in Spanish."},
-    {ipa:"/ɚ/",mw:"[er]",name:"Unstressed ER",keyword:"bigger",type:"rcolored",words:["bigger","butter","doctor","teacher","mother","color","dollar"],spellings:["er — bigger, mother","or — doctor, color","ar — dollar, popular"],tip:"The unstressed /ɝ/. Very common in '-er', '-or', '-ar' endings."},
-    {ipa:"/ɑr/",mw:"[ar]",name:"AR sound",keyword:"far",type:"rcolored",words:["far","car","heart","park","start","guard"],spellings:["ar — far, car, park","ear — heart","ua — guard"],tip:"Wide-open /ɑ/ followed by the American R curl."},
-    {ipa:"/ɛr/",mw:"[er]",name:"AIR sound",keyword:"fare",type:"rcolored",words:["fare","care","air","there","where","wear","bear","their"],spellings:["are — fare, care","air — air, fair","ere — there, where","ear — wear, bear"],tip:"A mid-front /ɛ/ that transitions into the American R."},
-    {ipa:"/ɪr/",mw:"[eer]",name:"EAR sound",keyword:"here",type:"rcolored",words:["here","ear","fear","deer","beer","cheer","year"],spellings:["ere — here","ear — ear, fear","eer — deer, beer, cheer"],tip:"Starts with the high /iː/ position then curls into the R."},
-    {ipa:"/ɔr/",mw:"[or]",name:"OR sound",keyword:"or",type:"rcolored",words:["or","for","more","door","four","floor","war","born"],spellings:["or — or, for, born","ore — more, store","oor — door, floor","our — four, court","ar — war"],tip:"A rounded /ɔ/ that flows into the American R."},
-  ]
-};
-const consonants = {
-  stops:[
-    {ipa:"/p/",mw:"[p]",name:"P sound",keyword:"pen",words:["pen","top","happy","apple","camp"],spellings:["p — pen, top","pp — happy, apple"],tip:"Aspirated at the start of stressed syllables — you feel a puff of air."},
-    {ipa:"/b/",mw:"[b]",name:"B sound",keyword:"big",words:["big","cab","able","baby","job","ebb"],spellings:["b — big, cab","bb — ebb"],tip:"No aspiration. Always keep it a full stop with both lips."},
-    {ipa:"/t/",mw:"[t]",name:"T sound",keyword:"top",words:["top","cat","water","butter","action","nature","question"],spellings:["t — top, cat","tt — butter","ti — action (=/ʃ/)","tu — nature (=/tʃ/)"],tip:"Between vowels, American /t/ becomes a quick flap — like a fast /d/."},
-    {ipa:"/d/",mw:"[d]",name:"D sound",keyword:"dog",words:["dog","ride","made","middle","add","loved","could"],spellings:["d — dog, ride","dd — middle, add","ed — loved (past tense)"],tip:"Between vowels it can sound like a flap. Focus on voicing."},
-    {ipa:"/k/",mw:"[k]",name:"K sound",keyword:"cat",words:["cat","kite","queen","school","fix","account","antique","choir"],spellings:["c — cat","k — kite","ck — back","qu — queen (=/kw/)","x — fix (=/ks/)","ch — choir"],tip:"Spelled many ways: c, k, ck, ch, x."},
-    {ipa:"/g/",mw:"[g]",name:"G sound",keyword:"go",words:["go","big","egg","ghost","guest","exact"],spellings:["g — go, big","gg — egg","gh — ghost","gu — guest","x — exact (=/gz/)"],tip:"'Gh' is silent in many words but sounds like /g/ in 'ghost'."},
-  ],
-  fricatives:[
-    {ipa:"/f/",mw:"[f]",name:"F sound",keyword:"fan",words:["fan","off","phone","cough","laugh"],spellings:["f — fan, feel","ff — off","ph — phone","gh — cough, laugh"],tip:"'Ph' always makes this sound. 'Gh' at the end also makes /f/."},
-    {ipa:"/v/",mw:"[v]",name:"V sound",keyword:"van",words:["van","have","love","of","vivid","river"],spellings:["v — van, vivid","f — of (=/v/)"],tip:"Spanish doesn't have a true /v/. Top teeth must press on the lower lip and vibrate."},
-    {ipa:"/θ/",mw:"[th]",name:"TH voiceless",keyword:"think",words:["think","bath","three","tooth","through","author"],spellings:["th — think, bath, three, author"],tip:"Tongue tip between teeth, blow air — no voice. Don't substitute /t/, /s/, or /f/."},
-    {ipa:"/ð/",mw:"[th]",name:"TH voiced",keyword:"the",words:["the","this","mother","breathe","father"],spellings:["th — the, this, mother, breathe"],tip:"Same position as voiceless TH but with voicing. Spanish speakers often use /d/."},
-    {ipa:"/s/",mw:"[s]",name:"S sound",keyword:"see",words:["see","miss","city","psychology","scene","science"],spellings:["s — see","ss — miss","c — city (before e/i)","sc — scene","ps — psychology"],tip:"'c' before e/i/y makes /s/. 'Ps' at the start — the P is silent."},
-    {ipa:"/z/",mw:"[z]",name:"Z sound",keyword:"zoo",words:["zoo","fizz","rose","dogs","his","scissors","xylophone"],spellings:["z — zoo","zz — fizz","s — rose, dogs (voiced)","ss — scissors","x — xylophone"],tip:"Most plurals spelled '-s' are actually /z/ ('dogs', 'runs', 'plays')."},
-    {ipa:"/ʃ/",mw:"[sh]",name:"SH sound",keyword:"she",words:["she","ship","nation","special","sure","machine","chef","ocean"],spellings:["sh — she, ship","ti — nation","ci — special","su — sure","ch — chef","ce — ocean"],tip:"Hides in 'ti' (nation), 'ci' (special), 'ch' (chef)."},
-    {ipa:"/ʒ/",mw:"[zh]",name:"ZH sound",keyword:"measure",words:["measure","vision","usual","beige","genre"],spellings:["si — vision","su — measure, usual","ge — beige","g — genre"],tip:"The voiced /ʃ/. The 's' in 'vision'."},
-    {ipa:"/h/",mw:"[h]",name:"H sound",keyword:"hat",words:["hat","ahead","who","hello","whole"],spellings:["h — hat, hello","wh — who, whole (=/h/)"],tip:"A gentle breath — much softer than the Spanish /x/ (as in 'Juan')."},
-  ],
-  affricates:[
-    {ipa:"/tʃ/",mw:"[ch]",name:"CH sound",keyword:"chin",words:["chin","watch","teacher","nature","question","cello"],spellings:["ch — chin","tch — watch","tu — nature","ti — question","c — cello"],tip:"Starts like /t/ and releases as /ʃ/."},
-    {ipa:"/dʒ/",mw:"[j]",name:"J sound",keyword:"job",words:["job","judge","gym","age","bridge","soldier"],spellings:["j — job","g — gym, age (before e/i/y)","dge — judge, bridge","di — soldier"],tip:"'G' before e, i, y often makes /dʒ/. 'Dge' always makes /dʒ/."},
-  ],
-  nasals:[
-    {ipa:"/m/",mw:"[m]",name:"M sound",keyword:"man",words:["man","him","summer","dumb","climb"],spellings:["m — man","mm — summer","mb — dumb, climb (silent b)"],tip:"Watch for silent letters: 'climb' (b silent)."},
-    {ipa:"/n/",mw:"[n]",name:"N sound",keyword:"no",words:["no","sun","know","knife","gnat","inn"],spellings:["n — no, sun","kn — know (silent k)","gn — gnat (silent g)","nn — inn"],tip:"'Kn' at the start — the K is always silent."},
-    {ipa:"/ŋ/",mw:"[ng]",name:"NG sound",keyword:"sing",words:["sing","thing","think","long","ring","bank"],spellings:["ng — sing, ring","n — think, bank (before /k/)"],tip:"One sound — back of tongue to soft palate."},
-  ],
-  liquids:[
-    {ipa:"/r/",mw:"[r]",name:"American R",keyword:"red",words:["red","car","bird","world","river","write","wrap"],spellings:["r — red, river","rr — sorry","wr — write (silent w)","rh — rhyme (silent h)"],tip:"The tongue curls back without touching anything. Unlike Spanish trilled /r/."},
-    {ipa:"/l/",mw:"[l]",name:"L sound",keyword:"like",words:["like","call","feel","hello","people","walk","half","calm"],spellings:["l — like, feel","ll — call, hello","le — people","lk — walk (silent l)","lf — half (silent l)"],tip:"Light L (start of syllable) vs dark L (end — almost a vowel). Many silent L words."},
-    {ipa:"/j/",mw:"[y]",name:"Y glide",keyword:"yes",words:["yes","you","year","use","cute","few","onion"],spellings:["y — yes, year","u — use, cute (=/juː/)","ew — few (=/juː/)","i — onion (=/j/)"],tip:"'U' in 'use' and 'cute' starts with this /j/ glide."},
-    {ipa:"/w/",mw:"[w]",name:"W sound",keyword:"we",words:["we","world","quick","away","always","one","once"],spellings:["w — we, world","wh — where, when","qu — quick (=/kw/)","o — one (=/w/)"],tip:"Start with lips tightly rounded like /uː/, then move quickly into the next vowel."},
-  ]
-};
+/* SOUND DATA OMITTED FOR BREVITY BUT FULLY INTACT BELOW */
+const vowels = { pure:[ {ipa:"/iː/",mw:"[ee]",name:"Long E",keyword:"he",type:"vowel",words:["he","see","feel","team","people","key","ski","machine","belief"],spellings:["e — he, me","ee — see, feel","ea — team, read","ie — belief","ey — key","i — ski, machine"],tip:"Similar to Spanish /i/ but held slightly longer. Tense the tongue high and spread the lips slightly."}, {ipa:"/ɪ/",mw:"[ih]",name:"Short I",keyword:"hit",type:"vowel",words:["hit","sit","win","big","quick","busy","women","build","gym"],spellings:["i — hit, sit","y — gym, symbol","ui — build","u — busy","o — women"],tip:"Not the Spanish /i/. The lips are relaxed — not spread. Much shorter and laxer."}, {ipa:"/ɛ/",mw:"[eh]",name:"Short E",keyword:"head",type:"vowel",words:["head","bed","said","friend","many","any","weather","says"],spellings:["e — bed","ea — head, weather","ai — said","ie — friend","a — many, any"],tip:"Close to Spanish /e/ but a little lower and more open."}, {ipa:"/æ/",mw:"[a]",name:"Short A",keyword:"cap",type:"vowel",words:["cap","cat","man","bad","apple","laugh","plaid","half"],spellings:["a — cap, cat","au — laugh","ai — plaid"],tip:"Doesn't exist in Spanish. Open the mouth wide, push the tongue forward and low. Tense and bright."}, {ipa:"/ɑ/",mw:"[ah]",name:"Open A",keyword:"cop",type:"vowel",words:["cop","hot","father","calm","palm","spa","watch","want"],spellings:["o — cop, hot","a — father, calm","al — palm","wa — watch, want"],tip:"Wide-open, relaxed /a/ pushed back in the throat. The mouth is fully open."}, {ipa:"/ə/ or /ʌ/",mw:"[uh]",name:"Schwa",keyword:"cup",type:"vowel",words:["cup","fun","done","love","about","sofa","button","pencil"],spellings:["u — cup, fun","o — love, done","a — about (unstressed)","o — sofa (unstressed)"],tip:"The most common sound in English! Every unstressed syllable tends to become /ə/."}, {ipa:"/uː/",mw:"[u]",name:"Long OO",keyword:"who",type:"vowel",words:["who","food","moon","true","blue","school","through","suit"],spellings:["oo — food, moon","ue — true, blue","ew — chew, brew","ou — through","ui — suit"],tip:"Similar to Spanish /u/ but sometimes starts with a /j/ glide. Lips tightly rounded."}, {ipa:"/ʊ/",mw:"[uu]",name:"Short OO",keyword:"took",type:"vowel",words:["took","book","foot","good","could","would","pull","put"],spellings:["oo — book, foot","ou — could, would","u — pull, put","o — wolf"],tip:"A short, relaxed version of /uː/. Practice the difference: 'food' vs 'foot'."}, {ipa:"/ɔː/",mw:"[aw]",name:"AW sound",keyword:"law",type:"vowel",words:["law","call","also","thought","caught","ball","walk","water"],spellings:["aw — law, saw","al — call, ball, walk","au — caught, water","ou — thought","o — also"],tip:"A mid-back rounded vowel. Lips are loosely rounded."} ], diphthongs:[ {ipa:"/eɪ/",mw:"[ei]",name:"Long A",keyword:"hey",type:"diphthong",words:["hey","day","made","great","they","vein","weigh","eight"],spellings:["ay — day, say","a_e — made, late","ey — they, hey","ei — vein, eight","ai — rain"],tip:"Must glide upward — the mouth closes as you say it. Not a flat Spanish /e/."}, {ipa:"/oʊ/",mw:"[ou]",name:"Long O",keyword:"home",type:"diphthong",words:["home","go","know","phone","road","though","toe","boat"],spellings:["o — go, so","o_e — home, phone","ow — know, show","oa — road, boat","ou — though"],tip:"Starts in the center and glides toward a rounded /ʊ/ at the end."}, {ipa:"/aɪ/",mw:"[ai]",name:"Long I",keyword:"hi",type:"diphthong",words:["hi","my","time","high","fly","night","buy","pie","guide"],spellings:["i_e — time, bike","y — my, fly","igh — night, high","uy — buy","ie — pie"],tip:"Starts with a wide open /ɑ/ and glides up toward /ɪ/."}, {ipa:"/aʊ/",mw:"[au]",name:"OW sound",keyword:"how",type:"diphthong",words:["how","now","loud","down","about","crowd","out","mouth"],spellings:["ow — how, now, crowd","ou — loud, out, about, mouth"],tip:"Starts open and the lips round at the end toward /ʊ/."}, {ipa:"/ɔɪ/",mw:"[oi]",name:"OY sound",keyword:"boy",type:"diphthong",words:["boy","voice","coin","toy","oil","noise","royal","joint"],spellings:["oy — boy, toy, royal","oi — coin, oil, voice, noise"],tip:"Starts with rounded lips /ɔ/ and glides up toward /ɪ/."} ], rcolored:[ {ipa:"/ɝ/",mw:"[er]",name:"Stressed ER",keyword:"her",type:"rcolored",words:["her","bird","word","nurse","earth","first","hurt","work"],spellings:["er — her, fern","ir — bird, first","ur — nurse, hurt","or — word, work","ear — earth, learn"],tip:"The tongue curls back while the vowel is produced. No equivalent in Spanish."}, {ipa:"/ɚ/",mw:"[er]",name:"Unstressed ER",keyword:"bigger",type:"rcolored",words:["bigger","butter","doctor","teacher","mother","color","dollar"],spellings:["er — bigger, mother","or — doctor, color","ar — dollar, popular"],tip:"The unstressed /ɝ/. Very common in '-er', '-or', '-ar' endings."}, {ipa:"/ɑr/",mw:"[ar]",name:"AR sound",keyword:"far",type:"rcolored",words:["far","car","heart","park","start","guard"],spellings:["ar — far, car, park","ear — heart","ua — guard"],tip:"Wide-open /ɑ/ followed by the American R curl."}, {ipa:"/ɛr/",mw:"[er]",name:"AIR sound",keyword:"fare",type:"rcolored",words:["fare","care","air","there","where","wear","bear","their"],spellings:["are — fare, care","air — air, fair","ere — there, where","ear — wear, bear"],tip:"A mid-front /ɛ/ that transitions into the American R."}, {ipa:"/ɪr/",mw:"[eer]",name:"EAR sound",keyword:"here",type:"rcolored",words:["here","ear","fear","deer","beer","cheer","year"],spellings:["ere — here","ear — ear, fear","eer — deer, beer, cheer"],tip:"Starts with the high /iː/ position then curls into the R."}, {ipa:"/ɔr/",mw:"[or]",name:"OR sound",keyword:"or",type:"rcolored",words:["or","for","more","door","four","floor","war","born"],spellings:["or — or, for, born","ore — more, store","oor — door, floor","our — four, court","ar — war"],tip:"A rounded /ɔ/ that flows into the American R."} ] };
+const consonants = { stops:[ {ipa:"/p/",mw:"[p]",name:"P sound",keyword:"pen",words:["pen","top","happy","apple","camp"],spellings:["p — pen, top","pp — happy, apple"],tip:"Aspirated at the start of stressed syllables — you feel a puff of air."}, {ipa:"/b/",mw:"[b]",name:"B sound",keyword:"big",words:["big","cab","able","baby","job","ebb"],spellings:["b — big, cab","bb — ebb"],tip:"No aspiration. Always keep it a full stop with both lips."}, {ipa:"/t/",mw:"[t]",name:"T sound",keyword:"top",words:["top","cat","water","butter","action","nature","question"],spellings:["t — top, cat","tt — butter","ti — action (=/ʃ/)","tu — nature (=/tʃ/)"],tip:"Between vowels, American /t/ becomes a quick flap — like a fast /d/."}, {ipa:"/d/",mw:"[d]",name:"D sound",keyword:"dog",words:["dog","ride","made","middle","add","loved","could"],spellings:["d — dog, ride","dd — middle, add","ed — loved (past tense)"],tip:"Between vowels it can sound like a flap. Focus on voicing."}, {ipa:"/k/",mw:"[k]",name:"K sound",keyword:"cat",words:["cat","kite","queen","school","fix","account","antique","choir"],spellings:["c — cat","k — kite","ck — back","qu — queen (=/kw/)","x — fix (=/ks/)","ch — choir"],tip:"Spelled many ways: c, k, ck, ch, x."}, {ipa:"/g/",mw:"[g]",name:"G sound",keyword:"go",words:["go","big","egg","ghost","guest","exact"],spellings:["g — go, big","gg — egg","gh — ghost","gu — guest","x — exact (=/gz/)"],tip:"'Gh' is silent in many words but sounds like /g/ in 'ghost'."} ], fricatives:[ {ipa:"/f/",mw:"[f]",name:"F sound",keyword:"fan",words:["fan","off","phone","cough","laugh"],spellings:["f — fan, feel","ff — off","ph — phone","gh — cough, laugh"],tip:"'Ph' always makes this sound. 'Gh' at the end also makes /f/."}, {ipa:"/v/",mw:"[v]",name:"V sound",keyword:"van",words:["van","have","love","of","vivid","river"],spellings:["v — van, vivid","f — of (=/v/)"],tip:"Spanish doesn't have a true /v/. Top teeth must press on the lower lip and vibrate."}, {ipa:"/θ/",mw:"[th]",name:"TH voiceless",keyword:"think",words:["think","bath","three","tooth","through","author"],spellings:["th — think, bath, three, author"],tip:"Tongue tip between teeth, blow air — no voice. Don't substitute /t/, /s/, or /f/."}, {ipa:"/ð/",mw:"[th]",name:"TH voiced",keyword:"the",words:["the","this","mother","breathe","father"],spellings:["th — the, this, mother, breathe"],tip:"Same position as voiceless TH but with voicing. Spanish speakers often use /d/."}, {ipa:"/s/",mw:"[s]",name:"S sound",keyword:"see",words:["see","miss","city","psychology","scene","science"],spellings:["s — see","ss — miss","c — city (before e/i)","sc — scene","ps — psychology"],tip:"'c' before e/i/y makes /s/. 'Ps' at the start — the P is silent."}, {ipa:"/z/",mw:"[z]",name:"Z sound",keyword:"zoo",words:["zoo","fizz","rose","dogs","his","scissors","xylophone"],spellings:["z — zoo","zz — fizz","s — rose, dogs (voiced)","ss — scissors","x — xylophone"],tip:"Most plurals spelled '-s' are actually /z/ ('dogs', 'runs', 'plays')."}, {ipa:"/ʃ/",mw:"[sh]",name:"SH sound",keyword:"she",words:["she","ship","nation","special","sure","machine","chef","ocean"],spellings:["sh — she, ship","ti — nation","ci — special","su — sure","ch — chef","ce — ocean"],tip:"Hides in 'ti' (nation), 'ci' (special), 'ch' (chef)."}, {ipa:"/ʒ/",mw:"[zh]",name:"ZH sound",keyword:"measure",words:["measure","vision","usual","beige","genre"],spellings:["si — vision","su — measure, usual","ge — beige","g — genre"],tip:"The voiced /ʃ/. The 's' in 'vision'."}, {ipa:"/h/",mw:"[h]",name:"H sound",keyword:"hat",words:["hat","ahead","who","hello","whole"],spellings:["h — hat, hello","wh — who, whole (=/h/)"],tip:"A gentle breath — much softer than the Spanish /x/ (as in 'Juan')."} ], affricates:[ {ipa:"/tʃ/",mw:"[ch]",name:"CH sound",keyword:"chin",words:["chin","watch","teacher","nature","question","cello"],spellings:["ch — chin","tch — watch","tu — nature","ti — question","c — cello"],tip:"Starts like /t/ and releases as /ʃ/."}, {ipa:"/dʒ/",mw:"[j]",name:"J sound",keyword:"job",words:["job","judge","gym","age","bridge","soldier"],spellings:["j — job","g — gym, age (before e/i/y)","dge — judge, bridge","di — soldier"],tip:"'G' before e, i, y often makes /dʒ/. 'Dge' always makes /dʒ/."} ], nasals:[ {ipa:"/m/",mw:"[m]",name:"M sound",keyword:"man",words:["man","him","summer","dumb","climb"],spellings:["m — man","mm — summer","mb — dumb, climb (silent b)"],tip:"Watch for silent letters: 'climb' (b silent)."}, {ipa:"/n/",mw:"[n]",name:"N sound",keyword:"no",words:["no","sun","know","knife","gnat","inn"],spellings:["n — no, sun","kn — know (silent k)","gn — gnat (silent g)","nn — inn"],tip:"'Kn' at the start — the K is always silent."}, {ipa:"/ŋ/",mw:"[ng]",name:"NG sound",keyword:"sing",words:["sing","thing","think","long","ring","bank"],spellings:["ng — sing, ring","n — think, bank (before /k/)"],tip:"One sound — back of tongue to soft palate."} ], liquids:[ {ipa:"/r/",mw:"[r]",name:"American R",keyword:"red",words:["red","car","bird","world","river","write","wrap"],spellings:["r — red, river","rr — sorry","wr — write (silent w)","rh — rhyme (silent h)"],tip:"The tongue curls back without touching anything. Unlike Spanish trilled /r/."}, {ipa:"/l/",mw:"[l]",name:"L sound",keyword:"like",words:["like","call","feel","hello","people","walk","half","calm"],spellings:["l — like, feel","ll — call, hello","le — people","lk — walk (silent l)","lf — half (silent l)"],tip:"Light L (start of syllable) vs dark L (end — almost a vowel). Many silent L words."}, {ipa:"/j/",mw:"[y]",name:"Y glide",keyword:"yes",words:["yes","you","year","use","cute","few","onion"],spellings:["y — yes, year","u — use, cute (=/juː/)","ew — few (=/juː/)","i — onion (=/j/)"],tip:"'U' in 'use' and 'cute' starts with this /j/ glide."}, {ipa:"/w/",mw:"[w]",name:"W sound",keyword:"we",words:["we","world","quick","away","always","one","once"],spellings:["w — we, world","wh — where, when","qu — quick (=/kw/)","o — one (=/w/)"],tip:"Start with lips tightly rounded like /uː/, then move quickly into the next vowel."} ] };
 
-/* ══════════════════════════════════════════
-   SOUND EXPLORER
-══════════════════════════════════════════ */
-const USE_REAL_AUDIO = false;
-function playWord(word) {
-  if (USE_REAL_AUDIO) { const a = new Audio('audio/' + word.toLowerCase() + '.mp3'); a.play().catch(() => speakWord(word)); }
-  else speakWord(word);
-}
-function speakWord(word) {
-  if (!window.speechSynthesis) return;
- 
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(word); u.lang = 'en-US'; u.rate = 0.85;
-  window.speechSynthesis.speak(u);
-}
-
-let activeVowel = null, activeConsonant = null;
+function playWord(word) { if (USE_REAL_AUDIO) { const a = new Audio('audio/' + word.toLowerCase() + '.mp3'); a.play().catch(() => speakWord(word)); } else speakWord(word); }
+function speakWord(word) { if (!window.speechSynthesis) return; window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(word); u.lang = 'en-US'; u.rate = 0.85; window.speechSynthesis.speak(u); }
 function bc(t){return t==="vowel"?"badge-vowel":t==="diphthong"?"badge-diphthong":t==="rcolored"?"badge-rcolored":"badge-consonant";}
 function bl(t){return t==="rcolored"?"r-colored":t;}
-
-function renderCard(s, isActive, onclick) {
-  const d = document.createElement('div');
-  d.className = 'sound-card' + (isActive ? ' active' : '');
-  d.innerHTML = `<div class="sound-ipa">${s.ipa}</div><div class="sound-mw">${s.mw}</div><div class="sound-example">as in "<strong>${s.keyword}</strong>"</div><span class="sound-type-badge ${bc(s.type||'consonant')}">${bl(s.type||'consonant')}</span><div><button class="play-btn" onclick="event.stopPropagation();playWord('${s.keyword}')"><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg>${s.keyword}</button></div>`;
-  d.onclick = onclick; return d;
-}
-
-function renderDetail(pid, s, isCon) {
-  document.getElementById(pid).innerHTML = `
-    <div class="detail-header">
-      <div><div class="detail-big-ipa">${s.ipa}</div><div class="detail-big-mw">${s.mw}</div></div>
-      <div><div class="detail-name">${s.name}</div><div class="detail-keyword">as in "<strong>${s.keyword}</strong>"</div><span class="sound-type-badge ${isCon?'badge-consonant':bc(s.type)}" style="margin-top:6px;display:inline-block">${isCon?'consonant':bl(s.type)}</span></div>
-    </div>
-    <div class="detail-body">
-      <div class="detail-section"><div class="detail-section-label">${isCon?'Example words':'Practice words'}</div>
-        <div class="words-wrap">${s.words.map((w,i)=>`<span class="word-pill${i===0?' highlight':''}" onclick="playWord('${w}')">${w} ▶</span>`).join('')}</div>
-      </div>
-      <div class="detail-section"><div class="detail-section-label">${isCon?'All spellings':'How it\'s spelled'}</div>
-        <div class="words-wrap">${s.spellings.map(sp=>`<span class="word-pill">${sp}</span>`).join('')}</div>
-  
-      </div>
-    </div>
-    <div class="tip-box"><div class="tip-label">For Spanish speakers</div><div class="tip-text">${s.tip}</div></div>`;
-}
-
-function buildGrid(cid, list, getA, setA, pid, isCon, rebuild) {
-  const c = document.getElementById(cid); if (!c) return; c.innerHTML = '';
-  list.forEach(s => c.appendChild(renderCard(s, getA()===s.ipa, () => { setA(s.ipa); renderDetail(pid,s,isCon); rebuild(); })));
-}
-function buildAllVowelGrids() {
-  const ga=()=>activeVowel, sa=v=>{activeVowel=v;};
-  [['pure-vowel-grid','pure'],['diphthong-grid','diphthongs'],['rcolored-grid','rcolored']].forEach(([id,k])=>buildGrid(id,vowels[k],ga,sa,'vowel-detail',false,buildAllVowelGrids));
-}
-function buildAllConsonantGrids() {
-  const ga=()=>activeConsonant, sa=v=>{activeConsonant=v;};
-  [['stops-grid','stops'],['fricatives-grid','fricatives'],['affricates-grid','affricates'],['nasals-grid','nasals'],['liquids-grid','liquids']].forEach(([id,k])=>buildGrid(id,consonants[k],ga,sa,'consonant-detail',true,buildAllConsonantGrids));
-}
-buildAllVowelGrids();
-buildAllConsonantGrids();
-/* ══════════════════════════════════════════
-   UTILS
-══════════════════════════════════════════ */
+function renderCard(s, isActive, onclick) { const d = document.createElement('div'); d.className = 'sound-card' + (isActive ? ' active' : ''); d.innerHTML = `<div class="sound-ipa">${s.ipa}</div><div class="sound-mw">${s.mw}</div><div class="sound-example">as in "<strong>${s.keyword}</strong>"</div><span class="sound-type-badge ${bc(s.type||'consonant')}">${bl(s.type||'consonant')}</span><div><button class="play-btn" onclick="event.stopPropagation();playWord('${s.keyword}')"><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg>${s.keyword}</button></div>`; d.onclick = onclick; return d; }
+function renderDetail(pid, s, isCon) { document.getElementById(pid).innerHTML = `<div class="detail-header"><div><div class="detail-big-ipa">${s.ipa}</div><div class="detail-big-mw">${s.mw}</div></div><div><div class="detail-name">${s.name}</div><div class="detail-keyword">as in "<strong>${s.keyword}</strong>"</div><span class="sound-type-badge ${isCon?'badge-consonant':bc(s.type)}" style="margin-top:6px;display:inline-block">${isCon?'consonant':bl(s.type)}</span></div></div><div class="detail-body"><div class="detail-section"><div class="detail-section-label">${isCon?'Example words':'Practice words'}</div><div class="words-wrap">${s.words.map((w,i)=>`<span class="word-pill${i===0?' highlight':''}" onclick="playWord('${w}')">${w} ▶</span>`).join('')}</div></div><div class="detail-section"><div class="detail-section-label">${isCon?'All spellings':'How it\'s spelled'}</div><div class="words-wrap">${s.spellings.map(sp=>`<span class="word-pill">${sp}</span>`).join('')}</div></div></div><div class="tip-box"><div class="tip-label">For Spanish speakers</div><div class="tip-text">${s.tip}</div></div>`; }
+function buildGrid(cid, list, getA, setA, pid, isCon, rebuild) { const c = document.getElementById(cid); if (!c) return; c.innerHTML = ''; list.forEach(s => c.appendChild(renderCard(s, getA()===s.ipa, () => { setA(s.ipa); renderDetail(pid,s,isCon); rebuild(); }))); }
+function buildAllVowelGrids() { const ga=()=>activeVowel, sa=v=>{activeVowel=v;}; [['pure-vowel-grid','pure'],['diphthong-grid','diphthongs'],['rcolored-grid','rcolored']].forEach(([id,k])=>buildGrid(id,vowels[k],ga,sa,'vowel-detail',false,buildAllVowelGrids)); }
+function buildAllConsonantGrids() { const ga=()=>activeConsonant, sa=v=>{activeConsonant=v;}; [['stops-grid','stops'],['fricatives-grid','fricatives'],['affricates-grid','affricates'],['nasals-grid','nasals'],['liquids-grid','liquids']].forEach(([id,k])=>buildGrid(id,consonants[k],ga,sa,'consonant-detail',true,buildAllConsonantGrids)); }
+buildAllVowelGrids(); buildAllConsonantGrids();
 function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
 function esc(s){return(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');}
 </script>
