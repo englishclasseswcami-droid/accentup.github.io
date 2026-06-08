@@ -486,7 +486,7 @@ footer strong { color: var(--brand); }
 
 <script>
 /* ══════════════════════════════════════════
-   CONFIG
+   CONFIG & GLOBAL VARIABLES
 ══════════════════════════════════════════ */
 const TEACHER_EMAIL = 'englishclasseswcami@gmail.com';
 const STUDENT_ACCESS_CODE = 'ACCENTUP-7774392'; 
@@ -494,6 +494,7 @@ const SUPABASE_URL = 'https://flfyifdaitfnxncoxzxe.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsZnlpZmRhaXRmbnhuY294enhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4Njc0NTQsImV4cCI6MjA5NjQ0MzQ1NH0.wKMJk0EIYi1hRwoE1EN5lfEGIn2c9YrJhPi_UO2w2gI';
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 let currentUser = null;
 let isLoginMode = true;
 let dbModules = [];
@@ -509,6 +510,8 @@ let tempAudios = [];
 let isUploadingAudio = false;
 let quillEditor = null;
 let selectedDragChip = null; 
+let activeVowel = null;
+let activeConsonant = null;
 
 function safeParseJSON(data) {
   if (Array.isArray(data)) return data;
@@ -527,7 +530,7 @@ function esc(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/'/g, '&#39;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-/* Escudo 2: Para pasar strings dentro de eventos onclick de Javascript, ej: onclick="playWord('AQUÍ')" */
+/* Escudo 2: Para pasar strings dentro de eventos onclick de Javascript */
 function escapeJSArg(str) {
   return String(str || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, '\\n').replace(/\r/g, '\\r');
 }
@@ -830,7 +833,8 @@ function renderAudios(panelId, list) {
   if (!el) return; 
   const arr = safeParseJSON(list); 
   if (!arr.length) { 
-    el.style.display = 'none'; return; 
+    el.style.display = 'none'; 
+    return; 
   } 
   el.style.display = 'block'; 
   
@@ -850,7 +854,8 @@ function renderResources(panelId, list) {
   if (!el) return; 
   const arr = safeParseJSON(list); 
   if (!arr.length) { 
-    el.style.display = 'none'; return; 
+    el.style.display = 'none'; 
+    return; 
   } 
   el.style.display = 'block'; 
   
@@ -1559,11 +1564,7 @@ function editLesson(id) {
   if (l.type === 'text') quillEditor.root.innerHTML = l.text_content || '';
   if (l.type === 'task') { 
       document.getElementById('t-ex-type').value = l.task_type || 'open_answer'; 
-      if(l.task_type === 'drag_drop') { 
-        questionRows = safeParseJSON(l.task_content); 
-      } else { 
-        questionRows = safeParseJSON(l.task_content); 
-      }
+      questionRows = safeParseJSON(l.task_content); 
       renderQFields();
   }
   
