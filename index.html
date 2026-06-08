@@ -18,6 +18,7 @@
   --border: rgba(0,0,0,0.08); --radius: 14px; --radius-sm: 8px;
   --green: #1D9E75; --green-light: #E1F5EE; --green-dark: #085041;
   --red: #D85A30; --red-light: #FAECE7; --red-dark: #4A1B0C;
+  --skool-bg: #F9FAFB; --skool-hover: #F3F4F6; --skool-border: #E5E7EB;
 }
 body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
@@ -46,6 +47,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 /* PAGES */
 .page { display: none; padding: 2rem 1.5rem; max-width: 920px; margin: 0 auto; }
 .page.active { display: block; }
+.page-full { max-width: 1200px; padding: 1.5rem; }
 .section-intro { margin-bottom: 1.75rem; }
 .section-intro h2 { font-size: 20px; font-weight: 800; color: var(--brand); margin-bottom: 5px; letter-spacing: -.3px; }
 .section-intro p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
@@ -65,7 +67,6 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .badge-consonant { background: #FAECE7; color: #712B13; }
 .play-btn { display: inline-flex; align-items: center; gap: 5px; margin-top: 7px; padding: 4px 10px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--surface); font-size: 11px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all .15s; }
 .play-btn:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-light); }
-.play-btn svg { width: 10px; height: 10px; fill: currentColor; }
 
 .detail-panel { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; min-height: 140px; }
 .detail-empty { color: var(--text-light); font-size: 14px; text-align: center; padding: 2.5rem 0; }
@@ -75,19 +76,18 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .detail-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
 .detail-keyword { font-size: 13px; color: var(--text-muted); }
 .detail-body { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; margin-top: .5rem; }
-@media(max-width:560px){ .detail-body { grid-template-columns: 1fr; } }
 .detail-section { background: var(--bg); border-radius: var(--radius-sm); padding: .85rem .9rem; }
 .detail-section-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 7px; }
 .words-wrap { display: flex; flex-wrap: wrap; gap: 5px; }
-.word-pill { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 12px; color: var(--text); }
-.word-pill.highlight { background: var(--brand); color: #fff; border-color: var(--brand); }
+.word-pill { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 12px; color: var(--text); cursor: pointer; }
+.word-pill:hover { background: var(--brand-light); color: var(--brand); border-color: var(--brand); }
 .tip-box { margin-top: .9rem; background: var(--brand-light); border-radius: var(--radius-sm); padding: .85rem .9rem; border-left: 3px solid var(--brand); }
 .tip-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--brand-mid); margin-bottom: 4px; }
 .tip-text { font-size: 13px; color: #26215C; line-height: 1.6; }
 .sub-heading { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-light); margin: 1.75rem 0 .9rem; display: flex; align-items: center; gap: 10px; }
 .sub-heading::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-/* ── GATES (Auth) ── */
+/* ── AUTH GATE ── */
 .gate { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 50vh; text-align: center; }
 .gate h2 { font-size: 20px; font-weight: 800; color: var(--accent-dark); margin-bottom: 6px; }
 .gate p { font-size: 13px; color: var(--text-muted); margin-bottom: 1.5rem; }
@@ -98,9 +98,6 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .gate-error { margin-top: 10px; font-size: 13px; color: var(--red); display: none; }
 
 /* ── TEACHER DASHBOARD ── */
-.teacher-ui { display: block; }
-.teacher-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px; }
-.teacher-header h2 { font-size: 20px; font-weight: 800; color: var(--accent-dark); }
 .teacher-layout { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
 .t-panel { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.5rem; }
 .t-panel h3 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: .9rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
@@ -112,97 +109,102 @@ textarea { resize: vertical; min-height: 70px; line-height: 1.5; }
 
 .q-row { background: var(--bg); border-radius: var(--radius-sm); padding: .75rem .85rem; margin-bottom: 8px; position: relative; border: 1px solid var(--border); }
 .q-row-label { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--brand); margin-bottom: 6px; }
-.remove-q { position: absolute; top: 8px; right: 8px; background: none; border: none; color: var(--text-light); font-size: 16px; cursor: pointer; line-height: 1; padding: 2px 6px; }
+.remove-q { position: absolute; top: 8px; right: 8px; background: none; border: none; color: var(--text-light); font-size: 16px; cursor: pointer; padding: 2px 6px; }
 .remove-q:hover { color: var(--red); }
-.add-q-btn { width: 100%; padding: 8px; border: 1.5px dashed var(--border); border-radius: var(--radius-sm); background: transparent; font-size: 13px; color: var(--text-muted); cursor: pointer; font-family: 'Inter',sans-serif; transition: all .15s; margin-top: 4px; }
+.add-q-btn { width: 100%; padding: 8px; border: 1.5px dashed var(--border); border-radius: var(--radius-sm); background: transparent; font-size: 13px; color: var(--text-muted); cursor: pointer; transition: all .15s; margin-top: 4px; }
 .add-q-btn:hover { border-color: var(--brand); color: var(--brand); }
-
 .primary-btn { width: 100%; padding: 10px; border-radius: var(--radius-sm); background: var(--brand); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; margin-top: 1rem; transition: background .15s; }
 .primary-btn:hover { background: var(--brand-dark); }
 .primary-btn:disabled { background: var(--text-light); cursor: not-allowed; }
 
-/* ── CLASSROOM & EXERCISES ── */
-.module-list { display: grid; gap: 1rem; }
-.module-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; cursor: pointer; transition: all .15s; }
-.module-card:hover { border-color: var(--brand); transform: translateY(-2px); }
-.module-title { font-size: 18px; font-weight: 800; color: var(--brand); margin-bottom: 5px; }
-.module-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 10px; }
+/* ── CLASSROOM REDESIGN (SKOOL STYLE) ── */
+.classroom-container { display: flex; gap: 2rem; min-height: 75vh; align-items: flex-start; }
+@media(max-width: 768px) { .classroom-container { flex-direction: column; } }
 
-.module-view { display: none; }
-.module-view.active { display: block; }
+/* Sidebar */
+.c-sidebar { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 1.5rem; }
+@media(max-width: 768px) { .c-sidebar { width: 100%; } }
+
+.c-progress-box { background: var(--surface); border: 1px solid var(--skool-border); border-radius: var(--radius-sm); padding: 1.25rem; }
+.c-course-title { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 12px; }
+.c-progress-bar { height: 8px; background: var(--skool-hover); border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
+.c-progress-fill { height: 100%; background: var(--green); border-radius: 4px; transition: width 0.3s ease; }
+.c-progress-text { font-size: 12px; font-weight: 600; color: var(--green); }
+
+.c-nav-list { display: flex; flex-direction: column; gap: 8px; }
+.c-mod-group { border: 1px solid transparent; }
+.c-mod-header { padding: 12px 16px; background: var(--skool-hover); border-radius: var(--radius-sm); font-size: 14px; font-weight: 700; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; }
+.c-mod-header:hover { background: #E5E7EB; }
+.c-mod-header.active { background: var(--brand-light); color: var(--brand); }
+
+.c-mod-items { display: none; flex-direction: column; padding: 4px 0 4px 16px; border-left: 2px solid var(--skool-hover); margin-left: 16px; margin-top: 4px; }
+.c-mod-items.open { display: flex; }
+.c-item { padding: 10px 12px; font-size: 13px; font-weight: 500; color: var(--text-muted); cursor: pointer; border-radius: var(--radius-sm); transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+.c-item:hover { background: var(--surface); color: var(--brand); }
+.c-item.active { background: var(--surface); color: var(--brand); font-weight: 700; border: 1px solid var(--brand-light); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+.c-item-icon { font-size: 16px; }
+
+/* Main Content Area */
+.c-main { flex: 1; background: var(--surface); border: 1px solid var(--skool-border); border-radius: var(--radius); padding: 2rem; min-height: 500px; width: 100%; }
+.c-empty-state { text-align: center; color: var(--text-light); padding: 4rem 1rem; font-size: 15px; }
+
+/* Video View */
 .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; border-radius: var(--radius); margin-bottom: 1.5rem; }
 .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+.mod-title-main { font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.mod-desc-main { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--skool-border); }
 
-.task-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin-bottom: 2rem; }
-.task-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.25rem; cursor: pointer; transition: border-color .15s, transform .1s; }
-.task-card:hover { border-color: var(--brand); transform: translateY(-2px); }
-.task-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-.task-type-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding: 2px 9px; border-radius: 20px; margin-top: 6px; }
-.tbadge-mp { background: var(--brand-light); color: var(--brand); }
-.tbadge-mc { background: #FAEEDA; color: #633806; }
-.tbadge-fb { background: #E1F5EE; color: #0F6E56; }
-.tbadge-mt { background: #FAECE7; color: #712B13; }
-
-/* PLAYER */
-.player-wrap { display: none; }
-.player-wrap.active { display: block; }
-.player-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--text-muted); cursor: pointer; margin-bottom: 1.25rem; background: none; border: none; font-family: 'Inter',sans-serif; }
-.player-back:hover { color: var(--brand); }
+/* EXERCISE PLAYER */
 .player-header { margin-bottom: 1.5rem; }
 .player-title { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
 .player-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
-.player-audio { margin-bottom: 1.5rem; width: 100%; }
+.player-audio { margin-top: 1rem; margin-bottom: 1.5rem; width: 100%; border-radius: 30px; }
 
-.ex-question-block { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
+.ex-question-block { background: var(--bg); border: 1px solid var(--skool-border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
 .ex-q-num { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-light); margin-bottom: 6px; }
 .ex-q-text { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 1rem; line-height: 1.5; }
 .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 @media(max-width:440px){ .options-grid { grid-template-columns: 1fr; } }
-.opt-btn { padding: 9px 13px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); font-size: 13px; font-weight: 500; color: var(--text); cursor: pointer; transition: all .15s; text-align: left; font-family: 'Inter',sans-serif; }
-.opt-btn:hover:not(:disabled) { border-color: var(--brand); color: var(--brand); }
-.opt-btn.selected { border-color: var(--brand); background: var(--brand-light); color: var(--brand); }
+.opt-btn { padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); font-size: 14px; font-weight: 500; color: var(--text); cursor: pointer; transition: all .15s; text-align: left; }
+.opt-btn:hover:not(:disabled) { border-color: var(--brand); color: var(--brand); background: var(--brand-light); }
+.opt-btn.selected { border-color: var(--brand); background: var(--brand-light); color: var(--brand); font-weight: 700; }
 .opt-btn.correct { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
 .opt-btn.wrong { border-color: var(--red); background: var(--red-light); color: var(--red-dark); }
 
 .fitb-row { display: flex; gap: 8px; align-items: center; }
-.fitb-input { flex: 1; padding: 8px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-family: 'Inter',sans-serif; color: var(--text); outline: none; }
+.fitb-input { flex: 1; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; color: var(--text); outline: none; }
 .fitb-input:focus { border-color: var(--brand); }
 .fitb-input.correct { border-color: var(--green); background: var(--green-light); }
 .fitb-input.wrong { border-color: var(--red); background: var(--red-light); }
 
-.matching-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.match-col-label { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-light); margin-bottom: 6px; }
-.match-chip { padding: 8px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: pointer; transition: all .15s; background: var(--surface); margin-bottom: 6px; }
+.matching-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.match-col-label { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-light); margin-bottom: 8px; }
+.match-chip { padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; cursor: pointer; transition: all .15s; background: var(--surface); margin-bottom: 8px; }
 .match-chip:hover:not(.matched):not(.disabled) { border-color: var(--brand); }
 .match-chip.selected { border-color: var(--brand); background: var(--brand-light); color: var(--brand); }
 .match-chip.matched { border-color: var(--green); background: var(--green-light); color: var(--green-dark); cursor: default; }
 .match-chip.wrong-match { border-color: var(--red); background: var(--red-light); color: var(--red-dark); }
 
 .player-footer { display: flex; align-items: center; gap: 10px; margin-top: 1.5rem; flex-wrap: wrap; }
-.submit-btn { padding: 10px 24px; border-radius: var(--radius-sm); background: var(--brand); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; transition: background .15s; font-family: 'Inter',sans-serif; }
-.submit-btn:hover { background: var(--brand-dark); }
-.submit-btn:disabled { opacity: .5; cursor: not-allowed; }
-.retry-btn { padding: 9px 18px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: transparent; font-size: 13px; font-weight: 600; color: var(--text-muted); cursor: pointer; font-family: 'Inter',sans-serif; transition: all .15s; }
-.retry-btn:hover { border-color: var(--brand); color: var(--brand); }
 
-.score-panel { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-top: 1.25rem; }
-.score-top { display: flex; align-items: center; gap: 14px; margin-bottom: 1rem; flex-wrap: wrap; }
-.score-circle { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; font-weight: 800; }
+.score-panel { background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-top: 2rem; }
+.score-top { display: flex; align-items: center; gap: 16px; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.score-circle { width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; font-weight: 800; }
 .score-circle.great { background: var(--green-light); color: var(--green); }
 .score-circle.ok { background: #FAEEDA; color: #633806; }
 .score-circle.low { background: var(--red-light); color: var(--red); }
-.score-circle .pct { font-size: 20px; line-height: 1; }
-.score-circle .frac { font-size: 11px; opacity: .8; }
-.score-msg { font-size: 16px; font-weight: 700; color: var(--text); }
-.score-msg .sub { font-size: 13px; color: var(--text-muted); font-weight: 400; margin-top: 2px; }
-.score-details { border-top: 1px solid var(--border); padding-top: .9rem; }
-.score-row { font-size: 13px; padding: 5px 0; border-bottom: 1px solid var(--border); line-height: 1.5; }
+.score-circle .pct { font-size: 22px; line-height: 1; }
+.score-circle .frac { font-size: 12px; opacity: .8; }
+.score-msg { font-size: 18px; font-weight: 800; color: var(--text); }
+.score-msg .sub { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
+.score-details { border-top: 1px solid var(--skool-border); padding-top: 1rem; }
+.score-row { font-size: 14px; padding: 6px 0; border-bottom: 1px solid var(--skool-border); line-height: 1.5; }
 .score-row:last-child { border-bottom: none; }
 .score-row.c { color: var(--green-dark); }
 .score-row.w { color: var(--red-dark); }
 .score-row .ans { color: var(--text-muted); font-size: 12px; }
 
-footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--text-light); border-top: 1px solid var(--border); margin-top: 2rem; }
+footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--text-light); border-top: 1px solid var(--border); margin-top: 3rem; }
 footer strong { color: var(--brand); }
 </style>
 </head>
@@ -219,42 +221,28 @@ footer strong { color: var(--brand); }
   </div>
 </nav>
 
-<div class="hero">
+<div class="hero" id="hero-banner">
   <div class="hero-label">Sound Explorer</div>
   <h1>Master <em>American English</em><br/>pronunciation</h1>
   <p>Explore every sound of American English and practice with interactive exercises.</p>
 </div>
 
 <div class="page active" id="page-vowels">
-  <div class="section-intro">
-    <h2>Vowel sounds</h2>
-    <p>American English has 19 vowel sounds. Click any card to explore mouth position, spellings, and tips for Spanish speakers.</p>
-  </div>
+  <div class="section-intro"><h2>Vowel sounds</h2><p>American English has 19 vowel sounds. Click any card to explore mouth position, spellings, and tips for Spanish speakers.</p></div>
   <div id="vowel-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
-  <div class="sub-heading">Pure vowels</div>
-  <div class="sound-grid" id="pure-vowel-grid"></div>
-  <div class="sub-heading">Diphthongs</div>
-  <div class="sound-grid" id="diphthong-grid"></div>
-  <div class="sub-heading">R-colored vowels</div>
-  <div class="sound-grid" id="rcolored-grid"></div>
+  <div class="sub-heading">Pure vowels</div><div class="sound-grid" id="pure-vowel-grid"></div>
+  <div class="sub-heading">Diphthongs</div><div class="sound-grid" id="diphthong-grid"></div>
+  <div class="sub-heading">R-colored vowels</div><div class="sound-grid" id="rcolored-grid"></div>
 </div>
 
 <div class="page" id="page-consonants">
-  <div class="section-intro">
-    <h2>Consonant sounds</h2>
-    <p>American English has 24 consonant sounds. Every card includes all spelling patterns for that sound.</p>
-  </div>
+  <div class="section-intro"><h2>Consonant sounds</h2><p>American English has 24 consonant sounds.</p></div>
   <div id="consonant-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
-  <div class="sub-heading">Stops</div>
-  <div class="sound-grid" id="stops-grid"></div>
-  <div class="sub-heading">Fricatives</div>
-  <div class="sound-grid" id="fricatives-grid"></div>
-  <div class="sub-heading">Affricates</div>
-  <div class="sound-grid" id="affricates-grid"></div>
-  <div class="sub-heading">Nasals</div>
-  <div class="sound-grid" id="nasals-grid"></div>
-  <div class="sub-heading">Liquids & glides</div>
-  <div class="sound-grid" id="liquids-grid"></div>
+  <div class="sub-heading">Stops</div><div class="sound-grid" id="stops-grid"></div>
+  <div class="sub-heading">Fricatives</div><div class="sound-grid" id="fricatives-grid"></div>
+  <div class="sub-heading">Affricates</div><div class="sound-grid" id="affricates-grid"></div>
+  <div class="sub-heading">Nasals</div><div class="sound-grid" id="nasals-grid"></div>
+  <div class="sub-heading">Liquids & glides</div><div class="sound-grid" id="liquids-grid"></div>
 </div>
 
 <div class="page" id="page-auth">
@@ -266,49 +254,54 @@ footer strong { color: var(--brand); }
       <input type="password" class="gate-input" id="auth-pw" placeholder="Password" style="width: 100%; margin-bottom: 10px;" />
       <button class="gate-btn" style="width: 100%;" onclick="handleAuth()">Submit</button>
     </div>
-    <div style="margin-top: 15px; font-size: 13px; cursor: pointer; color: var(--brand); font-weight: 500;" onclick="toggleAuthMode()" id="auth-toggle">
-      ¿No tienes cuenta? Regístrate
-    </div>
+    <div style="margin-top: 15px; font-size: 13px; cursor: pointer; color: var(--brand); font-weight: 500;" onclick="toggleAuthMode()" id="auth-toggle">¿No tienes cuenta? Regístrate</div>
     <div class="gate-error" id="auth-error"></div>
   </div>
 </div>
 
-<div class="page" id="page-classroom">
-  
-  <div id="classroom-main">
-    <div class="section-intro">
-      <h2>Classroom</h2>
-      <p>Selecciona un módulo para acceder al contenido y las actividades.</p>
-    </div>
-    <div class="module-list" id="module-list-render">
-      <div style="text-align:center; padding: 2rem; color: var(--text-light);">Cargando módulos...</div>
-    </div>
-  </div>
-
-  <div class="module-view" id="module-detail-view">
-    <button class="player-back" onclick="backToClassroom()">← Volver al Classroom</button>
-    <h2 id="mod-detail-title" class="player-title" style="margin-top:1rem;"></h2>
-    <p id="mod-detail-desc" class="module-desc"></p>
+<div class="page page-full" id="page-classroom">
+  <div class="classroom-container">
     
-    <div id="mod-detail-video" class="video-container" style="display:none;"></div>
-    
-    <div class="sub-heading" style="margin-top: 2rem;">Ejercicios del módulo</div>
-    <div class="task-list" id="mod-exercises-render"></div>
-  </div>
+    <aside class="c-sidebar">
+      <div class="c-progress-box">
+        <div class="c-course-title">AccentUp Pronunciation</div>
+        <div class="c-progress-bar"><div class="c-progress-fill" style="width: 15%;"></div></div>
+        <div class="c-progress-text">Progreso: 15% (Simulado)</div>
+      </div>
+      <div class="c-nav-list" id="sidebar-render">
+        <div style="text-align:center; padding: 1rem; color: var(--text-light); font-size:13px;">Cargando contenido...</div>
+      </div>
+    </aside>
 
-  <div class="player-wrap" id="player-view">
-    <button class="player-back" onclick="backToModuleDetail()">← Volver al Módulo</button>
-    <div class="player-header">
-      <div class="player-title" id="player-title"></div>
-      <div class="player-desc" id="player-desc"></div>
-      <audio id="player-audio" class="player-audio" controls style="display:none;"></audio>
-    </div>
-    <div id="player-questions"></div>
-    <div class="player-footer">
-      <button class="submit-btn" id="submit-btn" onclick="submitExercise()">Revisar mis respuestas</button>
-      <button class="retry-btn" id="retry-btn" style="display:none" onclick="retryExercise()">Intentar de nuevo</button>
-    </div>
-    <div id="score-area"></div>
+    <main class="c-main" id="classroom-main-content">
+      
+      <div id="view-welcome" class="c-empty-state">
+        <svg style="width:48px;height:48px;color:var(--brand-light);margin-bottom:1rem;" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 13.5v-7l6 3.5-6 3.5z"></path></svg>
+        <h2 style="color:var(--text);font-weight:700;margin-bottom:8px;">Bienvenido al Classroom</h2>
+        <p>Selecciona un módulo o tarea en el menú de la izquierda para empezar a aprender.</p>
+      </div>
+
+      <div id="view-module" style="display:none;">
+        <h2 id="cv-mod-title" class="mod-title-main"></h2>
+        <p id="cv-mod-desc" class="mod-desc-main"></p>
+        <div id="cv-mod-video" class="video-container" style="display:none;"></div>
+      </div>
+
+      <div id="view-exercise" style="display:none;">
+        <div class="player-header">
+          <div class="player-title" id="player-title"></div>
+          <div class="player-desc" id="player-desc"></div>
+          <audio id="player-audio" class="player-audio" controls style="display:none;"></audio>
+        </div>
+        <div id="player-questions"></div>
+        <div class="player-footer">
+          <button class="submit-btn" id="submit-btn" onclick="submitExercise()">Revisar mis respuestas</button>
+          <button class="retry-btn" id="retry-btn" style="display:none" onclick="retryExercise()">Intentar de nuevo</button>
+        </div>
+        <div id="score-area"></div>
+      </div>
+
+    </main>
   </div>
 </div>
 
@@ -318,28 +311,22 @@ footer strong { color: var(--brand); }
       <h2>Teacher Dashboard</h2>
       <p style="font-size: 13px; color: var(--text-muted);">Crea módulos y agrégales ejercicios dinámicos.</p>
     </div>
-    
     <div class="teacher-layout">
       <div class="t-panel">
-        <h3>1. Crear Módulo</h3>
+        <h3>1. Crear Módulo (Sección)</h3>
         <div class="field-label">Título del Módulo</div>
-        <input type="text" id="t-mod-title" placeholder="Ej: Módulo 1 - Short Vowels">
-        
+        <input type="text" id="t-mod-title" placeholder="Ej: 1. Essentials">
         <div class="field-label">Descripción</div>
         <textarea id="t-mod-desc" placeholder="Breve introducción..."></textarea>
-        
         <div class="field-label">URL del Video (Opcional - YouTube Embed)</div>
         <input type="url" id="t-mod-video" placeholder="https://www.youtube.com/embed/...">
-        
         <button class="primary-btn" onclick="saveModule()" id="btn-save-mod">Guardar Módulo</button>
       </div>
 
       <div class="t-panel">
-        <h3>2. Crear Ejercicio</h3>
-        
+        <h3>2. Crear Tarea / Ejercicio</h3>
         <div class="field-label">Asignar al Módulo:</div>
         <select id="t-ex-module"></select>
-
         <div class="field-label">Tipo de Ejercicio</div>
         <select id="t-ex-type" onchange="renderQuestionFields()">
           <option value="minimal_pairs">Minimal pairs — choose the word you hear</option>
@@ -347,21 +334,16 @@ footer strong { color: var(--brand); }
           <option value="fill_in_blank">Fill in the blank</option>
           <option value="matching">Matching (sound to word)</option>
         </select>
-
         <div class="field-label">Título de la Tarea</div>
-        <input type="text" id="t-ex-title" placeholder="Ej: Listen and choose">
-
+        <input type="text" id="t-ex-title" placeholder="Ej: Task 1 - Listen and choose">
         <div class="field-label">Instrucciones (Opcional)</div>
         <textarea id="t-ex-desc" placeholder="Instrucciones para el alumno..."></textarea>
-
-        <div class="field-label">Audio General del Ejercicio (Opcional)</div>
-        <p style="font-size:11px; color:var(--text-muted); margin-top:-5px; margin-bottom:5px;">Sube un archivo MP3 si quieres que escuchen un audio antes de responder.</p>
+        <div class="field-label">Audio General de la Tarea (Opcional)</div>
+        <p style="font-size:11px; color:var(--text-muted); margin-top:-5px; margin-bottom:5px;">Sube un archivo MP3 si la tarea depende de un audio largo.</p>
         <input type="file" id="t-ex-audio" accept="audio/mp3, audio/wav, audio/m4a">
-
         <div class="field-label">Preguntas</div>
         <div class="q-builder" id="q-builder"></div>
         <button class="add-q-btn" onclick="addQuestion()">+ Agregar pregunta</button>
-
         <button class="primary-btn" onclick="saveExercise()" id="btn-save-ex">Guardar Ejercicio</button>
       </div>
     </div>
@@ -409,12 +391,8 @@ function updateAuthUI() {
     if (currentUser) {
         authBtn.textContent = "Log Out";
         authBtn.classList.add('logout-btn-nav');
-        
-        if (currentUser.email === TEACHER_EMAIL) {
-            teacherTab.style.display = 'inline-block';
-        } else {
-            teacherTab.style.display = 'none';
-        }
+        if (currentUser.email === TEACHER_EMAIL) teacherTab.style.display = 'inline-block';
+        else teacherTab.style.display = 'none';
 
         if (document.getElementById('page-auth').classList.contains('active')) {
             document.querySelector('[data-page="classroom"]').click();
@@ -441,16 +419,11 @@ function toggleAuthMode() {
 async function handleAuth() {
     const errorMsg = document.getElementById('auth-error');
     errorMsg.style.display = "block";
-    
-    if (!supabaseClient) {
-        errorMsg.style.color = "var(--red)";
-        errorMsg.textContent = "No pudimos conectar con la base de datos."; return;
-    }
+    if (!supabaseClient) { errorMsg.style.color = "var(--red)"; errorMsg.textContent = "Sin conexión a BD."; return; }
 
     const email = document.getElementById('auth-email').value;
     const password = document.getElementById('auth-pw').value;
-    errorMsg.style.color = "var(--text)";
-    errorMsg.textContent = "Cargando...";
+    errorMsg.style.color = "var(--text)"; errorMsg.textContent = "Cargando...";
 
     if (isLoginMode) {
         const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
@@ -482,17 +455,26 @@ document.querySelectorAll(".nav-tab").forEach(tab=>{
 function goToPage(pageId, tabElement) {
     document.querySelectorAll(".nav-tab").forEach(t=>t.classList.remove("active"));
     document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+    
     if(tabElement) tabElement.classList.add("active");
     else {
         const el = document.querySelector(`[data-page="${pageId}"]`);
         if(el) el.classList.add("active");
     }
     document.getElementById("page-"+pageId).classList.add("active");
+    
+    // Ocultar banner principal si entramos al classroom/teacher/auth
+    if(pageId === 'classroom' || pageId === 'teacher' || pageId === 'auth') {
+        document.getElementById('hero-banner').style.display = 'none';
+    } else {
+        document.getElementById('hero-banner').style.display = 'block';
+    }
+    
     window.scrollTo(0,0);
 }
 
 /* ══════════════════════════════════════════
-   LÓGICA DEL BACKEND (OBTENER DATOS)
+   LÓGICA DEL BACKEND (CLASSROOM DATA)
 ══════════════════════════════════════════ */
 async function fetchClassroomData() {
     if (!supabaseClient) return;
@@ -503,92 +485,109 @@ async function fetchClassroomData() {
     const { data: exers } = await supabaseClient.from('exercises').select('*').order('created_at', { ascending: true });
     if (exers) dbExercises = exers;
 
-    renderClassroomModules();
+    renderSidebar();
     updateTeacherModuleSelect();
 }
 
 /* ══════════════════════════════════════════
-   CLASSROOM (VISTA DE ALUMNO)
+   REDISEÑO CLASSROOM: SIDEBAR Y VISTAS
 ══════════════════════════════════════════ */
-function renderClassroomModules() {
-    const list = document.getElementById("module-list-render");
+function renderSidebar() {
+    const sidebar = document.getElementById("sidebar-render");
     if (dbModules.length === 0) {
-        list.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-light);">Aún no hay módulos disponibles.</div>`;
+        sidebar.innerHTML = `<div style="text-align:center; padding: 1rem; color: var(--text-light); font-size:13px;">No hay módulos aún.</div>`;
         return;
     }
 
-    list.innerHTML = dbModules.map((m, i) => `
-        <div class="module-card" onclick="openModule('${m.id}')">
-            <div class="module-title">${m.title}</div>
-            <div class="module-desc">${m.description || ''}</div>
-            <span class="task-type-badge tbadge-mp">Entrar al módulo</span>
-        </div>
-    `).join("");
+    let html = '';
+    dbModules.forEach((mod, mIndex) => {
+        const modExs = dbExercises.filter(e => e.module_id === mod.id);
+        
+        html += `<div class="c-mod-group">
+            <div class="c-mod-header" onclick="toggleSidebarMenu('mod-menu-${mIndex}')" id="mod-head-${mod.id}">
+                ${mod.title} <span>▾</span>
+            </div>
+            <div class="c-mod-items" id="mod-menu-${mIndex}">
+                <div class="c-item" onclick="showModuleContent('${mod.id}')" id="item-mod-${mod.id}">
+                    <span class="c-item-icon">📺</span> Ver Módulo
+                </div>`;
+                
+        modExs.forEach(ex => {
+            html += `<div class="c-item" onclick="showExerciseContent('${ex.id}')" id="item-ex-${ex.id}">
+                <span class="c-item-icon">📝</span> ${ex.title}
+            </div>`;
+        });
+        html += `</div></div>`;
+    });
+    
+    sidebar.innerHTML = html;
+    
+    // Abrir el primer menú por defecto
+    if(dbModules.length > 0) toggleSidebarMenu('mod-menu-0');
 }
 
-let activeModuleExercises = [];
+function toggleSidebarMenu(menuId) {
+    const el = document.getElementById(menuId);
+    if(el) el.classList.toggle('open');
+}
 
-function openModule(moduleId) {
+function setActiveSidebarItem(idToHighlight) {
+    document.querySelectorAll('.c-item').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.c-mod-header').forEach(el => el.classList.remove('active'));
+    
+    const activeEl = document.getElementById(idToHighlight);
+    if(activeEl) {
+        activeEl.classList.add('active');
+        // Resaltar también el header padre
+        const parentHeader = activeEl.closest('.c-mod-group').querySelector('.c-mod-header');
+        if(parentHeader) parentHeader.classList.add('active');
+    }
+}
+
+function hideAllClassroomViews() {
+    document.getElementById("view-welcome").style.display = "none";
+    document.getElementById("view-module").style.display = "none";
+    document.getElementById("view-exercise").style.display = "none";
+    document.getElementById("player-audio").pause();
+    document.getElementById("cv-mod-video").innerHTML = ''; // Detener videos YouTube
+}
+
+function showModuleContent(moduleId) {
+    hideAllClassroomViews();
+    setActiveSidebarItem(`item-mod-${moduleId}`);
+    
     const mod = dbModules.find(m => m.id === moduleId);
     if (!mod) return;
 
-    document.getElementById("classroom-main").style.display = "none";
-    document.getElementById("module-detail-view").classList.add("active");
-    
-    document.getElementById("mod-detail-title").textContent = mod.title;
-    document.getElementById("mod-detail-desc").textContent = mod.description || '';
+    document.getElementById("view-module").style.display = "block";
+    document.getElementById("cv-mod-title").textContent = mod.title;
+    document.getElementById("cv-mod-desc").textContent = mod.description || '';
 
-    const videoContainer = document.getElementById("mod-detail-video");
+    const videoContainer = document.getElementById("cv-mod-video");
     if (mod.video_url) {
         videoContainer.style.display = "block";
         videoContainer.innerHTML = `<iframe src="${mod.video_url}" allowfullscreen></iframe>`;
     } else {
         videoContainer.style.display = "none";
-        videoContainer.innerHTML = '';
     }
-
-    activeModuleExercises = dbExercises.filter(e => e.module_id === moduleId);
-    renderModuleExercises();
-}
-
-function backToClassroom() {
-    document.getElementById("module-detail-view").classList.remove("active");
-    document.getElementById("classroom-main").style.display = "block";
-    document.getElementById("mod-detail-video").innerHTML = '';
-}
-
-const typeLabels = { minimal_pairs:"Minimal pairs", multiple_choice:"Multiple choice", fill_in_blank:"Fill in the blank", matching:"Matching" };
-const typeBadge  = { minimal_pairs:"tbadge-mp", multiple_choice:"tbadge-mc", fill_in_blank:"tbadge-fb", matching:"tbadge-mt" };
-
-function renderModuleExercises() {
-    const list = document.getElementById("mod-exercises-render");
-    if (activeModuleExercises.length === 0) {
-        list.innerHTML = `<div style="color:var(--text-light); font-size:13px;">No hay tareas en este módulo todavía.</div>`;
-        return;
-    }
-    
-    list.innerHTML = activeModuleExercises.map((ex, i) => `
-        <div class="task-card" onclick="openExercise(${i})">
-            <div class="task-title">${ex.title}</div>
-            <span class="task-type-badge ${typeBadge[ex.type]}">${typeLabels[ex.type] || ex.type}</span>
-            ${ex.audio_url ? `<span class="task-type-badge" style="background:#EEEDFE; color:#3C3489;">🎧 Audio</span>` : ''}
-        </div>
-    `).join("");
 }
 
 /* ══════════════════════════════════════════
-   REPRODUCTOR DE EJERCICIOS (ALUMNOS)
+   REPRODUCTOR DE EJERCICIOS
 ══════════════════════════════════════════ */
 let currentEx = null;
 let studentAnswers = {};
 let matchState = { leftSel: null, pairs: {} };
 
-function openExercise(indexInActiveArray) {
-    currentEx = activeModuleExercises[indexInActiveArray];
-    studentAnswers = {}; matchState = { leftSel: null, pairs: {} };
+function showExerciseContent(exerciseId) {
+    hideAllClassroomViews();
+    setActiveSidebarItem(`item-ex-${exerciseId}`);
     
-    document.getElementById("module-detail-view").classList.remove("active");
-    document.getElementById("player-view").classList.add("active");
+    currentEx = dbExercises.find(e => e.id === exerciseId);
+    if (!currentEx) return;
+
+    studentAnswers = {}; matchState = { leftSel: null, pairs: {} };
+    document.getElementById("view-exercise").style.display = "block";
     
     document.getElementById("player-title").textContent = currentEx.title;
     document.getElementById("player-desc").textContent = currentEx.instruction || "";
@@ -610,16 +609,7 @@ function openExercise(indexInActiveArray) {
     renderPlayerQuestions();
 }
 
-function backToModuleDetail() {
-    document.getElementById("player-view").classList.remove("active");
-    document.getElementById("module-detail-view").classList.add("active");
-    document.getElementById("player-audio").pause();
-}
-
-function retryExercise() { 
-    const idx = activeModuleExercises.findIndex(e => e.id === currentEx.id);
-    openExercise(idx); 
-}
+function retryExercise() { showExerciseContent(currentEx.id); }
 
 function renderPlayerQuestions() {
   const wrap = document.getElementById("player-questions");
@@ -732,7 +722,7 @@ function showScore(correct, total, results) {
 }
 
 /* ══════════════════════════════════════════
-   TEACHER DASHBOARD
+   TEACHER DASHBOARD (GUARDAR EN SUPABASE)
 ══════════════════════════════════════════ */
 let questionRows = [];
 
@@ -758,6 +748,8 @@ async function saveModule() {
     else { 
         alert("¡Módulo creado!"); 
         document.getElementById('t-mod-title').value = '';
+        document.getElementById('t-mod-desc').value = '';
+        document.getElementById('t-mod-video').value = '';
         fetchClassroomData(); 
     }
 }
@@ -795,7 +787,6 @@ async function saveExercise() {
     }
 
     btn.disabled = true; btn.textContent = "Subiendo y Guardando...";
-
     let publicAudioUrl = null;
 
     if (audioFile) {
@@ -835,7 +826,7 @@ async function saveExercise() {
 }
 
 /* ══════════════════════════════════════════
-   DATOS ESTÁTICOS DE SONIDOS (SEGUROS)
+   DATOS ESTÁTICOS DE SONIDOS 
 ══════════════════════════════════════════ */
 const vowels = {
   pure: [
@@ -918,48 +909,20 @@ function bl(t) { return t === "rcolored" ? "r-colored" : t; }
 function renderCard(s, isActive, onclick) { 
   const d = document.createElement("div"); 
   d.className = "sound-card" + (isActive ? " active" : ""); 
-  d.innerHTML = `
-    <div class="sound-ipa">${s.ipa}</div>
-    <div class="sound-mw">${s.mw}</div>
-    <div class="sound-example">as in "<strong>${s.keyword}</strong>"</div>
-    <span class="sound-type-badge ${bc(s.type || "consonant")}">${bl(s.type || "consonant")}</span>
-    <div><button class="play-btn" onclick="event.stopPropagation();playWord('${s.keyword}')">▶ ${s.keyword}</button></div>
-  `; 
+  d.innerHTML = `<div class="sound-ipa">${s.ipa}</div><div class="sound-mw">${s.mw}</div><div class="sound-example">as in "<strong>${s.keyword}</strong>"</div><span class="sound-type-badge ${bc(s.type || "consonant")}">${bl(s.type || "consonant")}</span><div><button class="play-btn" onclick="event.stopPropagation();playWord('${s.keyword}')">▶ ${s.keyword}</button></div>`; 
   d.onclick = onclick; 
   return d; 
 }
 
 function renderDetail(panelId, s, isCon) { 
-  document.getElementById(panelId).innerHTML = `
-    <div class="detail-header">
-      <div><div class="detail-big-ipa">${s.ipa}</div><div class="detail-big-mw">${s.mw}</div></div>
-      <div><div class="detail-name">${s.name}</div><div class="detail-keyword">as in "<strong>${s.keyword}</strong>"</div></div>
-    </div>
-    <div class="detail-body">
-      <div class="detail-section">
-        <div class="detail-section-label">Practice words</div>
-        <div class="words-wrap">${s.words.map((w,i)=>`<span class="word-pill" style="cursor:pointer" onclick="playWord('${w}')">${w} ▶</span>`).join("")}</div>
-      </div>
-      <div class="detail-section">
-        <div class="detail-section-label">Spellings</div>
-        <div class="words-wrap">${(s.spellings || []).map(sp => `<span class="word-pill">${sp}</span>`).join("")}</div>
-      </div>
-    </div>
-    ${s.tip ? `<div class="tip-box"><div class="tip-label">For Spanish speakers</div><div class="tip-text">${s.tip}</div></div>` : ""}
-  `; 
+  document.getElementById(panelId).innerHTML = `<div class="detail-header"><div><div class="detail-big-ipa">${s.ipa}</div><div class="detail-big-mw">${s.mw}</div></div><div><div class="detail-name">${s.name}</div><div class="detail-keyword">as in "<strong>${s.keyword}</strong>"</div></div></div><div class="detail-body"><div class="detail-section"><div class="detail-section-label">Practice words</div><div class="words-wrap">${s.words.map((w,i)=>`<span class="word-pill" style="cursor:pointer" onclick="playWord('${w}')">${w} ▶</span>`).join("")}</div></div><div class="detail-section"><div class="detail-section-label">Spellings</div><div class="words-wrap">${(s.spellings || []).map(sp => `<span class="word-pill">${sp}</span>`).join("")}</div></div></div>${s.tip ? `<div class="tip-box"><div class="tip-label">For Spanish speakers</div><div class="tip-text">${s.tip}</div></div>` : ""}`; 
 }
 
 function buildGrid(cid, list, getA, setA, panelId, isCon, rebuild) { 
   const c = document.getElementById(cid); 
   if (!c) return;
   c.innerHTML = ""; 
-  list.forEach(s => { 
-    c.appendChild(renderCard(s, getA() === s.ipa, () => { 
-      setA(s.ipa); 
-      renderDetail(panelId, s, isCon); 
-      rebuild(); 
-    })); 
-  }); 
+  list.forEach(s => { c.appendChild(renderCard(s, getA() === s.ipa, () => { setA(s.ipa); renderDetail(panelId, s, isCon); rebuild(); })); }); 
 }
 
 let activeVowel = null, activeConsonant = null;
@@ -978,19 +941,11 @@ function buildAllConsonantGrids() {
   buildGrid("liquids-grid", consonants.liquids, () => activeConsonant, v => { activeConsonant = v; }, "consonant-detail", true, buildAllConsonantGrids); 
 }
 
-try {
-  buildAllVowelGrids(); 
-  buildAllConsonantGrids();
-} catch (e) {
-  console.error("Error cargando los sonidos:", e);
-}
+try { buildAllVowelGrids(); buildAllConsonantGrids(); } catch (e) { console.error("Error cargando sonidos:", e); }
 
 function shuffle(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
 function esc(s){ return (s||"").replace(/'/g,"\\'").replace(/"/g,"&quot;"); }
-
-try {
-  renderQuestionFields();
-} catch (e) {}
+try { renderQuestionFields(); } catch (e) {}
 </script>
 </body>
 </html>
