@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>AccentUp — Sound Explorer</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
@@ -97,26 +100,6 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .gate-btn { padding: 9px 18px; border-radius: var(--radius-sm); background: var(--brand); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; }
 .gate-error { margin-top: 10px; font-size: 13px; color: var(--red); display: none; }
 
-/* ── TEACHER DASHBOARD ── */
-.teacher-layout { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
-.t-panel { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.5rem; }
-.t-panel h3 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: .9rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-.field-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-light); margin-bottom: 5px; margin-top: .9rem; }
-.field-label:first-of-type { margin-top: 0; }
-select, textarea, input[type=text], input[type=password], input[type=email], input[type=url], input[type=file] { width: 100%; padding: 8px 11px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter',sans-serif; font-size: 13px; color: var(--text); background: var(--bg); outline: none; transition: border-color .15s; margin-bottom: 10px; }
-select:focus, textarea:focus, input:focus { border-color: var(--brand); background: #fff; }
-textarea { resize: vertical; min-height: 70px; line-height: 1.5; }
-
-.q-row { background: var(--bg); border-radius: var(--radius-sm); padding: .75rem .85rem; margin-bottom: 8px; position: relative; border: 1px solid var(--border); }
-.q-row-label { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--brand); margin-bottom: 6px; }
-.remove-q { position: absolute; top: 8px; right: 8px; background: none; border: none; color: var(--text-light); font-size: 16px; cursor: pointer; padding: 2px 6px; }
-.remove-q:hover { color: var(--red); }
-.add-q-btn { width: 100%; padding: 8px; border: 1.5px dashed var(--border); border-radius: var(--radius-sm); background: transparent; font-size: 13px; color: var(--text-muted); cursor: pointer; transition: all .15s; margin-top: 4px; }
-.add-q-btn:hover { border-color: var(--brand); color: var(--brand); }
-.primary-btn { width: 100%; padding: 10px; border-radius: var(--radius-sm); background: var(--brand); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; margin-top: 1rem; transition: background .15s; }
-.primary-btn:hover { background: var(--brand-dark); }
-.primary-btn:disabled { background: var(--text-light); cursor: not-allowed; }
-
 /* ── CLASSROOM REDESIGN (SKOOL STYLE) ── */
 .classroom-container { display: flex; gap: 2rem; min-height: 75vh; align-items: flex-start; }
 @media(max-width: 768px) { .classroom-container { flex-direction: column; } }
@@ -148,18 +131,16 @@ textarea { resize: vertical; min-height: 70px; line-height: 1.5; }
 .c-main { flex: 1; background: var(--surface); border: 1px solid var(--skool-border); border-radius: var(--radius); padding: 2rem; min-height: 500px; width: 100%; }
 .c-empty-state { text-align: center; color: var(--text-light); padding: 4rem 1rem; font-size: 15px; }
 
-/* Video View */
+/* View Styles */
+.lesson-title-main { font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 1.5rem; }
 .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; border-radius: var(--radius); margin-bottom: 1.5rem; }
 .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-.mod-title-main { font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
-.mod-desc-main { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--skool-border); }
+.text-content-main { font-size: 15px; line-height: 1.8; color: var(--text); }
+.text-content-main a { color: var(--brand); text-decoration: underline; }
+.text-content-main ul { padding-left: 1.5rem; margin-bottom: 1rem; }
 
 /* EXERCISE PLAYER */
-.player-header { margin-bottom: 1.5rem; }
-.player-title { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
-.player-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
-.player-audio { margin-top: 1rem; margin-bottom: 1.5rem; width: 100%; border-radius: 30px; }
-
+.player-audio { margin-bottom: 1.5rem; width: 100%; border-radius: 30px; }
 .ex-question-block { background: var(--bg); border: 1px solid var(--skool-border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
 .ex-q-num { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-light); margin-bottom: 6px; }
 .ex-q-text { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 1rem; line-height: 1.5; }
@@ -170,23 +151,17 @@ textarea { resize: vertical; min-height: 70px; line-height: 1.5; }
 .opt-btn.selected { border-color: var(--brand); background: var(--brand-light); color: var(--brand); font-weight: 700; }
 .opt-btn.correct { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
 .opt-btn.wrong { border-color: var(--red); background: var(--red-light); color: var(--red-dark); }
-
 .fitb-row { display: flex; gap: 8px; align-items: center; }
 .fitb-input { flex: 1; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; color: var(--text); outline: none; }
-.fitb-input:focus { border-color: var(--brand); }
 .fitb-input.correct { border-color: var(--green); background: var(--green-light); }
 .fitb-input.wrong { border-color: var(--red); background: var(--red-light); }
-
 .matching-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .match-col-label { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-light); margin-bottom: 8px; }
 .match-chip { padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; cursor: pointer; transition: all .15s; background: var(--surface); margin-bottom: 8px; }
-.match-chip:hover:not(.matched):not(.disabled) { border-color: var(--brand); }
 .match-chip.selected { border-color: var(--brand); background: var(--brand-light); color: var(--brand); }
 .match-chip.matched { border-color: var(--green); background: var(--green-light); color: var(--green-dark); cursor: default; }
 .match-chip.wrong-match { border-color: var(--red); background: var(--red-light); color: var(--red-dark); }
-
 .player-footer { display: flex; align-items: center; gap: 10px; margin-top: 1.5rem; flex-wrap: wrap; }
-
 .score-panel { background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-top: 2rem; }
 .score-top { display: flex; align-items: center; gap: 16px; margin-bottom: 1.25rem; flex-wrap: wrap; }
 .score-circle { width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; font-weight: 800; }
@@ -196,13 +171,31 @@ textarea { resize: vertical; min-height: 70px; line-height: 1.5; }
 .score-circle .pct { font-size: 22px; line-height: 1; }
 .score-circle .frac { font-size: 12px; opacity: .8; }
 .score-msg { font-size: 18px; font-weight: 800; color: var(--text); }
-.score-msg .sub { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
 .score-details { border-top: 1px solid var(--skool-border); padding-top: 1rem; }
 .score-row { font-size: 14px; padding: 6px 0; border-bottom: 1px solid var(--skool-border); line-height: 1.5; }
-.score-row:last-child { border-bottom: none; }
-.score-row.c { color: var(--green-dark); }
-.score-row.w { color: var(--red-dark); }
-.score-row .ans { color: var(--text-muted); font-size: 12px; }
+
+/* ── TEACHER DASHBOARD ── */
+.teacher-layout { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+.t-panel { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.5rem; }
+.t-panel h3 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: .9rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+.field-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-light); margin-bottom: 5px; margin-top: .9rem; }
+.field-label:first-of-type { margin-top: 0; }
+select, textarea, input[type=text], input[type=password], input[type=email], input[type=url], input[type=file] { width: 100%; padding: 8px 11px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter',sans-serif; font-size: 13px; color: var(--text); background: var(--bg); outline: none; transition: border-color .15s; margin-bottom: 10px; }
+select:focus, textarea:focus, input:focus { border-color: var(--brand); background: #fff; }
+.q-row { background: var(--bg); border-radius: var(--radius-sm); padding: .75rem .85rem; margin-bottom: 8px; position: relative; border: 1px solid var(--border); }
+.q-row-label { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--brand); margin-bottom: 6px; }
+.remove-q { position: absolute; top: 8px; right: 8px; background: none; border: none; color: var(--text-light); font-size: 16px; cursor: pointer; padding: 2px 6px; }
+.remove-q:hover { color: var(--red); }
+.add-q-btn { width: 100%; padding: 8px; border: 1.5px dashed var(--border); border-radius: var(--radius-sm); background: transparent; font-size: 13px; color: var(--text-muted); cursor: pointer; transition: all .15s; margin-top: 4px; }
+.add-q-btn:hover { border-color: var(--brand); color: var(--brand); }
+.primary-btn { width: 100%; padding: 10px; border-radius: var(--radius-sm); background: var(--brand); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; margin-top: 1rem; transition: background .15s; }
+.primary-btn:hover { background: var(--brand-dark); }
+.primary-btn:disabled { background: var(--text-light); cursor: not-allowed; }
+
+/* Editor Quill Container */
+#quill-editor-container { height: 250px; background: var(--surface); border-radius: 0 0 var(--radius-sm) var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 14px; }
+.ql-toolbar { border-radius: var(--radius-sm) var(--radius-sm) 0 0; background: var(--bg); border-color: var(--border) !important; font-family: 'Inter', sans-serif; }
+.ql-container { border-color: var(--border) !important; }
 
 footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--text-light); border-top: 1px solid var(--border); margin-top: 3rem; }
 footer strong { color: var(--brand); }
@@ -265,8 +258,8 @@ footer strong { color: var(--brand); }
     <aside class="c-sidebar">
       <div class="c-progress-box">
         <div class="c-course-title">AccentUp Pronunciation</div>
-        <div class="c-progress-bar"><div class="c-progress-fill" style="width: 15%;"></div></div>
-        <div class="c-progress-text">Progreso: 15% (Simulado)</div>
+        <div class="c-progress-bar"><div class="c-progress-fill" style="width: 10%;"></div></div>
+        <div class="c-progress-text">Progreso: 10% (Simulado)</div>
       </div>
       <div class="c-nav-list" id="sidebar-render">
         <div style="text-align:center; padding: 1rem; color: var(--text-light); font-size:13px;">Cargando contenido...</div>
@@ -277,22 +270,23 @@ footer strong { color: var(--brand); }
       
       <div id="view-welcome" class="c-empty-state">
         <svg style="width:48px;height:48px;color:var(--brand-light);margin-bottom:1rem;" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 13.5v-7l6 3.5-6 3.5z"></path></svg>
-        <h2 style="color:var(--text);font-weight:700;margin-bottom:8px;">Bienvenido al Classroom</h2>
-        <p>Selecciona un módulo o tarea en el menú de la izquierda para empezar a aprender.</p>
+        <h2 style="color:var(--text);font-weight:800;margin-bottom:8px;">Bienvenido al Classroom</h2>
+        <p>Selecciona una página en el menú de la izquierda para empezar a aprender.</p>
       </div>
 
-      <div id="view-module" style="display:none;">
-        <h2 id="cv-mod-title" class="mod-title-main"></h2>
-        <p id="cv-mod-desc" class="mod-desc-main"></p>
-        <div id="cv-mod-video" class="video-container" style="display:none;"></div>
+      <div id="view-video" style="display:none;">
+        <h2 id="cv-video-title" class="lesson-title-main"></h2>
+        <div id="cv-video-player" class="video-container"></div>
+      </div>
+
+      <div id="view-text" style="display:none;">
+        <h2 id="cv-text-title" class="lesson-title-main"></h2>
+        <div id="cv-text-content" class="text-content-main ql-editor"></div>
       </div>
 
       <div id="view-exercise" style="display:none;">
-        <div class="player-header">
-          <div class="player-title" id="player-title"></div>
-          <div class="player-desc" id="player-desc"></div>
-          <audio id="player-audio" class="player-audio" controls style="display:none;"></audio>
-        </div>
+        <h2 id="player-title" class="lesson-title-main"></h2>
+        <audio id="player-audio" class="player-audio" controls style="display:none;"></audio>
         <div id="player-questions"></div>
         <div class="player-footer">
           <button class="submit-btn" id="submit-btn" onclick="submitExercise()">Revisar mis respuestas</button>
@@ -309,42 +303,63 @@ footer strong { color: var(--brand); }
   <div class="teacher-ui">
     <div class="teacher-header">
       <h2>Teacher Dashboard</h2>
-      <p style="font-size: 13px; color: var(--text-muted);">Crea módulos y agrégales ejercicios dinámicos.</p>
+      <p style="font-size: 13px; color: var(--text-muted);">Organiza tu contenido en Carpetas (Módulos) y Páginas (Lecciones).</p>
     </div>
+    
     <div class="teacher-layout">
       <div class="t-panel">
-        <h3>1. Crear Módulo (Sección)</h3>
-        <div class="field-label">Título del Módulo</div>
+        <h3>📂 1. Crear Carpeta (Módulo)</h3>
+        <div class="field-label">Nombre de la Carpeta</div>
         <input type="text" id="t-mod-title" placeholder="Ej: 1. Essentials">
-        <div class="field-label">Descripción</div>
-        <textarea id="t-mod-desc" placeholder="Breve introducción..."></textarea>
-        <div class="field-label">URL del Video (Opcional - YouTube Embed)</div>
-        <input type="url" id="t-mod-video" placeholder="https://www.youtube.com/embed/...">
-        <button class="primary-btn" onclick="saveModule()" id="btn-save-mod">Guardar Módulo</button>
+        <button class="primary-btn" onclick="saveModule()" id="btn-save-mod">Guardar Carpeta</button>
       </div>
 
       <div class="t-panel">
-        <h3>2. Crear Tarea / Ejercicio</h3>
-        <div class="field-label">Asignar al Módulo:</div>
-        <select id="t-ex-module"></select>
-        <div class="field-label">Tipo de Ejercicio</div>
-        <select id="t-ex-type" onchange="renderQuestionFields()">
-          <option value="minimal_pairs">Minimal pairs — choose the word you hear</option>
-          <option value="multiple_choice">Multiple choice</option>
-          <option value="fill_in_blank">Fill in the blank</option>
-          <option value="matching">Matching (sound to word)</option>
+        <h3>📝 2. Agregar Página a una Carpeta</h3>
+        
+        <div class="field-label">Guardar en la carpeta:</div>
+        <select id="t-les-module"></select>
+
+        <div class="field-label">Tipo de Página</div>
+        <select id="t-les-type" onchange="toggleLessonFields()">
+          <option value="video">📺 Video Exclusivo</option>
+          <option value="text">📄 Material de Lectura y Links</option>
+          <option value="task">📝 Tarea Interactiva</option>
         </select>
-        <div class="field-label">Título de la Tarea</div>
-        <input type="text" id="t-ex-title" placeholder="Ej: Task 1 - Listen and choose">
-        <div class="field-label">Instrucciones (Opcional)</div>
-        <textarea id="t-ex-desc" placeholder="Instrucciones para el alumno..."></textarea>
-        <div class="field-label">Audio General de la Tarea (Opcional)</div>
-        <p style="font-size:11px; color:var(--text-muted); margin-top:-5px; margin-bottom:5px;">Sube un archivo MP3 si la tarea depende de un audio largo.</p>
-        <input type="file" id="t-ex-audio" accept="audio/mp3, audio/wav, audio/m4a">
-        <div class="field-label">Preguntas</div>
-        <div class="q-builder" id="q-builder"></div>
-        <button class="add-q-btn" onclick="addQuestion()">+ Agregar pregunta</button>
-        <button class="primary-btn" onclick="saveExercise()" id="btn-save-ex">Guardar Ejercicio</button>
+
+        <div class="field-label">Título de la Página</div>
+        <input type="text" id="t-les-title" placeholder="Ej: How to work on each lesson?">
+
+        <hr style="border:0; border-top:1px solid var(--skool-border); margin: 1.5rem 0;">
+
+        <div id="fields-video">
+            <div class="field-label">URL del Video (YouTube Embed)</div>
+            <input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/embed/...">
+        </div>
+
+        <div id="fields-text" style="display:none;">
+            <div class="field-label">Contenido de Lectura</div>
+            <div id="quill-editor-container"></div>
+        </div>
+
+        <div id="fields-task" style="display:none;">
+            <div class="field-label">Tipo de Ejercicio</div>
+            <select id="t-ex-type" onchange="renderQuestionFields()">
+              <option value="minimal_pairs">Minimal pairs</option>
+              <option value="multiple_choice">Multiple choice</option>
+              <option value="fill_in_blank">Fill in the blank</option>
+              <option value="matching">Matching</option>
+            </select>
+            
+            <div class="field-label">Audio General (Opcional)</div>
+            <input type="file" id="t-ex-audio" accept="audio/mp3, audio/wav, audio/m4a">
+            
+            <div class="field-label">Preguntas</div>
+            <div class="q-builder" id="q-builder"></div>
+            <button class="add-q-btn" onclick="addQuestion()">+ Agregar pregunta</button>
+        </div>
+
+        <button class="primary-btn" onclick="saveLesson()" id="btn-save-les" style="margin-top: 1.5rem;">Guardar Página</button>
       </div>
     </div>
   </div>
@@ -357,8 +372,8 @@ footer strong { color: var(--brand); }
    🚀 CONFIGURACIÓN PRINCIPAL
 ══════════════════════════════════════════ */
 
-// 👇 CAMBIÁ ESTO POR TU EMAIL REAL DE GMAIL ANTES DE GUARDAR 👇
-const TEACHER_EMAIL = 'englishclasseswcami@gmail.com'; 
+// 👇 TU GMAIL REAL ACÁ 👇
+const TEACHER_EMAIL = 'tu-email@gmail.com'; 
 
 const SUPABASE_URL = 'https://flfyifdaitfnxncoxzxe.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsZnlpZmRhaXRmbnhuY294enhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4Njc0NTQsImV4cCI6MjA5NjQ0MzQ1NH0.wKMJk0EIYi1hRwoE1EN5lfEGIn2c9YrJhPi_UO2w2gI';
@@ -368,18 +383,35 @@ let currentUser = null;
 let isLoginMode = true;
 
 let dbModules = [];
-let dbExercises = [];
+let dbLessons = [];
+let quillEditor = null;
 
-try {
-    if (window.supabase) {
-        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        supabaseClient.auth.onAuthStateChange((event, session) => {
-            currentUser = session?.user || null;
-            updateAuthUI();
-            if (currentUser) fetchClassroomData();
-        });
-    }
-} catch (error) { console.error("Error inicializando Supabase:", error); }
+document.addEventListener('DOMContentLoaded', () => {
+    // Inicializar Quill JS (Editor de texto)
+    quillEditor = new Quill('#quill-editor-container', {
+        theme: 'snow',
+        placeholder: 'Escribe tu material de lectura, instrucciones o enlaces aquí...',
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'header': [2, 3, false] }],
+                ['link', 'clean']
+            ]
+        }
+    });
+
+    try {
+        if (window.supabase) {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            supabaseClient.auth.onAuthStateChange((event, session) => {
+                currentUser = session?.user || null;
+                updateAuthUI();
+                if (currentUser) fetchClassroomData();
+            });
+        }
+    } catch (error) { console.error("Error inicializando Supabase:", error); }
+});
 
 /* ══════════════════════════════════════════
    AUTENTICACIÓN Y NAVEGACIÓN
@@ -401,7 +433,6 @@ function updateAuthUI() {
         authBtn.textContent = "Log In";
         authBtn.classList.remove('logout-btn-nav');
         teacherTab.style.display = 'none';
-        
         const activePage = document.querySelector('.page.active');
         if (activePage && (activePage.id === 'page-exercises' || activePage.id === 'page-classroom' || activePage.id === 'page-teacher')) {
             document.querySelector('[data-page="vowels"]').click();
@@ -463,13 +494,11 @@ function goToPage(pageId, tabElement) {
     }
     document.getElementById("page-"+pageId).classList.add("active");
     
-    // Ocultar banner principal si entramos al classroom/teacher/auth
     if(pageId === 'classroom' || pageId === 'teacher' || pageId === 'auth') {
         document.getElementById('hero-banner').style.display = 'none';
     } else {
         document.getElementById('hero-banner').style.display = 'block';
     }
-    
     window.scrollTo(0,0);
 }
 
@@ -482,8 +511,8 @@ async function fetchClassroomData() {
     const { data: mods } = await supabaseClient.from('modules').select('*').order('created_at', { ascending: true });
     if (mods) dbModules = mods;
 
-    const { data: exers } = await supabaseClient.from('exercises').select('*').order('created_at', { ascending: true });
-    if (exers) dbExercises = exers;
+    const { data: less } = await supabaseClient.from('lessons').select('*').order('created_at', { ascending: true });
+    if (less) dbLessons = less;
 
     renderSidebar();
     updateTeacherModuleSelect();
@@ -492,37 +521,38 @@ async function fetchClassroomData() {
 /* ══════════════════════════════════════════
    REDISEÑO CLASSROOM: SIDEBAR Y VISTAS
 ══════════════════════════════════════════ */
+const iconMap = { 'video': '📺', 'text': '📄', 'task': '📝' };
+
 function renderSidebar() {
     const sidebar = document.getElementById("sidebar-render");
     if (dbModules.length === 0) {
-        sidebar.innerHTML = `<div style="text-align:center; padding: 1rem; color: var(--text-light); font-size:13px;">No hay módulos aún.</div>`;
+        sidebar.innerHTML = `<div style="text-align:center; padding: 1rem; color: var(--text-light); font-size:13px;">No hay carpetas aún.</div>`;
         return;
     }
 
     let html = '';
     dbModules.forEach((mod, mIndex) => {
-        const modExs = dbExercises.filter(e => e.module_id === mod.id);
+        const modLess = dbLessons.filter(l => l.module_id === mod.id);
         
         html += `<div class="c-mod-group">
             <div class="c-mod-header" onclick="toggleSidebarMenu('mod-menu-${mIndex}')" id="mod-head-${mod.id}">
                 ${mod.title} <span>▾</span>
             </div>
-            <div class="c-mod-items" id="mod-menu-${mIndex}">
-                <div class="c-item" onclick="showModuleContent('${mod.id}')" id="item-mod-${mod.id}">
-                    <span class="c-item-icon">📺</span> Ver Módulo
-                </div>`;
+            <div class="c-mod-items" id="mod-menu-${mIndex}">`;
                 
-        modExs.forEach(ex => {
-            html += `<div class="c-item" onclick="showExerciseContent('${ex.id}')" id="item-ex-${ex.id}">
-                <span class="c-item-icon">📝</span> ${ex.title}
-            </div>`;
-        });
+        if(modLess.length === 0) {
+            html += `<div style="font-size:11px; color:var(--text-light); padding-left:12px; padding-bottom:8px;">Carpeta vacía</div>`;
+        } else {
+            modLess.forEach(les => {
+                html += `<div class="c-item" onclick="showLessonContent('${les.id}')" id="item-les-${les.id}">
+                    <span class="c-item-icon">${iconMap[les.type]}</span> ${les.title}
+                </div>`;
+            });
+        }
         html += `</div></div>`;
     });
     
     sidebar.innerHTML = html;
-    
-    // Abrir el primer menú por defecto
     if(dbModules.length > 0) toggleSidebarMenu('mod-menu-0');
 }
 
@@ -538,7 +568,6 @@ function setActiveSidebarItem(idToHighlight) {
     const activeEl = document.getElementById(idToHighlight);
     if(activeEl) {
         activeEl.classList.add('active');
-        // Resaltar también el header padre
         const parentHeader = activeEl.closest('.c-mod-group').querySelector('.c-mod-header');
         if(parentHeader) parentHeader.classList.add('active');
     }
@@ -546,76 +575,68 @@ function setActiveSidebarItem(idToHighlight) {
 
 function hideAllClassroomViews() {
     document.getElementById("view-welcome").style.display = "none";
-    document.getElementById("view-module").style.display = "none";
+    document.getElementById("view-video").style.display = "none";
+    document.getElementById("view-text").style.display = "none";
     document.getElementById("view-exercise").style.display = "none";
-    document.getElementById("player-audio").pause();
-    document.getElementById("cv-mod-video").innerHTML = ''; // Detener videos YouTube
+    
+    const audioEl = document.getElementById("player-audio");
+    if(audioEl) audioEl.pause();
+    document.getElementById("cv-video-player").innerHTML = ''; // Cortar youtube
 }
 
-function showModuleContent(moduleId) {
+let currentLesson = null;
+let studentAnswers = {};
+let matchState = { leftSel: null, pairs: {} };
+
+function showLessonContent(lessonId) {
     hideAllClassroomViews();
-    setActiveSidebarItem(`item-mod-${moduleId}`);
+    setActiveSidebarItem(`item-les-${lessonId}`);
     
-    const mod = dbModules.find(m => m.id === moduleId);
-    if (!mod) return;
+    currentLesson = dbLessons.find(l => l.id === lessonId);
+    if (!currentLesson) return;
 
-    document.getElementById("view-module").style.display = "block";
-    document.getElementById("cv-mod-title").textContent = mod.title;
-    document.getElementById("cv-mod-desc").textContent = mod.description || '';
+    if (currentLesson.type === 'video') {
+        document.getElementById("view-video").style.display = "block";
+        document.getElementById("cv-video-title").textContent = currentLesson.title;
+        document.getElementById("cv-video-player").innerHTML = `<iframe src="${currentLesson.video_url}" allowfullscreen></iframe>`;
+    } 
+    else if (currentLesson.type === 'text') {
+        document.getElementById("view-text").style.display = "block";
+        document.getElementById("cv-text-title").textContent = currentLesson.title;
+        document.getElementById("cv-text-content").innerHTML = currentLesson.text_content;
+    }
+    else if (currentLesson.type === 'task') {
+        studentAnswers = {}; matchState = { leftSel: null, pairs: {} };
+        document.getElementById("view-exercise").style.display = "block";
+        document.getElementById("player-title").textContent = currentLesson.title;
+        
+        const audioEl = document.getElementById("player-audio");
+        if (currentLesson.audio_url) {
+            audioEl.src = currentLesson.audio_url;
+            audioEl.style.display = "block";
+        } else {
+            audioEl.style.display = "none"; audioEl.src = "";
+        }
 
-    const videoContainer = document.getElementById("cv-mod-video");
-    if (mod.video_url) {
-        videoContainer.style.display = "block";
-        videoContainer.innerHTML = `<iframe src="${mod.video_url}" allowfullscreen></iframe>`;
-    } else {
-        videoContainer.style.display = "none";
+        document.getElementById("submit-btn").disabled = false;
+        document.getElementById("submit-btn").style.display = "inline-block";
+        document.getElementById("retry-btn").style.display = "none";
+        document.getElementById("score-area").innerHTML = "";
+        
+        renderPlayerQuestions();
     }
 }
 
 /* ══════════════════════════════════════════
-   REPRODUCTOR DE EJERCICIOS
+   REPRODUCTOR DE TAREAS (ALUMNOS)
 ══════════════════════════════════════════ */
-let currentEx = null;
-let studentAnswers = {};
-let matchState = { leftSel: null, pairs: {} };
-
-function showExerciseContent(exerciseId) {
-    hideAllClassroomViews();
-    setActiveSidebarItem(`item-ex-${exerciseId}`);
-    
-    currentEx = dbExercises.find(e => e.id === exerciseId);
-    if (!currentEx) return;
-
-    studentAnswers = {}; matchState = { leftSel: null, pairs: {} };
-    document.getElementById("view-exercise").style.display = "block";
-    
-    document.getElementById("player-title").textContent = currentEx.title;
-    document.getElementById("player-desc").textContent = currentEx.instruction || "";
-    
-    const audioEl = document.getElementById("player-audio");
-    if (currentEx.audio_url) {
-        audioEl.src = currentEx.audio_url;
-        audioEl.style.display = "block";
-    } else {
-        audioEl.style.display = "none";
-        audioEl.src = "";
-    }
-
-    document.getElementById("submit-btn").disabled = false;
-    document.getElementById("submit-btn").style.display = "inline-block";
-    document.getElementById("retry-btn").style.display = "none";
-    document.getElementById("score-area").innerHTML = "";
-    
-    renderPlayerQuestions();
-}
-
-function retryExercise() { showExerciseContent(currentEx.id); }
+function retryExercise() { showLessonContent(currentLesson.id); }
 
 function renderPlayerQuestions() {
   const wrap = document.getElementById("player-questions");
-  const content = currentEx.content;
+  const content = currentLesson.task_content;
 
-  if (currentEx.type === "matching") {
+  if (currentLesson.task_type === "matching") {
     const lefts = content.map(q=>q.left);
     const rights = shuffle([...content.map(q=>q.right)]);
     wrap.innerHTML = `
@@ -629,7 +650,7 @@ function renderPlayerQuestions() {
   }
 
   wrap.innerHTML = content.map((q,i)=>{
-    if (currentEx.type==="fill_in_blank") {
+    if (currentLesson.task_type==="fill_in_blank") {
       return `<div class="ex-question-block">
         <div class="ex-q-num">Pregunta ${i+1}</div>
         <div class="ex-q-text">${q.prompt}</div>
@@ -637,7 +658,7 @@ function renderPlayerQuestions() {
       </div>`;
     }
     const opts = q.options||[];
-    const shuffled = currentEx.type==="minimal_pairs" ? shuffle([...opts]) : opts;
+    const shuffled = currentLesson.task_type==="minimal_pairs" ? shuffle([...opts]) : opts;
     return `<div class="ex-question-block">
       <div class="ex-q-num">Pregunta ${i+1}</div>
       <div class="ex-q-text">${q.prompt}</div>
@@ -674,9 +695,9 @@ function matchSelectRight(i, val) {
 function submitExercise() {
   let correct = 0;
   const results = [];
-  const content = currentEx.content;
+  const content = currentLesson.task_content;
 
-  if (currentEx.type==="matching") {
+  if (currentLesson.task_type==="matching") {
     content.forEach((q,i)=>{
       const given = studentAnswers[i];
       const ok = given === q.right;
@@ -687,12 +708,12 @@ function submitExercise() {
     });
   } else {
     content.forEach((q,i)=>{
-      let given = currentEx.type==="fill_in_blank" ? (document.getElementById("fitb-"+i)||{value:""}).value.trim() : studentAnswers[i]||"";
+      let given = currentLesson.task_type==="fill_in_blank" ? (document.getElementById("fitb-"+i)||{value:""}).value.trim() : studentAnswers[i]||"";
       const correctAns = q.answer || (q.options&&q.options[0]) || "";
       const ok = given.toLowerCase() === correctAns.toLowerCase();
       if(ok) correct++;
 
-      if (currentEx.type==="fill_in_blank") {
+      if (currentLesson.task_type==="fill_in_blank") {
         const el = document.getElementById("fitb-"+i);
         if(el){ el.classList.add(ok?"correct":"wrong"); el.disabled=true; }
       } else {
@@ -722,36 +743,34 @@ function showScore(correct, total, results) {
 }
 
 /* ══════════════════════════════════════════
-   TEACHER DASHBOARD (GUARDAR EN SUPABASE)
+   TEACHER DASHBOARD (MÓDULOS Y PÁGINAS)
 ══════════════════════════════════════════ */
 let questionRows = [];
 
 function updateTeacherModuleSelect() {
-    const select = document.getElementById('t-ex-module');
+    const select = document.getElementById('t-les-module');
     select.innerHTML = dbModules.map(m => `<option value="${m.id}">${m.title}</option>`).join("");
 }
 
 async function saveModule() {
     const title = document.getElementById('t-mod-title').value;
-    const desc = document.getElementById('t-mod-desc').value;
-    const video = document.getElementById('t-mod-video').value;
     const btn = document.getElementById('btn-save-mod');
-
-    if (!title) { alert("Ponle un título al módulo."); return; }
-    btn.disabled = true; btn.textContent = "Guardando...";
-
-    const { error } = await supabaseClient.from('modules').insert([{ title, description: desc, video_url: video }]);
+    if (!title) { alert("Ponle un nombre a la carpeta."); return; }
     
-    btn.disabled = false; btn.textContent = "Guardar Módulo";
+    btn.disabled = true; btn.textContent = "Guardando...";
+    const { error } = await supabaseClient.from('modules').insert([{ title }]);
+    btn.disabled = false; btn.textContent = "Guardar Carpeta";
     
     if (error) { alert("Error: " + error.message); } 
-    else { 
-        alert("¡Módulo creado!"); 
-        document.getElementById('t-mod-title').value = '';
-        document.getElementById('t-mod-desc').value = '';
-        document.getElementById('t-mod-video').value = '';
-        fetchClassroomData(); 
-    }
+    else { alert("¡Carpeta creada!"); document.getElementById('t-mod-title').value = ''; fetchClassroomData(); }
+}
+
+function toggleLessonFields() {
+    const type = document.getElementById('t-les-type').value;
+    document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none';
+    document.getElementById('fields-text').style.display = type === 'text' ? 'block' : 'none';
+    document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none';
+    if(type === 'task') renderQuestionFields();
 }
 
 function renderQuestionFields() {
@@ -774,53 +793,55 @@ function removeQuestion(i) { questionRows.splice(i,1); renderQuestionFields(); }
 function updateQ(i, f, v) { questionRows[i][f]=v; }
 function updateQOption(i, j, v) { questionRows[i].options[j]=v; }
 
-async function saveExercise() {
-    const moduleId = document.getElementById('t-ex-module').value;
-    const type = document.getElementById('t-ex-type').value;
-    const title = document.getElementById('t-ex-title').value;
-    const instruction = document.getElementById('t-ex-desc').value;
-    const audioFile = document.getElementById('t-ex-audio').files[0];
-    const btn = document.getElementById('btn-save-ex');
+async function saveLesson() {
+    const moduleId = document.getElementById('t-les-module').value;
+    const type = document.getElementById('t-les-type').value;
+    const title = document.getElementById('t-les-title').value;
+    const btn = document.getElementById('btn-save-les');
 
-    if (!moduleId || !title || questionRows.length === 0) {
-        alert("Completa el módulo, título y agrega al menos una pregunta."); return;
-    }
+    if (!moduleId || !title) { alert("Completa la carpeta y el título de la página."); return; }
 
-    btn.disabled = true; btn.textContent = "Subiendo y Guardando...";
-    let publicAudioUrl = null;
+    let video_url = null, text_content = null, task_type = null, task_content = null, audio_url = null;
 
-    if (audioFile) {
-        const fileExt = audioFile.name.split('.').pop();
-        const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
-        const { data, error: uploadError } = await supabaseClient.storage.from('audios').upload(fileName, audioFile);
+    if (type === 'video') {
+        video_url = document.getElementById('t-les-video-url').value;
+        if(!video_url) { alert("Falta el link del video."); return; }
+    } 
+    else if (type === 'text') {
+        text_content = quillEditor.root.innerHTML;
+        if(quillEditor.getText().trim() === '') { alert("El material de lectura está vacío."); return; }
+    } 
+    else if (type === 'task') {
+        task_type = document.getElementById('t-ex-type').value;
+        task_content = questionRows;
+        if(task_content.length === 0) { alert("Agregá al menos una pregunta a la tarea."); return; }
         
-        if (uploadError) {
-            alert("Error al subir audio: " + uploadError.message);
-            btn.disabled = false; btn.textContent = "Guardar Ejercicio";
-            return;
+        const audioFile = document.getElementById('t-ex-audio').files[0];
+        if (audioFile) {
+            btn.disabled = true; btn.textContent = "Subiendo audio...";
+            const fileExt = audioFile.name.split('.').pop();
+            const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+            const { error: uploadError } = await supabaseClient.storage.from('audios').upload(fileName, audioFile);
+            if (uploadError) { alert("Error subiendo audio: " + uploadError.message); btn.disabled = false; btn.textContent = "Guardar Página"; return; }
+            audio_url = supabaseClient.storage.from('audios').getPublicUrl(fileName).data.publicUrl;
         }
-        const { data: urlData } = supabaseClient.storage.from('audios').getPublicUrl(fileName);
-        publicAudioUrl = urlData.publicUrl;
     }
 
-    const { error } = await supabaseClient.from('exercises').insert([{
-        module_id: moduleId,
-        title: title,
-        type: type,
-        instruction: instruction,
-        audio_url: publicAudioUrl,
-        content: questionRows
+    btn.disabled = true; btn.textContent = "Guardando...";
+
+    const { error } = await supabaseClient.from('lessons').insert([{
+        module_id: moduleId, title, type, video_url, text_content, task_type, task_content, audio_url
     }]);
 
-    btn.disabled = false; btn.textContent = "Guardar Ejercicio";
+    btn.disabled = false; btn.textContent = "Guardar Página";
 
-    if (error) { alert("Error guardando ejercicio: " + error.message); } 
+    if (error) { alert("Error guardando: " + error.message); } 
     else {
-        alert("¡Ejercicio guardado exitosamente!");
-        document.getElementById('t-ex-title').value = '';
-        document.getElementById('t-ex-audio').value = '';
-        questionRows = [];
-        renderQuestionFields();
+        alert("¡Página guardada exitosamente!");
+        document.getElementById('t-les-title').value = '';
+        if(type==='video') document.getElementById('t-les-video-url').value = '';
+        if(type==='text') quillEditor.root.innerHTML = '';
+        if(type==='task') { document.getElementById('t-ex-audio').value = ''; questionRows = []; renderQuestionFields(); }
         fetchClassroomData(); 
     }
 }
