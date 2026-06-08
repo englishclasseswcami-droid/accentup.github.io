@@ -355,6 +355,7 @@ footer strong { color: var(--brand); }
         <div id="view-embed" style="display:none;">
           <h2 id="cv-embed-title" class="lesson-title-main"></h2>
           <div id="cv-embed-audios" class="lesson-audios-box" style="display:none;"></div>
+          <div id="cv-embed-text" class="text-content-main ql-editor" style="border:none;padding:0;margin-bottom:1.5rem;"></div>
           <div id="cv-embed-container" style="width:100%; border-radius:var(--radius); overflow:hidden; margin-bottom:1.5rem;"></div>
           <div id="cv-embed-resources" class="resources-panel" style="display:none;"></div>
           <div class="lesson-complete-wrap">
@@ -438,13 +439,13 @@ footer strong { color: var(--brand); }
         </div>
 
         <div id="fields-text" style="display:none;">
-          <span class="field-label">Content (Reading material or Text below video)</span>
+          <span class="field-label">Content (Instructions, Reading material or Text below video)</span>
           <div id="quill-editor-container"></div>
         </div>
 
         <div id="fields-embed" style="display:none;">
           <span class="field-label">Embed Code (iframe)</span>
-          <textarea id="t-les-embed-code" placeholder="Paste your <iframe> code here..." style="font-family:monospace; min-height:100px;"></textarea>
+          <textarea id="t-les-embed-code" placeholder="Paste your <iframe> code here..." style="font-family:monospace; min-height:100px; padding:10px; width:100%; border:1.5px solid var(--border); border-radius:var(--radius-sm); outline:none; resize:vertical;"></textarea>
         </div>
 
         <div id="fields-task" style="display:none;">
@@ -541,12 +542,11 @@ function safeParseJSON(data) {
   return [];
 }
 
-/* Escudo 1: Para HTML seguro (innerText) */
+/* Escapes */
 function esc(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/'/g, '&#39;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-/* Escudo 2: Para pasar strings dentro de eventos onclick de Javascript */
 function escapeJSArg(str) {
   return String(str || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, '\\n').replace(/\r/g, '\\r');
 }
@@ -926,8 +926,8 @@ function showLesson(lessonId) {
     document.getElementById('view-embed').style.display = 'block'; 
     document.getElementById('cv-embed-title').textContent = currentLesson.title;
     
-    // Acá se inyecta el iframe real sin escapar (es seguro porque lo pone la profe)
-    document.getElementById('cv-embed-container').innerHTML = currentLesson.text_content || '';
+    document.getElementById('cv-embed-text').innerHTML = currentLesson.text_content || '';
+    document.getElementById('cv-embed-container').innerHTML = currentLesson.video_url || '';
     
     renderAudios('cv-embed-audios', audios); 
     renderResources('cv-embed-resources', resources);
@@ -1458,9 +1458,9 @@ async function moveSubmodule(id, dir) {
 function toggleLessonFields() { 
   const type = document.getElementById('t-les-type').value; 
   document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none'; 
-  document.getElementById('fields-text').style.display = (type === 'text' || type === 'video') ? 'block' : 'none'; 
-  document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none'; 
   document.getElementById('fields-embed').style.display = type === 'embed' ? 'block' : 'none'; 
+  document.getElementById('fields-text').style.display = (type === 'text' || type === 'video' || type === 'embed') ? 'block' : 'none'; 
+  document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none'; 
 }
 
 function updateModuleSelect() { 
@@ -1508,7 +1508,8 @@ async function saveLesson() {
     payload.text_content = quillEditor.root.innerHTML; 
   }
   else if (type === 'embed') {
-    payload.text_content = document.getElementById('t-les-embed-code').value.trim();
+    payload.video_url = document.getElementById('t-les-embed-code').value.trim();
+    payload.text_content = quillEditor.root.innerHTML; 
   }
   else if (type === 'task') {
     payload.task_type = document.getElementById('t-ex-type').value;
@@ -1595,9 +1596,13 @@ function editLesson(id) {
     document.getElementById('t-les-video-url').value = l.video_url || ''; 
     quillEditor.root.innerHTML = l.text_content || ''; 
   }
-  if (l.type === 'text') quillEditor.root.innerHTML = l.text_content || '';
-  if (l.type === 'embed') document.getElementById('t-les-embed-code').value = l.text_content || '';
-  
+  if (l.type === 'text') {
+    quillEditor.root.innerHTML = l.text_content || '';
+  }
+  if (l.type === 'embed') {
+    document.getElementById('t-les-embed-code').value = l.video_url || '';
+    quillEditor.root.innerHTML = l.text_content || '';
+  }
   if (l.type === 'task') { 
       document.getElementById('t-ex-type').value = l.task_type || 'open_answer'; 
       questionRows = safeParseJSON(l.task_content); 
@@ -1623,7 +1628,7 @@ function cancelEditLes() {
   document.getElementById('edit-les-id').value = ''; 
   document.getElementById('t-les-title').value = ''; 
   document.getElementById('t-les-video-url').value = ''; 
-  document.getElementById('t-les-embed-code').value = '';
+  document.getElementById('t-les-embed-code').value = ''; 
   document.getElementById('t-ex-audio').value = ''; 
   document.getElementById('t-les-resources').value = ''; 
   document.getElementById('t-les-resources-current').textContent = ''; 
@@ -1930,7 +1935,7 @@ function renderManageList() {
     return; 
   }
   
-  const iconMap = { video:'📺', text:'📄', task:'📝', embed: '🌐' };
+  const iconMap = { video:'📺', text:'📄', task:'📝', embed:'🌐' };
   let html = '';
   
   dbModules.forEach(m => {
