@@ -7,7 +7,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
@@ -21,22 +20,22 @@
   --border: rgba(0,0,0,0.08); --radius: 14px; --radius-sm: 8px;
   --green: #1D9E75; --green-light: #E1F5EE; --green-dark: #085041;
   --red: #D85A30; --red-light: #FAECE7; --red-dark: #4A1B0C;
-  --skool-bg: #F9FAFB; --skool-hover: #F3F4F6; --skool-border: #E5E7EB;
+  --skool-border: #E5E7EB; --skool-hover: #F3F4F6;
 }
 body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
 /* NAV */
-nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 64px; position: sticky; top: 0; z-index: 100; gap: 1rem; }
+nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 64px; position: sticky; top: 0; z-index: 100; gap: 1rem; flex-wrap: wrap; }
 .logo { font-size: 20px; font-weight: 800; color: var(--brand); letter-spacing: -0.5px; white-space: nowrap; }
 .logo span { color: var(--accent-dark); }
 .nav-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
-.nav-tab { padding: 7px 15px; border-radius: 30px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; background: transparent; color: var(--text-muted); transition: all .18s; white-space: nowrap; }
+.nav-tab { padding: 7px 15px; border-radius: 30px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; background: transparent; color: var(--text-muted); transition: all .18s; white-space: nowrap; font-family: 'Inter', sans-serif; }
 .nav-tab:hover { background: var(--brand-light); color: var(--brand); }
 .nav-tab.active { background: var(--brand); color: #fff; }
 .nav-tab.teacher-tab { border: 1.5px dashed var(--border); display: none; }
 .nav-tab.teacher-tab.active { background: var(--accent-dark); border-color: var(--accent-dark); color: #fff; }
-.nav-tab.auth-btn { background: var(--brand); color: #fff; font-weight: 600; }
-.nav-tab.auth-btn:hover { background: var(--brand-dark); color: #fff; }
+.nav-tab.auth-btn { background: var(--brand); color: #fff; font-weight: 700; }
+.nav-tab.auth-btn:hover { background: var(--brand-dark); }
 .nav-tab.logout-btn-nav { background: var(--red-light); color: var(--red-dark); }
 .nav-tab.logout-btn-nav:hover { background: var(--red); color: #fff; }
 
@@ -48,14 +47,14 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .hero p { font-size: 15px; opacity: .75; max-width: 500px; margin: 0 auto; line-height: 1.6; }
 
 /* PAGES */
-.page { display: none; padding: 2rem 1.5rem; max-width: 920px; margin: 0 auto; }
+.page { display: none; padding: 2rem 1.5rem; max-width: 960px; margin: 0 auto; }
 .page.active { display: block; }
-.page-full { max-width: 1200px; padding: 1.5rem; }
+.page-full { max-width: 1200px; }
 .section-intro { margin-bottom: 1.75rem; }
-.section-intro h2 { font-size: 20px; font-weight: 800; color: var(--brand); margin-bottom: 5px; letter-spacing: -.3px; }
+.section-intro h2 { font-size: 20px; font-weight: 800; color: var(--brand); margin-bottom: 5px; }
 .section-intro p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
 
-/* SOUND GRID & DETAIL */
+/* SOUND GRID */
 .sound-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-bottom: 2rem; }
 .sound-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1rem .9rem .9rem; cursor: pointer; transition: border-color .15s, transform .1s; text-align: center; }
 .sound-card:hover { border-color: var(--brand); transform: translateY(-2px); }
@@ -68,7 +67,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .badge-diphthong { background: #FAEEDA; color: #633806; }
 .badge-rcolored { background: #EEEDFE; color: #3C3489; }
 .badge-consonant { background: #FAECE7; color: #712B13; }
-.play-btn { display: inline-flex; align-items: center; gap: 5px; margin-top: 7px; padding: 4px 10px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--surface); font-size: 11px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all .15s; }
+.play-btn { display: inline-flex; align-items: center; gap: 5px; margin-top: 7px; padding: 4px 10px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--surface); font-size: 11px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all .15s; font-family: 'Inter', sans-serif; }
 .play-btn:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-light); }
 .detail-panel { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; min-height: 140px; }
 .detail-empty { color: var(--text-light); font-size: 14px; text-align: center; padding: 2.5rem 0; }
@@ -78,98 +77,85 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .detail-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
 .detail-keyword { font-size: 13px; color: var(--text-muted); }
 .detail-body { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; margin-top: .5rem; }
+@media(max-width:560px){ .detail-body { grid-template-columns: 1fr; } }
 .detail-section { background: var(--bg); border-radius: var(--radius-sm); padding: .85rem .9rem; }
 .detail-section-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 7px; }
 .words-wrap { display: flex; flex-wrap: wrap; gap: 5px; }
-.word-pill { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 12px; color: var(--text); cursor: pointer; }
+.word-pill { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 12px; color: var(--text); cursor: pointer; transition: all .15s; }
 .word-pill:hover { background: var(--brand-light); color: var(--brand); border-color: var(--brand); }
+.word-pill.highlight { background: var(--brand); color: #fff; border-color: var(--brand); }
 .tip-box { margin-top: .9rem; background: var(--brand-light); border-radius: var(--radius-sm); padding: .85rem .9rem; border-left: 3px solid var(--brand); }
 .tip-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--brand-mid); margin-bottom: 4px; }
 .tip-text { font-size: 13px; color: #26215C; line-height: 1.6; }
 .sub-heading { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-light); margin: 1.75rem 0 .9rem; display: flex; align-items: center; gap: 10px; }
 .sub-heading::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-/* ── AUTH GATE ── */
+/* AUTH */
 .gate { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 50vh; text-align: center; }
-.gate h2 { font-size: 20px; font-weight: 800; color: var(--accent-dark); margin-bottom: 6px; }
+.gate h2 { font-size: 22px; font-weight: 800; color: var(--brand); margin-bottom: 6px; }
 .gate p { font-size: 13px; color: var(--text-muted); margin-bottom: 1.5rem; }
-.gate-form { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-.gate-input { padding: 9px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-family: 'Inter',sans-serif; outline: none; transition: border-color .15s; width: 200px; }
+.gate-form { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 300px; }
+.gate-input { padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-family: 'Inter',sans-serif; outline: none; width: 100%; }
 .gate-input:focus { border-color: var(--brand); }
-.gate-btn { padding: 9px 18px; border-radius: var(--radius-sm); background: var(--brand); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; }
+.gate-btn { padding: 10px 18px; border-radius: var(--radius-sm); background: var(--brand); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; font-family: 'Inter', sans-serif; }
+.gate-btn:hover { background: var(--brand-dark); }
 .gate-error { margin-top: 10px; font-size: 13px; color: var(--red); display: none; }
+.gate-toggle { margin-top: 14px; font-size: 13px; color: var(--brand); font-weight: 600; cursor: pointer; }
+.gate-toggle:hover { text-decoration: underline; }
 
-/* ── CLASSROOM REDESIGN (SKOOL STYLE) ── */
-.course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
-.course-card { background: var(--surface); border: 1px solid var(--skool-border); border-radius: var(--radius); padding: 1.5rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-.course-card:hover { transform: translateY(-3px); border-color: var(--brand); box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
-.course-card-title { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
-.course-card-desc { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
-
-.classroom-container { display: flex; gap: 2rem; min-height: 75vh; align-items: flex-start; }
-@media(max-width: 768px) { .classroom-container { flex-direction: column; } }
-
-/* Sidebar */
-.c-sidebar { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 1.5rem; }
-@media(max-width: 768px) { .c-sidebar { width: 100%; } }
-.c-progress-box { background: var(--surface); border: 1px solid var(--skool-border); border-radius: var(--radius-sm); padding: 1.25rem; }
-.c-course-title { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 12px; }
-
-.c-nav-list { display: flex; flex-direction: column; gap: 8px; }
-.c-mod-group { border: 1px solid transparent; }
-.c-mod-header { padding: 12px 16px; background: var(--skool-hover); border-radius: var(--radius-sm); font-size: 14px; font-weight: 700; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; }
-.c-item { padding: 10px 12px; font-size: 13px; font-weight: 500; color: var(--text-muted); cursor: pointer; border-radius: var(--radius-sm); transition: all 0.2s; display: flex; align-items: center; gap: 8px; margin-left: 10px; margin-top: 4px; border-left: 2px solid var(--skool-border); justify-content: space-between;}
+/* CLASSROOM */
+.course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
+.course-card { background: var(--surface); border: 1px solid var(--skool-border); border-radius: var(--radius); padding: 1.5rem; cursor: pointer; transition: all .2s; box-shadow: 0 2px 8px rgba(0,0,0,.03); }
+.course-card:hover { transform: translateY(-3px); border-color: var(--brand); box-shadow: 0 8px 24px rgba(0,0,0,.07); }
+.course-card-title { font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.course-card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+.classroom-container { display: flex; gap: 1.5rem; min-height: 75vh; align-items: flex-start; }
+@media(max-width:768px){ .classroom-container { flex-direction: column; } }
+.c-sidebar { width: 280px; flex-shrink: 0; }
+@media(max-width:768px){ .c-sidebar { width: 100%; } }
+.c-progress-box { background: var(--surface); border: 1px solid var(--skool-border); border-radius: var(--radius-sm); padding: 1rem 1.1rem; margin-bottom: 1rem; }
+.c-course-title { font-size: 15px; font-weight: 800; color: var(--text); }
+.c-nav-list { display: flex; flex-direction: column; gap: 4px; }
+.c-item { padding: 9px 12px; font-size: 13px; font-weight: 500; color: var(--text-muted); cursor: pointer; border-radius: var(--radius-sm); transition: all .15s; display: flex; align-items: center; gap: 8px; border-left: 2px solid transparent; justify-content: space-between; }
 .c-item:hover { background: var(--surface); color: var(--brand); border-left-color: var(--brand); }
-.c-item.active { background: var(--surface); color: var(--brand); font-weight: 700; border: 1px solid var(--brand-light); border-left: 2px solid var(--brand); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-.c-item-icon { font-size: 16px; flex-shrink: 0; }
-.c-item-title { flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.c-item-status { font-size: 12px; }
-
-/* Main Content Area */
-.c-main { flex: 1; background: var(--surface); border: 1px solid var(--skool-border); border-radius: var(--radius); padding: 2rem; min-height: 500px; width: 100%; }
-.c-empty-state { text-align: center; color: var(--text-light); padding: 4rem 1rem; font-size: 15px; }
-
-/* View Styles */
-.lesson-title-main { font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 1.5rem; }
-.video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; border-radius: var(--radius); margin-bottom: 1.5rem; }
-.video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+.c-item.active { background: var(--surface); color: var(--brand); font-weight: 700; border: 1px solid var(--brand-light); border-left: 2px solid var(--brand); }
+.c-item-title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.c-main { flex: 1; background: var(--surface); border: 1px solid var(--skool-border); border-radius: var(--radius); padding: 1.75rem; min-height: 500px; }
+.c-empty-state { text-align: center; color: var(--text-light); padding: 4rem 1rem; font-size: 14px; }
+.lesson-title-main { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 1.25rem; }
+.video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #000; border-radius: var(--radius); margin-bottom: 1.5rem; }
+.video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: var(--radius); }
 .text-content-main { font-size: 15px; line-height: 1.8; color: var(--text); }
 .text-content-main a { color: var(--brand); text-decoration: underline; }
-.text-content-main ul { padding-left: 1.5rem; margin-bottom: 1rem; }
-
-/* AUDIO LIST STYLES */
+.text-content-main ul, .text-content-main ol { padding-left: 1.5rem; margin-bottom: 1rem; }
 .lesson-audios-box { margin-bottom: 1.5rem; background: var(--bg); border: 1px solid var(--skool-border); padding: 12px 16px; border-radius: var(--radius-sm); }
-.lesson-audio-row { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed var(--skool-border); }
+.lesson-audio-row { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed var(--skool-border); flex-wrap: wrap; }
 .lesson-audio-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
 .lesson-audio-label { font-size: 13px; font-weight: 700; color: var(--brand); }
-.lesson-audio-row audio { height: 32px; border-radius: 4px; }
-
-/* RECURSOS ADJUNTOS ESTILO SKOOL */
-.resources-panel { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--skool-border); }
-.resources-heading { font-size: 14px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
-.resources-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
-.resource-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--bg); border: 1px solid var(--skool-border); border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; color: var(--brand); text-decoration: none; transition: all 0.15s; }
+.lesson-audio-row audio { height: 32px; }
+.resources-panel { margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--skool-border); }
+.resources-heading { font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: .05em; }
+.resources-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.resource-link { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; background: var(--bg); border: 1px solid var(--skool-border); border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; color: var(--brand); text-decoration: none; transition: all .15s; }
 .resource-link:hover { background: var(--brand-light); border-color: var(--brand); }
 
 /* EXERCISE PLAYER */
-.player-audio { margin-bottom: 1.5rem; width: 100%; border-radius: 30px; }
 .ex-question-block { background: var(--bg); border: 1px solid var(--skool-border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
 .ex-q-num { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-light); margin-bottom: 6px; }
 .ex-q-text { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 1rem; line-height: 1.5; }
 .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 @media(max-width:440px){ .options-grid { grid-template-columns: 1fr; } }
-.opt-btn { padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); font-size: 14px; font-weight: 500; color: var(--text); cursor: pointer; transition: all .15s; text-align: left; }
+.opt-btn { padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); font-size: 14px; font-weight: 500; color: var(--text); cursor: pointer; transition: all .15s; text-align: left; font-family: 'Inter', sans-serif; }
 .opt-btn:hover:not(:disabled) { border-color: var(--brand); color: var(--brand); background: var(--brand-light); }
 .opt-btn.selected { border-color: var(--brand); background: var(--brand-light); color: var(--brand); font-weight: 700; }
 .opt-btn.correct { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
 .opt-btn.wrong { border-color: var(--red); background: var(--red-light); color: var(--red-dark); }
-.fitb-row { display: flex; gap: 8px; align-items: center; }
-.fitb-input { flex: 1; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; color: var(--text); outline: none; }
+.fitb-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; color: var(--text); outline: none; font-family: 'Inter', sans-serif; }
+.fitb-input:focus { border-color: var(--brand); }
 .fitb-input.correct { border-color: var(--green); background: var(--green-light); }
 .fitb-input.wrong { border-color: var(--red); background: var(--red-light); }
-.dictation-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: 'Inter',sans-serif; color: var(--text); outline: none; min-height: 80px; resize: vertical; }
+.dictation-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-family: 'Inter',sans-serif; color: var(--text); outline: none; min-height: 80px; resize: vertical; }
 .dictation-input:focus { border-color: var(--brand); }
-
 .matching-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .match-col-label { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-light); margin-bottom: 8px; }
 .match-chip { padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; cursor: pointer; transition: all .15s; background: var(--surface); margin-bottom: 8px; }
@@ -177,51 +163,64 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .match-chip.matched { border-color: var(--green); background: var(--green-light); color: var(--green-dark); cursor: default; }
 .match-chip.wrong-match { border-color: var(--red); background: var(--red-light); color: var(--red-dark); }
 .player-footer { display: flex; align-items: center; gap: 10px; margin-top: 1.5rem; flex-wrap: wrap; }
+.submit-btn { padding: 10px 24px; border-radius: var(--radius-sm); background: var(--brand); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; font-family: 'Inter',sans-serif; transition: background .15s; }
+.submit-btn:hover { background: var(--brand-dark); }
+.submit-btn:disabled { opacity: .5; cursor: not-allowed; }
+.retry-btn { padding: 9px 18px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: transparent; font-size: 13px; font-weight: 600; color: var(--text-muted); cursor: pointer; font-family: 'Inter',sans-serif; transition: all .15s; }
+.retry-btn:hover { border-color: var(--brand); color: var(--brand); }
 .score-panel { background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-top: 2rem; }
 .score-top { display: flex; align-items: center; gap: 16px; margin-bottom: 1.25rem; flex-wrap: wrap; }
-.score-circle { width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; font-weight: 800; }
+.score-circle { width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; font-weight: 800; flex-shrink: 0; }
 .score-circle.great { background: var(--green-light); color: var(--green); }
 .score-circle.ok { background: #FAEEDA; color: #633806; }
 .score-circle.low { background: var(--red-light); color: var(--red); }
-.score-circle .pct { font-size: 22px; line-height: 1; }
-.score-circle .frac { font-size: 12px; opacity: .8; }
-.score-msg { font-size: 18px; font-weight: 800; color: var(--text); }
-.score-details { border-top: 1px solid var(--skool-border); padding-top: 1rem; }
-.score-row { font-size: 14px; padding: 6px 0; border-bottom: 1px solid var(--skool-border); line-height: 1.5; }
+.score-circle .pct { font-size: 20px; line-height: 1; }
+.score-circle .frac { font-size: 11px; opacity: .8; }
+.score-msg { font-size: 17px; font-weight: 800; color: var(--text); }
+.score-msg .sub { font-size: 13px; color: var(--text-muted); font-weight: 400; margin-top: 3px; }
+.score-details { border-top: 1px solid var(--skool-border); padding-top: 1rem; margin-top: .5rem; }
+.score-row { font-size: 13px; padding: 6px 0; border-bottom: 1px solid var(--skool-border); line-height: 1.5; }
+.score-row:last-child { border-bottom: none; }
+.score-row.c { color: var(--green-dark); }
+.score-row.w { color: var(--red-dark); }
+.score-row .ans { color: var(--text-muted); font-size: 12px; }
 
-/* ── TEACHER DASHBOARD ── */
-.teacher-layout { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
-.t-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.5rem; }
-.t-panel h3 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: .9rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-.field-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-light); margin-bottom: 5px; margin-top: .9rem; }
+/* TEACHER */
+.teacher-header { margin-bottom: 1.5rem; }
+.teacher-header h2 { font-size: 20px; font-weight: 800; color: var(--accent-dark); margin-bottom: 4px; }
+.teacher-header p { font-size: 13px; color: var(--text-muted); }
+.teacher-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+@media(max-width:720px){ .teacher-layout { grid-template-columns: 1fr; } }
+.t-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.25rem; }
+.t-panel h3 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: .9rem; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.field-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-light); margin-bottom: 5px; margin-top: .9rem; display: block; }
 .field-label:first-of-type { margin-top: 0; }
-select, textarea, input[type=text], input[type=password], input[type=email], input[type=url], input[type=file] { width: 100%; padding: 8px 11px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter',sans-serif; font-size: 13px; color: var(--text); background: var(--bg); outline: none; transition: border-color .15s; margin-bottom: 10px; }
+select, textarea, input[type=text], input[type=password], input[type=email], input[type=url], input[type=file] { width: 100%; padding: 8px 11px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter',sans-serif; font-size: 13px; color: var(--text); background: var(--bg); outline: none; transition: border-color .15s; margin-bottom: 8px; }
 select:focus, textarea:focus, input:focus { border-color: var(--brand); background: #fff; }
-.q-row { background: var(--surface); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 12px; position: relative; border: 1px solid var(--skool-border); box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+textarea { resize: vertical; min-height: 70px; }
+.q-row { background: var(--surface); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 10px; position: relative; border: 1px solid var(--skool-border); }
 .q-row-label { font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--brand); margin-bottom: 8px; }
-.remove-q { position: absolute; top: 8px; right: 8px; background: none; border: none; color: var(--text-light); font-size: 16px; cursor: pointer; padding: 2px 6px; }
+.remove-q { position: absolute; top: 8px; right: 8px; background: none; border: none; color: var(--text-light); font-size: 18px; cursor: pointer; padding: 2px 6px; line-height: 1; }
 .remove-q:hover { color: var(--red); }
-.add-q-btn { width: 100%; padding: 10px; border: 1.5px dashed var(--border); border-radius: var(--radius-sm); background: transparent; font-size: 13px; font-weight:600; color: var(--text-muted); cursor: pointer; transition: all .15s; margin-top: 4px; }
+.add-q-btn { width: 100%; padding: 9px; border: 1.5px dashed var(--border); border-radius: var(--radius-sm); background: transparent; font-size: 13px; font-weight: 600; color: var(--text-muted); cursor: pointer; font-family: 'Inter',sans-serif; transition: all .15s; }
 .add-q-btn:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-light); }
-.primary-btn { width: 100%; padding: 10px; border-radius: var(--radius-sm); background: var(--brand); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; margin-top: 1rem; transition: background .15s; }
+.primary-btn { width: 100%; padding: 10px; border-radius: var(--radius-sm); background: var(--brand); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; margin-top: .9rem; transition: background .15s; font-family: 'Inter',sans-serif; }
 .primary-btn:hover { background: var(--brand-dark); }
-.primary-btn:disabled { background: var(--text-light); cursor: not-allowed; }
-.secondary-btn { background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer; }
+.primary-btn:disabled { opacity: .6; cursor: not-allowed; }
+.secondary-btn { background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 6px 14px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; cursor: pointer; font-family: 'Inter',sans-serif; transition: all .15s; }
 .secondary-btn:hover { border-color: var(--brand); color: var(--brand); }
-.danger-btn { background: transparent; color: var(--red); border: 1px solid var(--red-light); padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer; }
+.danger-btn { background: transparent; color: var(--red); border: 1px solid var(--red-light); padding: 6px 12px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; cursor: pointer; font-family: 'Inter',sans-serif; }
 .danger-btn:hover { background: var(--red-light); }
-
-/* Editor Quill Container */
-#quill-editor-container { height: 250px; background: var(--surface); border-radius: 0 0 var(--radius-sm) var(--radius-sm) !important; font-family: 'Inter', sans-serif; font-size: 14px; }
+#quill-editor-container { height: 220px; background: var(--surface); border-radius: 0 0 var(--radius-sm) var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 14px; }
 .ql-toolbar { border-radius: var(--radius-sm) var(--radius-sm) 0 0 !important; background: var(--bg); border-color: var(--border) !important; }
 .ql-container { border-color: var(--border) !important; }
-
-/* Lista de Gestión */
-.manage-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--skool-border); }
+.manage-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--skool-border); gap: 10px; }
 .manage-item:last-child { border-bottom: none; }
-.manage-title { font-size: 14px; font-weight: 600; color: var(--text); }
-.manage-type { font-size: 11px; color: var(--text-muted); background: var(--bg); padding: 2px 6px; border-radius: 4px; margin-left: 8px; }
-.manage-actions { display: flex; gap: 8px; }
+.manage-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.manage-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.audio-add-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+.audio-add-row input { margin-bottom: 0; }
+.audio-saved-item { display: flex; justify-content: space-between; align-items: center; background: var(--surface); border: 1px solid var(--skool-border); border-radius: var(--radius-sm); padding: 6px 10px; margin-bottom: 6px; font-size: 12px; font-weight: 600; color: var(--text); }
 
 footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--text-light); border-top: 1px solid var(--border); margin-top: 3rem; }
 footer strong { color: var(--brand); }
@@ -234,9 +233,9 @@ footer strong { color: var(--brand); }
   <div class="nav-tabs">
     <button class="nav-tab active" data-page="vowels">Vowel sounds</button>
     <button class="nav-tab" data-page="consonants">Consonant sounds</button>
-    <button class="nav-tab auth-required" data-page="classroom">Classroom</button>
-    <button class="nav-tab teacher-tab auth-required" id="nav-teacher-tab" data-page="teacher">Teacher ✦</button>
-    <button class="nav-tab auth-btn" id="nav-auth-btn" data-page="auth">Log In</button>
+    <button class="nav-tab" data-page="classroom" id="nav-classroom">Classroom</button>
+    <button class="nav-tab teacher-tab" id="nav-teacher-tab" data-page="teacher">Teacher ✦</button>
+    <button class="nav-tab auth-btn" id="nav-auth-btn" onclick="handleNavAuth()">Log in</button>
   </div>
 </nav>
 
@@ -246,80 +245,85 @@ footer strong { color: var(--brand); }
   <p>Explore every sound of American English and practice with interactive exercises.</p>
 </div>
 
+<!-- VOWELS -->
 <div class="page active" id="page-vowels">
   <div class="section-intro"><h2>Vowel sounds</h2><p>American English has 19 vowel sounds. Click any card to explore mouth position, spellings, and tips for Spanish speakers.</p></div>
   <div id="vowel-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
   <div class="sub-heading">Pure vowels</div><div class="sound-grid" id="pure-vowel-grid"></div>
+  <div class="sub-heading">Diphthongs</div><div class="sound-grid" id="diphthong-grid"></div>
+  <div class="sub-heading">R-colored vowels</div><div class="sound-grid" id="rcolored-grid"></div>
 </div>
 
+<!-- CONSONANTS -->
 <div class="page" id="page-consonants">
-  <div class="section-intro"><h2>Consonant sounds</h2><p>American English has 24 consonant sounds.</p></div>
+  <div class="section-intro"><h2>Consonant sounds</h2><p>American English has 24 consonant sounds. Every card includes all spelling patterns for that sound.</p></div>
   <div id="consonant-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
   <div class="sub-heading">Stops</div><div class="sound-grid" id="stops-grid"></div>
+  <div class="sub-heading">Fricatives</div><div class="sound-grid" id="fricatives-grid"></div>
+  <div class="sub-heading">Affricates</div><div class="sound-grid" id="affricates-grid"></div>
+  <div class="sub-heading">Nasals</div><div class="sound-grid" id="nasals-grid"></div>
+  <div class="sub-heading">Liquids & glides</div><div class="sound-grid" id="liquids-grid"></div>
 </div>
 
+<!-- AUTH -->
 <div class="page" id="page-auth">
   <div class="gate">
-    <h2 id="auth-title" style="color: var(--brand);">Log In</h2>
-    <p id="auth-subtitle">Accede a tu plataforma.</p>
-    <div class="gate-form" style="flex-direction: column; width: 100%; max-width: 280px;">
-      <input type="email" class="gate-input" id="auth-email" placeholder="Email" style="width: 100%; margin-bottom: 10px;" />
-      <input type="password" class="gate-input" id="auth-pw" placeholder="Password" style="width: 100%; margin-bottom: 10px;" />
-      <input type="text" class="gate-input" id="auth-code" placeholder="Código de invitación" style="width: 100%; margin-bottom: 10px; display: none;" />
-      <button class="gate-btn" style="width: 100%;" onclick="handleAuth()">Submit</button>
+    <h2 id="auth-title">Welcome back</h2>
+    <p id="auth-subtitle">Log in to access your classroom and exercises.</p>
+    <div class="gate-form">
+      <input type="email" class="gate-input" id="auth-email" placeholder="Email" onkeydown="if(event.key==='Enter')handleAuth()"/>
+      <input type="password" class="gate-input" id="auth-pw" placeholder="Password" onkeydown="if(event.key==='Enter')handleAuth()"/>
+      <input type="text" class="gate-input" id="auth-code" placeholder="Invitation code" style="display:none" onkeydown="if(event.key==='Enter')handleAuth()"/>
+      <button class="gate-btn" onclick="handleAuth()" id="auth-submit-btn">Log in</button>
     </div>
-    <div style="margin-top: 15px; font-size: 13px; cursor: pointer; color: var(--brand); font-weight: 500;" onclick="toggleAuthMode()" id="auth-toggle">¿No tienes cuenta? Regístrate</div>
+    <div class="gate-toggle" onclick="toggleAuthMode()" id="auth-toggle">Don't have an account? Sign up</div>
     <div class="gate-error" id="auth-error"></div>
   </div>
 </div>
 
+<!-- CLASSROOM -->
 <div class="page page-full" id="page-classroom">
   <div id="classroom-grid-view">
     <div class="section-intro">
-      <h2>Tus Carpetas</h2>
-      <p>Selecciona una carpeta para ver sus lecciones y actividades.</p>
+      <h2>Classroom</h2>
+      <p>Select a folder to see its lessons and activities.</p>
     </div>
     <div class="course-grid" id="classroom-modules-grid">
-      <div style="text-align:center; padding: 2rem; color: var(--text-light); grid-column: 1/-1;">Cargando...</div>
+      <div style="color:var(--text-light);font-size:14px;grid-column:1/-1;text-align:center;padding:3rem 0;">Loading...</div>
     </div>
   </div>
-
   <div id="classroom-player-view" style="display:none;">
-    <button onclick="backToClassroomGrid()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-weight:600; font-family:'Inter', sans-serif; margin-bottom:1.5rem;">← Volver a Carpetas</button>
+    <button onclick="backToClassroomGrid()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-weight:600;font-family:'Inter',sans-serif;font-size:13px;margin-bottom:1.5rem;display:flex;align-items:center;gap:6px;">← Back to Classroom</button>
     <div class="classroom-container">
       <aside class="c-sidebar">
-        <div class="c-progress-box"><div class="c-course-title" id="sidebar-mod-title">Carpeta Actual</div></div>
+        <div class="c-progress-box"><div class="c-course-title" id="sidebar-mod-title"></div></div>
         <div class="c-nav-list" id="sidebar-render"></div>
       </aside>
-
       <main class="c-main" id="classroom-main-content">
         <div id="view-welcome" class="c-empty-state">
-          <svg style="width:48px;height:48px;color:var(--brand-light);margin-bottom:1rem;" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 13.5v-7l6 3.5-6 3.5z"></path></svg>
-          <h2 style="color:var(--text);font-weight:800;margin-bottom:8px;">Bienvenido</h2>
-          <p>Selecciona una página en el menú de la izquierda para empezar.</p>
+          <div style="font-size:40px;margin-bottom:12px;">👋</div>
+          <h2 style="color:var(--text);font-weight:800;margin-bottom:8px;font-size:18px;">Welcome!</h2>
+          <p>Select a lesson from the menu on the left to get started.</p>
         </div>
-
         <div id="view-video" style="display:none;">
           <h2 id="cv-video-title" class="lesson-title-main"></h2>
           <div id="cv-video-audios" class="lesson-audios-box" style="display:none;"></div>
           <div id="cv-video-player" class="video-container"></div>
           <div id="cv-video-resources" class="resources-panel" style="display:none;"></div>
         </div>
-
         <div id="view-text" style="display:none;">
           <h2 id="cv-text-title" class="lesson-title-main"></h2>
           <div id="cv-text-audios" class="lesson-audios-box" style="display:none;"></div>
-          <div id="cv-text-content" class="text-content-main ql-editor"></div>
+          <div id="cv-text-content" class="text-content-main ql-editor" style="border:none;padding:0;"></div>
           <div id="cv-text-resources" class="resources-panel" style="display:none;"></div>
         </div>
-
         <div id="view-exercise" style="display:none;">
           <h2 id="player-title" class="lesson-title-main"></h2>
-          <audio id="player-audio" class="player-audio" controls style="display:none;"></audio>
+          <audio id="player-audio" controls style="display:none;width:100%;margin-bottom:1.25rem;border-radius:30px;"></audio>
           <div id="player-questions"></div>
           <div class="player-footer">
-            <button class="submit-btn" id="submit-btn" onclick="submitExercise()">Revisar mis respuestas</button>
-            <button class="retry-btn" id="retry-btn" style="display:none" onclick="retryExercise()">Intentar de nuevo</button>
+            <button class="submit-btn" id="submit-btn" onclick="submitExercise()">Check my answers</button>
+            <button class="retry-btn" id="retry-btn" style="display:none" onclick="retryExercise()">Try again</button>
           </div>
           <div id="score-area"></div>
           <div id="cv-task-resources" class="resources-panel" style="display:none;"></div>
@@ -329,393 +333,879 @@ footer strong { color: var(--brand); }
   </div>
 </div>
 
+<!-- TEACHER -->
 <div class="page" id="page-teacher">
-  <div class="teacher-ui">
-    <div class="teacher-header">
-      <h2>Teacher Dashboard</h2>
-      <p style="font-size: 13px; color: var(--text-muted);">Organiza tu contenido en Carpetas (Módulos) y Páginas (Lecciones).</p>
-    </div>
-    
-    <div class="teacher-layout">
+  <div class="teacher-header">
+    <h2>Teacher Dashboard</h2>
+    <p>Organize your content in Folders (Modules) and Pages (Lessons).</p>
+  </div>
+  <div class="teacher-layout">
+    <!-- FOLDER FORM -->
+    <div>
       <div class="t-panel">
-        <h3 id="panel-title-mod">📂 1. Crear/Editar Carpeta</h3>
-        <input type="hidden" id="edit-mod-id" value="">
-        <div class="field-label">Nombre de la Carpeta</div>
-        <input type="text" id="t-mod-title" placeholder="Ej: 1. Essentials">
-        <div style="display:flex; gap:10px;">
-            <button class="primary-btn" onclick="saveModule()" id="btn-save-mod">Guardar Carpeta</button>
-            <button class="secondary-btn" onclick="cancelEditMod()" id="btn-cancel-mod" style="display:none; margin-top:1rem;">Cancelar</button>
+        <h3 id="panel-title-mod">📂 Create folder</h3>
+        <input type="hidden" id="edit-mod-id" value=""/>
+        <span class="field-label">Folder name</span>
+        <input type="text" id="t-mod-title" placeholder="e.g. Module 1 — The American R"/>
+        <div style="display:flex;gap:8px;">
+          <button class="primary-btn" onclick="saveModule()">Save folder</button>
+          <button class="secondary-btn" id="btn-cancel-mod" style="display:none;margin-top:.9rem;" onclick="cancelEditMod()">Cancel</button>
         </div>
       </div>
 
+      <!-- LESSON FORM -->
       <div class="t-panel">
-        <h3 id="panel-title-les">📝 2. Agregar/Editar Página</h3>
-        <input type="hidden" id="edit-les-id" value="">
-        
-        <div class="field-label">Guardar en la carpeta:</div>
+        <h3 id="panel-title-les">📝 Add lesson</h3>
+        <input type="hidden" id="edit-les-id" value=""/>
+        <span class="field-label">Save in folder</span>
         <select id="t-les-module"></select>
-
-        <div class="field-label">Tipo de Página</div>
+        <span class="field-label">Lesson type</span>
         <select id="t-les-type" onchange="toggleLessonFields()">
-          <option value="video">📺 Video Exclusivo</option>
-          <option value="text">📄 Material de Lectura y Links</option>
-          <option value="task">📝 Tarea Interactiva</option>
+          <option value="video">📺 Video</option>
+          <option value="text">📄 Reading material</option>
+          <option value="task">📝 Interactive exercise</option>
         </select>
+        <span class="field-label">Lesson title</span>
+        <input type="text" id="t-les-title" placeholder="e.g. Lesson 1 — Short I vs Long E"/>
+        <hr style="border:0;border-top:1px solid var(--skool-border);margin:1.25rem 0;"/>
 
-        <div class="field-label">Título de la Página</div>
-        <input type="text" id="t-les-title" placeholder="Ej: Lesson 1">
-
-        <hr style="border:0; border-top:1px solid var(--skool-border); margin: 1.5rem 0;">
-
+        <!-- VIDEO FIELDS -->
         <div id="fields-video">
-            <div class="field-label">URL del Video (YouTube Link)</div>
-            <input type="url" id="t-les-video-url" placeholder="Pega el link de YouTube aquí">
+          <span class="field-label">YouTube URL</span>
+          <input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..."/>
         </div>
 
+        <!-- TEXT FIELDS -->
         <div id="fields-text" style="display:none;">
-            <div class="field-label">Contenido de Lectura</div>
-            <div id="quill-editor-container"></div>
+          <span class="field-label">Reading content</span>
+          <div id="quill-editor-container"></div>
         </div>
 
+        <!-- TASK FIELDS -->
         <div id="fields-task" style="display:none;">
-            <div class="field-label">Tipo de Ejercicio</div>
-            <select id="t-ex-type" onchange="renderQuestionFields()">
-              <option value="minimal_pairs">Minimal pairs</option>
-              <option value="multiple_choice">Multiple choice</option>
-              <option value="fill_in_blank">Fill in the blank</option>
-              <option value="matching">Matching</option>
-              <option value="dictation">Dictation / Transcription</option>
-            </select>
-            <div class="field-label">Audio General de la Tarea</div>
-            <input type="file" id="t-ex-audio" accept="audio/*">
-            <div id="t-ex-audio-current" style="font-size:11px; color:var(--text-muted); margin-bottom:10px;"></div>
-            <div class="field-label">Preguntas</div>
-            <div class="q-builder" id="q-builder"></div>
-            <button class="add-q-btn" onclick="addQuestion()">+ Agregar pregunta</button>
+          <span class="field-label">Exercise type</span>
+          <select id="t-ex-type" onchange="renderQuestionFields()">
+            <option value="minimal_pairs">Minimal pairs</option>
+            <option value="multiple_choice">Multiple choice</option>
+            <option value="fill_in_blank">Fill in the blank</option>
+            <option value="matching">Matching</option>
+            <option value="dictation">Dictation / Transcription</option>
+          </select>
+          <span class="field-label">General audio for exercise (optional)</span>
+          <input type="file" id="t-ex-audio" accept="audio/*"/>
+          <div id="t-ex-audio-current" style="font-size:11px;color:var(--text-muted);margin-top:-4px;margin-bottom:8px;"></div>
+          <span class="field-label">Questions</span>
+          <div id="q-builder"></div>
+          <button class="add-q-btn" onclick="addQuestion()">+ Add question</button>
         </div>
 
-        <div id="fields-shared-audios" style="margin-top:20px; background:#F0FDF4; padding:15px; border-radius:var(--radius-sm); border:1px solid #BBF7D0;">
-            <p style="font-size: 12px; font-weight: 700; color: #166534; margin-bottom: 5px;">🎧 Lista de Audios de la Clase (Estilo Pronuncian)</p>
-            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Agrega audios cliqueables para tus ejemplos o palabras de práctica.</p>
-            <div style="display:flex; gap:10px; margin-bottom:10px;">
-                <input type="text" id="t-audio-label" placeholder="Nombre (Ej: Audio 1)" style="margin-bottom:0; flex:1;">
-                <input type="file" id="t-audio-file" accept="audio/*" style="margin-bottom:0; width:auto; flex:1;">
-                <button class="secondary-btn" onclick="addSharedAudioToList()" style="padding:4px 12px;">+ Añadir</button>
-            </div>
-            <div id="t-shared-audios-list-render" style="font-size:12px; color:var(--text); font-weight:500;"></div>
+        <!-- SHARED AUDIOS -->
+        <div style="margin-top:1.25rem;background:#F0FDF4;padding:14px;border-radius:var(--radius-sm);border:1px solid #BBF7D0;">
+          <p style="font-size:12px;font-weight:700;color:#166534;margin-bottom:4px;">🎧 Lesson audio examples</p>
+          <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">Add clickable audios for practice words or examples.</p>
+          <div class="audio-add-row">
+            <input type="text" id="t-audio-label" placeholder="Label (e.g. Word 1)" style="margin-bottom:0;flex:1;"/>
+            <input type="file" id="t-audio-file" accept="audio/*" style="margin-bottom:0;width:auto;flex:1;"/>
+            <button class="secondary-btn" onclick="addSharedAudio()" id="btn-add-audio">+ Add</button>
+          </div>
+          <div id="t-shared-audios-render"></div>
         </div>
 
-        <div style="margin-top: 20px; background: #FFF9F6; padding: 15px; border-radius: var(--radius-sm); border: 1px solid var(--accent);">
-            <p style="font-size: 12px; font-weight: 700; color: var(--accent-dark); margin-bottom: 5px;">📎 Adjuntar Recursos (PDFs, Guías, Descargables)</p>
-            <input type="file" id="t-les-resources" accept=".pdf, .png, .jpg, .jpeg, .doc, .docx" multiple>
-            <div id="t-les-resources-current" style="font-size:11px; color:var(--text-muted); margin-top:5px;"></div>
+        <!-- RESOURCES -->
+        <div style="margin-top:1.25rem;background:#FFF9F6;padding:14px;border-radius:var(--radius-sm);border:1px solid var(--accent);">
+          <p style="font-size:12px;font-weight:700;color:var(--accent-dark);margin-bottom:4px;">📎 Attach resources (PDFs, guides, images)</p>
+          <input type="file" id="t-les-resources" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" multiple/>
+          <div id="t-les-resources-current" style="font-size:11px;color:var(--text-muted);margin-top:-4px;"></div>
         </div>
 
-        <div style="display:flex; gap:10px;">
-            <button class="primary-btn" onclick="saveLesson()" id="btn-save-les" style="margin-top: 1.5rem;">Guardar Página</button>
-            <button class="secondary-btn" onclick="cancelEditLes()" id="btn-cancel-les" style="display:none; margin-top: 1.5rem;">Cancelar</button>
+        <div style="display:flex;gap:8px;">
+          <button class="primary-btn" onclick="saveLesson()" id="btn-save-les">Save lesson</button>
+          <button class="secondary-btn" id="btn-cancel-les" style="display:none;margin-top:.9rem;" onclick="cancelEditLes()">Cancel</button>
         </div>
       </div>
+    </div>
 
+    <!-- CONTENT MANAGER -->
+    <div>
       <div class="t-panel">
-        <h3>🛠️ Gestión de Contenido</h3>
-        <div id="t-manage-list"></div>
+        <h3>🛠 Content manager</h3>
+        <div id="t-manage-list"><div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center;">No content yet.</div></div>
       </div>
     </div>
   </div>
 </div>
 
-<footer>Built with <strong>AccentUp</strong></footer>
+<footer>Built with <strong>AccentUp</strong> · American English pronunciation for Spanish speakers</footer>
 
 <script>
 /* ══════════════════════════════════════════
-   🚀 CONFIGURACIÓN PRINCIPAL
+   CONFIG
 ══════════════════════════════════════════ */
-// 👇 TU GMAIL REAL ACÁ 👇
-const TEACHER_EMAIL = 'englishclasseswcami@gmail.com'; 
-const STUDENT_ACCESS_CODE = 'ACCENTUP-7774392'; 
-
+const TEACHER_EMAIL = 'englishclasseswcami@gmail.com'; // ← CAMBIÁ ESTO por tu email real
+const STUDENT_ACCESS_CODE = 'ACCENTUP-7774392'; // ← Código para que se registren tus estudiantes
 const SUPABASE_URL = 'https://flfyifdaitfnxncoxzxe.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsZnlpZmRhaXRmbnhuY294enhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4Njc0NTQsImV4cCI6MjA5NjQ0MzQ1NH0.wKMJk0EIYi1hRwoE1EN5lfEGIn2c9YrJhPi_UO2w2gI';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsZnlpZmRhaXRmbnhuY294enhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4Njc0NTQsImV4cCI6MjA5NjQ0MzQ1NH0.wKMJk0EIYi1hRwoE1EN5lfEGIn2c9YrJhPi_UO2w2gI';
 
-let supabaseClient = null; let currentUser = null; let isLoginMode = true;
-let dbModules = []; let dbLessons = []; let dbStudentProgress = [];
-let quillEditor = null; let isUploadingAudio = false;
-let temporarySharedAudiosList = [];
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+let currentUser = null;
+let isLoginMode = true;
+let dbModules = [], dbLessons = [], dbProgress = [];
+let currentLesson = null, activeModuleId = null;
+let studentAnswers = {}, matchState = { leftSel: null, pairs: {} };
+let questionRows = [], tempAudios = [], isUploadingAudio = false;
+let quillEditor = null;
 
-function formatYouTubeUrl(url) {
-    if (!url || url === 'EMPTY' || url.trim() === '') return '';
-    let videoId = '';
-    if (url.includes('watch?v=')) videoId = url.split('v=')[1].split('&')[0];
-    else if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split('?')[0];
-    else if (url.includes('embed/')) return url;
-    return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
-}
-
+/* ══════════════════════════════════════════
+   INIT
+══════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
-    quillEditor = new Quill('#quill-editor-container', {
-        theme: 'snow', placeholder: 'Escribe tu material de lectura...',
-        modules: { toolbar: [['bold', 'italic', 'underline'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link', 'clean']] }
-    });
-    try {
-        if (window.supabase) {
-            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            supabaseClient.auth.onAuthStateChange((event, session) => {
-                currentUser = session?.user || null; updateAuthUI();
-                if (currentUser) { fetchClassroomData(); fetchStudentProgress(); }
-            });
-        }
-    } catch (error) { console.error(error); }
+  quillEditor = new Quill('#quill-editor-container', {
+    theme: 'snow',
+    placeholder: 'Write your lesson content here...',
+    modules: { toolbar: [['bold','italic','underline'],[{'list':'ordered'},{'list':'bullet'}],['link','clean']] }
+  });
+  sb.auth.onAuthStateChange((_e, session) => {
+    currentUser = session?.user || null;
+    updateAuthUI();
+    if (currentUser) { fetchData(); }
+  });
+  renderQFields();
+  toggleLessonFields();
 });
 
-/* AUTH & NAV */
-function updateAuthUI() {
-    const authBtn = document.getElementById('nav-auth-btn');
-    const teacherTab = document.getElementById('nav-teacher-tab');
-    if (currentUser) {
-        authBtn.textContent = "Log Out"; authBtn.classList.add('logout-btn-nav');
-        if (currentUser.email === TEACHER_EMAIL) teacherTab.style.display = 'inline-block';
-        else teacherTab.style.display = 'none';
-        if (document.getElementById('page-auth').classList.contains('active')) document.querySelector('[data-page="classroom"]').click();
-    } else {
-        authBtn.textContent = "Log In"; authBtn.classList.remove('logout-btn-nav'); teacherTab.style.display = 'none';
-        if (document.querySelector('.page.active')?.id === 'page-classroom') document.querySelector('[data-page="vowels"]').click();
-    }
-}
-function toggleAuthMode() {
-    isLoginMode = !isLoginMode;
-    document.getElementById('auth-title').textContent = isLoginMode ? "Log In" : "Sign Up";
-    document.getElementById('auth-toggle').textContent = isLoginMode ? "¿No tienes cuenta? Regístrate" : "¿Ya tienes cuenta? Inicia sesión";
-    document.getElementById('auth-error').style.display = "none";
-    document.getElementById('auth-code').style.display = isLoginMode ? "none" : "block";
-}
-async function handleAuth() {
-    const errorMsg = document.getElementById('auth-error'); errorMsg.style.display = "block";
-    const email = document.getElementById('auth-email').value; const password = document.getElementById('auth-pw').value;
-    if (!isLoginMode && document.getElementById('auth-code').value !== STUDENT_ACCESS_CODE) { errorMsg.style.color = "var(--red)"; errorMsg.textContent = "Código incorrecto."; return; }
-    errorMsg.style.color = "var(--text)"; errorMsg.textContent = "Cargando...";
-    let res = isLoginMode ? await supabaseClient.auth.signInWithPassword({ email, password }) : await supabaseClient.auth.signUp({ email, password });
-    if (res.error) { errorMsg.style.color = "var(--red)"; errorMsg.textContent = res.error.message; } else errorMsg.style.display = "none";
-}
-document.querySelectorAll(".nav-tab").forEach(tab=>{ tab.onclick=()=>{ if (tab.id === 'nav-auth-btn') { if (currentUser) supabaseClient.auth.signOut(); else goToPage("auth", tab); } else { if (tab.classList.contains('auth-required') && !currentUser) { alert("Inicia sesión."); return; } goToPage(tab.dataset.page, tab); } }; });
-function goToPage(pageId, tabElement) {
-    document.querySelectorAll(".nav-tab").forEach(t=>t.classList.remove("active")); document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-    if(tabElement) tabElement.classList.add("active"); else document.querySelector(`[data-page="${pageId}"]`)?.classList.add("active");
-    document.getElementById("page-"+pageId).classList.add("active");
-    document.getElementById('hero-banner').style.display = (pageId==='classroom'||pageId==='teacher'||pageId==='auth') ? 'none' : 'block';
-    if(pageId === 'classroom') backToClassroomGrid();
-    window.scrollTo(0,0);
-}
-
-/* BACKEND DATA */
-async function fetchClassroomData() {
-    if (!supabaseClient) return;
-    try {
-        // Consultas súper limpias sin ordenamiento doble para esquivar bugs del schema cache de Supabase
-        let resMods = await supabaseClient.from('modules').select('*');
-        dbModules = resMods.data || [];
-        
-        let resLess = await supabaseClient.from('lessons').select('*');
-        dbLessons = resLess.data || [];
-    } catch(e) { console.error("Error trayendo datos de Supabase:", e); }
-    renderClassroomGrid(); updateTeacherModuleSelect(); renderManageList();
-}
-async function fetchStudentProgress() {
-    if (!supabaseClient || !currentUser) return;
-    dbStudentProgress = (await supabaseClient.from('student_progress').select('*').eq('user_id', currentUser.id)).data || [];
-    if (activeModuleId) renderSidebarForModule(activeModuleId);
-}
-
-/* CLASSROOM INTERFACE */
-function renderClassroomGrid() {
-    const grid = document.getElementById("classroom-modules-grid"); if (!grid) return;
-    if (dbModules.length === 0) { grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-light); grid-column: 1/-1;">Aún no hay carpetas creadas.</div>`; return; }
-    grid.innerHTML = dbModules.map((m) => {
-        const count = dbLessons ? dbLessons.filter(l => l.module_id === m.id).length : 0;
-        return `<div class="course-card" onclick="openClassroomPlayer('${m.id}')"><div class="course-card-title">${m.title}</div><div class="course-card-desc">Contiene ${count} página${count !== 1 ? 's' : ''}</div></div>`;
-    }).join("");
-}
-function backToClassroomGrid() { document.getElementById("classroom-player-view").style.display = "none"; document.getElementById("classroom-grid-view").style.display = "block"; hideAllClassroomViews(); activeModuleId = null; }
-function openClassroomPlayer(moduleId) { activeModuleId = moduleId; document.getElementById("classroom-grid-view").style.display = "none"; document.getElementById("classroom-player-view").style.display = "block"; document.getElementById("sidebar-mod-title").textContent = dbModules.find(m => m.id === moduleId)?.title || "Carpeta"; renderSidebarForModule(moduleId); document.getElementById("view-welcome").style.display = "block"; }
-const iconMap = { 'video': '📺', 'text': '📄', 'task': '📝' };
-function renderSidebarForModule(moduleId) {
-    const sidebar = document.getElementById("sidebar-render"); const modLess = dbLessons.filter(l => l.module_id === moduleId);
-    if(modLess.length === 0) { sidebar.innerHTML = `<div style="font-size:12px; color:var(--text-light); text-align:center; margin-top:1rem;">Carpeta vacía</div>`; return; }
-    sidebar.innerHTML = modLess.map(les => {
-        const isCompleted = dbStudentProgress.some(p => p.lesson_id === les.id);
-        return `<div class="c-item" onclick="showLessonContent('${les.id}')" id="item-les-${les.id}"><div style="display:flex; align-items:center; gap:8px; overflow:hidden;"><span class="c-item-icon">${iconMap[les.type]}</span><span class="c-item-title">${les.title}</span></div>${les.type==='task'&&isCompleted ? `<span>✅</span>` : ''}</div>`;
-    }).join("");
-}
-
-function renderAudiosBox(panelId, audiosList) {
-    const panel = document.getElementById(panelId); if (!panel) return;
-    const list = Array.isArray(audiosList) ? audiosList : [];
-    if (list.length === 0) { panel.style.display = "none"; panel.innerHTML = ""; return; }
-    panel.style.display = "block";
-    panel.innerHTML = list.map(aud => `<div class="lesson-audio-row"><span class="lesson-audio-label">🔊 ${aud.label}</span><audio controls src="${aud.url}"></audio></div>`).join("");
-}
-
-function renderResourcesList(panelId, resourcesArray) {
-    const panel = document.getElementById(panelId); if (!panel) return;
-    const list = Array.isArray(resourcesArray) ? resourcesArray : [];
-    if (list.length === 0) { panel.style.display = "none"; panel.innerHTML = ""; return; }
-    panel.style.display = "block";
-    panel.innerHTML = `<div class="resources-heading">Resources</div><div class="resources-list">${list.map(res => `<a href="${res.url}" target="_blank" class="resource-link">📎 ${res.name}</a>`).join("")}</div>`;
-}
-
-function showLessonContent(lessonId) {
-    hideAllClassroomViews(); setActiveSidebarItem(`item-les-${lessonId}`);
-    currentLesson = dbLessons.find(l => l.id === lessonId); if (!currentLesson) return;
-    
-    const resources = Array.isArray(currentLesson.resources) ? currentLesson.resources : [];
-    const sharedAudios = Array.isArray(currentLesson.content) && currentLesson.type !== 'task' ? currentLesson.content : [];
-
-    if (currentLesson.type === 'video') {
-        document.getElementById("view-video").style.display = "block"; document.getElementById("cv-video-title").textContent = currentLesson.title;
-        document.getElementById("cv-video-player").innerHTML = `<iframe src="${currentLesson.video_url}" allowfullscreen></iframe>`;
-        renderAudiosBox("cv-video-audios", sharedAudios); renderResourcesList("cv-video-resources", resources);
-    } 
-    else if (currentLesson.type === 'text') {
-        document.getElementById("view-text").style.display = "block"; document.getElementById("cv-text-title").textContent = currentLesson.title;
-        document.getElementById("cv-text-content").innerHTML = currentLesson.text_content;
-        renderAudiosBox("cv-text-audios", sharedAudios); renderResourcesList("cv-text-resources", resources);
-    }
-    else if (currentLesson.type === 'task') {
-        studentAnswers = {}; matchState = { leftSel: null, pairs: {} };
-        document.getElementById("view-exercise").style.display = "block"; document.getElementById("player-title").textContent = currentLesson.title;
-        const audioEl = document.getElementById("player-audio");
-        if (currentLesson.audio_url) { audioEl.src = currentLesson.audio_url; audioEl.style.display = "block"; } else { audioEl.style.display = "none"; }
-        document.getElementById("submit-btn").disabled = false; document.getElementById("submit-btn").style.display = "inline-block"; document.getElementById("retry-btn").style.display = "none"; document.getElementById("score-area").innerHTML = "";
-        renderPlayerQuestions(); renderResourcesList("cv-task-resources", resources);
-        if(dbStudentProgress.some(p => p.lesson_id === lessonId)) showScore(dbStudentProgress.find(p => p.lesson_id === lessonId).score, dbStudentProgress.find(p => p.lesson_id === lessonId).total_questions, [], true);
-    }
-}
-
-/* PLAYER EXERCISES */
-function renderPlayerQuestions() {
-  const wrap = document.getElementById("player-questions"); const content = Array.isArray(currentLesson.task_content) ? currentLesson.task_content : [];
-  if (currentLesson.task_type === "matching") {
-    const lefts = content.map(q=>q.left); const rights = shuffle([...content.map(q=>q.right)]);
-    wrap.innerHTML = `<div class="ex-question-block"><div class="matching-cols"><div><div class="match-col-label">Elementos</div>${lefts.map((l,i)=>`<div class="match-chip" id="ml-${i}" onclick="matchSelectLeft(${i},'${esc(l)}')">${l}</div>`).join("")}</div><div><div class="match-col-label">Pares</div>${rights.map((r,i)=>`<div class="match-chip" id="mr-${i}" onclick="matchSelectRight(${i},'${esc(r)}')">${r}</div>`).join("")}</div></div></div>`; return;
+/* ══════════════════════════════════════════
+   AUTH
+══════════════════════════════════════════ */
+function handleNavAuth() {
+  if (currentUser) {
+    sb.auth.signOut();
+  } else {
+    goToPage('auth');
   }
-  wrap.innerHTML = content.map((q,i)=>{
-    const audioHtml = q.audio_url ? `<audio controls src="${q.audio_url}" class="player-audio" style="margin-top:0; margin-bottom:12px; height:38px;"></audio>` : '';
-    if (currentLesson.task_type==="fill_in_blank") return `<div class="ex-question-block"><div class="ex-q-num">Pregunta ${i+1}</div>${audioHtml}<div class="ex-q-text">${q.prompt}</div><div class="fitb-row"><input class="fitb-input" id="fitb-${i}" type="text" autocomplete="off" oninput="studentAnswers[${i}]=this.value"/></div></div>`;
-    if (currentLesson.task_type==="dictation") return `<div class="ex-question-block"><div class="ex-q-num">Pregunta ${i+1}</div>${audioHtml}<div class="ex-q-text">${q.prompt}</div><textarea class="dictation-input" id="dict-${i}" placeholder="Escribe lo que escuchas..." oninput="studentAnswers[${i}]=this.value"></textarea></div>`;
-    return `<div class="ex-question-block"><div class="ex-q-num">Pregunta ${i+1}</div>${audioHtml}<div class="ex-q-text">${q.prompt}</div><div class="options-grid">${(q.options||[]).map((o,j)=>`<button class="opt-btn" id="opt-${i}-${j}" onclick="selectOpt(${i},`+j+`,'${esc(o)}',${JSON.stringify(q.options)})">${o}</button>`).join("")}</div></div>`;
-  }).join("");
 }
 
-/* TEACHER DASHBOARD CREATOR */
-async function addSharedAudioToList() {
-    const fileInput = document.getElementById('t-audio-file'); const labelInput = document.getElementById('t-audio-label');
-    const file = fileInput.files[0]; const label = labelInput.value.trim();
-    if (!file || !label) { alert("Pon un nombre y elige un archivo de audio."); return; }
-    isUploadingAudio = true; labelInput.disabled = true; fileInput.disabled = true;
-    const renderList = document.getElementById('t-shared-audios-list-render');
-    renderList.innerHTML += `<div id="uploading-temp-state">⏳ Subiendo audio "${label}" al disco...</div>`;
-    const fileName = `shared_${Date.now()}.${file.name.split('.').pop()}`;
-    const { error } = await supabaseClient.storage.from('audios').upload(fileName, file);
-    if(error) { alert(error.message); document.getElementById("uploading-temp-state")?.remove(); isUploadingAudio=false; return; }
-    const publicUrl = supabaseClient.storage.from('audios').getPublicUrl(fileName).data.publicUrl;
-    temporarySharedAudiosList.push({ label: label, url: publicUrl });
-    labelInput.value = ""; fileInput.value = ""; labelInput.disabled = false; fileInput.disabled = false; isUploadingAudio = false;
-    renderTeacherAudiosList();
-}
-function renderTeacherAudiosList() {
-    document.getElementById('t-shared-audios-list-render').innerHTML = temporarySharedAudiosList.map((a, i) => `<div style="padding:6px; background:white; border:1px solid var(--skool-border); border-radius:4px; margin-top:4px; display:flex; justify-content:space-between; align-items:center;"><span>🔊 ${a.label}</span> <button class="danger-btn" style="padding:2px 6px; font-size:10px; margin-left:10px;" onclick="temporarySharedAudiosList.splice(${i},1);renderTeacherAudiosList();">Eliminar</button></div>`).join("");
+function updateAuthUI() {
+  const btn = document.getElementById('nav-auth-btn');
+  const teacherTab = document.getElementById('nav-teacher-tab');
+  if (currentUser) {
+    btn.textContent = 'Log out';
+    btn.classList.add('logout-btn-nav');
+    btn.classList.remove('auth-btn');
+    if (currentUser.email === TEACHER_EMAIL) {
+      teacherTab.style.display = 'inline-block';
+    }
+    // If on auth page, redirect to classroom
+    if (document.getElementById('page-auth').classList.contains('active')) {
+      goToPage('classroom');
+    }
+  } else {
+    btn.textContent = 'Log in';
+    btn.classList.remove('logout-btn-nav');
+    btn.classList.add('auth-btn');
+    teacherTab.style.display = 'none';
+    // If on protected page, redirect to vowels
+    const activePage = document.querySelector('.page.active')?.id;
+    if (activePage === 'page-classroom' || activePage === 'page-teacher') {
+      goToPage('vowels');
+    }
+  }
 }
 
+function toggleAuthMode() {
+  isLoginMode = !isLoginMode;
+  document.getElementById('auth-title').textContent = isLoginMode ? 'Welcome back' : 'Create account';
+  document.getElementById('auth-subtitle').textContent = isLoginMode ? 'Log in to access your classroom.' : 'Sign up with your invitation code.';
+  document.getElementById('auth-toggle').textContent = isLoginMode ? "Don't have an account? Sign up" : 'Already have an account? Log in';
+  document.getElementById('auth-code').style.display = isLoginMode ? 'none' : 'block';
+  document.getElementById('auth-submit-btn').textContent = isLoginMode ? 'Log in' : 'Create account';
+  document.getElementById('auth-error').style.display = 'none';
+}
+
+async function handleAuth() {
+  const email = document.getElementById('auth-email').value.trim();
+  const pw = document.getElementById('auth-pw').value;
+  const code = document.getElementById('auth-code').value.trim();
+  const errEl = document.getElementById('auth-error');
+  errEl.style.display = 'none';
+  if (!isLoginMode && code !== STUDENT_ACCESS_CODE) {
+    errEl.textContent = 'Incorrect invitation code.'; errEl.style.display = 'block'; return;
+  }
+  const btn = document.getElementById('auth-submit-btn');
+  btn.disabled = true; btn.textContent = 'Loading...';
+  const res = isLoginMode
+    ? await sb.auth.signInWithPassword({ email, password: pw })
+    : await sb.auth.signUp({ email, password: pw });
+  btn.disabled = false; btn.textContent = isLoginMode ? 'Log in' : 'Create account';
+  if (res.error) { errEl.textContent = res.error.message; errEl.style.display = 'block'; }
+}
+
+/* ══════════════════════════════════════════
+   NAV
+══════════════════════════════════════════ */
+document.querySelectorAll('.nav-tab[data-page]').forEach(tab => {
+  tab.onclick = () => {
+    const page = tab.dataset.page;
+    if ((page === 'classroom' || page === 'teacher') && !currentUser) {
+      goToPage('auth'); return;
+    }
+    goToPage(page);
+  };
+});
+
+function goToPage(pageId) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const tab = document.querySelector(`.nav-tab[data-page="${pageId}"]`);
+  if (tab) tab.classList.add('active');
+  document.getElementById('page-' + pageId).classList.add('active');
+  const hiddenHero = ['classroom','teacher','auth'];
+  document.getElementById('hero-banner').style.display = hiddenHero.includes(pageId) ? 'none' : 'block';
+  if (pageId === 'classroom') renderClassroomGrid();
+  if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); }
+  window.scrollTo(0, 0);
+}
+
+/* ══════════════════════════════════════════
+   DATA
+══════════════════════════════════════════ */
+async function fetchData() {
+  if (!currentUser) return;
+  const [resMod, resLes, resProg] = await Promise.all([
+    sb.from('modules').select('*').order('order_index'),
+    sb.from('lessons').select('*').order('order_index'),
+    sb.from('student_progress').select('*').eq('user_id', currentUser.id)
+  ]);
+  dbModules = resMod.data || [];
+  dbLessons = resLes.data || [];
+  dbProgress = resProg.data || [];
+  renderClassroomGrid();
+  updateModuleSelect();
+  renderManageList();
+}
+
+/* ══════════════════════════════════════════
+   CLASSROOM
+══════════════════════════════════════════ */
+function renderClassroomGrid() {
+  const grid = document.getElementById('classroom-modules-grid');
+  if (!grid) return;
+  if (!currentUser) { grid.innerHTML = '<div style="color:var(--text-light);font-size:14px;text-align:center;padding:3rem 0;grid-column:1/-1;">Log in to access the classroom.</div>'; return; }
+  if (!dbModules.length) { grid.innerHTML = '<div style="color:var(--text-light);font-size:14px;text-align:center;padding:3rem 0;grid-column:1/-1;">No content yet — your teacher will add modules soon!</div>'; return; }
+  grid.innerHTML = dbModules.map(m => {
+    const count = dbLessons.filter(l => l.module_id === m.id).length;
+    return `<div class="course-card" onclick="openModule('${m.id}')">
+      <div class="course-card-title">${m.title}</div>
+      <div class="course-card-desc">${count} lesson${count !== 1 ? 's' : ''}</div>
+    </div>`;
+  }).join('');
+}
+
+function openModule(moduleId) {
+  activeModuleId = moduleId;
+  document.getElementById('classroom-grid-view').style.display = 'none';
+  document.getElementById('classroom-player-view').style.display = 'block';
+  document.getElementById('sidebar-mod-title').textContent = dbModules.find(m => m.id === moduleId)?.title || '';
+  renderSidebar(moduleId);
+  hideAllViews();
+  document.getElementById('view-welcome').style.display = 'block';
+}
+
+function backToClassroomGrid() {
+  document.getElementById('classroom-grid-view').style.display = 'block';
+  document.getElementById('classroom-player-view').style.display = 'none';
+  hideAllViews();
+  activeModuleId = null;
+}
+
+function renderSidebar(moduleId) {
+  const sidebar = document.getElementById('sidebar-render');
+  const lessons = dbLessons.filter(l => l.module_id === moduleId);
+  const iconMap = { video: '📺', text: '📄', task: '📝' };
+  if (!lessons.length) { sidebar.innerHTML = '<div style="font-size:12px;color:var(--text-light);text-align:center;margin-top:1rem;">Empty folder</div>'; return; }
+  sidebar.innerHTML = lessons.map(l => {
+    const done = dbProgress.some(p => p.lesson_id === l.id);
+    return `<div class="c-item" id="item-${l.id}" onclick="showLesson('${l.id}')">
+      <div style="display:flex;align-items:center;gap:8px;overflow:hidden;">
+        <span>${iconMap[l.type] || '📄'}</span>
+        <span class="c-item-title">${l.title}</span>
+      </div>
+      ${l.type === 'task' && done ? '<span>✅</span>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function setActiveSidebarItem(id) {
+  document.querySelectorAll('.c-item').forEach(el => el.classList.remove('active'));
+  document.getElementById(id)?.classList.add('active');
+}
+
+function hideAllViews() {
+  ['view-welcome','view-video','view-text','view-exercise'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.style.display = 'none';
+  });
+  const vp = document.getElementById('cv-video-player'); if (vp) vp.innerHTML = '';
+}
+
+function renderAudios(panelId, list) {
+  const el = document.getElementById(panelId); if (!el) return;
+  const arr = Array.isArray(list) ? list : [];
+  if (!arr.length) { el.style.display = 'none'; return; }
+  el.style.display = 'block';
+  el.innerHTML = arr.map(a => `<div class="lesson-audio-row"><span class="lesson-audio-label">🔊 ${a.label}</span><audio controls src="${a.url}"></audio></div>`).join('');
+}
+
+function renderResources(panelId, list) {
+  const el = document.getElementById(panelId); if (!el) return;
+  const arr = Array.isArray(list) ? list : [];
+  if (!arr.length) { el.style.display = 'none'; return; }
+  el.style.display = 'block';
+  el.innerHTML = `<div class="resources-heading">Resources</div><div class="resources-list">${arr.map(r => `<a href="${r.url}" target="_blank" class="resource-link">📎 ${r.name}</a>`).join('')}</div>`;
+}
+
+function showLesson(lessonId) {
+  hideAllViews();
+  setActiveSidebarItem('item-' + lessonId);
+  currentLesson = dbLessons.find(l => l.id === lessonId);
+  if (!currentLesson) return;
+
+  const audios = Array.isArray(currentLesson.content) ? currentLesson.content : [];
+  const resources = Array.isArray(currentLesson.resources) ? currentLesson.resources : [];
+
+  if (currentLesson.type === 'video') {
+    document.getElementById('view-video').style.display = 'block';
+    document.getElementById('cv-video-title').textContent = currentLesson.title;
+    // ── FIX: convert YouTube URL to embed before rendering ──
+    const embedUrl = formatYouTubeUrl(currentLesson.video_url);
+    if (embedUrl) {
+      document.getElementById('cv-video-player').innerHTML = `<iframe src="${embedUrl}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+    } else {
+      document.getElementById('cv-video-player').innerHTML = '<div style="color:#fff;padding:2rem;text-align:center;">No video URL saved.</div>';
+    }
+    renderAudios('cv-video-audios', audios);
+    renderResources('cv-video-resources', resources);
+  }
+  else if (currentLesson.type === 'text') {
+    document.getElementById('view-text').style.display = 'block';
+    document.getElementById('cv-text-title').textContent = currentLesson.title;
+    document.getElementById('cv-text-content').innerHTML = currentLesson.text_content || '';
+    renderAudios('cv-text-audios', audios);
+    renderResources('cv-text-resources', resources);
+  }
+  else if (currentLesson.type === 'task') {
+    studentAnswers = {}; matchState = { leftSel: null, pairs: {} };
+    document.getElementById('view-exercise').style.display = 'block';
+    document.getElementById('player-title').textContent = currentLesson.title;
+    const audioEl = document.getElementById('player-audio');
+    if (currentLesson.audio_url) { audioEl.src = currentLesson.audio_url; audioEl.style.display = 'block'; }
+    else { audioEl.style.display = 'none'; }
+    document.getElementById('submit-btn').disabled = false;
+    document.getElementById('submit-btn').style.display = 'inline-block';
+    document.getElementById('retry-btn').style.display = 'none';
+    document.getElementById('score-area').innerHTML = '';
+    renderPlayerQuestions();
+    renderResources('cv-task-resources', resources);
+    // Show previous score if already done
+    const prev = dbProgress.find(p => p.lesson_id === lessonId);
+    if (prev) showScore(prev.score, prev.total_questions, [], true);
+  }
+}
+
+/* ══════════════════════════════════════════
+   VIDEO URL HELPER
+══════════════════════════════════════════ */
+function formatYouTubeUrl(url) {
+  if (!url || url.trim() === '') return '';
+  url = url.trim();
+  // Already an embed URL
+  if (url.includes('youtube.com/embed/')) return url;
+  // youtu.be short link
+  if (url.includes('youtu.be/')) {
+    const id = url.split('youtu.be/')[1].split('?')[0].split('&')[0];
+    return `https://www.youtube.com/embed/${id}`;
+  }
+  // Standard watch URL
+  if (url.includes('youtube.com/watch')) {
+    const params = new URL(url).searchParams;
+    const id = params.get('v');
+    return id ? `https://www.youtube.com/embed/${id}` : url;
+  }
+  return url;
+}
+
+/* ══════════════════════════════════════════
+   EXERCISE PLAYER
+══════════════════════════════════════════ */
+function renderPlayerQuestions() {
+  const wrap = document.getElementById('player-questions');
+  const content = Array.isArray(currentLesson.task_content) ? currentLesson.task_content : [];
+  if (currentLesson.task_type === 'matching') {
+    const lefts = content.map(q => q.left);
+    const rights = shuffle([...content.map(q => q.right)]);
+    wrap.innerHTML = `<div class="ex-question-block"><div class="matching-cols">
+      <div><div class="match-col-label">Words</div>${lefts.map((l,i) => `<div class="match-chip" id="ml-${i}" onclick="matchLeft(${i},'${esc(l)}')">${l}</div>`).join('')}</div>
+      <div><div class="match-col-label">Sounds / meanings</div>${rights.map((r,i) => `<div class="match-chip" id="mr-${i}" onclick="matchRight(${i},'${esc(r)}')">${r}</div>`).join('')}</div>
+    </div></div>`;
+    window._matchRights = rights; return;
+  }
+  wrap.innerHTML = content.map((q, i) => {
+    const qAudio = q.audio_url ? `<audio controls src="${q.audio_url}" style="width:100%;height:36px;margin-bottom:10px;border-radius:20px;"></audio>` : '';
+    if (currentLesson.task_type === 'fill_in_blank') {
+      return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${q.prompt}</div><input class="fitb-input" id="fitb-${i}" type="text" placeholder="Your answer…" autocomplete="off" oninput="studentAnswers[${i}]=this.value"/></div>`;
+    }
+    if (currentLesson.task_type === 'dictation') {
+      return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${q.prompt}</div><textarea class="dictation-input" id="dict-${i}" placeholder="Write what you hear…" oninput="studentAnswers[${i}]=this.value"></textarea></div>`;
+    }
+    const opts = Array.isArray(q.options) ? q.options : [];
+    const shuffled = currentLesson.task_type === 'minimal_pairs' ? shuffle([...opts]) : opts;
+    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${q.prompt}</div>
+      <div class="options-grid">${shuffled.map((o, j) => `<button class="opt-btn" id="opt-${i}-${j}" onclick="selectOpt(${i},${j},'${esc(o)}',${JSON.stringify(shuffled).replace(/"/g,'&quot;')})">${o}</button>`).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+function selectOpt(qi, oi, val, opts) {
+  opts.forEach((_, j) => { const b = document.getElementById(`opt-${qi}-${j}`); if (b) b.classList.remove('selected'); });
+  document.getElementById(`opt-${qi}-${oi}`)?.classList.add('selected');
+  studentAnswers[qi] = val;
+}
+function matchLeft(i, val) {
+  if (matchState.pairs[i] !== undefined) return;
+  document.querySelectorAll(".match-chip[id^='ml-']").forEach(el => { if (!el.classList.contains('matched')) el.classList.remove('selected'); });
+  matchState.leftSel = { i, val };
+  document.getElementById('ml-' + i)?.classList.add('selected');
+}
+function matchRight(i, val) {
+  if (!matchState.leftSel) return;
+  const li = matchState.leftSel.i;
+  if (matchState.pairs[li] !== undefined) return;
+  matchState.pairs[li] = val; studentAnswers[li] = val;
+  document.getElementById('ml-' + li)?.classList.remove('selected');
+  document.getElementById('ml-' + li)?.classList.add('matched');
+  document.getElementById('mr-' + i)?.classList.add('matched');
+  matchState.leftSel = null;
+}
+
+async function submitExercise() {
+  const content = Array.isArray(currentLesson.task_content) ? currentLesson.task_content : [];
+  let correct = 0; const results = [];
+  if (currentLesson.task_type === 'matching') {
+    content.forEach((q, i) => {
+      const given = studentAnswers[i]; const ok = given === q.right; if (ok) correct++;
+      if (!ok) document.getElementById('ml-' + i)?.classList.add('wrong-match');
+      results.push({ prompt: q.left, answer: q.right, given, ok });
+    });
+  } else {
+    content.forEach((q, i) => {
+      const correctAns = q.answer || (Array.isArray(q.options) && q.options[0]) || '';
+      let given = '';
+      if (currentLesson.task_type === 'fill_in_blank') given = document.getElementById('fitb-' + i)?.value.trim() || '';
+      else if (currentLesson.task_type === 'dictation') given = document.getElementById('dict-' + i)?.value.trim() || '';
+      else given = studentAnswers[i] || '';
+      const ok = given.toLowerCase() === correctAns.toLowerCase(); if (ok) correct++;
+      if (currentLesson.task_type === 'fill_in_blank') { const el = document.getElementById('fitb-'+i); if(el){el.classList.add(ok?'correct':'wrong');el.disabled=true;} }
+      else if (currentLesson.task_type !== 'dictation') { document.querySelectorAll(`[id^="opt-${i}-"]`).forEach(b=>{b.disabled=true;if(b.textContent===correctAns)b.classList.add('correct');else if(b.classList.contains('selected'))b.classList.add('wrong');}); }
+      results.push({ prompt: q.prompt, answer: correctAns, given, ok });
+    });
+  }
+  showScore(correct, content.length, results, false);
+  document.getElementById('submit-btn').disabled = true;
+  document.getElementById('submit-btn').style.display = 'none';
+  document.getElementById('retry-btn').style.display = 'inline-block';
+  if (currentUser && currentLesson) {
+    await sb.from('student_progress').upsert({ user_id: currentUser.id, lesson_id: currentLesson.id, score: correct, total_questions: content.length }, { onConflict: 'user_id,lesson_id' });
+    await fetchData();
+    if (activeModuleId) renderSidebar(activeModuleId);
+  }
+}
+
+function retryExercise() { showLesson(currentLesson.id); }
+
+function showScore(correct, total, results, readonly) {
+  const pct = total > 0 ? Math.round(correct / total * 100) : 0;
+  const cls = pct >= 80 ? 'great' : pct >= 50 ? 'ok' : 'low';
+  const msg = pct >= 80 ? '¡Great work! 🎉' : pct >= 50 ? 'Good effort — keep practicing!' : 'Review and try again.';
+  const rows = results.map(r => `<div class="score-row ${r.ok?'c':'w'}">${r.ok?'✓':'✗'} <em>${r.prompt}</em> → <strong>${r.answer}</strong>${!r.ok&&r.given?`<span class="ans"> (your answer: ${r.given})</span>`:''}</div>`).join('');
+  document.getElementById('score-area').innerHTML = `
+    <div class="score-panel">
+      <div class="score-top">
+        <div class="score-circle ${cls}"><div class="pct">${pct}%</div><div class="frac">${correct}/${total}</div></div>
+        <div class="score-msg">${readonly ? 'Previously completed' : msg}<div class="sub">${correct} correct out of ${total}</div></div>
+      </div>
+      ${rows ? `<div class="score-details">${rows}</div>` : ''}
+    </div>`;
+  document.getElementById('score-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ══════════════════════════════════════════
+   TEACHER — MODULES
+══════════════════════════════════════════ */
+async function saveModule() {
+  const title = document.getElementById('t-mod-title').value.trim();
+  const editId = document.getElementById('edit-mod-id').value;
+  if (!title) { alert('Add a folder name.'); return; }
+  const orderIndex = editId ? undefined : dbModules.length;
+  const payload = editId ? { title } : { title, order_index: orderIndex };
+  const res = editId
+    ? await sb.from('modules').update(payload).eq('id', editId)
+    : await sb.from('modules').insert([payload]);
+  if (res.error) { alert('Error: ' + res.error.message); return; }
+  alert(editId ? 'Folder updated!' : 'Folder created!');
+  cancelEditMod(); fetchData();
+}
+function editModule(id) {
+  const m = dbModules.find(x => x.id === id); if (!m) return;
+  document.getElementById('t-mod-title').value = m.title;
+  document.getElementById('edit-mod-id').value = m.id;
+  document.getElementById('panel-title-mod').textContent = '✏️ Edit folder';
+  document.getElementById('btn-cancel-mod').style.display = 'inline-block';
+  window.scrollTo(0, 0);
+}
+function cancelEditMod() {
+  document.getElementById('t-mod-title').value = '';
+  document.getElementById('edit-mod-id').value = '';
+  document.getElementById('panel-title-mod').textContent = '📂 Create folder';
+  document.getElementById('btn-cancel-mod').style.display = 'none';
+}
+async function deleteModule(id) {
+  if (!confirm('Delete this folder and all its lessons?')) return;
+  await sb.from('lessons').delete().eq('module_id', id);
+  await sb.from('modules').delete().eq('id', id);
+  fetchData();
+}
+async function moveModule(id, dir) {
+  const idx = dbModules.findIndex(m => m.id === id);
+  const target = dbModules[idx + dir]; if (!target) return;
+  await sb.from('modules').update({ order_index: target.order_index }).eq('id', id);
+  await sb.from('modules').update({ order_index: dbModules[idx].order_index }).eq('id', target.id);
+  fetchData();
+}
+
+/* ══════════════════════════════════════════
+   TEACHER — LESSONS
+══════════════════════════════════════════ */
+function toggleLessonFields() {
+  const type = document.getElementById('t-les-type').value;
+  document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none';
+  document.getElementById('fields-text').style.display = type === 'text' ? 'block' : 'none';
+  document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none';
+}
+function updateModuleSelect() {
+  const sel = document.getElementById('t-les-module'); if (!sel) return;
+  sel.innerHTML = dbModules.map(m => `<option value="${m.id}">${m.title}</option>`).join('');
+}
 async function saveLesson() {
-    if (isUploadingAudio) { alert("Espera a que terminen de subirse los archivos de audio."); return; }
-    const editId = document.getElementById('edit-les-id').value; const moduleId = document.getElementById('t-les-module').value;
-    const type = document.getElementById('t-les-type').value; const title = document.getElementById('t-les-title').value;
-    const resourcesInput = document.getElementById('t-les-resources'); const btn = document.getElementById('btn-save-les');
-    if (!moduleId || !title) { alert("Completa carpeta y título."); return; }
-    btn.disabled = true; btn.textContent = "Guardando...";
+  if (isUploadingAudio) { alert('Wait for audio uploads to finish.'); return; }
+  const editId = document.getElementById('edit-les-id').value;
+  const moduleId = document.getElementById('t-les-module').value;
+  const type = document.getElementById('t-les-type').value;
+  const title = document.getElementById('t-les-title').value.trim();
+  if (!moduleId || !title) { alert('Fill in folder and title.'); return; }
+  const btn = document.getElementById('btn-save-les'); btn.disabled = true; btn.textContent = 'Saving...';
 
-    let video_url = null, text_content = null, task_type = null, task_content = null, audio_url = null;
-    let contentPayload = []; 
+  let payload = { module_id: moduleId, type, title, content: tempAudios };
 
-    if (type === 'video') { video_url = formatYouTubeUrl(document.getElementById('t-les-video-url').value); contentPayload = temporarySharedAudiosList; }
-    else if (type === 'text') { text_content = quillEditor.root.innerHTML; contentPayload = temporarySharedAudiosList; }
-    else if (type === 'task') {
-        task_type = document.getElementById('t-ex-type').value; task_content = questionRows;
-        const audioFile = document.getElementById('t-ex-audio').files[0];
-        if (audioFile) {
-            const fileName = `gen_${Date.now()}.${audioFile.name.split('.').pop()}`;
-            await supabaseClient.storage.from('audios').upload(fileName, audioFile);
-            audio_url = supabaseClient.storage.from('audios').getPublicUrl(fileName).data.publicUrl;
-        } else if (editId) { audio_url = dbLessons.find(l => l.id === editId)?.audio_url || null; }
+  if (type === 'video') {
+    payload.video_url = formatYouTubeUrl(document.getElementById('t-les-video-url').value.trim());
+  } else if (type === 'text') {
+    payload.text_content = quillEditor.root.innerHTML;
+  } else if (type === 'task') {
+    payload.task_type = document.getElementById('t-ex-type').value;
+    payload.task_content = questionRows;
+    const audioFile = document.getElementById('t-ex-audio').files[0];
+    if (audioFile) {
+      const fn = `ex_${Date.now()}.${audioFile.name.split('.').pop()}`;
+      await sb.storage.from('audios').upload(fn, audioFile);
+      payload.audio_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
+    } else if (editId) {
+      payload.audio_url = dbLessons.find(l => l.id === editId)?.audio_url || null;
     }
+  }
 
-    let resourcesPayload = editId ? (dbLessons.find(l => l.id === editId)?.resources || []) : [];
-    if (resourcesInput && resourcesInput.files.length > 0) {
-        for (let file of resourcesInput.files) {
-            const fileName = `res_${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
-            const { error: resErr } = await supabaseClient.storage.from('audios').upload(fileName, file);
-            if (!resErr) resourcesPayload.push({ name: file.name, url: supabaseClient.storage.from('audios').getPublicUrl(fileName).data.publicUrl });
-        }
+  // Handle resource uploads
+  const resFiles = document.getElementById('t-les-resources').files;
+  let resources = editId ? (dbLessons.find(l => l.id === editId)?.resources || []) : [];
+  if (resFiles.length) {
+    for (const f of resFiles) {
+      const fn = `res_${Date.now()}_${f.name.replace(/\s+/g, '_')}`;
+      const { error } = await sb.storage.from('audios').upload(fn, f);
+      if (!error) resources.push({ name: f.name, url: sb.storage.from('audios').getPublicUrl(fn).data.publicUrl });
     }
+  }
+  payload.resources = resources;
+  if (!editId) payload.order_index = dbLessons.filter(l => l.module_id === moduleId).length;
 
-    const payload = { module_id: moduleId, title, type, video_url, text_content, task_type, task_content, audio_url, content: contentPayload, resources: resourcesPayload };
-    let error = editId ? (await supabaseClient.from('lessons').update(payload).eq('id', editId)).error : (await supabaseClient.from('lessons').insert([payload])).error;
-    btn.disabled = false; btn.textContent = "Guardar Página";
-    if (error) alert("Error: " + error.message); else { alert("¡Página guardada!"); cancelEditLes(); fetchClassroomData(); }
+  const res = editId
+    ? await sb.from('lessons').update(payload).eq('id', editId)
+    : await sb.from('lessons').insert([payload]);
+  btn.disabled = false; btn.textContent = 'Save lesson';
+  if (res.error) { alert('Error: ' + res.error.message); return; }
+  alert('Lesson saved!'); cancelEditLes(); fetchData();
 }
-
 function editLesson(id) {
-    const les = dbLessons.find(l => l.id === id); if(!les) return;
-    document.getElementById('edit-les-id').value = les.id; document.getElementById('t-les-module').value = les.module_id; document.getElementById('t-les-type').value = les.type; document.getElementById('t-les-title').value = les.title;
-    document.getElementById('panel-title-les').innerHTML = "✏️ Editando Página"; document.getElementById('btn-cancel-les').style.display = "inline-block";
-    toggleLessonFields();
-    if(les.type === 'video') document.getElementById('t-les-video-url').value = les.video_url || '';
-    if(les.type === 'text') quillEditor.root.innerHTML = les.text_content || '';
-    if(les.type === 'task') { document.getElementById('t-ex-type').value = les.task_type || 'minimal_pairs'; questionRows = JSON.parse(JSON.stringify(les.task_content || [])); renderQuestionFields(); }
-    temporarySharedAudiosList = Array.isArray(les.content) ? JSON.parse(JSON.stringify(les.content)) : [];
-    renderTeacherAudiosList();
-    document.getElementById('t-les-resources-current').textContent = les.resources && les.resources.length > 0 ? `Tiene ${les.resources.length} archivo(s)` : "";
-    window.scrollTo(0,0);
+  const l = dbLessons.find(x => x.id === id); if (!l) return;
+  document.getElementById('edit-les-id').value = l.id;
+  document.getElementById('t-les-module').value = l.module_id;
+  document.getElementById('t-les-type').value = l.type;
+  document.getElementById('t-les-title').value = l.title;
+  toggleLessonFields();
+  if (l.type === 'video') document.getElementById('t-les-video-url').value = l.video_url || '';
+  if (l.type === 'text') quillEditor.root.innerHTML = l.text_content || '';
+  if (l.type === 'task') { document.getElementById('t-ex-type').value = l.task_type || 'minimal_pairs'; questionRows = JSON.parse(JSON.stringify(l.task_content || [])); renderQFields(); }
+  tempAudios = Array.isArray(l.content) ? JSON.parse(JSON.stringify(l.content)) : [];
+  renderTempAudios();
+  const resCurrent = document.getElementById('t-les-resources-current');
+  resCurrent.textContent = l.resources?.length ? `${l.resources.length} file(s) already attached` : '';
+  document.getElementById('t-ex-audio-current').textContent = l.audio_url ? 'Audio already saved' : '';
+  document.getElementById('panel-title-les').textContent = '✏️ Edit lesson';
+  document.getElementById('btn-cancel-les').style.display = 'inline-block';
+  window.scrollTo(0, 0);
 }
-
 function cancelEditLes() {
-    document.getElementById('edit-les-id').value = ""; document.getElementById('t-les-title').value = ''; document.getElementById('t-les-video-url').value = ''; quillEditor.root.innerHTML = ''; document.getElementById('t-ex-audio').value = ''; document.getElementById('t-les-resources').value = ''; document.getElementById('t-les-resources-current').textContent = ''; questionRows = []; temporarySharedAudiosList = []; renderTeacherAudiosList(); renderQuestionFields();
-    document.getElementById('panel-title-les').innerHTML = "📝 2. Agregar Página a una Carpeta"; document.getElementById('btn-cancel-les').style.display = "none";
+  document.getElementById('edit-les-id').value = '';
+  document.getElementById('t-les-title').value = '';
+  document.getElementById('t-les-video-url').value = '';
+  document.getElementById('t-ex-audio').value = '';
+  document.getElementById('t-les-resources').value = '';
+  document.getElementById('t-les-resources-current').textContent = '';
+  document.getElementById('t-ex-audio-current').textContent = '';
+  quillEditor.root.innerHTML = '';
+  questionRows = []; tempAudios = [];
+  renderQFields(); renderTempAudios();
+  document.getElementById('panel-title-les').textContent = '📝 Add lesson';
+  document.getElementById('btn-cancel-les').style.display = 'none';
+}
+async function deleteLesson(id) {
+  if (!confirm('Delete this lesson?')) return;
+  await sb.from('lessons').delete().eq('id', id);
+  fetchData();
+}
+async function moveLesson(id, dir) {
+  const les = dbLessons.find(l => l.id === id); if (!les) return;
+  const modLess = dbLessons.filter(l => l.module_id === les.module_id);
+  const idx = modLess.findIndex(l => l.id === id);
+  const target = modLess[idx + dir]; if (!target) return;
+  await sb.from('lessons').update({ order_index: target.order_index }).eq('id', id);
+  await sb.from('lessons').update({ order_index: les.order_index }).eq('id', target.id);
+  fetchData();
 }
 
+/* ══════════════════════════════════════════
+   TEACHER — AUDIOS
+══════════════════════════════════════════ */
+async function addSharedAudio() {
+  const label = document.getElementById('t-audio-label').value.trim();
+  const file = document.getElementById('t-audio-file').files[0];
+  if (!label || !file) { alert('Add a label and choose an audio file.'); return; }
+  isUploadingAudio = true;
+  const btn = document.getElementById('btn-add-audio'); btn.disabled = true; btn.textContent = 'Uploading...';
+  const fn = `aud_${Date.now()}.${file.name.split('.').pop()}`;
+  const { error } = await sb.storage.from('audios').upload(fn, file);
+  btn.disabled = false; btn.textContent = '+ Add'; isUploadingAudio = false;
+  if (error) { alert('Upload error: ' + error.message); return; }
+  const url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
+  tempAudios.push({ label, url });
+  document.getElementById('t-audio-label').value = '';
+  document.getElementById('t-audio-file').value = '';
+  renderTempAudios();
+}
+function renderTempAudios() {
+  document.getElementById('t-shared-audios-render').innerHTML = tempAudios.map((a, i) =>
+    `<div class="audio-saved-item"><span>🔊 ${a.label}</span><button class="danger-btn" style="padding:2px 8px;font-size:10px;" onclick="tempAudios.splice(${i},1);renderTempAudios();">Remove</button></div>`
+  ).join('');
+}
+
+/* ══════════════════════════════════════════
+   TEACHER — QUESTIONS
+══════════════════════════════════════════ */
+function renderQFields() {
+  const type = document.getElementById('t-ex-type').value;
+  document.getElementById('q-builder').innerHTML = questionRows.map((q, i) => buildQRow(type, q, i)).join('');
+}
+function buildQRow(type, q, i) {
+  if (type === 'matching') return `<div class="q-row"><div class="q-row-label">Pair ${i+1}</div><button class="remove-q" onclick="removeQ(${i})">×</button><input type="text" placeholder="Word (left)" value="${q.left||''}" oninput="questionRows[${i}].left=this.value"/><input type="text" placeholder="Sound / meaning (right)" value="${q.right||''}" oninput="questionRows[${i}].right=this.value"/></div>`;
+  if (type === 'fill_in_blank') return `<div class="q-row"><div class="q-row-label">Question ${i+1}</div><button class="remove-q" onclick="removeQ(${i})">×</button><textarea placeholder="Sentence with ___ for blank" oninput="questionRows[${i}].prompt=this.value">${q.prompt||''}</textarea><input type="text" placeholder="Correct answer" value="${q.answer||''}" oninput="questionRows[${i}].answer=this.value"/><input type="text" placeholder="Hint (optional)" value="${q.hint||''}" oninput="questionRows[${i}].hint=this.value"/></div>`;
+  if (type === 'dictation') return `<div class="q-row"><div class="q-row-label">Question ${i+1}</div><button class="remove-q" onclick="removeQ(${i})">×</button><textarea placeholder="Instruction for student" oninput="questionRows[${i}].prompt=this.value">${q.prompt||''}</textarea><input type="text" placeholder="Expected answer" value="${q.answer||''}" oninput="questionRows[${i}].answer=this.value"/><span class="field-label">Audio for this question (optional)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/><div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted);">${q.audio_url?'Audio saved':''}</div></div>`;
+  const opts = q.options || ['','','',''];
+  return `<div class="q-row"><div class="q-row-label">Question ${i+1}</div><button class="remove-q" onclick="removeQ(${i})">×</button><textarea placeholder="Question prompt" oninput="questionRows[${i}].prompt=this.value">${q.prompt||''}</textarea>${opts.map((o,j)=>`<input type="text" placeholder="Option ${j+1}${j===0?' (correct)':''}" value="${o}" oninput="questionRows[${i}].options[${j}]=this.value"/>`).join('')}<span class="field-label">Audio for this question (optional)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/><div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted);">${q.audio_url?'Audio saved':''}</div></div>`;
+}
+function addQuestion() {
+  const type = document.getElementById('t-ex-type').value;
+  questionRows.push(type==='matching'?{left:'',right:''}:type==='fill_in_blank'?{prompt:'',answer:'',hint:''}:type==='dictation'?{prompt:'',answer:'',audio_url:''}:{prompt:'',options:['','','',''],audio_url:''});
+  renderQFields();
+}
+function removeQ(i) { questionRows.splice(i,1); renderQFields(); }
+async function uploadQAudio(event, i) {
+  const file = event.target.files[0]; if (!file) return;
+  isUploadingAudio = true;
+  const fn = `qa_${Date.now()}.${file.name.split('.').pop()}`;
+  const { error } = await sb.storage.from('audios').upload(fn, file);
+  isUploadingAudio = false;
+  if (error) { alert('Upload error: ' + error.message); return; }
+  questionRows[i].audio_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
+  const el = document.getElementById('q-audio-' + i); if (el) el.textContent = '✅ Audio uploaded';
+}
+
+/* ══════════════════════════════════════════
+   TEACHER — MANAGE LIST
+══════════════════════════════════════════ */
 function renderManageList() {
-    const list = document.getElementById('t-manage-list'); if(!list) return;
-    if(dbModules.length === 0) { list.innerHTML = `No hay contenido.`; return; }
-    list.innerHTML = dbModules.map((mod) => {
-        let html = `<div class="manage-item" style="background:var(--skool-hover);"><div><span class="manage-title">📂 ${mod.title}</span></div><div class="manage-actions"><button class="secondary-btn" onclick="moveModule('${mod.id}', -1)">⬆️</button><button class="secondary-btn" onclick="moveModule('${mod.id}', 1)">⬇️</button><button class="secondary-btn" onclick="editModule('${mod.id}')">✏️</button><button class="danger-btn" onclick="deleteModule('${mod.id}')">Borrar</button></div></div>`;
-        const modLess = dbLessons ? dbLessons.filter(l => l.module_id === mod.id) : [];
-        modLess.forEach((les) => {
-            html += `<div class="manage-item" style="padding-left: 2rem;"><div><span class="manage-title">${iconMap[les.type]} ${les.title}</span></div><div class="manage-actions"><button class="secondary-btn" onclick="moveLesson('${les.id}', -1)">⬆️</button><button class="secondary-btn" onclick="moveLesson('${les.id}', 1)">⬇️</button><button class="secondary-btn" onclick="editLesson('${les.id}')">✏️</button><button class="danger-btn" onclick="deleteLesson('${les.id}')">Borrar</button></div></div>`;
-        });
-        return html;
-    }).join("");
+  const list = document.getElementById('t-manage-list'); if (!list) return;
+  if (!dbModules.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center;">No content yet.</div>'; return; }
+  const iconMap = { video:'📺', text:'📄', task:'📝' };
+  list.innerHTML = dbModules.map(m => {
+    const lessons = dbLessons.filter(l => l.module_id === m.id);
+    return `<div class="manage-item" style="background:var(--skool-hover);border-radius:var(--radius-sm);margin-bottom:4px;">
+      <span class="manage-title">📂 ${m.title}</span>
+      <div class="manage-actions">
+        <button class="secondary-btn" onclick="moveModule('${m.id}',-1)">↑</button>
+        <button class="secondary-btn" onclick="moveModule('${m.id}',1)">↓</button>
+        <button class="secondary-btn" onclick="editModule('${m.id}')">Edit</button>
+        <button class="danger-btn" onclick="deleteModule('${m.id}')">Delete</button>
+      </div>
+    </div>
+    ${lessons.map(l => `<div class="manage-item" style="padding-left:1.5rem;">
+      <span class="manage-title">${iconMap[l.type]||'📄'} ${l.title}</span>
+      <div class="manage-actions">
+        <button class="secondary-btn" onclick="moveLesson('${l.id}',-1)">↑</button>
+        <button class="secondary-btn" onclick="moveLesson('${l.id}',1)">↓</button>
+        <button class="secondary-btn" onclick="editLesson('${l.id}')">Edit</button>
+        <button class="danger-btn" onclick="deleteLesson('${l.id}')">Delete</button>
+      </div>
+    </div>`).join('')}`;
+  }).join('');
 }
 
-/* RESPALDO DE SONIDOS ESTÁTICOS COMPLETO (ANTI-CRASH) */
-let questionRows = [];
-function updateTeacherModuleSelect() { const select = document.getElementById('t-les-module'); if(!select) return; select.innerHTML = dbModules.map(m => `<option value="${m.id}">${m.title}</option>`).join(""); }
-async function saveModule() { const title = document.getElementById('t-mod-title').value; const btn = document.getElementById('btn-save-mod'); const editId = document.getElementById('edit-mod-id').value; if (!title) { alert("Ponle un nombre a la carpeta."); return; } btn.disabled = true; btn.textContent = "Guardando..."; let error = editId ? (await supabaseClient.from('modules').update({ title }).eq('id', editId)).error : (await supabaseClient.from('modules').insert([{ title }])).error; btn.disabled = false; btn.textContent = "Guardar Carpeta"; if (error) { alert("Error: " + error.message); } else { alert(editId ? "¡Carpeta actualizada!" : "¡Carpeta creada!"); cancelEditMod(); fetchClassroomData(); } }
-function editModule(id) { const mod = dbModules.find(m => m.id === id); if(!mod) return; document.getElementById('t-mod-title').value = mod.title; document.getElementById('edit-mod-id').value = mod.id; document.getElementById('panel-title-mod').innerHTML = "✏️ Editando Carpeta"; document.getElementById('btn-cancel-mod').style.display = "inline-block"; window.scrollTo(0,0); }
-function selectOpt(qi, oi, val, opts) { opts.forEach((_,j)=>{ const b=document.getElementById(`opt-${qi}-${j}`); if(b) b.classList.remove("selected"); }); document.getElementById(`opt-${qi}-${oi}`).classList.add("selected"); studentAnswers[qi] = val; }
-function hideAllClassroomViews() { document.getElementById("view-welcome").style.display = "none"; document.getElementById("view-video").style.display = "none"; document.getElementById("view-text").style.display = "none"; document.getElementById("view-exercise").style.display = "none"; document.getElementById("cv-video-player").innerHTML = ''; }
-function cancelEditMod() { document.getElementById('t-mod-title').value = ""; document.getElementById('edit-mod-id').value = ""; document.getElementById('panel-title-mod').innerHTML = "📂 1. Crear Carpeta (Módulo)"; document.getElementById('btn-cancel-mod').style.display = "none"; }
-async function moveModule(id, direction) { const idx = dbModules.findIndex(m => m.id === id); if(idx < 0 || (direction === -1 && idx === 0) || (direction === 1 && idx === dbModules.length - 1)) return; const targetMod = dbModules[idx + direction]; dbModules.forEach((m, i) => m.order_index = i); const temp = dbModules[idx].order_index; dbModules[idx].order_index = targetMod.order_index; targetMod.order_index = temp; await supabaseClient.from('modules').update({ order_index: dbModules[idx].order_index }).eq('id', id); await supabaseClient.from('modules').update({ order_index: targetMod.order_index }).eq('id', targetMod.id); fetchClassroomData(); }
-async function moveLesson(id, direction) { const les = dbLessons.find(l => l.id === id); if(!les) return; const modLess = dbLessons.filter(l => l.module_id === les.module_id); const idx = modLess.findIndex(l => l.id === id); if((direction === -1 && idx === 0) || (direction === 1 && idx === modLess.length - 1)) return; const targetLes = modLess[idx + direction]; modLess.forEach((l, i) => l.order_index = i); const temp = modLess[idx].order_index; modLess[idx].order_index = targetLes.order_index; targetLes.order_index = temp; await supabaseClient.from('lessons').update({ order_index: modLess[idx].order_index }).eq('id', id); await supabaseClient.from('lessons').update({ order_index: targetLes.order_index }).eq('id', targetLes.id); fetchClassroomData(); }
-async function deleteModule(id) { if(confirm("¿Borrar carpeta?")) { await supabaseClient.from('modules').delete().eq('id', id); fetchClassroomData(); } }
-async function deleteLesson(id) { if(confirm("¿Borrar página?")) { await supabaseClient.from('lessons').delete().eq('id', id); fetchClassroomData(); } }
-function removeQuestion(i) { questionRows.splice(i,1); renderQuestionFields(); } function updateQ(i, f, v) { questionRows[i][f]=v; } function updateQOption(i, j, v) { questionRows[i].options[j]=v; }
-function renderQuestionFields() { const type = document.getElementById("t-ex-type").value; document.getElementById("q-builder").innerHTML = questionRows.map((q, i) => buildQRow(type, q, i)).join(""); }
-const vowels = { pure: [{ ipa: "/iː/", mw: "[ee]", name: "Long E", keyword: "he", type: "vowel", words: ["he", "see", "feel"], spellings: ["e — he", "ee — see"], tip: "Tense the tongue high." }, { ipa: "/ɪ/", mw: "[ih]", name: "Short I", keyword: "hit", type: "vowel", words: ["hit", "sit"], spellings: ["i — hit"], tip: "Lax lips." }] }; const consonants = { stops: [{ ipa: "/p/", mw: "[p]", name: "P sound", keyword: "pen", words: ["pen", "top"], spellings: ["p — pen"], tip: "Aspirated." }] };
-let activeVowel = null; let activeConsonant = null;
-function buildGrid(cid, list, getA, setA, panelId, isCon, rebuild) { const c = document.getElementById(cid); if (!c) return; c.innerHTML = ""; list.forEach(s => { c.appendChild(renderCard(s, getA() === s.ipa, () => { setA(s.ipa); renderDetail(panelId, s, isCon); rebuild(); })); }); }
-function buildAllVowelGrids() { buildGrid("pure-vowel-grid", vowels.pure, () => activeVowel, v => { activeVowel = v; }, "vowel-detail", false, buildAllVowelGrids); } 
-function buildAllConsonantGrids() { buildGrid("stops-grid", consonants.stops, () => activeConsonant, v => { activeConsonant = v; }, "consonant-detail", true, buildAllConsonantGrids); }
-buildAllVowelGrids(); buildAllConsonantGrids();
+/* ══════════════════════════════════════════
+   SOUND DATA — COMPLETE
+══════════════════════════════════════════ */
+const vowels = {
+  pure:[
+    {ipa:"/iː/",mw:"[ee]",name:"Long E",keyword:"he",type:"vowel",words:["he","see","feel","team","people","key","ski","machine","belief"],spellings:["e — he, me","ee — see, feel","ea — team, read","ie — belief","ey — key","i — ski, machine"],tip:"Similar to Spanish /i/ but held slightly longer. Tense the tongue high and spread the lips slightly."},
+    {ipa:"/ɪ/",mw:"[ih]",name:"Short I",keyword:"hit",type:"vowel",words:["hit","sit","win","big","quick","busy","women","build","gym"],spellings:["i — hit, sit","y — gym, symbol","ui — build","u — busy","o — women"],tip:"Not the Spanish /i/. The lips are relaxed — not spread. Much shorter and laxer."},
+    {ipa:"/ɛ/",mw:"[eh]",name:"Short E",keyword:"head",type:"vowel",words:["head","bed","said","friend","many","any","weather","says"],spellings:["e — bed","ea — head, weather","ai — said","ie — friend","a — many, any"],tip:"Close to Spanish /e/ but a little lower and more open."},
+    {ipa:"/æ/",mw:"[a]",name:"Short A",keyword:"cap",type:"vowel",words:["cap","cat","man","bad","apple","laugh","plaid","half"],spellings:["a — cap, cat","au — laugh","ai — plaid"],tip:"Doesn't exist in Spanish. Open the mouth wide, push the tongue forward and low. Tense and bright."},
+    {ipa:"/ɑ/",mw:"[ah]",name:"Open A",keyword:"cop",type:"vowel",words:["cop","hot","father","calm","palm","spa","watch","want"],spellings:["o — cop, hot","a — father, calm","al — palm","wa — watch, want"],tip:"Wide-open, relaxed /a/ pushed back in the throat. The mouth is fully open."},
+    {ipa:"/ə/ or /ʌ/",mw:"[uh]",name:"Schwa",keyword:"cup",type:"vowel",words:["cup","fun","done","love","about","sofa","button","pencil"],spellings:["u — cup, fun","o — love, done","a — about (unstressed)","o — sofa (unstressed)"],tip:"The most common sound in English! Every unstressed syllable tends to become /ə/."},
+    {ipa:"/uː/",mw:"[u]",name:"Long OO",keyword:"who",type:"vowel",words:["who","food","moon","true","blue","school","through","suit"],spellings:["oo — food, moon","ue — true, blue","ew — chew, brew","ou — through","ui — suit"],tip:"Similar to Spanish /u/ but sometimes starts with a /j/ glide. Lips tightly rounded."},
+    {ipa:"/ʊ/",mw:"[uu]",name:"Short OO",keyword:"took",type:"vowel",words:["took","book","foot","good","could","would","pull","put"],spellings:["oo — book, foot","ou — could, would","u — pull, put","o — wolf"],tip:"A short, relaxed version of /uː/. Practice the difference: 'food' vs 'foot'."},
+    {ipa:"/ɔː/",mw:"[aw]",name:"AW sound",keyword:"law",type:"vowel",words:["law","call","also","thought","caught","ball","walk","water"],spellings:["aw — law, saw","al — call, ball, walk","au — caught, water","ou — thought","o — also"],tip:"A mid-back rounded vowel. Lips are loosely rounded."},
+  ],
+  diphthongs:[
+    {ipa:"/eɪ/",mw:"[ei]",name:"Long A",keyword:"hey",type:"diphthong",words:["hey","day","made","great","they","vein","weigh","eight"],spellings:["ay — day, say","a_e — made, late","ey — they, hey","ei — vein, eight","ai — rain"],tip:"Must glide upward — the mouth closes as you say it. Not a flat Spanish /e/."},
+    {ipa:"/oʊ/",mw:"[ou]",name:"Long O",keyword:"home",type:"diphthong",words:["home","go","know","phone","road","though","toe","boat"],spellings:["o — go, so","o_e — home, phone","ow — know, show","oa — road, boat","ou — though"],tip:"Starts in the center and glides toward a rounded /ʊ/ at the end."},
+    {ipa:"/aɪ/",mw:"[ai]",name:"Long I",keyword:"hi",type:"diphthong",words:["hi","my","time","high","fly","night","buy","pie","guide"],spellings:["i_e — time, bike","y — my, fly","igh — night, high","uy — buy","ie — pie"],tip:"Starts with a wide open /ɑ/ and glides up toward /ɪ/."},
+    {ipa:"/aʊ/",mw:"[au]",name:"OW sound",keyword:"how",type:"diphthong",words:["how","now","loud","down","about","crowd","out","mouth"],spellings:["ow — how, now, crowd","ou — loud, out, about, mouth"],tip:"Starts open and the lips round at the end toward /ʊ/."},
+    {ipa:"/ɔɪ/",mw:"[oi]",name:"OY sound",keyword:"boy",type:"diphthong",words:["boy","voice","coin","toy","oil","noise","royal","joint"],spellings:["oy — boy, toy, royal","oi — coin, oil, voice, noise"],tip:"Starts with rounded lips /ɔ/ and glides up toward /ɪ/."},
+  ],
+  rcolored:[
+    {ipa:"/ɝ/",mw:"[er]",name:"Stressed ER",keyword:"her",type:"rcolored",words:["her","bird","word","nurse","earth","first","hurt","work"],spellings:["er — her, fern","ir — bird, first","ur — nurse, hurt","or — word, work","ear — earth, learn"],tip:"The tongue curls back while the vowel is produced. No equivalent in Spanish."},
+    {ipa:"/ɚ/",mw:"[er]",name:"Unstressed ER",keyword:"bigger",type:"rcolored",words:["bigger","butter","doctor","teacher","mother","color","dollar"],spellings:["er — bigger, mother","or — doctor, color","ar — dollar, popular"],tip:"The unstressed /ɝ/. Very common in '-er', '-or', '-ar' endings."},
+    {ipa:"/ɑr/",mw:"[ar]",name:"AR sound",keyword:"far",type:"rcolored",words:["far","car","heart","park","start","guard"],spellings:["ar — far, car, park","ear — heart","ua — guard"],tip:"Wide-open /ɑ/ followed by the American R curl."},
+    {ipa:"/ɛr/",mw:"[er]",name:"AIR sound",keyword:"fare",type:"rcolored",words:["fare","care","air","there","where","wear","bear","their"],spellings:["are — fare, care","air — air, fair","ere — there, where","ear — wear, bear"],tip:"A mid-front /ɛ/ that transitions into the American R."},
+    {ipa:"/ɪr/",mw:"[eer]",name:"EAR sound",keyword:"here",type:"rcolored",words:["here","ear","fear","deer","beer","cheer","year"],spellings:["ere — here","ear — ear, fear","eer — deer, beer, cheer"],tip:"Starts with the high /iː/ position then curls into the R."},
+    {ipa:"/ɔr/",mw:"[or]",name:"OR sound",keyword:"or",type:"rcolored",words:["or","for","more","door","four","floor","war","born"],spellings:["or — or, for, born","ore — more, store","oor — door, floor","our — four, court","ar — war"],tip:"A rounded /ɔ/ that flows into the American R."},
+  ]
+};
+const consonants = {
+  stops:[
+    {ipa:"/p/",mw:"[p]",name:"P sound",keyword:"pen",words:["pen","top","happy","apple","camp"],spellings:["p — pen, top","pp — happy, apple"],tip:"Aspirated at the start of stressed syllables — you feel a puff of air."},
+    {ipa:"/b/",mw:"[b]",name:"B sound",keyword:"big",words:["big","cab","able","baby","job","ebb"],spellings:["b — big, cab","bb — ebb"],tip:"No aspiration. Always keep it a full stop with both lips."},
+    {ipa:"/t/",mw:"[t]",name:"T sound",keyword:"top",words:["top","cat","water","butter","action","nature","question"],spellings:["t — top, cat","tt — butter","ti — action (=/ʃ/)","tu — nature (=/tʃ/)"],tip:"Between vowels, American /t/ becomes a quick flap — like a fast /d/."},
+    {ipa:"/d/",mw:"[d]",name:"D sound",keyword:"dog",words:["dog","ride","made","middle","add","loved","could"],spellings:["d — dog, ride","dd — middle, add","ed — loved (past tense)"],tip:"Between vowels it can sound like a flap. Focus on voicing."},
+    {ipa:"/k/",mw:"[k]",name:"K sound",keyword:"cat",words:["cat","kite","queen","school","fix","account","antique","choir"],spellings:["c — cat","k — kite","ck — back","qu — queen (=/kw/)","x — fix (=/ks/)","ch — choir"],tip:"Spelled many ways: c, k, ck, ch, x."},
+    {ipa:"/g/",mw:"[g]",name:"G sound",keyword:"go",words:["go","big","egg","ghost","guest","exact"],spellings:["g — go, big","gg — egg","gh — ghost","gu — guest","x — exact (=/gz/)"],tip:"'Gh' is silent in many words but sounds like /g/ in 'ghost'."},
+  ],
+  fricatives:[
+    {ipa:"/f/",mw:"[f]",name:"F sound",keyword:"fan",words:["fan","off","phone","cough","laugh"],spellings:["f — fan, feel","ff — off","ph — phone","gh — cough, laugh"],tip:"'Ph' always makes this sound. 'Gh' at the end also makes /f/."},
+    {ipa:"/v/",mw:"[v]",name:"V sound",keyword:"van",words:["van","have","love","of","vivid","river"],spellings:["v — van, vivid","f — of (=/v/)"],tip:"Spanish doesn't have a true /v/. Top teeth must press on the lower lip and vibrate."},
+    {ipa:"/θ/",mw:"[th]",name:"TH voiceless",keyword:"think",words:["think","bath","three","tooth","through","author"],spellings:["th — think, bath, three, author"],tip:"Tongue tip between teeth, blow air — no voice. Don't substitute /t/, /s/, or /f/."},
+    {ipa:"/ð/",mw:"[th]",name:"TH voiced",keyword:"the",words:["the","this","mother","breathe","father"],spellings:["th — the, this, mother, breathe"],tip:"Same position as voiceless TH but with voicing. Spanish speakers often use /d/."},
+    {ipa:"/s/",mw:"[s]",name:"S sound",keyword:"see",words:["see","miss","city","psychology","scene","science"],spellings:["s — see","ss — miss","c — city (before e/i)","sc — scene","ps — psychology"],tip:"'c' before e/i/y makes /s/. 'Ps' at the start — the P is silent."},
+    {ipa:"/z/",mw:"[z]",name:"Z sound",keyword:"zoo",words:["zoo","fizz","rose","dogs","his","scissors","xylophone"],spellings:["z — zoo","zz — fizz","s — rose, dogs (voiced)","ss — scissors","x — xylophone"],tip:"Most plurals spelled '-s' are actually /z/ ('dogs', 'runs', 'plays')."},
+    {ipa:"/ʃ/",mw:"[sh]",name:"SH sound",keyword:"she",words:["she","ship","nation","special","sure","machine","chef","ocean"],spellings:["sh — she, ship","ti — nation","ci — special","su — sure","ch — chef","ce — ocean"],tip:"Hides in 'ti' (nation), 'ci' (special), 'ch' (chef)."},
+    {ipa:"/ʒ/",mw:"[zh]",name:"ZH sound",keyword:"measure",words:["measure","vision","usual","beige","genre"],spellings:["si — vision","su — measure, usual","ge — beige","g — genre"],tip:"The voiced /ʃ/. The 's' in 'vision'."},
+    {ipa:"/h/",mw:"[h]",name:"H sound",keyword:"hat",words:["hat","ahead","who","hello","whole"],spellings:["h — hat, hello","wh — who, whole (=/h/)"],tip:"A gentle breath — much softer than the Spanish /x/ (as in 'Juan')."},
+  ],
+  affricates:[
+    {ipa:"/tʃ/",mw:"[ch]",name:"CH sound",keyword:"chin",words:["chin","watch","teacher","nature","question","cello"],spellings:["ch — chin","tch — watch","tu — nature","ti — question","c — cello"],tip:"Starts like /t/ and releases as /ʃ/."},
+    {ipa:"/dʒ/",mw:"[j]",name:"J sound",keyword:"job",words:["job","judge","gym","age","bridge","soldier"],spellings:["j — job","g — gym, age (before e/i/y)","dge — judge, bridge","di — soldier"],tip:"'G' before e, i, y often makes /dʒ/. 'Dge' always makes /dʒ/."},
+  ],
+  nasals:[
+    {ipa:"/m/",mw:"[m]",name:"M sound",keyword:"man",words:["man","him","summer","dumb","climb"],spellings:["m — man","mm — summer","mb — dumb, climb (silent b)"],tip:"Watch for silent letters: 'climb' (b silent)."},
+    {ipa:"/n/",mw:"[n]",name:"N sound",keyword:"no",words:["no","sun","know","knife","gnat","inn"],spellings:["n — no, sun","kn — know (silent k)","gn — gnat (silent g)","nn — inn"],tip:"'Kn' at the start — the K is always silent."},
+    {ipa:"/ŋ/",mw:"[ng]",name:"NG sound",keyword:"sing",words:["sing","thing","think","long","ring","bank"],spellings:["ng — sing, ring","n — think, bank (before /k/)"],tip:"One sound — back of tongue to soft palate."},
+  ],
+  liquids:[
+    {ipa:"/r/",mw:"[r]",name:"American R",keyword:"red",words:["red","car","bird","world","river","write","wrap"],spellings:["r — red, river","rr — sorry","wr — write (silent w)","rh — rhyme (silent h)"],tip:"The tongue curls back without touching anything. Unlike Spanish trilled /r/."},
+    {ipa:"/l/",mw:"[l]",name:"L sound",keyword:"like",words:["like","call","feel","hello","people","walk","half","calm"],spellings:["l — like, feel","ll — call, hello","le — people","lk — walk (silent l)","lf — half (silent l)"],tip:"Light L (start of syllable) vs dark L (end — almost a vowel). Many silent L words."},
+    {ipa:"/j/",mw:"[y]",name:"Y glide",keyword:"yes",words:["yes","you","year","use","cute","few","onion"],spellings:["y — yes, year","u — use, cute (=/juː/)","ew — few (=/juː/)","i — onion (=/j/)"],tip:"'U' in 'use' and 'cute' starts with this /j/ glide."},
+    {ipa:"/w/",mw:"[w]",name:"W sound",keyword:"we",words:["we","world","quick","away","always","one","once"],spellings:["w — we, world","wh — where, when","qu — quick (=/kw/)","o — one (=/w/)"],tip:"Start with lips tightly rounded like /uː/, then move quickly into the next vowel."},
+  ]
+};
+
+/* ══════════════════════════════════════════
+   SOUND EXPLORER
+══════════════════════════════════════════ */
+const USE_REAL_AUDIO = false;
+function playWord(word) {
+  if (USE_REAL_AUDIO) { const a = new Audio('audio/' + word.toLowerCase() + '.mp3'); a.play().catch(() => speakWord(word)); }
+  else speakWord(word);
+}
+function speakWord(word) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(word); u.lang = 'en-US'; u.rate = 0.85;
+  window.speechSynthesis.speak(u);
+}
+
+let activeVowel = null, activeConsonant = null;
+function bc(t){return t==="vowel"?"badge-vowel":t==="diphthong"?"badge-diphthong":t==="rcolored"?"badge-rcolored":"badge-consonant";}
+function bl(t){return t==="rcolored"?"r-colored":t;}
+
+function renderCard(s, isActive, onclick) {
+  const d = document.createElement('div');
+  d.className = 'sound-card' + (isActive ? ' active' : '');
+  d.innerHTML = `<div class="sound-ipa">${s.ipa}</div><div class="sound-mw">${s.mw}</div><div class="sound-example">as in "<strong>${s.keyword}</strong>"</div><span class="sound-type-badge ${bc(s.type||'consonant')}">${bl(s.type||'consonant')}</span><div><button class="play-btn" onclick="event.stopPropagation();playWord('${s.keyword}')"><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg>${s.keyword}</button></div>`;
+  d.onclick = onclick; return d;
+}
+
+function renderDetail(pid, s, isCon) {
+  document.getElementById(pid).innerHTML = `
+    <div class="detail-header">
+      <div><div class="detail-big-ipa">${s.ipa}</div><div class="detail-big-mw">${s.mw}</div></div>
+      <div><div class="detail-name">${s.name}</div><div class="detail-keyword">as in "<strong>${s.keyword}</strong>"</div><span class="sound-type-badge ${isCon?'badge-consonant':bc(s.type)}" style="margin-top:6px;display:inline-block">${isCon?'consonant':bl(s.type)}</span></div>
+    </div>
+    <div class="detail-body">
+      <div class="detail-section"><div class="detail-section-label">${isCon?'Example words':'Practice words'}</div>
+        <div class="words-wrap">${s.words.map((w,i)=>`<span class="word-pill${i===0?' highlight':''}" onclick="playWord('${w}')">${w} ▶</span>`).join('')}</div>
+      </div>
+      <div class="detail-section"><div class="detail-section-label">${isCon?'All spellings':'How it\'s spelled'}</div>
+        <div class="words-wrap">${s.spellings.map(sp=>`<span class="word-pill">${sp}</span>`).join('')}</div>
+      </div>
+    </div>
+    <div class="tip-box"><div class="tip-label">For Spanish speakers</div><div class="tip-text">${s.tip}</div></div>`;
+}
+
+function buildGrid(cid, list, getA, setA, pid, isCon, rebuild) {
+  const c = document.getElementById(cid); if (!c) return; c.innerHTML = '';
+  list.forEach(s => c.appendChild(renderCard(s, getA()===s.ipa, () => { setA(s.ipa); renderDetail(pid,s,isCon); rebuild(); })));
+}
+function buildAllVowelGrids() {
+  const ga=()=>activeVowel, sa=v=>{activeVowel=v;};
+  [['pure-vowel-grid','pure'],['diphthong-grid','diphthongs'],['rcolored-grid','rcolored']].forEach(([id,k])=>buildGrid(id,vowels[k],ga,sa,'vowel-detail',false,buildAllVowelGrids));
+}
+function buildAllConsonantGrids() {
+  const ga=()=>activeConsonant, sa=v=>{activeConsonant=v;};
+  [['stops-grid','stops'],['fricatives-grid','fricatives'],['affricates-grid','affricates'],['nasals-grid','nasals'],['liquids-grid','liquids']].forEach(([id,k])=>buildGrid(id,consonants[k],ga,sa,'consonant-detail',true,buildAllConsonantGrids));
+}
+buildAllVowelGrids();
+buildAllConsonantGrids();
+
+/* ══════════════════════════════════════════
+   UTILS
+══════════════════════════════════════════ */
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
+function esc(s){return(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');}
 </script>
 </body>
 </html>
