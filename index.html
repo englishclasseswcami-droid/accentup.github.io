@@ -70,7 +70,6 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .badge-consonant { background: #FAECE7; color: #712B13; }
 .play-btn { display: inline-flex; align-items: center; gap: 5px; margin-top: 7px; padding: 4px 10px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--surface); font-size: 11px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all .15s; }
 .play-btn:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-light); }
-
 .detail-panel { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; min-height: 140px; }
 .detail-empty { color: var(--text-light); font-size: 14px; text-align: center; padding: 2.5rem 0; }
 .detail-header { display: flex; align-items: center; gap: 16px; margin-bottom: 1rem; flex-wrap: wrap; }
@@ -182,12 +181,12 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .field-label:first-of-type { margin-top: 0; }
 select, textarea, input[type=text], input[type=password], input[type=email], input[type=url], input[type=file] { width: 100%; padding: 8px 11px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter',sans-serif; font-size: 13px; color: var(--text); background: var(--bg); outline: none; transition: border-color .15s; margin-bottom: 10px; }
 select:focus, textarea:focus, input:focus { border-color: var(--brand); background: #fff; }
-.q-row { background: var(--bg); border-radius: var(--radius-sm); padding: .75rem .85rem; margin-bottom: 8px; position: relative; border: 1px solid var(--border); }
-.q-row-label { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--brand); margin-bottom: 6px; }
+.q-row { background: var(--surface); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 12px; position: relative; border: 1px solid var(--skool-border); box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+.q-row-label { font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--brand); margin-bottom: 8px; }
 .remove-q { position: absolute; top: 8px; right: 8px; background: none; border: none; color: var(--text-light); font-size: 16px; cursor: pointer; padding: 2px 6px; }
 .remove-q:hover { color: var(--red); }
-.add-q-btn { width: 100%; padding: 8px; border: 1.5px dashed var(--border); border-radius: var(--radius-sm); background: transparent; font-size: 13px; color: var(--text-muted); cursor: pointer; transition: all .15s; margin-top: 4px; }
-.add-q-btn:hover { border-color: var(--brand); color: var(--brand); }
+.add-q-btn { width: 100%; padding: 10px; border: 1.5px dashed var(--border); border-radius: var(--radius-sm); background: transparent; font-size: 13px; font-weight:600; color: var(--text-muted); cursor: pointer; transition: all .15s; margin-top: 4px; }
+.add-q-btn:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-light); }
 .primary-btn { width: 100%; padding: 10px; border-radius: var(--radius-sm); background: var(--brand); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; margin-top: 1rem; transition: background .15s; }
 .primary-btn:hover { background: var(--brand-dark); }
 .primary-btn:disabled { background: var(--text-light); cursor: not-allowed; }
@@ -245,6 +244,7 @@ footer strong { color: var(--brand); }
     <div class="gate-form" style="flex-direction: column; width: 100%; max-width: 280px;">
       <input type="email" class="gate-input" id="auth-email" placeholder="Email" style="width: 100%; margin-bottom: 10px;" />
       <input type="password" class="gate-input" id="auth-pw" placeholder="Password" style="width: 100%; margin-bottom: 10px;" />
+      <input type="text" class="gate-input" id="auth-code" placeholder="Código de invitación" style="width: 100%; margin-bottom: 10px; display: none;" />
       <button class="gate-btn" style="width: 100%;" onclick="handleAuth()">Submit</button>
     </div>
     <div style="margin-top: 15px; font-size: 13px; cursor: pointer; color: var(--brand); font-weight: 500;" onclick="toggleAuthMode()" id="auth-toggle">¿No tienes cuenta? Regístrate</div>
@@ -328,7 +328,7 @@ footer strong { color: var(--brand); }
         </select>
 
         <div class="field-label">Título de la Página</div>
-        <input type="text" id="t-les-title" placeholder="Ej: How to work on each lesson?">
+        <input type="text" id="t-les-title" placeholder="Ej: Task 1 - Pronunciation">
 
         <hr style="border:0; border-top:1px solid var(--skool-border); margin: 1.5rem 0;">
 
@@ -351,10 +351,10 @@ footer strong { color: var(--brand); }
               <option value="matching">Matching</option>
             </select>
             
-            <div class="field-label">Audio General (Opcional)</div>
-            <input type="file" id="t-ex-audio" accept="audio/mp3, audio/wav, audio/m4a">
+            <div class="field-label">Audio General (Aparece arriba de todo)</div>
+            <input type="file" id="t-ex-audio" accept="audio/*">
             
-            <div class="field-label">Preguntas</div>
+            <div class="field-label">Preguntas Individuales (¡Cada una con su propio audio!)</div>
             <div class="q-builder" id="q-builder"></div>
             <button class="add-q-btn" onclick="addQuestion()">+ Agregar pregunta</button>
         </div>
@@ -371,9 +371,9 @@ footer strong { color: var(--brand); }
 /* ══════════════════════════════════════════
    🚀 CONFIGURACIÓN PRINCIPAL
 ══════════════════════════════════════════ */
-
 // 👇 TU GMAIL REAL ACÁ 👇
-const TEACHER_EMAIL = 'englishclasseswcami@gmail.com'; 
+const TEACHER_EMAIL = 'tu-email@gmail.com'; 
+const STUDENT_ACCESS_CODE = 'ACCENTUP-2024'; // 🔒 Código secreto para nuevos alumnos
 
 const SUPABASE_URL = 'https://flfyifdaitfnxncoxzxe.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsZnlpZmRhaXRmbnhuY294enhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4Njc0NTQsImV4cCI6MjA5NjQ0MzQ1NH0.wKMJk0EIYi1hRwoE1EN5lfEGIn2c9YrJhPi_UO2w2gI';
@@ -387,7 +387,6 @@ let dbLessons = [];
 let quillEditor = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Inicializar Quill JS (Editor de texto)
     quillEditor = new Quill('#quill-editor-container', {
         theme: 'snow',
         placeholder: 'Escribe tu material de lectura, instrucciones o enlaces aquí...',
@@ -445,6 +444,7 @@ function toggleAuthMode() {
     document.getElementById('auth-title').textContent = isLoginMode ? "Log In" : "Sign Up";
     document.getElementById('auth-toggle').textContent = isLoginMode ? "¿No tienes cuenta? Regístrate" : "¿Ya tienes cuenta? Inicia sesión";
     document.getElementById('auth-error').style.display = "none";
+    document.getElementById('auth-code').style.display = isLoginMode ? "none" : "block";
 }
 
 async function handleAuth() {
@@ -454,6 +454,16 @@ async function handleAuth() {
 
     const email = document.getElementById('auth-email').value;
     const password = document.getElementById('auth-pw').value;
+
+    if (!isLoginMode) {
+        const code = document.getElementById('auth-code').value;
+        if (code !== STUDENT_ACCESS_CODE) {
+            errorMsg.style.color = "var(--red)";
+            errorMsg.textContent = "Código de invitación incorrecto. Si eres alumno, pídele el código a tu profesora.";
+            return;
+        }
+    }
+
     errorMsg.style.color = "var(--text)"; errorMsg.textContent = "Cargando...";
 
     if (isLoginMode) {
@@ -650,9 +660,13 @@ function renderPlayerQuestions() {
   }
 
   wrap.innerHTML = content.map((q,i)=>{
+    // Renderizamos el audio por pregunta si lo tiene
+    const audioHtml = q.audio_url ? `<audio controls src="${q.audio_url}" class="player-audio" style="margin-top:0; margin-bottom:12px; height:40px;"></audio>` : '';
+
     if (currentLesson.task_type==="fill_in_blank") {
       return `<div class="ex-question-block">
         <div class="ex-q-num">Pregunta ${i+1}</div>
+        ${audioHtml}
         <div class="ex-q-text">${q.prompt}</div>
         <div class="fitb-row"><input class="fitb-input" id="fitb-${i}" type="text" autocomplete="off" oninput="studentAnswers[${i}]=this.value"/></div>
       </div>`;
@@ -661,6 +675,7 @@ function renderPlayerQuestions() {
     const shuffled = currentLesson.task_type==="minimal_pairs" ? shuffle([...opts]) : opts;
     return `<div class="ex-question-block">
       <div class="ex-q-num">Pregunta ${i+1}</div>
+      ${audioHtml}
       <div class="ex-q-text">${q.prompt}</div>
       <div class="options-grid">
         ${shuffled.map((o,j)=>`<button class="opt-btn" id="opt-${i}-${j}" onclick="selectOpt(${i},${j},'${esc(o)}',${JSON.stringify(shuffled)})">${o}</button>`).join("")}
@@ -773,15 +788,55 @@ function toggleLessonFields() {
     if(type === 'task') renderQuestionFields();
 }
 
+// Subir audio específico por pregunta
+async function uploadQuestionAudio(i, input) {
+    const file = input.files[0];
+    if (!file) return;
+    
+    const statusEl = document.getElementById(`q-audio-status-${i}`);
+    statusEl.textContent = "⏳ Subiendo audio...";
+    statusEl.style.color = "var(--brand)";
+    
+    const fileExt = file.name.split('.').pop();
+    const fileName = `q_${Math.random().toString(36).substring(2)}.${fileExt}`;
+    const { error } = await supabaseClient.storage.from('audios').upload(fileName, file);
+    
+    if (error) {
+        statusEl.textContent = "❌ Error al subir";
+        statusEl.style.color = "var(--red)";
+        alert("Error subiendo audio de pregunta: " + error.message);
+        return;
+    }
+    
+    const urlData = supabaseClient.storage.from('audios').getPublicUrl(fileName);
+    questionRows[i].audio_url = urlData.data.publicUrl;
+    statusEl.textContent = "✅ Audio cargado listo para guardar";
+    statusEl.style.color = "var(--green)";
+}
+
+function buildQRow(type, q, i) {
+    let audioUploadHtml = `
+      <div style="margin-top:10px; background:var(--bg); padding:8px; border-radius:var(--radius-sm); border:1px dashed var(--skool-border);">
+        <span style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:800;">🎧 Audio de esta pregunta (Opcional):</span>
+        <input type="file" accept="audio/*" onchange="uploadQuestionAudio(${i}, this)" style="display:block; margin-top:6px; padding: 0; border: none; background: transparent; font-size:12px;" />
+        <span id="q-audio-status-${i}" style="font-size:11px; font-weight:600; color:var(--green); display:block; margin-top:4px;">${q.audio_url ? '✅ Audio cargado' : ''}</span>
+      </div>`;
+
+    if (type === "matching") {
+      return `<div class="q-row"><div class="q-row-label">Par ${i+1}</div><button class="remove-q" onclick="removeQuestion(${i})">×</button><input type="text" placeholder="Concepto" value="${q.left||''}" oninput="updateQ(${i},'left',this.value)"/><input type="text" placeholder="Respuesta" value="${q.right||''}" oninput="updateQ(${i},'right',this.value)"/></div>`;
+    }
+    
+    if (type === "fill_in_blank") {
+      return `<div class="q-row"><div class="q-row-label">Pregunta ${i+1}</div><button class="remove-q" onclick="removeQuestion(${i})">×</button><textarea placeholder="Oración (usa ___ para el espacio en blanco)..." oninput="updateQ(${i},'prompt',this.value)">${q.prompt||''}</textarea><input type="text" placeholder="Respuesta correcta" value="${q.answer||''}" oninput="updateQ(${i},'answer',this.value)"/>${audioUploadHtml}</div>`;
+    }
+
+    const opts = q.options || ["","","",""];
+    return `<div class="q-row"><div class="q-row-label">Pregunta ${i+1}</div><button class="remove-q" onclick="removeQuestion(${i})">×</button><textarea placeholder="Pregunta" oninput="updateQ(${i},'prompt',this.value)">${q.prompt||''}</textarea>${opts.map((o,j)=>`<input type="text" placeholder="Opción ${j+1}${j===0?' (correcta)':''}" value="${o}" oninput="updateQOption(${i},${j},this.value)"/>`).join("")}${audioUploadHtml}</div>`;
+}
+
 function renderQuestionFields() {
   const type = document.getElementById("t-ex-type").value;
-  document.getElementById("q-builder").innerHTML = questionRows.map((q, i) => {
-    if (type === "matching") return `<div class="q-row"><div class="q-row-label">Par ${i+1}</div><button class="remove-q" onclick="removeQuestion(${i})">×</button><input type="text" placeholder="Concepto" value="${q.left||''}" oninput="updateQ(${i},'left',this.value)"/><input type="text" placeholder="Respuesta" value="${q.right||''}" oninput="updateQ(${i},'right',this.value)"/></div>`;
-    if (type === "fill_in_blank") return `<div class="q-row"><div class="q-row-label">Pregunta ${i+1}</div><button class="remove-q" onclick="removeQuestion(${i})">×</button><textarea placeholder="Oración..." oninput="updateQ(${i},'prompt',this.value)">${q.prompt||''}</textarea><input type="text" placeholder="Respuesta correcta" value="${q.answer||''}" oninput="updateQ(${i},'answer',this.value)"/></div>`;
-    
-    const opts = q.options || ["","","",""];
-    return `<div class="q-row"><div class="q-row-label">Pregunta ${i+1}</div><button class="remove-q" onclick="removeQuestion(${i})">×</button><textarea placeholder="Pregunta" oninput="updateQ(${i},'prompt',this.value)">${q.prompt||''}</textarea>${opts.map((o,j)=>`<input type="text" placeholder="Opción ${j+1}${j===0?' (correcta)':''}" value="${o}" oninput="updateQOption(${i},${j},this.value)"/>`).join("")}</div>`;
-  }).join("");
+  document.getElementById("q-builder").innerHTML = questionRows.map((q, i) => buildQRow(type, q, i)).join("");
 }
 
 function addQuestion() {
@@ -822,7 +877,7 @@ async function saveLesson() {
             const fileExt = audioFile.name.split('.').pop();
             const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
             const { error: uploadError } = await supabaseClient.storage.from('audios').upload(fileName, audioFile);
-            if (uploadError) { alert("Error subiendo audio: " + uploadError.message); btn.disabled = false; btn.textContent = "Guardar Página"; return; }
+            if (uploadError) { alert("Error subiendo audio general: " + uploadError.message); btn.disabled = false; btn.textContent = "Guardar Página"; return; }
             audio_url = supabaseClient.storage.from('audios').getPublicUrl(fileName).data.publicUrl;
         }
     }
