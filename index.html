@@ -212,7 +212,6 @@ select:focus, textarea:focus, input:focus { border-color: var(--brand); backgrou
 
 footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--text-light); border-top: 1px solid var(--border); margin-top: 3rem; }
 footer strong { color: var(--brand); }
-
 </style>
 </head>
 <body>
@@ -435,12 +434,10 @@ let dbModules = [];
 let dbLessons = [];
 let dbStudentProgress = [];
 let quillEditor = null;
+let isUploadingAudio = false;
 
-let isUploadingAudio = false; // Control de seguridad para cargas lentas
-
-// Formateador automático de links de Youtube
 function formatYouTubeUrl(url) {
-    if (!url) return null;
+    if (!url || url === 'EMPTY' || url.trim() === '') return '';
     let videoId = '';
     if (url.includes('watch?v=')) {
         videoId = url.split('v=')[1].split('&')[0];
@@ -616,13 +613,14 @@ const iconMap = { 'video': '📺', 'text': '📄', 'task': '📝' };
 
 function renderClassroomGrid() {
     const grid = document.getElementById("classroom-modules-grid");
+    if (!grid) return;
     if (dbModules.length === 0) {
         grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-light); grid-column: 1/-1;">Aún no hay carpetas creadas.</div>`;
         return;
     }
 
     grid.innerHTML = dbModules.map((m) => {
-        const count = dbLessons.filter(l => l.module_id === m.id).length;
+        const count = dbLessons ? dbLessons.filter(l => l.module_id === m.id).length : 0;
         return `
         <div class="course-card" onclick="openClassroomPlayer('${m.id}')">
             <div class="course-card-title">${m.title}</div>
@@ -799,7 +797,7 @@ function matchSelectRight(i, val) {
   if (matchState.pairs[li] !== undefined) return;
   matchState.pairs[li] = val;
   studentAnswers[li] = val;
-  document.getElementById("ml-"+li).classList.remove("selected");
+  document.getElementById("ml-"+li).remove("selected");
   document.getElementById("ml-"+li).classList.add("matched");
   document.getElementById("mr-"+i).classList.add("matched");
   matchState.leftSel = null;
@@ -885,12 +883,13 @@ function showScore(correct, total, results, isPreviousScore = false) {
 }
 
 /* ══════════════════════════════════════════
-   TEACHER DASHBOARD (MÓDULOS Y PÁGINAS)
+   TEACHER DASHBOARD (CREACIÓN Y GESTIÓN)
 ══════════════════════════════════════════ */
 let questionRows = [];
 
 function updateTeacherModuleSelect() {
     const select = document.getElementById('t-les-module');
+    if(!select) return;
     select.innerHTML = dbModules.map(m => `<option value="${m.id}">${m.title}</option>`).join("");
 }
 
@@ -1029,10 +1028,7 @@ function updateQ(i, f, v) { questionRows[i][f]=v; }
 function updateQOption(i, j, v) { questionRows[i].options[j]=v; }
 
 async function saveLesson() {
-    if (isUploadingAudio) {
-        alert("⚠️ Por favor espera a que termine de subirse el audio antes de guardar.");
-        return;
-    }
+    if (isUploadingAudio) { alert("⚠️ Por favor espera a que termine de subirse el audio antes de guardar."); return; }
 
     const editId = document.getElementById('edit-les-id').value;
     const moduleId = document.getElementById('t-les-module').value;
@@ -1046,7 +1042,7 @@ async function saveLesson() {
 
     if (type === 'video') {
         video_url = formatYouTubeUrl(document.getElementById('t-les-video-url').value);
-        if(!video_url) { alert("Falta el link del video."); return; }
+        if(!video_url || video_url === '') { alert("Falta el link del video."); return; }
     } 
     else if (type === 'text') {
         text_content = quillEditor.root.innerHTML;
@@ -1140,6 +1136,7 @@ function cancelEditLes() {
 /* ── GESTIÓN DE CONTENIDO (BORRAR Y ORDENAR) ── */
 function renderManageList() {
     const list = document.getElementById('t-manage-list');
+    if(!list) return;
     if(dbModules.length === 0) { list.innerHTML = `<div style="font-size:12px; color:var(--text-light);">No hay contenido creado.</div>`; return; }
     
     let html = '';
@@ -1154,7 +1151,7 @@ function renderManageList() {
                     </div>
                  </div>`;
                  
-        const modLess = dbLessons.filter(l => l.module_id === mod.id);
+        const modLess = dbLessons ? dbLessons.filter(l => l.module_id === mod.id) : [];
         modLess.forEach((les) => {
             html += `<div class="manage-item" style="padding-left: 2rem;">
                         <div style="overflow:hidden;"><span class="manage-title">${iconMap[les.type]} ${les.title}</span><span class="manage-type">${les.type}</span></div>
@@ -1225,7 +1222,6 @@ async function deleteLesson(id) {
     fetchClassroomData();
 }
 
-
 /* ══════════════════════════════════════════
    DATOS ESTÁTICOS DE SONIDOS 
 ══════════════════════════════════════════ */
@@ -1262,7 +1258,7 @@ const consonants = {
   stops: [
     { ipa: "/p/", mw: "[p]", name: "P sound", keyword: "pen", words: ["pen", "top", "happy", "apple", "camp"], spellings: ["p — pen, top", "pp — happy, apple"], tip: "Aspirated at the start of stressed syllables — you feel a puff of air. Hold your hand in front: 'pen' has a puff, 'spin' does not." },
     { ipa: "/b/", mw: "[b]", name: "B sound", keyword: "big", words: ["big", "cab", "able", "baby", "job", "ebb"], spellings: ["b — big, cab", "bb — ebb"], tip: "No aspiration. In Spanish, /b/ between vowels becomes a fricative — in American English, always keep it a full stop." },
-    { ipa: "/t/", mw: "[t]", name: "T sound", keyword: "top", words: ["top", "cat", "water", "butter", "action", "nature", "question", "Thomas"], spellings: ["t — top, cat", "tt — butter", "ti — action, question (=/ʃ/ or /tʃ/)", "tu — nature (=/tʃ/)", "th — Thomas (=/t/)"], tip: "Between vowels, American /t/ becomes a quick flap — like a fast /d/. 'Water' and 'butter' use this." },
+    { ipa: "/t/", mw: "[t]", name: "T sound", keyword: "top", words: ["top", "cat", "water", "butter", "action", "nature", "question", "Thomas"], spellings: ["t — top, cat", "tt — butter", "ti — action, question (=/ʃ/ or /tʃ/)", "tu — nature (=/tʃ/)", "th — Thomas (=/t/)"], tip: "Between vowels, American /t trophy/ becomes a quick flap — like a fast /d/. 'Water' and 'butter' use this." },
     { ipa: "/d/", mw: "[d]", name: "D sound", keyword: "dog", words: ["dog", "ride", "made", "middle", "add", "loved", "could"], spellings: ["d — dog, ride", "dd — middle, add", "ed — loved (past tense)", "ld — could (silent l)"], tip: "At the start of a word, similar to Spanish /d/. Between vowels it can sound like a flap. Focus on voicing." },
     { ipa: "/k/", mw: "[k]", name: "K sound", keyword: "cat", words: ["cat", "kite", "queen", "school", "fix", "account", "antique", "choir", "stomach"], spellings: ["c — cat, car", "k — kite, king", "ck — back, clock", "qu — queen (=/kw/)", "x — fix, box (=/ks/)", "cc — account", "que — antique", "ch — choir, stomach"], tip: "Aspirated at the start of stressed syllables. Spelled many ways: c, k, ck, ch, and x." },
     { ipa: "/g/", mw: "[g]", name: "G sound", keyword: "go", words: ["go", "big", "egg", "ghost", "guest", "exact"], spellings: ["g — go, big", "gg — egg", "gh — ghost", "gu — guest, guide", "x — exact (=/gz/)"], tip: "The voiced version of /k/. 'Gh' is silent in many words but sounds like /g/ in 'ghost'." }
