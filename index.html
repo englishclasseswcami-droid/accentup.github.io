@@ -143,6 +143,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .resources-list { display: flex; flex-wrap: wrap; gap: 8px; }
 .resource-link { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; background: var(--bg); border: 1px solid var(--skool-border); border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; color: var(--brand); text-decoration: none; transition: all .15s; }
 .resource-link:hover { background: var(--brand-light); border-color: var(--brand); }
+.lesson-complete-wrap { margin-top: 2.5rem; border-top: 1px solid var(--skool-border); padding-top: 1.5rem; text-align: right; }
 
 /* EXERCISE PLAYER & DRAG AND DROP */
 .ex-question-block { background: var(--bg); border: 1px solid var(--skool-border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
@@ -208,7 +209,6 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .score-row.c { color: var(--green-dark); }
 .score-row.w { color: var(--red-dark); }
 .score-row .ans { color: var(--text-muted); font-size: 12px; }
-.lesson-complete-wrap { margin-top: 2.5rem; border-top: 1px solid var(--skool-border); padding-top: 1.5rem; text-align: right; }
 
 /* COMMUNITY SKOOL STYLE */
 .community-container { max-width: 760px; margin: 0 auto; }
@@ -299,6 +299,24 @@ footer strong { color: var(--brand); }
   <div class="hero-label">Sound Explorer</div>
   <h1>Master <em>American English</em><br/>pronunciation</h1>
   <p>Explore every sound of American English and practice with interactive exercises.</p>
+</div>
+
+<div class="page active" id="page-vowels">
+  <div class="section-intro"><h2>Vowel sounds</h2><p>American English has 19 vowel sounds. Click any card to explore mouth position, spellings, and tips for Spanish speakers.</p></div>
+  <div id="vowel-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
+  <div class="sub-heading">Pure vowels</div><div class="sound-grid" id="pure-vowel-grid"></div>
+  <div class="sub-heading">Diphthongs</div><div class="sound-grid" id="diphthong-grid"></div>
+  <div class="sub-heading">R-colored vowels</div><div class="sound-grid" id="rcolored-grid"></div>
+</div>
+
+<div class="page" id="page-consonants">
+  <div class="section-intro"><h2>Consonant sounds</h2><p>American English has 24 consonant sounds. Every card includes all spelling patterns for that sound.</p></div>
+  <div id="consonant-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
+  <div class="sub-heading">Stops</div><div class="sound-grid" id="stops-grid"></div>
+  <div class="sub-heading">Fricatives</div><div class="sound-grid" id="fricatives-grid"></div>
+  <div class="sub-heading">Affricates</div><div class="sound-grid" id="affricates-grid"></div>
+  <div class="sub-heading">Nasals</div><div class="sound-grid" id="nasals-grid"></div>
+  <div class="sub-heading">Liquids & glides</div><div class="sound-grid" id="liquids-grid"></div>
 </div>
 
 <div class="page" id="page-profile">
@@ -438,6 +456,7 @@ footer strong { color: var(--brand); }
   </div>
   <div class="teacher-layout">
     <div>
+      
       <div class="t-panel">
         <h3 id="panel-title-mod">📂 1. Create Module (Course)</h3>
         <input type="hidden" id="edit-mod-id" value=""/>
@@ -448,6 +467,7 @@ footer strong { color: var(--brand); }
           <button class="secondary-btn" id="btn-cancel-mod" style="display:none;margin-top:.9rem;" onclick="cancelEditMod()">Cancel</button>
         </div>
       </div>
+
       <div class="t-panel">
         <h3 id="panel-title-sub">📁 2. Create Subfolder (Category)</h3>
         <input type="hidden" id="edit-sub-id" value=""/>
@@ -460,13 +480,17 @@ footer strong { color: var(--brand); }
           <button class="secondary-btn" id="btn-cancel-sub" style="display:none;margin-top:.9rem;" onclick="cancelEditSub()">Cancel</button>
         </div>
       </div>
+
       <div class="t-panel">
         <h3 id="panel-title-les">📝 3. Add Lesson</h3>
         <input type="hidden" id="edit-les-id" value=""/>
+        
         <span class="field-label">Module</span>
         <select id="t-les-module" onchange="updateSubfolderSelect()"></select>
+        
         <span class="field-label">Subfolder</span>
         <select id="t-les-submodule"></select>
+
         <span class="field-label">Lesson type</span>
         <select id="t-les-type" onchange="toggleLessonFields()">
           <option value="video">📺 Video</option>
@@ -477,18 +501,22 @@ footer strong { color: var(--brand); }
         <span class="field-label">Lesson title</span>
         <input type="text" id="t-les-title" placeholder="e.g. Lesson 1 — Short I vs Long E"/>
         <hr style="border:0;border-top:1px solid var(--skool-border);margin:1.25rem 0;"/>
+
         <div id="fields-video">
           <span class="field-label">YouTube URL</span>
           <input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..."/>
         </div>
+
         <div id="fields-text" style="display:none;">
           <span class="field-label">Content (Instructions, Reading material or Text below video)</span>
           <div id="quill-editor-container"></div>
         </div>
+
         <div id="fields-embed" style="display:none;">
           <span class="field-label">Embed Code (iframe)</span>
           <textarea id="t-les-embed-code" placeholder="Paste your <iframe> code here..." style="font-family:monospace; min-height:100px; padding:10px; width:100%; border:1.5px solid var(--border); border-radius:var(--radius-sm); outline:none; resize:vertical;"></textarea>
         </div>
+
         <div id="fields-task" style="display:none;">
           <span class="field-label">Exercise type</span>
           <select id="t-ex-type" onchange="renderQuestionFields()">
@@ -506,6 +534,7 @@ footer strong { color: var(--brand); }
           <div id="q-builder"></div>
           <button class="add-q-btn" onclick="addQuestion()">+ Add item</button>
         </div>
+
         <div style="margin-top:1.25rem;background:#F0FDF4;padding:14px;border-radius:var(--radius-sm);border:1px solid #BBF7D0;">
           <p style="font-size:12px;font-weight:700;color:#166534;margin-bottom:4px;">🎧 Lesson audio examples</p>
           <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">Add clickable audios for practice words or examples.</p>
@@ -516,17 +545,20 @@ footer strong { color: var(--brand); }
           </div>
           <div id="t-shared-audios-render"></div>
         </div>
+
         <div style="margin-top:1.25rem;background:#FFF9F6;padding:14px;border-radius:var(--radius-sm);border:1px solid var(--accent);">
           <p style="font-size:12px;font-weight:700;color:var(--accent-dark);margin-bottom:4px;">📎 Attach resources (PDFs, guides, images)</p>
           <input type="file" id="t-les-resources" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" multiple/>
           <div id="t-les-resources-current" style="font-size:11px;color:var(--text-muted);margin-top:-4px;"></div>
         </div>
+
         <div style="display:flex;gap:8px;">
           <button class="primary-btn" onclick="saveLesson()" id="btn-save-les">Save lesson</button>
           <button class="secondary-btn" id="btn-cancel-les" style="display:none;margin-top:.9rem;" onclick="cancelEditLes()">Cancel</button>
         </div>
       </div>
     </div>
+
     <div>
       <div class="t-panel">
         <h3>🛠 Content manager</h3>
@@ -586,6 +618,9 @@ let isUploadingAudio = false;
 let quillEditor = null;
 let communityQuill = null;
 let selectedDragChip = null; 
+
+let activeVowel = null;
+let activeConsonant = null;
 
 function safeParseJSON(data) {
   if (Array.isArray(data)) return data;
@@ -685,12 +720,18 @@ document.querySelectorAll('.nav-tab[data-page]').forEach(tab => {
 function goToPage(pageId) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active')); 
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  
   const tab = document.querySelector(`.nav-tab[data-page="${pageId}"]`); 
   if (tab) tab.classList.add('active');
-  document.getElementById('page-' + pageId).classList.add('active');
+  
+  const pageEl = document.getElementById('page-' + pageId);
+  if (pageEl) {
+    pageEl.classList.add('active');
+  }
   
   const hiddenHero = ['classroom','teacher','auth','community','profile']; 
-  document.getElementById('hero-banner').style.display = hiddenHero.includes(pageId) ? 'none' : 'block';
+  const hero = document.getElementById('hero-banner');
+  if (hero) hero.style.display = hiddenHero.includes(pageId) ? 'none' : 'block';
   
   if (pageId === 'classroom') renderClassroomGrid();
   if (pageId === 'community') renderCommunityFeed();
@@ -1335,14 +1376,13 @@ function speakWord(word) {
   window.speechSynthesis.speak(u);
 }
 
-let activeVowel = null, activeConsonant = null;
 function bc(t){return t==="vowel"?"badge-vowel":t==="diphthong"?"badge-diphthong":t==="rcolored"?"badge-rcolored":"badge-consonant";}
 function bl(t){return t==="rcolored"?"r-colored":t;}
 
 function renderCard(s, isActive, onclick) {
   const d = document.createElement('div');
   d.className = 'sound-card' + (isActive ? ' active' : '');
-  d.innerHTML = `<div class="sound-ipa">${s.ipa}</div><div class="sound-mw">${s.mw}</div><div class="sound-example">as in "<strong>${s.keyword}</strong>"</div><span class="sound-type-badge ${bc(s.type||'consonant')}">${bl(s.type||'consonant')}</span><div><button class="play-btn" onclick="event.stopPropagation();playWord('${s.keyword}')"><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg>${s.keyword}</button></div>`;
+  d.innerHTML = `<div class="sound-ipa">${s.ipa}</div><div class="sound-mw">${s.mw}</div><div class="sound-example">as in "<strong>${s.keyword}</strong>"</div><span class="sound-type-badge ${bc(s.type||'consonant')}">${bl(s.type||'consonant')}</span><div><button class="play-btn" onclick="event.stopPropagation();playWord('${escapeJSArg(s.keyword)}')"><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg>${s.keyword}</button></div>`;
   d.onclick = onclick; return d;
 }
 
@@ -1354,7 +1394,7 @@ function renderDetail(pid, s, isCon) {
     </div>
     <div class="detail-body">
       <div class="detail-section"><div class="detail-section-label">${isCon?'Example words':'Practice words'}</div>
-        <div class="words-wrap">${s.words.map((w,i)=>`<span class="word-pill${i===0?' highlight':''}" onclick="playWord('${w}')">${w} ▶</span>`).join('')}</div>
+        <div class="words-wrap">${s.words.map((w,i)=>`<span class="word-pill${i===0?' highlight':''}" onclick="playWord('${escapeJSArg(w)}')">${w} ▶</span>`).join('')}</div>
       </div>
       <div class="detail-section"><div class="detail-section-label">${isCon?'All spellings':'How it\'s spelled'}</div>
         <div class="words-wrap">${s.spellings.map(sp=>`<span class="word-pill">${sp}</span>`).join('')}</div>
