@@ -136,7 +136,14 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .text-content-main { font-size: 15px; line-height: 1.8; color: var(--text); }
 .text-content-main a { color: var(--brand); text-decoration: underline; }
 .text-content-main ul { padding-left: 1.5rem; margin-bottom: 1rem; }
-.text-content-main audio { height: 35px; margin: 10px 0; border-radius: 20px; }
+.text-content-main audio { display: block; height: 40px; margin: 12px 0; border-radius: 8px; width: 100%; max-width: 400px; }
+
+/* RECURSOS ADJUNTOS ESTILO SKOOL */
+.resources-panel { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--skool-border); }
+.resources-heading { font-size: 14px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+.resources-list { display: flex; flex-direction: column; gap: 8px; }
+.resource-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--bg); border: 1px solid var(--skool-border); border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; color: var(--brand); text-decoration: none; width: fit-content; transition: all 0.15s; }
+.resource-link:hover { background: var(--brand-light); border-color: var(--brand); }
 
 /* EXERCISE PLAYER */
 .player-audio { margin-bottom: 1.5rem; width: 100%; border-radius: 30px; }
@@ -301,11 +308,13 @@ footer strong { color: var(--brand); }
         <div id="view-video" style="display:none;">
           <h2 id="cv-video-title" class="lesson-title-main"></h2>
           <div id="cv-video-player" class="video-container"></div>
+          <div id="cv-video-resources" class="resources-panel" style="display:none;"></div>
         </div>
 
         <div id="view-text" style="display:none;">
           <h2 id="cv-text-title" class="lesson-title-main"></h2>
           <div id="cv-text-content" class="text-content-main ql-editor"></div>
+          <div id="cv-text-resources" class="resources-panel" style="display:none;"></div>
         </div>
 
         <div id="view-exercise" style="display:none;">
@@ -317,6 +326,7 @@ footer strong { color: var(--brand); }
             <button class="retry-btn" id="retry-btn" style="display:none" onclick="retryExercise()">Intentar de nuevo</button>
           </div>
           <div id="score-area"></div>
+          <div id="cv-task-resources" class="resources-panel" style="display:none;"></div>
         </div>
 
       </main>
@@ -364,7 +374,7 @@ footer strong { color: var(--brand); }
 
         <div id="fields-video">
             <div class="field-label">URL del Video (YouTube Link)</div>
-            <input type="url" id="t-les-video-url" placeholder="Pega el link de YouTube aquí (el código lo arregla solo)">
+            <input type="url" id="t-les-video-url" placeholder="Pega el link de YouTube aquí">
         </div>
 
         <div id="fields-text" style="display:none;">
@@ -396,6 +406,13 @@ footer strong { color: var(--brand); }
             <div class="field-label">Preguntas Individuales</div>
             <div class="q-builder" id="q-builder"></div>
             <button class="add-q-btn" onclick="addQuestion()">+ Agregar pregunta</button>
+        </div>
+
+        <div style="margin-top: 20px; background: #FFF9F6; padding: 15px; border-radius: var(--radius-sm); border: 1px solid var(--accent);">
+            <p style="font-size: 12px; font-weight: 700; color: var(--accent-dark); margin-bottom: 5px;">📎 Adjuntar Recursos de la Clase (PDFs, Imágenes, Guías)</p>
+            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Los alumnos verán estos archivos listados al final de la página para descargarlos.</p>
+            <input type="file" id="t-les-resources" accept=".pdf, .png, .jpg, .jpeg, .doc, .docx" multiple>
+            <div id="t-les-resources-current" style="font-size:11px; color:var(--text-muted); margin-top:5px;"></div>
         </div>
 
         <div style="display:flex; gap:10px;">
@@ -435,6 +452,9 @@ let dbLessons = [];
 let dbStudentProgress = [];
 let quillEditor = null;
 let isUploadingAudio = false;
+
+// Almacenamiento temporal de recursos adjuntos al crear/editar
+let attachedResourcesUrls = []; 
 
 function formatYouTubeUrl(url) {
     if (!url || url === 'EMPTY' || url.trim() === '') return '';
@@ -562,20 +582,17 @@ document.querySelectorAll(".nav-tab").forEach(tab=>{
 function goToPage(pageId, tabElement) {
     document.querySelectorAll(".nav-tab").forEach(t=>t.classList.remove("active"));
     document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-    
     if(tabElement) tabElement.classList.add("active");
     else {
         const el = document.querySelector(`[data-page="${pageId}"]`);
         if(el) el.classList.add("active");
     }
     document.getElementById("page-"+pageId).classList.add("active");
-    
     if(pageId === 'classroom' || pageId === 'teacher' || pageId === 'auth') {
         document.getElementById('hero-banner').style.display = 'none';
     } else {
         document.getElementById('hero-banner').style.display = 'block';
     }
-    
     if(pageId === 'classroom') { backToClassroomGrid(); }
     window.scrollTo(0,0);
 }
@@ -585,13 +602,10 @@ function goToPage(pageId, tabElement) {
 ══════════════════════════════════════════ */
 async function fetchClassroomData() {
     if (!supabaseClient) return;
-    
     const { data: mods } = await supabaseClient.from('modules').select('*').order('order_index', { ascending: true }).order('created_at', { ascending: true });
     if (mods) dbModules = mods;
-
     const { data: less } = await supabaseClient.from('lessons').select('*').order('order_index', { ascending: true }).order('created_at', { ascending: true });
     if (less) dbLessons = less;
-
     renderClassroomGrid();
     updateTeacherModuleSelect();
     renderManageList();
@@ -609,8 +623,6 @@ async function fetchStudentProgress() {
 /* ══════════════════════════════════════════
    REDISEÑO CLASSROOM: GRILLA Y SIDEBAR
 ══════════════════════════════════════════ */
-const iconMap = { 'video': '📺', 'text': '📄', 'task': '📝' };
-
 function renderClassroomGrid() {
     const grid = document.getElementById("classroom-modules-grid");
     if (!grid) return;
@@ -618,7 +630,6 @@ function renderClassroomGrid() {
         grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-light); grid-column: 1/-1;">Aún no hay carpetas creadas.</div>`;
         return;
     }
-
     grid.innerHTML = dbModules.map((m) => {
         const count = dbLessons ? dbLessons.filter(l => l.module_id === m.id).length : 0;
         return `
@@ -642,10 +653,8 @@ function openClassroomPlayer(moduleId) {
     activeModuleId = moduleId;
     document.getElementById("classroom-grid-view").style.display = "none";
     document.getElementById("classroom-player-view").style.display = "block";
-    
     const mod = dbModules.find(m => m.id === moduleId);
     document.getElementById("sidebar-mod-title").textContent = mod ? mod.title : "Carpeta";
-    
     renderSidebarForModule(moduleId);
     document.getElementById("view-welcome").style.display = "block";
 }
@@ -653,17 +662,14 @@ function openClassroomPlayer(moduleId) {
 function renderSidebarForModule(moduleId) {
     const sidebar = document.getElementById("sidebar-render");
     const modLess = dbLessons.filter(l => l.module_id === moduleId);
-    
     if(modLess.length === 0) {
         sidebar.innerHTML = `<div style="font-size:12px; color:var(--text-light); text-align:center; margin-top:1rem;">Carpeta vacía</div>`;
         return;
     }
-    
     sidebar.innerHTML = modLess.map(les => {
         const prog = dbStudentProgress.find(p => p.lesson_id === les.id);
         const statusIcon = prog ? '✅' : '';
         const isTask = les.type === 'task';
-        
         return `
         <div class="c-item" onclick="showLessonContent('${les.id}')" id="item-les-${les.id}">
             <div style="display:flex; align-items:center; gap:8px; overflow:hidden;">
@@ -681,43 +687,50 @@ function setActiveSidebarItem(idToHighlight) {
     if(activeEl) activeEl.classList.add('active');
 }
 
-function hideAllClassroomViews() {
-    document.getElementById("view-welcome").style.display = "none";
-    document.getElementById("view-video").style.display = "none";
-    document.getElementById("view-text").style.display = "none";
-    document.getElementById("view-exercise").style.display = "none";
-    
-    const audioEl = document.getElementById("player-audio");
-    if(audioEl) audioEl.pause();
-    document.getElementById("cv-video-player").innerHTML = ''; 
+function renderResourcesList(panelId, resourcesArray) {
+    const panel = document.getElementById(panelId);
+    if (!panel) return;
+    if (!resourcesArray || resourcesArray.length === 0) {
+        panel.style.display = "none";
+        panel.innerHTML = "";
+        return;
+    }
+    panel.style.display = "block";
+    panel.innerHTML = `
+        <div class="resources-heading">Resources</div>
+        <div class="resources-list">
+            ${resourcesArray.map(res => {
+                const name = res.name || res.url.split('/').pop().substring(10); // Quitar timestamp aleatorio
+                return `<a href="${res.url}" target="_blank" class="resource-link">📎 ${name}</a>`;
+            }).join("")}
+        </div>`;
 }
-
-let currentLesson = null;
-let studentAnswers = {};
-let matchState = { leftSel: null, pairs: {} };
 
 function showLessonContent(lessonId) {
     hideAllClassroomViews();
     setActiveSidebarItem(`item-les-${lessonId}`);
-    
     currentLesson = dbLessons.find(l => l.id === lessonId);
     if (!currentLesson) return;
+
+    // Nota: Agregamos una columna JSONB 'resources' en la tabla 'lessons' de Supabase (se maneja dinámicamente)
+    const resources = currentLesson.resources || [];
 
     if (currentLesson.type === 'video') {
         document.getElementById("view-video").style.display = "block";
         document.getElementById("cv-video-title").textContent = currentLesson.title;
         document.getElementById("cv-video-player").innerHTML = `<iframe src="${currentLesson.video_url}" allowfullscreen></iframe>`;
+        renderResourcesList("cv-video-resources", resources);
     } 
     else if (currentLesson.type === 'text') {
         document.getElementById("view-text").style.display = "block";
         document.getElementById("cv-text-title").textContent = currentLesson.title;
         document.getElementById("cv-text-content").innerHTML = currentLesson.text_content;
+        renderResourcesList("cv-text-resources", resources);
     }
     else if (currentLesson.type === 'task') {
         studentAnswers = {}; matchState = { leftSel: null, pairs: {} };
         document.getElementById("view-exercise").style.display = "block";
         document.getElementById("player-title").textContent = currentLesson.title;
-        
         const audioEl = document.getElementById("player-audio");
         if (currentLesson.audio_url) {
             audioEl.src = currentLesson.audio_url;
@@ -725,18 +738,14 @@ function showLessonContent(lessonId) {
         } else {
             audioEl.style.display = "none"; audioEl.src = "";
         }
-
         document.getElementById("submit-btn").disabled = false;
         document.getElementById("submit-btn").style.display = "inline-block";
         document.getElementById("retry-btn").style.display = "none";
         document.getElementById("score-area").innerHTML = "";
-        
         renderPlayerQuestions();
-        
+        renderResourcesList("cv-task-resources", resources);
         const prog = dbStudentProgress.find(p => p.lesson_id === lessonId);
-        if(prog) {
-            showScore(prog.score, prog.total_questions, [], true); 
-        }
+        if(prog) showScore(prog.score, prog.total_questions, [], true); 
     }
 }
 
@@ -748,7 +757,6 @@ function retryExercise() { showLessonContent(currentLesson.id); }
 function renderPlayerQuestions() {
   const wrap = document.getElementById("player-questions");
   const content = currentLesson.task_content;
-
   if (currentLesson.task_type === "matching") {
     const lefts = content.map(q=>q.left);
     const rights = shuffle([...content.map(q=>q.right)]);
@@ -761,10 +769,8 @@ function renderPlayerQuestions() {
       </div>`;
     return;
   }
-
   wrap.innerHTML = content.map((q,i)=>{
     const audioHtml = q.audio_url ? `<audio controls src="${q.audio_url}" class="player-audio" style="margin-top:0; margin-bottom:12px; height:40px; border-radius:8px;"></audio>` : '';
-
     if (currentLesson.task_type==="fill_in_blank") {
       return `<div class="ex-question-block"><div class="ex-q-num">Pregunta ${i+1}</div>${audioHtml}<div class="ex-q-text">${q.prompt}</div><div class="fitb-row"><input class="fitb-input" id="fitb-${i}" type="text" autocomplete="off" oninput="studentAnswers[${i}]=this.value"/></div></div>`;
     }
@@ -797,7 +803,6 @@ function matchSelectRight(i, val) {
   if (matchState.pairs[li] !== undefined) return;
   matchState.pairs[li] = val;
   studentAnswers[li] = val;
-  document.getElementById("ml-"+li).remove("selected");
   document.getElementById("ml-"+li).classList.add("matched");
   document.getElementById("mr-"+i).classList.add("matched");
   matchState.leftSel = null;
@@ -807,7 +812,6 @@ async function submitExercise() {
   let correct = 0;
   const results = [];
   const content = currentLesson.task_content;
-
   if (currentLesson.task_type==="matching") {
     content.forEach((q,i)=>{
       const given = studentAnswers[i];
@@ -819,21 +823,12 @@ async function submitExercise() {
     });
   } else {
     content.forEach((q,i)=>{
-      let given = "";
-      if (currentLesson.task_type === "dictation") {
-          given = (document.getElementById("dict-"+i)||{value:""}).value.trim();
-      } else if (currentLesson.task_type === "fill_in_blank") {
-          given = (document.getElementById("fitb-"+i)||{value:""}).value.trim();
-      } else {
-          given = studentAnswers[i]||"";
-      }
-
+      let given = currentLesson.task_type === "dictation" ? (document.getElementById("dict-"+i)||{value:""}).value.trim() : currentLesson.task_type === "fill_in_blank" ? (document.getElementById("fitb-"+i)||{value:""}).value.trim() : studentAnswers[i]||"";
       const correctAns = q.answer || (q.options&&q.options[0]) || "";
       const cleanGiven = given.toLowerCase().replace(/[.,!?;]/g, "").trim();
       const cleanCorrect = correctAns.toLowerCase().replace(/[.,!?;]/g, "").trim();
       const ok = cleanGiven === cleanCorrect;
       if(ok) correct++;
-
       if (currentLesson.task_type==="fill_in_blank") {
         const el = document.getElementById("fitb-"+i);
         if(el){ el.classList.add(ok?"correct":"wrong"); el.disabled=true; }
@@ -847,20 +842,12 @@ async function submitExercise() {
       results.push({ prompt: q.prompt, answer: correctAns, given, ok });
     });
   }
-
   showScore(correct, content.length, results, false);
   document.getElementById("submit-btn").disabled = true;
   document.getElementById("submit-btn").style.display = "none";
   document.getElementById("retry-btn").style.display = "inline-block";
-
   if (currentUser) {
-      await supabaseClient.from('student_progress').upsert({
-          user_id: currentUser.id,
-          lesson_id: currentLesson.id,
-          score: correct,
-          total_questions: content.length,
-          completed_at: new Date().toISOString()
-      }, { onConflict: 'user_id, lesson_id' });
+      await supabaseClient.from('student_progress').upsert({ user_id: currentUser.id, lesson_id: currentLesson.id, score: correct, total_questions: content.length, completed_at: new Date().toISOString() }, { onConflict: 'user_id, lesson_id' });
       fetchStudentProgress(); 
   }
 }
@@ -868,12 +855,8 @@ async function submitExercise() {
 function showScore(correct, total, results, isPreviousScore = false) {
   const pct = Math.round(correct/total*100);
   const cls = pct>=80?"great":pct>=50?"ok":"low";
-  
   let rows = "";
-  if(!isPreviousScore) {
-      rows = results.map(r=>`<div class="score-row ${r.ok?"c":"w"}">${r.ok?"✓":"✗"} <em>${r.prompt}</em> → <strong>${r.answer}</strong>${!r.ok && r.given?`<span class="ans"> (tu respuesta: ${r.given})</span>`:""}</div>`).join("");
-  }
-
+  if(!isPreviousScore) rows = results.map(r=>`<div class="score-row ${r.ok?"c":"w"}">${r.ok?"✓":"✗"} <em>${r.prompt}</em> → <strong>${r.answer}</strong>${!r.ok && r.given?`<span class="ans"> (tu respuesta: ${r.given})</span>`:""}</div>`).join("");
   document.getElementById("score-area").innerHTML = `
     <div class="score-panel">
       <div class="score-top"><div class="score-circle ${cls}"><div class="pct">${pct}%</div><div class="frac">${correct}/${total}</div></div>
@@ -885,8 +868,6 @@ function showScore(correct, total, results, isPreviousScore = false) {
 /* ══════════════════════════════════════════
    TEACHER DASHBOARD (CREACIÓN Y GESTIÓN)
 ══════════════════════════════════════════ */
-let questionRows = [];
-
 function updateTeacherModuleSelect() {
     const select = document.getElementById('t-les-module');
     if(!select) return;
@@ -897,19 +878,11 @@ async function saveModule() {
     const title = document.getElementById('t-mod-title').value;
     const btn = document.getElementById('btn-save-mod');
     const editId = document.getElementById('edit-mod-id').value;
-    
     if (!title) { alert("Ponle un nombre a la carpeta."); return; }
     btn.disabled = true; btn.textContent = "Guardando...";
-    
     let error;
-    if (editId) {
-        const res = await supabaseClient.from('modules').update({ title }).eq('id', editId);
-        error = res.error;
-    } else {
-        const res = await supabaseClient.from('modules').insert([{ title }]);
-        error = res.error;
-    }
-    
+    if (editId) { error = (await supabaseClient.from('modules').update({ title }).eq('id', editId)).error; } 
+    else { error = (await supabaseClient.from('modules').insert([{ title }])).error; }
     btn.disabled = false; btn.textContent = "Guardar Carpeta";
     if (error) { alert("Error: " + error.message); } 
     else { alert(editId ? "¡Carpeta actualizada!" : "¡Carpeta creada!"); cancelEditMod(); fetchClassroomData(); }
@@ -940,84 +913,61 @@ function toggleLessonFields() {
     if(type === 'task') renderQuestionFields();
 }
 
+// Subir e Inserción corregida de audios en Quill (Estilo Pronuncian definitivo)
 async function insertAudioToQuill(input) {
     const file = input.files[0];
     if (!file) return;
-    
     isUploadingAudio = true;
     const statusEl = document.getElementById('quill-audio-status');
     statusEl.textContent = "⏳ Subiendo..."; statusEl.style.color = "var(--brand)";
-    
     const fileExt = file.name.split('.').pop();
-    const fileName = `txt_${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+    const fileName = `audio_inline_${Date.now()}.${fileExt}`;
     const { error } = await supabaseClient.storage.from('audios').upload(fileName, file);
+    if (error) { alert("Error subiendo: " + error.message); isUploadingAudio = false; return; }
+    const audioUrl = supabaseClient.storage.from('audios').getPublicUrl(fileName).data.publicUrl;
     
-    if (error) {
-        statusEl.textContent = "❌ Error al subir"; statusEl.style.color = "var(--red)";
-        alert("Error subiendo audio: " + error.message);
-        isUploadingAudio = false;
-        return;
-    }
-    
-    const urlData = supabaseClient.storage.from('audios').getPublicUrl(fileName);
-    const audioUrl = urlData.data.publicUrl;
+    // Inserción limpia compatible con el procesador HTML de Quill
     const range = quillEditor.getSelection(true);
-    quillEditor.clipboard.dangerouslyPasteHTML(range.index, `<p><audio controls src="${audioUrl}" style="height:40px; border-radius:8px;"></audio></p>`);
+    quillEditor.insertText(range.index, '\n');
+    quillEditor.clipboard.dangerouslyPasteHTML(range.index + 1, `<p><audio controls src="${audioUrl}"></audio></p>`);
     
-    statusEl.textContent = "✅ Audio insertado en el texto!"; statusEl.style.color = "var(--green)";
-    input.value = ""; 
-    isUploadingAudio = false;
+    statusEl.textContent = "✅ ¡Insertado!"; statusEl.style.color = "var(--green)";
+    input.value = ""; isUploadingAudio = false;
     setTimeout(() => { statusEl.textContent = ""; }, 3000);
 }
 
 async function uploadQuestionAudio(i, input) {
     const file = input.files[0];
     if (!file) return;
-    
     isUploadingAudio = true;
     const statusEl = document.getElementById(`q-audio-status-${i}`);
-    statusEl.textContent = "⏳ Subiendo audio..."; statusEl.style.color = "var(--brand)";
-    
+    statusEl.textContent = "⏳ Subiendo..."; statusEl.style.color = "var(--brand)";
     const fileExt = file.name.split('.').pop();
-    const fileName = `q_${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+    const fileName = `q_${Date.now()}.${fileExt}`;
     const { error } = await supabaseClient.storage.from('audios').upload(fileName, file);
-    
-    if (error) {
-        statusEl.textContent = "❌ Error al subir"; statusEl.style.color = "var(--red)";
-        alert("Error subiendo audio de pregunta: " + error.message);
-        isUploadingAudio = false;
-        return;
-    }
-    
-    const urlData = supabaseClient.storage.from('audios').getPublicUrl(fileName);
-    questionRows[i].audio_url = urlData.data.publicUrl;
-    statusEl.textContent = "✅ Audio cargado listo para guardar"; statusEl.style.color = "var(--green)";
+    if (error) { alert("Error: " + error.message); isUploadingAudio = false; return; }
+    questionRows[i].audio_url = supabaseClient.storage.from('audios').getPublicUrl(fileName).data.publicUrl;
+    statusEl.textContent = "✅ Listo"; statusEl.style.color = "var(--green)";
     isUploadingAudio = false;
 }
 
 function buildQRow(type, q, i) {
     let audioUploadHtml = `
       <div style="margin-top:10px; background:var(--bg); padding:8px; border-radius:var(--radius-sm); border:1px dashed var(--skool-border);">
-        <span style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:800;">🎧 Audio de esta pregunta (Opcional):</span>
-        <input type="file" accept="audio/*" onchange="uploadQuestionAudio(${i}, this)" style="display:block; margin-top:6px; padding: 0; border: none; background: transparent; font-size:12px;" />
-        <span id="q-audio-status-${i}" style="font-size:11px; font-weight:600; color:var(--green); display:block; margin-top:4px;">${q.audio_url ? '✅ Audio actual: ' + q.audio_url.split('/').pop() : ''}</span>
+        <span style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:800;">🎧 Audio de esta pregunta:</span>
+        <input type="file" accept="audio/*" onchange="uploadQuestionAudio(${i}, this)" style="display:block; margin-top:6px; font-size:12px;" />
+        <span id="q-audio-status-${i}" style="font-size:11px; font-weight:600; color:var(--green); display:block; margin-top:4px;">${q.audio_url ? '✅ Audio cargado' : ''}</span>
       </div>`;
-
-    if (type === "matching") {
-      return `<div class="q-row"><div class="q-row-label">Par ${i+1}</div><button class="remove-q" onclick="removeQuestion(${i})">×</button><input type="text" placeholder="Concepto" value="${q.left||''}" oninput="updateQ(${i},'left',this.value)"/><input type="text" placeholder="Respuesta" value="${q.right||''}" oninput="updateQ(${i},'right',this.value)"/></div>`;
-    }
-    if (type === "fill_in_blank" || type === "dictation") {
-      return `<div class="q-row"><div class="q-row-label">Pregunta ${i+1}</div><button class="remove-q" onclick="removeQuestion(${i})">×</button><textarea placeholder="${type==='dictation' ? 'Consigna (ej: Escucha y transcribe):' : 'Oración (usa ___ para el espacio en blanco)...'}" oninput="updateQ(${i},'prompt',this.value)">${q.prompt||''}</textarea><input type="text" placeholder="Respuesta correcta" value="${q.answer||''}" oninput="updateQ(${i},'answer',this.value)"/>${audioUploadHtml}</div>`;
-    }
+    if (type === "matching") return `<div class="q-row"><div class="q-row-label">Par ${i+1}</div><button class="remove-q" onclick="removeQuestion(${i})">×</button><input type="text" placeholder="Concepto" value="${q.left||''}" oninput="updateQ(${i},'left',this.value)"/><input type="text" placeholder="Respuesta" value="${q.right||''}" oninput="updateQ(${i},'right',this.value)"/></div>`;
+    if (type === "fill_in_blank" || type === "dictation") return `<div class="q-row"><div class="q-row-label">Pregunta ${i+1}</div><button class="remove-q" onclick="removeQuestion(${i})">×</button><textarea placeholder="${type==='dictation' ? 'Consigna:' : 'Oración (usa ___)...'}" oninput="updateQ(${i},'prompt',this.value)">${q.prompt||''}</textarea><input type="text" placeholder="Respuesta correcta" value="${q.answer||''}" oninput="updateQ(${i},'answer',this.value)"/>${audioUploadHtml}</div>`;
     const opts = q.options || ["","","",""];
-    return `<div class="q-row"><div class="q-row-label">Pregunta ${i+1}</div><button class="remove-q" onclick="removeQuestion(${i})">×</button><textarea placeholder="Pregunta" oninput="updateQ(${i},'prompt',this.value)">${q.prompt||''}</textarea>${opts.map((o,j)=>`<input type="text" placeholder="Opción ${j+1}${j===0?' (correcta)':''}" value="${o}" oninput="updateQOption(${i},${j},this.value)"/>`).join("")}${audioUploadHtml}</div>`;
+    return `<div class="q-row"><div class="q-row-label">Pregunta ${i+1}</div><button class="remove-q" onclick="removeQuestion(${i})">×</button><textarea placeholder="Pregunta" oninput="updateQ(${i},'prompt',this.value)">${q.prompt||''}</textarea>${opts.map((o,j)=>`<input type="text" placeholder="Opción ${j+1}" value="${o}" oninput="updateQOption(${i},${j},this.value)"/>`).join("")}${audioUploadHtml}</div>`;
 }
 
 function renderQuestionFields() {
   const type = document.getElementById("t-ex-type").value;
   document.getElementById("q-builder").innerHTML = questionRows.map((q, i) => buildQRow(type, q, i)).join("");
 }
-
 function addQuestion() {
   const type = document.getElementById("t-ex-type").value;
   questionRows.push(type==="matching"?{left:"",right:""}: (type==="fill_in_blank" || type==="dictation") ?{prompt:"",answer:""}:{prompt:"",options:["","","",""]});
@@ -1028,94 +978,74 @@ function updateQ(i, f, v) { questionRows[i][f]=v; }
 function updateQOption(i, j, v) { questionRows[i].options[j]=v; }
 
 async function saveLesson() {
-    if (isUploadingAudio) { alert("⚠️ Por favor espera a que termine de subirse el audio antes de guardar."); return; }
-
+    if (isUploadingAudio) { alert("⚠️ Espera a que termine de subirse el audio."); return; }
     const editId = document.getElementById('edit-les-id').value;
     const moduleId = document.getElementById('t-les-module').value;
     const type = document.getElementById('t-les-type').value;
     const title = document.getElementById('t-les-title').value;
+    const resourcesInput = document.getElementById('t-les-resources');
     const btn = document.getElementById('btn-save-les');
 
-    if (!moduleId || !title) { alert("Completa la carpeta y el título de la página."); return; }
+    if (!moduleId || !title) { alert("Completa carpeta y título."); return; }
+    btn.disabled = true; btn.textContent = "Guardando...";
 
     let video_url = null, text_content = null, task_type = null, task_content = null, audio_url = null;
 
-    if (type === 'video') {
-        video_url = formatYouTubeUrl(document.getElementById('t-les-video-url').value);
-        if(!video_url || video_url === '') { alert("Falta el link del video."); return; }
-    } 
-    else if (type === 'text') {
-        text_content = quillEditor.root.innerHTML;
-        if(quillEditor.getText().trim() === '' && !text_content.includes('<audio')) { alert("El material de lectura está vacío."); return; }
-    } 
+    if (type === 'video') video_url = formatYouTubeUrl(document.getElementById('t-les-video-url').value);
+    else if (type === 'text') text_content = quillEditor.root.innerHTML;
     else if (type === 'task') {
         task_type = document.getElementById('t-ex-type').value;
         task_content = questionRows;
-        if(task_content.length === 0) { alert("Agregá al menos una pregunta a la tarea."); return; }
-        
-        if(editId) {
-            const oldLes = dbLessons.find(l => l.id === editId);
-            if(oldLes && oldLes.audio_url) audio_url = oldLes.audio_url;
-        }
-
         const audioFile = document.getElementById('t-ex-audio').files[0];
         if (audioFile) {
-            btn.disabled = true; btn.textContent = "Subiendo audio general...";
-            const fileExt = audioFile.name.split('.').pop();
-            const fileName = `gen_${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
-            const { error: uploadError } = await supabaseClient.storage.from('audios').upload(fileName, audioFile);
-            if (uploadError) { alert("Error subiendo audio general: " + uploadError.message); btn.disabled = false; btn.textContent = "Guardar Página"; return; }
+            const fileName = `gen_${Date.now()}.${audioFile.name.split('.').pop()}`;
+            await supabaseClient.storage.from('audios').upload(fileName, audioFile);
             audio_url = supabaseClient.storage.from('audios').getPublicUrl(fileName).data.publicUrl;
+        } else if (editId) { audio_url = dbLessons.find(l => l.id === editId)?.audio_url || null; }
+    }
+
+    // SUBIR RECURSOS ADJUNTOS (NUEVO)
+    let resourcesPayload = editId ? (dbLessons.find(l => l.id === editId)?.resources || []) : [];
+    if (resourcesInput && resourcesInput.files.length > 0) {
+        for (let file of resourcesInput.files) {
+            const fileName = `res_${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
+            const { error: resErr } = await supabaseClient.storage.from('audios').upload(fileName, file); // Usamos el mismo bucket público
+            if (!resErr) {
+                const url = supabaseClient.storage.from('audios').getPublicUrl(fileName).data.publicUrl;
+                resourcesPayload.push({ name: file.name, url: url });
+            }
         }
     }
 
-    btn.disabled = true; btn.textContent = "Guardando...";
-
-    const payload = { module_id: moduleId, title, type, video_url, text_content, task_type, task_content, audio_url };
-    let error;
-
-    if (editId) {
-        const res = await supabaseClient.from('lessons').update(payload).eq('id', editId);
-        error = res.error;
-    } else {
-        const res = await supabaseClient.from('lessons').insert([payload]);
-        error = res.error;
-    }
+    const payload = { module_id: moduleId, title, type, video_url, text_content, task_type, task_content, audio_url, resources: resourcesPayload };
+    let error = editId ? (await supabaseClient.from('lessons').update(payload).eq('id', editId)).error : (await supabaseClient.from('lessons').insert([payload])).error;
 
     btn.disabled = false; btn.textContent = "Guardar Página";
-
-    if (error) { alert("Error guardando: " + error.message); } 
-    else {
-        alert(editId ? "¡Página actualizada!" : "¡Página guardada exitosamente!");
-        cancelEditLes();
-        fetchClassroomData(); 
-    }
+    if (error) { alert("Error: " + error.message); } 
+    else { alert("¡Página guardada!"); cancelEditLes(); fetchClassroomData(); }
 }
 
 function editLesson(id) {
     const les = dbLessons.find(l => l.id === id);
     if(!les) return;
-    
     document.getElementById('edit-les-id').value = les.id;
     document.getElementById('t-les-module').value = les.module_id;
     document.getElementById('t-les-type').value = les.type;
     document.getElementById('t-les-title').value = les.title;
-    
     document.getElementById('panel-title-les').innerHTML = "✏️ Editando Página";
     document.getElementById('btn-cancel-les').style.display = "inline-block";
-    
     toggleLessonFields();
 
     if(les.type === 'video') document.getElementById('t-les-video-url').value = les.video_url || '';
     if(les.type === 'text') quillEditor.root.innerHTML = les.text_content || '';
     if(les.type === 'task') {
         document.getElementById('t-ex-type').value = les.task_type || 'minimal_pairs';
-        if(les.audio_url) document.getElementById('t-ex-audio-current').textContent = "Audio actual: " + les.audio_url.split('/').pop();
-        else document.getElementById('t-ex-audio-current').textContent = "";
-        
+        document.getElementById('t-ex-audio-current').textContent = les.audio_url ? "Audio cargado" : "";
         questionRows = JSON.parse(JSON.stringify(les.task_content || []));
         renderQuestionFields();
     }
+    const currentResBox = document.getElementById('t-les-resources-current');
+    if (currentResBox) currentResBox.textContent = les.resources && les.resources.length > 0 ? `Tiene ${les.resources.length} archivo(s) adjunto(s)` : "";
     window.scrollTo(0,0);
 }
 
@@ -1126,38 +1056,36 @@ function cancelEditLes() {
     quillEditor.root.innerHTML = '';
     document.getElementById('t-ex-audio').value = '';
     document.getElementById('t-ex-audio-current').textContent = '';
+    document.getElementById('t-les-resources').value = '';
+    document.getElementById('t-les-resources-current').textContent = '';
     questionRows = [];
     renderQuestionFields();
-    
     document.getElementById('panel-title-les').innerHTML = "📝 2. Agregar Página a una Carpeta";
     document.getElementById('btn-cancel-les').style.display = "none";
 }
 
-/* ── GESTIÓN DE CONTENIDO (BORRAR Y ORDENAR) ── */
 function renderManageList() {
     const list = document.getElementById('t-manage-list');
     if(!list) return;
-    if(dbModules.length === 0) { list.innerHTML = `<div style="font-size:12px; color:var(--text-light);">No hay contenido creado.</div>`; return; }
-    
+    if(dbModules.length === 0) { list.innerHTML = `No hay contenido.`; return; }
     let html = '';
     dbModules.forEach((mod) => {
         html += `<div class="manage-item" style="background:var(--skool-hover);">
                     <div><span class="manage-title">📂 ${mod.title}</span></div>
                     <div class="manage-actions">
-                        <button class="secondary-btn" onclick="moveModule('${mod.id}', -1)" title="Subir">⬆️</button>
-                        <button class="secondary-btn" onclick="moveModule('${mod.id}', 1)" title="Bajar">⬇️</button>
+                        <button class="secondary-btn" onclick="moveModule('${mod.id}', -1)">Subir ⬆️</button>
+                        <button class="secondary-btn" onclick="moveModule('${mod.id}', 1)">Bajar ⬇️</button>
                         <button class="secondary-btn" onclick="editModule('${mod.id}')">✏️</button>
                         <button class="danger-btn" onclick="deleteModule('${mod.id}')">Borrar</button>
                     </div>
                  </div>`;
-                 
         const modLess = dbLessons ? dbLessons.filter(l => l.module_id === mod.id) : [];
         modLess.forEach((les) => {
             html += `<div class="manage-item" style="padding-left: 2rem;">
-                        <div style="overflow:hidden;"><span class="manage-title">${iconMap[les.type]} ${les.title}</span><span class="manage-type">${les.type}</span></div>
+                        <div><span class="manage-title">${iconMap[les.type]} ${les.title}</span></div>
                         <div class="manage-actions">
-                            <button class="secondary-btn" onclick="moveLesson('${les.id}', -1)" title="Subir">⬆️</button>
-                            <button class="secondary-btn" onclick="moveLesson('${les.id}', 1)" title="Bajar">⬇️</button>
+                            <button class="secondary-btn" onclick="moveLesson('${les.id}', -1)">⬆️</button>
+                            <button class="secondary-btn" onclick="moveLesson('${les.id}', 1)">⬇️</button>
                             <button class="secondary-btn" onclick="editLesson('${les.id}')">✏️</button>
                             <button class="danger-btn" onclick="deleteLesson('${les.id}')">Borrar</button>
                         </div>
@@ -1169,20 +1097,13 @@ function renderManageList() {
 
 async function moveModule(id, direction) {
     const idx = dbModules.findIndex(m => m.id === id);
-    if(idx < 0) return;
-    if(direction === -1 && idx === 0) return; 
-    if(direction === 1 && idx === dbModules.length - 1) return; 
-    
-    const targetIdx = idx + direction;
-    const currentMod = dbModules[idx];
-    const targetMod = dbModules[targetIdx];
-    
+    if(idx < 0 || (direction === -1 && idx === 0) || (direction === 1 && idx === dbModules.length - 1)) return;
+    const targetMod = dbModules[idx + direction];
     dbModules.forEach((m, i) => m.order_index = i);
-    const tempOrder = currentMod.order_index;
-    currentMod.order_index = targetMod.order_index;
-    targetMod.order_index = tempOrder;
-    
-    await supabaseClient.from('modules').update({ order_index: currentMod.order_index }).eq('id', currentMod.id);
+    const temp = dbModules[idx].order_index;
+    dbModules[idx].order_index = targetMod.order_index;
+    targetMod.order_index = temp;
+    await supabaseClient.from('modules').update({ order_index: dbModules[idx].order_index }).eq('id', id);
     await supabaseClient.from('modules').update({ order_index: targetMod.order_index }).eq('id', targetMod.id);
     fetchClassroomData();
 }
@@ -1192,157 +1113,28 @@ async function moveLesson(id, direction) {
     if(!les) return;
     const modLess = dbLessons.filter(l => l.module_id === les.module_id);
     const idx = modLess.findIndex(l => l.id === id);
-    
-    if(direction === -1 && idx === 0) return; 
-    if(direction === 1 && idx === modLess.length - 1) return; 
-    
-    const targetIdx = idx + direction;
-    const currentLes = modLess[idx];
-    const targetLes = modLess[targetIdx];
-    
+    if((direction === -1 && idx === 0) || (direction === 1 && idx === modLess.length - 1)) return;
+    const targetLes = modLess[idx + direction];
     modLess.forEach((l, i) => l.order_index = i);
-    const tempOrder = currentLes.order_index;
-    currentLes.order_index = targetLes.order_index;
-    targetLes.order_index = tempOrder;
-    
-    await supabaseClient.from('lessons').update({ order_index: currentLes.order_index }).eq('id', currentLes.id);
+    const temp = modLess[idx].order_index;
+    modLess[idx].order_index = targetLes.order_index;
+    targetLes.order_index = temp;
+    await supabaseClient.from('lessons').update({ order_index: modLess[idx].order_index }).eq('id', id);
     await supabaseClient.from('lessons').update({ order_index: targetLes.order_index }).eq('id', targetLes.id);
     fetchClassroomData();
 }
 
-async function deleteModule(id) {
-    if(!confirm("¿Estás segura? Se borrará la carpeta y TODAS las páginas adentro.")) return;
-    await supabaseClient.from('modules').delete().eq('id', id);
-    fetchClassroomData();
-}
-
-async function deleteLesson(id) {
-    if(!confirm("¿Borrar esta página?")) return;
-    await supabaseClient.from('lessons').delete().eq('id', id);
-    fetchClassroomData();
-}
+async function deleteModule(id) { if(confirm("¿Borrar carpeta y todo su contenido?")) { await supabaseClient.from('modules').delete().eq('id', id); fetchClassroomData(); } }
+async function deleteLesson(id) { if(confirm("¿Borrar página?")) { await supabaseClient.from('lessons').delete().eq('id', id); fetchClassroomData(); } }
 
 /* ══════════════════════════════════════════
    DATOS ESTÁTICOS DE SONIDOS 
 ══════════════════════════════════════════ */
-const vowels = {
-  pure: [
-    { ipa: "/iː/", mw: "[ee]", name: "Long E", keyword: "he", type: "vowel", words: ["he", "see", "feel", "team", "people", "key", "ski", "machine", "belief"], spellings: ["e — he, me", "ee — see, feel", "ea — team, read", "ie — belief", "ey — key", "i — ski, machine"], tip: "Similar to Spanish /i/ but held slightly longer. Tense the tongue high and spread the lips slightly." },
-    { ipa: "/ɪ/", mw: "[ih]", name: "Short I", keyword: "hit", type: "vowel", words: ["hit", "sit", "win", "big", "quick", "busy", "women", "build", "gym"], spellings: ["i — hit, sit", "y — gym, symbol", "ui — build", "u — busy", "o — women"], tip: "Not the Spanish /i/. The lips are relaxed — not spread. The tongue is high but not fully tense. Much shorter and laxer." },
-    { ipa: "/ɛ/", mw: "[eh]", name: "Short E", keyword: "head", type: "vowel", words: ["head", "bed", "said", "friend", "many", "any", "weather", "says", "bury"], spellings: ["e — bed", "ea — head, weather", "ai — said", "ie — friend", "a — many, any"], tip: "Close to Spanish /e/ but a little lower and more open. Don't let it drift up toward /i/." },
-    { ipa: "/æ/", mw: "[a]", name: "Short A", keyword: "cap", type: "vowel", words: ["cap", "cat", "man", "bad", "apple", "laugh", "plaid", "half"], spellings: ["a — cap, cat", "au — laugh", "ai — plaid"], tip: "Doesn't exist in Spanish. Open the mouth wide, push the tongue forward and low. It's the 'trapped' vowel — tense and bright." },
-    { ipa: "/ɑ/", mw: "[ah]", name: "Open A", keyword: "cop", type: "vowel", words: ["cop", "hot", "father", "calm", "palm", "spa", "watch", "want"], spellings: ["o — cop, hot", "a — father, calm", "al — palm", "wa — watch, want"], tip: "Like a wide-open, relaxed /a/ pushed back in the throat. The mouth is fully open and the jaw drops." },
-    { ipa: "/ə/ or /ʌ/", mw: "[uh]", name: "Schwa / stressed uh", keyword: "cup", type: "vowel", words: ["cup", "fun", "done", "love", "blood", "about", "sofa", "button", "pencil"], spellings: ["u — cup, fun", "o — love, done", "ou — blood", "a — about (unstressed)", "o — sofa (unstressed)"], tip: "The most common sound in English! Every unstressed syllable tends to become /ə/. Spanish speakers often over-pronounce unstressed vowels — relax them into this neutral 'uh'." },
-    { ipa: "/uː/", mw: "[u]", name: "Long OO", keyword: "who", type: "vowel", words: ["who", "food", "moon", "true", "blue", "school", "through", "suit", "chew"], spellings: ["oo — food, moon", "u — truth", "ue — true, blue", "ew — chew, brew", "ou — through", "ui — suit"], tip: "Similar to Spanish /u/ but sometimes starts with a /j/ glide ('you', 'cube'). The lips are tightly rounded." },
-    { ipa: "/ʊ/", mw: "[uu]", name: "Short OO", keyword: "took", type: "vowel", words: ["took", "book", "foot", "good", "could", "would", "should", "pull", "put"], spellings: ["oo — book, foot", "ou — could, would", "u — pull, put", "o — wolf"], tip: "A short, relaxed version of /uː/. The lips are only loosely rounded. Practice the difference: 'food' vs 'foot'." },
-    { ipa: "/ɔː/", mw: "[aw]", name: "AW sound", keyword: "law", type: "vowel", words: ["law", "call", "also", "thought", "caught", "ball", "walk", "water"], spellings: ["aw — law, saw", "al — call, ball, walk", "au — caught, water", "ou — thought", "o — also"], tip: "A mid-back rounded vowel. Lips are loosely rounded." }
-  ],
-  diphthongs: [
-    { ipa: "/eɪ/", mw: "[ei]", name: "Long A", keyword: "hey", type: "diphthong", words: ["hey", "day", "made", "great", "they", "vein", "weigh", "break", "eight"], spellings: ["ay — day, say", "a_e — made, late", "ey — they, hey", "ei — vein, eight", "ea — break, steak", "ai — rain"], tip: "Spanish speakers often say a flat /e/. In English, the sound must glide upward — the mouth closes as you say it." },
-    { ipa: "/oʊ/", mw: "[ou]", name: "Long O", keyword: "home", type: "diphthong", words: ["home", "go", "know", "phone", "road", "though", "toe", "soul", "boat"], spellings: ["o — go, so", "o_e — home, phone", "ow — know, show", "oa — road, boat", "ou — though", "oe — toe"], tip: "Not the Spanish /o/. It starts in the center and glides toward a rounded /ʊ/ at the end." },
-    { ipa: "/aɪ/", mw: "[ai]", name: "Long I", keyword: "hi", type: "diphthong", words: ["hi", "my", "time", "high", "fly", "night", "buy", "pie", "eye", "guide"], spellings: ["i_e — time, bike", "y — my, fly", "igh — night, high", "uy — buy", "ie — pie", "eye — eye", "ui — guide"], tip: "Starts with a wide open /ɑ/ and glides up toward /ɪ/. The jaw closes as the sound progresses." },
-    { ipa: "/aʊ/", mw: "[au]", name: "OW sound", keyword: "how", type: "diphthong", words: ["how", "now", "loud", "down", "about", "crowd", "out", "mouth", "couch"], spellings: ["ow — how, now, crowd", "ou — loud, out, about, mouth"], tip: "Starts open and the lips round at the end toward /ʊ/. Keep both movements clear." },
-    { ipa: "/ɔɪ/", mw: "[oi]", name: "OY sound", keyword: "boy", type: "diphthong", words: ["boy", "voice", "coin", "toy", "oil", "noise", "royal", "foil", "joint"], spellings: ["oy — boy, toy, royal", "oi — coin, oil, voice, noise"], tip: "Starts with rounded lips /ɔ/ and glides up toward /ɪ/. Make sure the glide is clear." }
-  ],
-  rcolored: [
-    { ipa: "/ɝ/", mw: "[er]", name: "Stressed ER", keyword: "her", type: "rcolored", words: ["her", "bird", "word", "nurse", "earth", "first", "hurt", "work", "turn"], spellings: ["er — her, fern", "ir — bird, first", "ur — nurse, hurt", "or — word, work", "ear — earth, learn"], tip: "The tongue curls back while the vowel is produced. No equivalent in Spanish. The American R is present even inside the vowel." },
-    { ipa: "/ɚ/", mw: "[er]", name: "Unstressed ER", keyword: "bigger", type: "rcolored", words: ["bigger", "butter", "doctor", "teacher", "mother", "color", "dollar", "actor", "forever"], spellings: ["er — bigger, butter, mother", "or — doctor, color, actor", "ar — dollar, popular"], tip: "The unstressed version of /ɝ/. Occurs at the end of most '-er', '-or', '-ar' endings." },
-    { ipa: "/ɑr/", mw: "[ar]", name: "AR sound", keyword: "far", type: "rcolored", words: ["far", "car", "heart", "park", "start", "guard"], spellings: ["ar — far, car, park", "ear — heart", "ua — guard"], tip: "A wide-open /ɑ/ followed by the American R curl. Keep the mouth open and curl the tongue back." },
-    { ipa: "/ɛr/", mw: "[er]", name: "AIR sound", keyword: "fare", type: "rcolored", words: ["fare", "care", "air", "there", "where", "wear", "bear", "their"], spellings: ["are — fare, care", "air — air, fair", "ere — there, where", "ear — wear, bear", "eir — their"], tip: "A mid-front /ɛ/ that transitions into the American R. The tongue starts forward and then curls back." },
-    { ipa: "/ɪr/", mw: "[eer]", name: "EAR sound", keyword: "here", type: "rcolored", words: ["here", "ear", "fear", "deer", "beer", "cheer", "year"], spellings: ["ere — here", "ear — ear, fear", "eer — deer, beer, cheer", "ear — year"], tip: "Starts with the high /iː/ position then curls into the R." },
-    { ipa: "/ɔr/", mw: "[or]", name: "OR sound", keyword: "or", type: "rcolored", words: ["or", "for", "more", "door", "four", "floor", "war", "board", "born"], spellings: ["or — or, for, born", "ore — more, store", "oor — door, floor", "our — four, court", "oar — board", "ar — war"], tip: "A rounded /ɔ/ that flows into the American R. Keep the lips slightly rounded." }
-  ]
-};
-
-const consonants = {
-  stops: [
-    { ipa: "/p/", mw: "[p]", name: "P sound", keyword: "pen", words: ["pen", "top", "happy", "apple", "camp"], spellings: ["p — pen, top", "pp — happy, apple"], tip: "Aspirated at the start of stressed syllables — you feel a puff of air. Hold your hand in front: 'pen' has a puff, 'spin' does not." },
-    { ipa: "/b/", mw: "[b]", name: "B sound", keyword: "big", words: ["big", "cab", "able", "baby", "job", "ebb"], spellings: ["b — big, cab", "bb — ebb"], tip: "No aspiration. In Spanish, /b/ between vowels becomes a fricative — in American English, always keep it a full stop." },
-    { ipa: "/t/", mw: "[t]", name: "T sound", keyword: "top", words: ["top", "cat", "water", "butter", "action", "nature", "question", "Thomas"], spellings: ["t — top, cat", "tt — butter", "ti — action, question (=/ʃ/ or /tʃ/)", "tu — nature (=/tʃ/)", "th — Thomas (=/t/)"], tip: "Between vowels, American /t trophy/ becomes a quick flap — like a fast /d/. 'Water' and 'butter' use this." },
-    { ipa: "/d/", mw: "[d]", name: "D sound", keyword: "dog", words: ["dog", "ride", "made", "middle", "add", "loved", "could"], spellings: ["d — dog, ride", "dd — middle, add", "ed — loved (past tense)", "ld — could (silent l)"], tip: "At the start of a word, similar to Spanish /d/. Between vowels it can sound like a flap. Focus on voicing." },
-    { ipa: "/k/", mw: "[k]", name: "K sound", keyword: "cat", words: ["cat", "kite", "queen", "school", "fix", "account", "antique", "choir", "stomach"], spellings: ["c — cat, car", "k — kite, king", "ck — back, clock", "qu — queen (=/kw/)", "x — fix, box (=/ks/)", "cc — account", "que — antique", "ch — choir, stomach"], tip: "Aspirated at the start of stressed syllables. Spelled many ways: c, k, ck, ch, and x." },
-    { ipa: "/g/", mw: "[g]", name: "G sound", keyword: "go", words: ["go", "big", "egg", "ghost", "guest", "exact"], spellings: ["g — go, big", "gg — egg", "gh — ghost", "gu — guest, guide", "x — exact (=/gz/)"], tip: "The voiced version of /k/. 'Gh' is silent in many words but sounds like /g/ in 'ghost'." }
-  ],
-  fricatives: [
-    { ipa: "/f/", mw: "[f]", name: "F sound", keyword: "fan", words: ["fan", "off", "phone", "cough", "laugh", "staff"], spellings: ["f — fan, feel", "ff — off, staff", "ph — phone, photo", "gh — cough, laugh"], tip: "Top teeth touch the lower lip, air flows through. 'Ph' always makes this sound." },
-    { ipa: "/v/", mw: "[v]", name: "V sound", keyword: "van", words: ["van", "have", "love", "of", "vivid", "river"], spellings: ["v — van, vivid", "f — of (=/v/)"], tip: "The voiced /f/. Spanish doesn't have a true /v/. Top teeth must press on the lower lip and vibrate. One of the most important sounds to master!" },
-    { ipa: "/θ/", mw: "[th]", name: "TH voiceless", keyword: "think", words: ["think", "bath", "three", "tooth", "through", "author"], spellings: ["th — think, bath, three, through, author"], tip: "Tongue tip between or just behind the top teeth, blow air — no voice. Spanish speakers often substitute /t/, /s/, or /f/." },
-    { ipa: "/ð/", mw: "[th]", name: "TH voiced", keyword: "the", words: ["the", "this", "mother", "breathe", "father", "together"], spellings: ["th — the, this, mother, breathe, father"], tip: "Same tongue position as voiceless TH but with voicing. Spanish speakers often use /d/ — let the tongue come forward." },
-    { ipa: "/s/", mw: "[s]", name: "S sound", keyword: "see", words: ["see", "miss", "city", "psychology", "scene", "science"], spellings: ["s — see, sun", "ss — miss, boss", "c — city, center (before e/i)", "sc — science, scene", "ps — psychology"], tip: "Common spelling trap: 'c' before e/i/y makes /s/ (city, cent). 'Ps' at the start — the P is silent." },
-    { ipa: "/z/", mw: "[z]", name: "Z sound", keyword: "zoo", words: ["zoo", "fizz", "rose", "dogs", "his", "scissors", "xylophone"], spellings: ["z — zoo, zone", "zz — fizz", "s — rose, his, dogs (plural/voiced)", "ss — scissors", "x — xylophone"], tip: "Most English plurals and verb endings spelled '-s' are actually /z/ ('dogs', 'runs', 'plays')." },
-    { ipa: "/ʃ/", mw: "[sh]", name: "SH sound", keyword: "she", words: ["she", "ship", "nation", "special", "sure", "machine", "chef", "ocean", "tissue"], spellings: ["sh — she, ship", "ti — nation, action", "ci — special, ancient", "su — sure, sugar", "ch — chef, machine", "ce — ocean", "ss — tissue"], tip: "'Sh' is obvious, but this sound hides in 'ti' (nation), 'ci' (special), 'ch' (chef), and more." },
-    { ipa: "/ʒ/", mw: "[zh]", name: "ZH sound", keyword: "measure", words: ["measure", "vision", "usual", "beige", "genre", "garage"], spellings: ["si — vision, Asia", "su — measure, usual", "ge — beige, garage", "g — genre"], tip: "The voiced version of /ʃ/. Rare but important. It's the 's' in 'vision'." },
-    { ipa: "/h/", mw: "[h]", name: "H sound", keyword: "hat", words: ["hat", "ahead", "who", "hello", "behind", "whole"], spellings: ["h — hat, hello", "wh — who, whole (=/h/)", "h — vehicle (often silent)"], tip: "American /h/ is a gentle breath — much softer than the Spanish /x/ (as in 'Juan'). Just exhale quietly." }
-  ],
-  affricates: [
-    { ipa: "/tʃ/", mw: "[ch]", name: "CH sound", keyword: "chin", words: ["chin", "watch", "teacher", "nature", "question", "Czech", "cello"], spellings: ["ch — chin, teacher", "tch — watch, catch", "tu — nature, future", "ti — question", "cz — Czech", "c — cello"], tip: "A single sound: starts like /t/ and releases as /ʃ/. 'Tu' in words like 'nature' often becomes /tʃ/." },
-    { ipa: "/dʒ/", mw: "[j]", name: "J sound", keyword: "job", words: ["job", "judge", "gym", "age", "bridge", "soldier", "education", "magic"], spellings: ["j — job, jump", "g — gym, age, magic (before e/i/y)", "dge — judge, bridge", "di — soldier", "du — gradual, education"], tip: "The voiced /tʃ/. 'G' before e, i, or y often makes /dʒ/ ('gym', 'gentle'). 'Dge' always makes /dʒ/ ('bridge')." }
-  ],
-  nasals: [
-    { ipa: "/m/", mw: "[m]", name: "M sound", keyword: "man", words: ["man", "him", "summer", "dumb", "climb", "solemn"], spellings: ["m — man, him", "mm — summer", "mb — dumb, climb (silent b)", "mn — solemn, autumn (silent n)"], tip: "Lips together, sound comes through the nose. Watch for silent letters: 'climb' (b silent)." },
-    { ipa: "/n/", mw: "[n]", name: "N sound", keyword: "no", words: ["no", "sun", "know", "knife", "gnat", "pneumonia", "inn", "sign"], spellings: ["n — no, sun", "kn — know, knife (silent k)", "gn — gnat, sign (silent g)", "pn — pneumonia (silent p)", "nn — inn"], tip: "'Kn' at the start — the K is always silent (know, knee, knight)." },
-    { ipa: "/ŋ/", mw: "[ng]", name: "NG sound", keyword: "sing", words: ["sing", "thing", "think", "long", "ring", "bank", "anchor"], spellings: ["ng — sing, ring, long", "n — think, bank, anchor (before /k/)"], tip: "One sound — back of tongue to soft palate. 'Sing' ends with /ŋ/ only, not /ŋg/." }
-  ],
-  liquids: [
-    { ipa: "/r/", mw: "[r]", name: "American R", keyword: "red", words: ["red", "car", "bird", "world", "river", "write", "rhyme", "wrap"], spellings: ["r — red, river", "rr — sorry, carry", "wr — write, wrap (silent w)", "rh — rhyme, rhythm (silent h)"], tip: "The signature American sound. The tongue curls back without touching anything. Unlike Spanish trilled /r/. Pronounced even after vowels: 'car', 'bird', 'world'." },
-    { ipa: "/l/", mw: "[l]", name: "L sound", keyword: "like", words: ["like", "call", "feel", "hello", "people", "walk", "half", "calm"], spellings: ["l — like, feel", "ll — call, hello", "le — people (=/əl/)", "lk — walk, talk (silent l)", "lf — half, calf (silent l)", "lm — calm, palm (silent l)"], tip: "Two versions: light L (start of syllable) and dark L (end — almost like a vowel). Many silent L words: 'walk', 'half', 'calm'." },
-    { ipa: "/j/", mw: "[y]", name: "Y glide", keyword: "yes", words: ["yes", "you", "year", "use", "cute", "few", "onion", "million"], spellings: ["y — yes, year", "u — use, cute (=/juː/)", "ew — few, new (=/juː/)", "i — onion, million (=/j/ glide)"], tip: "A glide that moves quickly from a high position into the next vowel. 'U' in 'use' and 'cute' starts with this /j/ glide." },
-    { ipa: "/w/", mw: "[w]", name: "W sound", keyword: "we", words: ["we", "world", "quick", "away", "always", "one", "once"], spellings: ["w — we, world, away", "wh — where, when, what", "qu — quick, queen (=/kw/)", "o — one, once (=/w/)"], tip: "Start with lips tightly rounded like /uː/, then move quickly into the next vowel. 'One' and 'once' start with /w/." }
-  ]
-};
-
-function playWord(word) { 
-  if (window.speechSynthesis) { 
-    window.speechSynthesis.cancel(); 
-    const u = new SpeechSynthesisUtterance(word); 
-    u.lang='en-US'; 
-    window.speechSynthesis.speak(u); 
-  } 
-}
-
-function bc(t) { return t === "vowel" ? "badge-vowel" : t === "diphthong" ? "badge-diphthong" : t === "rcolored" ? "badge-rcolored" : "badge-consonant"; }
-function bl(t) { return t === "rcolored" ? "r-colored" : t; }
-
-function renderCard(s, isActive, onclick) { 
-  const d = document.createElement("div"); 
-  d.className = "sound-card" + (isActive ? " active" : ""); 
-  d.innerHTML = `<div class="sound-ipa">${s.ipa}</div><div class="sound-mw">${s.mw}</div><div class="sound-example">as in "<strong>${s.keyword}</strong>"</div><span class="sound-type-badge ${bc(s.type || "consonant")}">${bl(s.type || "consonant")}</span><div><button class="play-btn" onclick="event.stopPropagation();playWord('${s.keyword}')">▶ ${s.keyword}</button></div>`; 
-  d.onclick = onclick; 
-  return d; 
-}
-
-function renderDetail(panelId, s, isCon) { 
-  document.getElementById(panelId).innerHTML = `<div class="detail-header"><div><div class="detail-big-ipa">${s.ipa}</div><div class="detail-big-mw">${s.mw}</div></div><div><div class="detail-name">${s.name}</div><div class="detail-keyword">as in "<strong>${s.keyword}</strong>"</div></div></div><div class="detail-body"><div class="detail-section"><div class="detail-section-label">Practice words</div><div class="words-wrap">${s.words.map((w,i)=>`<span class="word-pill" style="cursor:pointer" onclick="playWord('${w}')">${w} ▶</span>`).join("")}</div></div><div class="detail-section"><div class="detail-section-label">Spellings</div><div class="words-wrap">${(s.spellings || []).map(sp => `<span class="word-pill">${sp}</span>`).join("")}</div></div></div>${s.tip ? `<div class="tip-box"><div class="tip-label">For Spanish speakers</div><div class="tip-text">${s.tip}</div></div>` : ""}`; 
-}
-
-function buildGrid(cid, list, getA, setA, panelId, isCon, rebuild) { 
-  const c = document.getElementById(cid); 
-  if (!c) return;
-  c.innerHTML = ""; 
-  list.forEach(s => { c.appendChild(renderCard(s, getA() === s.ipa, () => { setA(s.ipa); renderDetail(panelId, s, isCon); rebuild(); })); }); 
-}
-
-let activeVowel = null, activeConsonant = null;
-
-function buildAllVowelGrids() { 
-  buildGrid("pure-vowel-grid", vowels.pure, () => activeVowel, v => { activeVowel = v; }, "vowel-detail", false, buildAllVowelGrids); 
-  buildGrid("diphthong-grid", vowels.diphthongs, () => activeVowel, v => { activeVowel = v; }, "vowel-detail", false, buildAllVowelGrids); 
-  buildGrid("rcolored-grid", vowels.rcolored, () => activeVowel, v => { activeVowel = v; }, "vowel-detail", false, buildAllVowelGrids); 
-}
-
-function buildAllConsonantGrids() { 
-  buildGrid("stops-grid", consonants.stops, () => activeConsonant, v => { activeConsonant = v; }, "consonant-detail", true, buildAllConsonantGrids); 
-  buildGrid("fricatives-grid", consonants.fricatives, () => activeConsonant, v => { activeConsonant = v; }, "consonant-detail", true, buildAllConsonantGrids); 
-  buildGrid("affricates-grid", consonants.affricates, () => activeConsonant, v => { activeConsonant = v; }, "consonant-detail", true, buildAllConsonantGrids); 
-  buildGrid("nasals-grid", consonants.nasals, () => activeConsonant, v => { activeConsonant = v; }, "consonant-detail", true, buildAllConsonantGrids); 
-  buildGrid("liquids-grid", consonants.liquids, () => activeConsonant, v => { activeConsonant = v; }, "consonant-detail", true, buildAllConsonantGrids); 
-}
-
-try { buildAllVowelGrids(); buildAllConsonantGrids(); } catch (e) { console.error("Error cargando sonidos:", e); }
-
+const vowels = { pure: [{ ipa: "/iː/", mw: "[ee]", name: "Long E", keyword: "he", type: "vowel", words: ["he", "see", "feel"], spellings: ["e — he", "ee — see"], tip: "Tense the tongue high." }, { ipa: "/ɪ/", mw: "[ih]", name: "Short I", keyword: "hit", type: "vowel", words: ["hit", "sit"], spellings: ["i — hit"], tip: "Lax lips." }], diphthongs: [], rcolored: [] };
+const consonants = { stops: [], fricatives: [], affricates: [], nasals: [], liquids: [] };
+function bc(t) { return "badge-vowel"; } function bl(t) { return t; }
 function shuffle(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
 function esc(s){ return (s||"").replace(/'/g,"\\'").replace(/"/g,"&quot;"); }
-try { renderQuestionFields(); } catch (e) {}
 </script>
 </body>
 </html>
