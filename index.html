@@ -136,8 +136,9 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .text-content-main { font-size: 15px; line-height: 1.8; color: var(--text); }
 .text-content-main a { color: var(--brand); text-decoration: underline; }
 .text-content-main ul { padding-left: 1.5rem; margin-bottom: 1rem; }
+.text-content-main audio { display: block; height: 40px; margin: 12px 0; border-radius: 8px; width: 100%; max-width: 400px; }
 
-/* AUDIO LIST STYLES (Estilo Pronuncian definitivo) */
+/* AUDIO LIST STYLES */
 .lesson-audios-box { margin-bottom: 1.5rem; background: var(--bg); border: 1px solid var(--skool-border); padding: 12px 16px; border-radius: var(--radius-sm); }
 .lesson-audio-row { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed var(--skool-border); }
 .lesson-audio-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
@@ -447,8 +448,6 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 let supabaseClient = null; let currentUser = null; let isLoginMode = true;
 let dbModules = []; let dbLessons = []; let dbStudentProgress = [];
 let quillEditor = null; let isUploadingAudio = false;
-
-// Array en memoria para audios compartidos acumulados al crear/editar
 let temporarySharedAudiosList = [];
 
 function formatYouTubeUrl(url) {
@@ -539,6 +538,7 @@ function renderClassroomGrid() {
 }
 function backToClassroomGrid() { document.getElementById("classroom-player-view").style.display = "none"; document.getElementById("classroom-grid-view").style.display = "block"; hideAllClassroomViews(); activeModuleId = null; }
 function openClassroomPlayer(moduleId) { activeModuleId = moduleId; document.getElementById("classroom-grid-view").style.display = "none"; document.getElementById("classroom-player-view").style.display = "block"; document.getElementById("sidebar-mod-title").textContent = dbModules.find(m => m.id === moduleId)?.title || "Carpeta"; renderSidebarForModule(moduleId); document.getElementById("view-welcome").style.display = "block"; }
+const iconMap = { 'video': '📺', 'text': '📄', 'task': '📝' };
 function renderSidebarForModule(moduleId) {
     const sidebar = document.getElementById("sidebar-render"); const modLess = dbLessons.filter(l => l.module_id === moduleId);
     if(modLess.length === 0) { sidebar.innerHTML = `<div style="font-size:12px; color:var(--text-light); text-align:center; margin-top:1rem;">Carpeta vacía</div>`; return; }
@@ -550,18 +550,24 @@ function renderSidebarForModule(moduleId) {
 
 function renderAudiosBox(panelId, audiosList) {
     const panel = document.getElementById(panelId); if (!panel) return;
-    // Fix anti-caídas: nos aseguramos que audiosList sea un array real
     const list = Array.isArray(audiosList) ? audiosList : [];
     if (list.length === 0) { panel.style.display = "none"; panel.innerHTML = ""; return; }
     panel.style.display = "block";
     panel.innerHTML = list.map(aud => `<div class="lesson-audio-row"><span class="lesson-audio-label">🔊 ${aud.label}</span><audio controls src="${aud.url}"></audio></div>`).join("");
 }
 
+function renderResourcesList(panelId, resourcesArray) {
+    const panel = document.getElementById(panelId); if (!panel) return;
+    const list = Array.isArray(resourcesArray) ? resourcesArray : [];
+    if (list.length === 0) { panel.style.display = "none"; panel.innerHTML = ""; return; }
+    panel.style.display = "block";
+    panel.innerHTML = `<div class="resources-heading">Resources</div><div class="resources-list">${list.map(res => `<a href="${res.url}" target="_blank" class="resource-link">📎 ${res.name}</a>`).join("")}</div>`;
+}
+
 function showLessonContent(lessonId) {
     hideAllClassroomViews(); setActiveSidebarItem(`item-les-${lessonId}`);
     currentLesson = dbLessons.find(l => l.id === lessonId); if (!currentLesson) return;
     
-    // Fix anti-caídas: Garantizar estructura segura si las columnas vinieran NULL de Supabase
     const resources = Array.isArray(currentLesson.resources) ? currentLesson.resources : [];
     const sharedAudios = Array.isArray(currentLesson.content) && currentLesson.type !== 'task' ? currentLesson.content : [];
 
@@ -622,7 +628,7 @@ async function addSharedAudioToList() {
     renderTeacherAudiosList();
 }
 function renderTeacherAudiosList() {
-    document.getElementById('t-shared-audios-list-render').innerHTML = temporarySharedAudiosList.map((a, i) => `<div style="padding:6px; background:white; border:1px solid var(--skool-border); border-radius:4px; margin-top:4px; display:flex; justify-content:between;">🔊 ${a.label} <button class="danger-btn" style="padding:2px 6px; font-size:10px;" onclick="temporarySharedAudiosList.splice(${i},1);renderTeacherAudiosList();">Eliminar</button></div>`).join("");
+    document.getElementById('t-shared-audios-list-render').innerHTML = temporarySharedAudiosList.map((a, i) => `<div style="padding:6px; background:white; border:1px solid var(--skool-border); border-radius:4px; margin-top:4px; display:flex; justify-content:space-between; align-items:center;"><span>🔊 ${a.label}</span> <button class="danger-btn" style="padding:2px 6px; font-size:10px; margin-left:10px;" onclick="temporarySharedAudiosList.splice(${i},1);renderTeacherAudiosList();">Eliminar</button></div>`).join("");
 }
 
 async function saveLesson() {
@@ -634,7 +640,7 @@ async function saveLesson() {
     btn.disabled = true; btn.textContent = "Guardando...";
 
     let video_url = null, text_content = null, task_type = null, task_content = null, audio_url = null;
-    let contentPayload = '[]'::jsonb; // Se rellenará con audios si es video o texto
+    let contentPayload = []; 
 
     if (type === 'video') { video_url = formatYouTubeUrl(document.getElementById('t-les-video-url').value); contentPayload = temporarySharedAudiosList; }
     else if (type === 'text') { text_content = quillEditor.root.innerHTML; contentPayload = temporarySharedAudiosList; }
@@ -686,7 +692,7 @@ function renderManageList() {
     const list = document.getElementById('t-manage-list'); if(!list) return;
     if(dbModules.length === 0) { list.innerHTML = `No hay contenido.`; return; }
     list.innerHTML = dbModules.map((mod) => {
-        let html = `<div class="manage-item" style="background:var(--skool-hover);"><div><span class="manage-title">📂 ${mod.title}</span></div><div class="manage-actions"><button class="secondary-btn" onclick="moveModule('${mod.id}', -1)">⬆️</button><button class="secondary-btn" onclick="moveModule('${mod.id}', 1)">⬇️</button><button class="secondary-btn" onclick="editModule('${mod.id}')">✏️</button><button class="danger-btn" onclick="deleteModule('${mod.id}')">Borrar</button></div></div>`;
+        let html = `<div class="manage-item" style="background:var(--skool-hover);"><div><span class="manage-title">📂 ${mod.title}</span></div><div class="manage-actions"><button class="secondary-btn" onclick="moveModule('${mod.id}', -1)">Subir ⬆️</button><button class="secondary-btn" onclick="moveModule('${mod.id}', 1)">Bajar ⬇️</button><button class="secondary-btn" onclick="editModule('${mod.id}')">✏️</button><button class="danger-btn" onclick="deleteModule('${mod.id}')">Borrar</button></div></div>`;
         const modLess = dbLessons ? dbLessons.filter(l => l.module_id === mod.id) : [];
         modLess.forEach((les) => {
             html += `<div class="manage-item" style="padding-left: 2rem;"><div><span class="manage-title">${iconMap[les.type]} ${les.title}</span></div><div class="manage-actions"><button class="secondary-btn" onclick="moveLesson('${les.id}', -1)">⬆️</button><button class="secondary-btn" onclick="moveLesson('${les.id}', 1)">⬇️</button><button class="secondary-btn" onclick="editLesson('${les.id}')">✏️</button><button class="danger-btn" onclick="deleteLesson('${les.id}')">Borrar</button></div></div>`;
@@ -695,7 +701,11 @@ function renderManageList() {
     }).join("");
 }
 
-// RESTO DE FUNCIONES ESTÁTICAS DE RESPALDO (IGUALES A LA VERSIÓN ANTERIOR)
+// RESTO DE FUNCIONES ESTÁTICAS DE RESPALDO
+let questionRows = [];
+function updateTeacherModuleSelect() { const select = document.getElementById('t-les-module'); if(!select) return; select.innerHTML = dbModules.map(m => `<option value="${m.id}">${m.title}</option>`).join(""); }
+async function saveModule() { const title = document.getElementById('t-mod-title').value; const btn = document.getElementById('btn-save-mod'); const editId = document.getElementById('edit-mod-id').value; if (!title) { alert("Ponle un nombre a la carpeta."); return; } btn.disabled = true; btn.textContent = "Guardando..."; let error = editId ? (await supabaseClient.from('modules').update({ title }).eq('id', editId)).error : (await supabaseClient.from('modules').insert([{ title }])).error; btn.disabled = false; btn.textContent = "Guardar Carpeta"; if (error) { alert("Error: " + error.message); } else { alert(editId ? "¡Carpeta actualizada!" : "¡Carpeta creada!"); cancelEditMod(); fetchClassroomData(); } }
+function editModule(id) { const mod = dbModules.find(m => m.id === id); if(!mod) return; document.getElementById('t-mod-title').value = mod.title; document.getElementById('edit-mod-id').value = mod.id; document.getElementById('panel-title-mod').innerHTML = "✏️ Editando Carpeta"; document.getElementById('btn-cancel-mod').style.display = "inline-block"; window.scrollTo(0,0); }
 function selectOpt(qi, oi, val, opts) { opts.forEach((_,j)=>{ const b=document.getElementById(`opt-${qi}-${j}`); if(b) b.classList.remove("selected"); }); document.getElementById(`opt-${qi}-${oi}`).classList.add("selected"); studentAnswers[qi] = val; }
 function setActiveSidebarItem(idToHighlight) { document.querySelectorAll('.c-item').forEach(el => el.classList.remove('active')); const activeEl = document.getElementById(idToHighlight); if(activeEl) activeEl.classList.add('active'); }
 function cancelEditMod() { document.getElementById('t-mod-title').value = ""; document.getElementById('edit-mod-id').value = ""; document.getElementById('panel-title-mod').innerHTML = "📂 1. Crear Carpeta (Módulo)"; document.getElementById('btn-cancel-mod').style.display = "none"; }
@@ -703,8 +713,15 @@ async function moveModule(id, direction) { const idx = dbModules.findIndex(m => 
 async function moveLesson(id, direction) { const les = dbLessons.find(l => l.id === id); if(!les) return; const modLess = dbLessons.filter(l => l.module_id === les.module_id); const idx = modLess.findIndex(l => l.id === id); if((direction === -1 && idx === 0) || (direction === 1 && idx === modLess.length - 1)) return; const targetLes = modLess[idx + direction]; modLess.forEach((l, i) => l.order_index = i); const temp = modLess[idx].order_index; modLess[idx].order_index = targetLes.order_index; targetLes.order_index = temp; await supabaseClient.from('lessons').update({ order_index: modLess[idx].order_index }).eq('id', id); await supabaseClient.from('lessons').update({ order_index: targetLes.order_index }).eq('id', targetLes.id); fetchClassroomData(); }
 async function deleteModule(id) { if(confirm("¿Borrar carpeta?")) { await supabaseClient.from('modules').delete().eq('id', id); fetchClassroomData(); } }
 async function deleteLesson(id) { if(confirm("¿Borrar página?")) { await supabaseClient.from('lessons').delete().eq('id', id); fetchClassroomData(); } }
+function removeQuestion(i) { questionRows.splice(i,1); renderQuestionFields(); } function updateQ(i, f, v) { questionRows[i][f]=v; } function updateQOption(i, j, v) { questionRows[i].options[j]=v; }
+function renderQuestionFields() {
+  const type = document.getElementById("t-ex-type").value;
+  document.getElementById("q-builder").innerHTML = questionRows.map((q, i) => buildQRow(type, q, i)).join("");
+}
 const vowels = { pure: [{ ipa: "/iː/", mw: "[ee]", name: "Long E", keyword: "he", type: "vowel", words: ["he", "see", "feel"], spellings: ["e — he", "ee — see"], tip: "Tense the tongue high." }, { ipa: "/ɪ/", mw: "[ih]", name: "Short I", keyword: "hit", type: "vowel", words: ["hit", "sit"], spellings: ["i — hit"], tip: "Lax lips." }], diphthongs: [], rcolored: [] }; const consonants = { stops: [], fricatives: [], affricates: [], nasals: [], liquids: [] };
-function buildAllVowelGrids() { buildGrid("pure-vowel-grid", vowels.pure, () => activeVowel, v => { activeVowel = v; }, "vowel-detail", false, buildAllVowelGrids); } function buildAllConsonantGrids() {}
+let activeVowel = null; let activeConsonant = null;
+function buildGrid(cid, list, getA, setA, panelId, isCon, rebuild) { const c = document.getElementById(cid); if (!c) return; c.innerHTML = ""; list.forEach(s => { c.appendChild(renderCard(s, getA() === s.ipa, () => { setA(s.ipa); renderDetail(panelId, s, isCon); rebuild(); })); }); }
+function buildAllVowelGrids() { buildGrid("pure-vowel-grid", vowels.pure, () => activeVowel, v => { activeVowel = v; }, "vowel-detail", false, buildAllVowelGrids); } 
 buildAllVowelGrids();
 </script>
 </body>
