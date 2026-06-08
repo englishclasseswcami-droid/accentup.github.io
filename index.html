@@ -494,11 +494,19 @@ const SUPABASE_URL = 'https://flfyifdaitfnxncoxzxe.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsZnlpZmRhaXRmbnhuY294enhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4Njc0NTQsImV4cCI6MjA5NjQ0MzQ1NH0.wKMJk0EIYi1hRwoE1EN5lfEGIn2c9YrJhPi_UO2w2gI';
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-let currentUser = null, isLoginMode = true;
-let dbModules = [], dbSubmodules = [], dbLessons = [], dbProgress = [];
-let currentLesson = null, activeModuleId = null;
-let studentAnswers = {}, matchState = { leftSel: null, pairs: {} };
-let questionRows = [], tempAudios = [], isUploadingAudio = false;
+let currentUser = null;
+let isLoginMode = true;
+let dbModules = [];
+let dbSubmodules = [];
+let dbLessons = [];
+let dbProgress = [];
+let currentLesson = null;
+let activeModuleId = null;
+let studentAnswers = {};
+let matchState = { leftSel: null, pairs: {} };
+let questionRows = [];
+let tempAudios = [];
+let isUploadingAudio = false;
 let quillEditor = null;
 let selectedDragChip = null; 
 
@@ -514,8 +522,13 @@ function safeParseJSON(data) {
   return [];
 }
 
+/* Escapes seguros para HTML y para JavaScript interno */
 function esc(s) {
-  return String(s || '').replace(/'/g, "&#39;").replace(/"/g, '&quot;');
+  return String(s || '').replace(/&/g, '&amp;').replace(/'/g, '&#39;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function escJS(val) {
+  return JSON.stringify(val || '').replace(/"/g, '&quot;');
 }
 
 /* ══════════════════════════════════════════
@@ -550,8 +563,11 @@ document.addEventListener('DOMContentLoaded', () => {
    AUTH & NAV
 ══════════════════════════════════════════ */
 function handleNavAuth() { 
-  if (currentUser) sb.auth.signOut(); 
-  else goToPage('auth'); 
+  if (currentUser) {
+    sb.auth.signOut(); 
+  } else {
+    goToPage('auth'); 
+  }
 }
 
 function updateAuthUI() {
@@ -594,6 +610,7 @@ async function handleAuth() {
   const pw = document.getElementById('auth-pw').value;
   const code = document.getElementById('auth-code').value.trim(); 
   const errEl = document.getElementById('auth-error'); 
+  
   errEl.style.display = 'none';
   
   if (!isLoginMode && code !== STUDENT_ACCESS_CODE) { 
@@ -606,7 +623,9 @@ async function handleAuth() {
   btn.disabled = true; 
   btn.textContent = 'Loading...';
   
-  const res = isLoginMode ? await sb.auth.signInWithPassword({ email, password: pw }) : await sb.auth.signUp({ email, password: pw });
+  const res = isLoginMode 
+    ? await sb.auth.signInWithPassword({ email, password: pw }) 
+    : await sb.auth.signUp({ email, password: pw });
   
   btn.disabled = false; 
   btn.textContent = isLoginMode ? 'Log in' : 'Create account';
@@ -621,7 +640,8 @@ document.querySelectorAll('.nav-tab[data-page]').forEach(tab => {
   tab.onclick = () => { 
     const page = tab.dataset.page; 
     if ((page === 'classroom' || page === 'teacher') && !currentUser) { 
-      goToPage('auth'); return; 
+      goToPage('auth'); 
+      return; 
     } 
     goToPage(page); 
   };
@@ -630,14 +650,20 @@ document.querySelectorAll('.nav-tab[data-page]').forEach(tab => {
 function goToPage(pageId) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active')); 
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  
   const tab = document.querySelector(`.nav-tab[data-page="${pageId}"]`); 
   if (tab) tab.classList.add('active');
+  
   document.getElementById('page-' + pageId).classList.add('active');
+  
   const hiddenHero = ['classroom','teacher','auth']; 
   document.getElementById('hero-banner').style.display = hiddenHero.includes(pageId) ? 'none' : 'block';
   
   if (pageId === 'classroom') renderClassroomGrid();
-  if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); }
+  if (pageId === 'teacher') { 
+    renderManageList(); 
+    updateModuleSelect(); 
+  }
   window.scrollTo(0, 0);
 }
 
@@ -668,24 +694,27 @@ async function fetchData() {
 function renderClassroomGrid() {
   const grid = document.getElementById('classroom-modules-grid'); 
   if (!grid) return;
+  
   if (!currentUser) { 
     grid.innerHTML = '<div style="color:var(--text-light);font-size:14px;text-align:center;padding:3rem 0;grid-column:1/-1;">Log in to access the classroom.</div>'; 
     return; 
   }
+  
   if (!dbModules.length) { 
     grid.innerHTML = '<div style="color:var(--text-light);font-size:14px;text-align:center;padding:3rem 0;grid-column:1/-1;">No content yet — your teacher will add modules soon!</div>'; 
     return; 
   }
   
-  grid.innerHTML = dbModules.map(m => {
+  let html = '';
+  dbModules.forEach(m => {
     const modLessons = dbLessons.filter(l => l.module_id === m.id);
     const total = modLessons.length;
     const done = modLessons.filter(l => dbProgress.some(p => p.lesson_id === l.id)).length;
     const pct = total === 0 ? 0 : Math.round((done / total) * 100);
     
-    return `
+    html += `
     <div class="course-card" onclick="openModule('${m.id}')">
-      <div class="course-card-title">${m.title}</div>
+      <div class="course-card-title">${esc(m.title)}</div>
       <div class="course-card-desc" style="margin-bottom:12px;">${total} lesson${total !== 1 ? 's' : ''}</div>
       <div style="display:flex; align-items:center; gap:8px;">
          <div style="flex:1; background:var(--skool-border); border-radius:10px; height:6px; overflow:hidden;">
@@ -694,14 +723,18 @@ function renderClassroomGrid() {
          <span style="font-size:11px; font-weight:700; color:var(--text-muted);">${pct}%</span>
       </div>
     </div>`;
-  }).join('');
+  });
+  grid.innerHTML = html;
 }
 
 function openModule(moduleId) {
   activeModuleId = moduleId; 
   document.getElementById('classroom-grid-view').style.display = 'none'; 
   document.getElementById('classroom-player-view').style.display = 'block';
-  document.getElementById('sidebar-mod-title').textContent = dbModules.find(m => m.id === moduleId)?.title || '';
+  
+  const mTitle = dbModules.find(m => m.id === moduleId)?.title || '';
+  document.getElementById('sidebar-mod-title').textContent = mTitle;
+  
   renderSidebar(moduleId); 
   hideAllViews(); 
   document.getElementById('view-welcome').style.display = 'block';
@@ -718,60 +751,68 @@ function renderSidebar(moduleId) {
   const sidebar = document.getElementById('sidebar-render');
   const subs = dbSubmodules.filter(s => s.module_id === moduleId);
   const orphanLessons = dbLessons.filter(l => l.module_id === moduleId && !l.submodule_id);
+  
   const iconMap = { video: '📺', text: '📄', task: '📝' };
   
   let html = '';
+  
   subs.forEach(sub => {
      const subLessons = dbLessons.filter(l => l.submodule_id === sub.id);
      if(subLessons.length === 0) return;
+     
      const doneCount = subLessons.filter(l => dbProgress.some(p => p.lesson_id === l.id)).length;
      const pct = Math.round((doneCount / subLessons.length) * 100);
+     
      html += `
       <div class="c-subfolder-group">
         <div class="c-subfolder-header">
-           <span>${sub.title}</span>
+           <span>${esc(sub.title)}</span>
            <span class="c-subfolder-prog ${pct===100?'done':''}">${pct}%</span>
-        </div>
-        ${subLessons.map(l => {
-           const isDone = dbProgress.some(p => p.lesson_id === l.id);
-           return `
+        </div>`;
+        
+     subLessons.forEach(l => {
+       const isDone = dbProgress.some(p => p.lesson_id === l.id);
+       const icon = iconMap[l.type] || '📄';
+       html += `
            <div class="c-item" id="item-${l.id}" onclick="showLesson('${l.id}')">
              <div style="display:flex;align-items:center;gap:8px;overflow:hidden;">
-                <span>${iconMap[l.type] || '📄'}</span>
-                <span class="c-item-title">${l.title}</span>
+                <span>${icon}</span>
+                <span class="c-item-title">${esc(l.title)}</span>
              </div>
              ${isDone ? '<span>✅</span>' : ''}
            </div>`;
-        }).join('')}
-      </div>`;
+     });
+     html += `</div>`;
   });
   
   if(orphanLessons.length > 0) {
-      html += `
-      <div class="c-subfolder-group">
-        ${orphanLessons.map(l => {
-           const isDone = dbProgress.some(p => p.lesson_id === l.id);
-           return `
+      html += `<div class="c-subfolder-group">`;
+      orphanLessons.forEach(l => {
+         const isDone = dbProgress.some(p => p.lesson_id === l.id);
+         const icon = iconMap[l.type] || '📄';
+         html += `
            <div class="c-item" id="item-${l.id}" onclick="showLesson('${l.id}')">
               <div style="display:flex;align-items:center;gap:8px;overflow:hidden;">
-                 <span>${iconMap[l.type] || '📄'}</span>
-                 <span class="c-item-title">${l.title}</span>
+                 <span>${icon}</span>
+                 <span class="c-item-title">${esc(l.title)}</span>
               </div>
               ${isDone ? '<span>✅</span>' : ''}
            </div>`;
-        }).join('')}
-      </div>`;
+      });
+      html += `</div>`;
   }
   
   if (!html) {
     html = '<div style="font-size:12px;color:var(--text-light);text-align:center;margin-top:1rem;">Empty folder</div>';
   }
+  
   sidebar.innerHTML = html;
 }
 
 function setActiveSidebarItem(id) { 
   document.querySelectorAll('.c-item').forEach(el => el.classList.remove('active')); 
-  document.getElementById(id)?.classList.add('active'); 
+  const current = document.getElementById(id);
+  if (current) current.classList.add('active'); 
 }
 
 function hideAllViews() { 
@@ -788,14 +829,20 @@ function renderAudios(panelId, list) {
   if (!el) return; 
   const arr = safeParseJSON(list); 
   if (!arr.length) { 
-    el.style.display = 'none'; return; 
+    el.style.display = 'none'; 
+    return; 
   } 
   el.style.display = 'block'; 
-  el.innerHTML = arr.map(a => `
+  
+  let html = '';
+  arr.forEach(a => {
+    html += `
     <div class="lesson-audio-row">
-      <span class="lesson-audio-label">🔊 ${a.label}</span>
-      <audio controls src="${a.url}"></audio>
-    </div>`).join(''); 
+      <span class="lesson-audio-label">🔊 ${esc(a.label)}</span>
+      <audio controls src="${esc(a.url)}"></audio>
+    </div>`;
+  });
+  el.innerHTML = html;
 }
 
 function renderResources(panelId, list) { 
@@ -803,19 +850,23 @@ function renderResources(panelId, list) {
   if (!el) return; 
   const arr = safeParseJSON(list); 
   if (!arr.length) { 
-    el.style.display = 'none'; return; 
+    el.style.display = 'none'; 
+    return; 
   } 
   el.style.display = 'block'; 
-  el.innerHTML = `
-    <div class="resources-heading">Resources</div>
-    <div class="resources-list">
-      ${arr.map(r => `<a href="${r.url}" target="_blank" class="resource-link">📎 ${r.name}</a>`).join('')}
-    </div>`; 
+  
+  let html = `<div class="resources-heading">Resources</div><div class="resources-list">`;
+  arr.forEach(r => {
+    html += `<a href="${esc(r.url)}" target="_blank" class="resource-link">📎 ${esc(r.name)}</a>`;
+  });
+  html += `</div>`;
+  el.innerHTML = html;
 }
 
 function showLesson(lessonId) {
   hideAllViews(); 
   setActiveSidebarItem('item-' + lessonId);
+  
   currentLesson = dbLessons.find(l => l.id === lessonId); 
   if (!currentLesson) return;
   
@@ -826,13 +877,16 @@ function showLesson(lessonId) {
   if (currentLesson.type === 'video') {
     document.getElementById('view-video').style.display = 'block'; 
     document.getElementById('cv-video-title').textContent = currentLesson.title;
+    
     const embedUrl = formatYouTubeUrl(currentLesson.video_url);
     if (embedUrl) {
-      document.getElementById('cv-video-player').innerHTML = `<iframe src="${embedUrl}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+      document.getElementById('cv-video-player').innerHTML = `<iframe src="${esc(embedUrl)}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
     } else {
       document.getElementById('cv-video-player').innerHTML = '<div style="color:#fff;padding:2rem;text-align:center;">No video URL saved.</div>';
     }
+    
     document.getElementById('cv-video-text').innerHTML = currentLesson.text_content || '';
+    
     renderAudios('cv-video-audios', audios); 
     renderResources('cv-video-resources', resources);
     updateCompleteButton('btn-complete-video', isDone);
@@ -841,6 +895,7 @@ function showLesson(lessonId) {
     document.getElementById('view-text').style.display = 'block'; 
     document.getElementById('cv-text-title').textContent = currentLesson.title;
     document.getElementById('cv-text-content').innerHTML = currentLesson.text_content || '';
+    
     renderAudios('cv-text-audios', audios); 
     renderResources('cv-text-resources', resources);
     updateCompleteButton('btn-complete-text', isDone);
@@ -852,8 +907,8 @@ function showLesson(lessonId) {
     
     document.getElementById('view-exercise').style.display = 'block'; 
     document.getElementById('player-title').textContent = currentLesson.title;
-    const audioEl = document.getElementById('player-audio');
     
+    const audioEl = document.getElementById('player-audio');
     if (currentLesson.audio_url) { 
       audioEl.src = currentLesson.audio_url; 
       audioEl.style.display = 'block'; 
@@ -893,12 +948,15 @@ function updateCompleteButton(btnId, isDone) {
 
 async function markCurrentLessonComplete() {
   if (!currentUser || !currentLesson) return;
+  
   updateCompleteButton('btn-complete-video', true); 
   updateCompleteButton('btn-complete-text', true);
+  
   await sb.from('student_progress').upsert(
     { user_id: currentUser.id, lesson_id: currentLesson.id, score: 100, total_questions: 1 }, 
     { onConflict: 'user_id,lesson_id' }
   );
+  
   await fetchData();
   if (activeModuleId) renderSidebar(activeModuleId);
 }
@@ -927,103 +985,129 @@ function renderPlayerQuestions() {
       const q = content[0] || { prompt: '', categories: [], items: [] };
       const words = shuffle([...(q.items||[])]);
       const cats = q.categories || [];
-      wrap.innerHTML = `
+      
+      let html = `
         <div class="ex-question-block">
-          <div class="ex-q-text">${q.prompt}</div>
+          <div class="ex-q-text">${esc(q.prompt)}</div>
           <div class="dnd-instruction">☝️ Tap a word, then tap a box below to sort it.</div>
           <div class="dnd-bank" id="dnd-bank" onclick="dndZoneClick(this)">
-             ${words.map((w,i) => `
-                <div class="dnd-chip" id="dnd-chip-${i}" onclick="event.stopPropagation(); dndChipClick(this)">
-                   ${w.word}
-                </div>
-             `).join('')}
-          </div>
-          <div class="dnd-cols">
-             ${cats.map((c,i) => `
-                <div class="dnd-col" onclick="dndZoneClick(this)" data-cat="${esc(c)}">
-                   <div class="dnd-col-header">${c}</div>
-                   <div class="dnd-col-body"></div>
-                </div>
-             `).join('')}
-          </div>
-        </div>
       `;
+      
+      words.forEach((w,i) => {
+         html += `
+            <div class="dnd-chip" id="dnd-chip-${i}" onclick="event.stopPropagation(); dndChipClick(this)">
+               ${esc(w.word)}
+            </div>
+         `;
+      });
+      
+      html += `</div><div class="dnd-cols">`;
+      
+      cats.forEach(c => {
+         html += `
+            <div class="dnd-col" onclick="dndZoneClick(this)" data-cat="${esc(c)}">
+               <div class="dnd-col-header">${esc(c)}</div>
+               <div class="dnd-col-body"></div>
+            </div>
+         `;
+      });
+      
+      html += `</div></div>`;
+      wrap.innerHTML = html;
       return;
   }
 
   if (currentLesson.task_type === 'matching') {
     const lefts = content.map(q => q.left); 
     const rights = shuffle([...content.map(q => q.right)]);
-    wrap.innerHTML = `
+    
+    let html = `
       <div class="ex-question-block">
         <div class="matching-cols">
           <div>
-             <div class="match-col-label">Words</div>
-             ${lefts.map((l,i) => `<div class="match-chip" id="ml-${i}" onclick="matchLeft(${i},'${esc(l)}')">${l}</div>`).join('')}
-          </div>
-          <div>
-             <div class="match-col-label">Sounds / meanings</div>
-             ${rights.map((r,i) => `<div class="match-chip" id="mr-${i}" onclick="matchRight(${i},'${esc(r)}')">${r}</div>`).join('')}
-          </div>
-        </div>
-      </div>
-    `; 
+             <div class="match-col-label">Words</div>`;
+             
+    lefts.forEach((l,i) => {
+       html += `<div class="match-chip" id="ml-${i}" onclick='matchLeft(${i}, ${escJS(l)})'>${esc(l)}</div>`;
+    });
+    
+    html += `</div><div><div class="match-col-label">Sounds / meanings</div>`;
+    
+    rights.forEach((r,i) => {
+       html += `<div class="match-chip" id="mr-${i}" onclick='matchRight(${i}, ${escJS(r)})'>${esc(r)}</div>`;
+    });
+    
+    html += `</div></div></div>`;
+    wrap.innerHTML = html;
     return;
   }
   
-  wrap.innerHTML = content.map((q, i) => {
-    const qAudio = q.audio_url ? `<audio controls src="${q.audio_url}" style="width:100%;height:36px;margin-bottom:10px;border-radius:20px;"></audio>` : '';
+  let html = '';
+  
+  content.forEach((q, i) => {
+    const qAudio = q.audio_url ? `<audio controls src="${esc(q.audio_url)}" style="width:100%;height:36px;margin-bottom:10px;border-radius:20px;"></audio>` : '';
     
     if (currentLesson.task_type === 'fill_in_blank') {
-      return `
+      html += `
         <div class="ex-question-block">
           <div class="ex-q-num">Question ${i+1}</div>
           ${qAudio}
-          <div class="ex-q-text">${q.prompt}</div>
+          <div class="ex-q-text">${esc(q.prompt)}</div>
           <input class="fitb-input" id="fitb-${i}" type="text" placeholder="Your answer…" autocomplete="off" oninput="studentAnswers[${i}]=this.value"/>
         </div>
       `;
+      return;
     }
+    
     if (currentLesson.task_type === 'dictation') {
-      return `
+      html += `
         <div class="ex-question-block">
           <div class="ex-q-num">Question ${i+1}</div>
           ${qAudio}
-          <div class="ex-q-text">${q.prompt}</div>
+          <div class="ex-q-text">${esc(q.prompt)}</div>
           <textarea class="dictation-input" id="dict-${i}" placeholder="Write what you hear…" oninput="studentAnswers[${i}]=this.value"></textarea>
         </div>
       `;
+      return;
     }
+    
     if (currentLesson.task_type === 'open_answer') {
-      return `
+      html += `
         <div class="ex-question-block">
           <div class="ex-q-num">Question ${i+1}</div>
           ${qAudio}
-          <div class="ex-q-text">${q.prompt}</div>
+          <div class="ex-q-text">${esc(q.prompt)}</div>
           <textarea class="dictation-input" id="oa-${i}" placeholder="Type your answer here..." oninput="studentAnswers[${i}]=this.value"></textarea>
         </div>
       `;
+      return;
     }
     
+    // Multiple choice
     const rawOpts = Array.isArray(q.options) ? q.options : []; 
-    const opts = rawOpts.filter(o => o && o.trim() !== ''); 
-    const shuffled = (currentLesson.task_type === 'multiple_choice') ? shuffle([...opts]) : opts;
+    const opts = rawOpts.filter(o => o && String(o).trim() !== ''); 
+    const shuffled = shuffle([...opts]);
     
-    return `
+    html += `
       <div class="ex-question-block">
         <div class="ex-q-num">Question ${i+1}</div>
         ${qAudio}
-        <div class="ex-q-text">${q.prompt}</div>
+        <div class="ex-q-text">${esc(q.prompt)}</div>
         <div class="options-grid">
-          ${shuffled.map((o, j) => `
-            <button class="opt-btn" id="opt-${i}-${j}" onclick="selectOpt(${i},${j},'${esc(o)}',${JSON.stringify(shuffled).replace(/"/g,'&quot;')})">
-              ${o}
-            </button>
-          `).join('')}
-        </div>
-      </div>
     `;
-  }).join('');
+    
+    shuffled.forEach((o, j) => {
+      html += `
+        <button class="opt-btn" id="opt-${i}-${j}" onclick='selectOpt(${i}, ${j}, ${escJS(o)}, ${escJS(shuffled)})'>
+          ${esc(o)}
+        </button>
+      `;
+    });
+    
+    html += `</div></div>`;
+  });
+  
+  wrap.innerHTML = html;
 }
 
 /* Drag & Drop Interactivity */
@@ -1048,7 +1132,8 @@ function selectOpt(qi, oi, val, opts) {
     const b = document.getElementById(`opt-${qi}-${j}`); 
     if (b) b.classList.remove('selected'); 
   }); 
-  document.getElementById(`opt-${qi}-${oi}`)?.classList.add('selected'); 
+  const selectedBtn = document.getElementById(`opt-${qi}-${oi}`);
+  if (selectedBtn) selectedBtn.classList.add('selected'); 
   studentAnswers[qi] = val; 
 }
 
@@ -1058,18 +1143,27 @@ function matchLeft(i, val) {
     if (!el.classList.contains('matched')) el.classList.remove('selected'); 
   }); 
   matchState.leftSel = { i, val }; 
-  document.getElementById('ml-' + i)?.classList.add('selected'); 
+  const btn = document.getElementById('ml-' + i);
+  if (btn) btn.classList.add('selected'); 
 }
 
 function matchRight(i, val) { 
   if (!matchState.leftSel) return; 
   const li = matchState.leftSel.i; 
   if (matchState.pairs[li] !== undefined) return; 
+  
   matchState.pairs[li] = val; 
   studentAnswers[li] = val; 
-  document.getElementById('ml-' + li)?.classList.remove('selected'); 
-  document.getElementById('ml-' + li)?.classList.add('matched'); 
-  document.getElementById('mr-' + i)?.classList.add('matched'); 
+  
+  const leftBtn = document.getElementById('ml-' + li);
+  if (leftBtn) {
+    leftBtn.classList.remove('selected');
+    leftBtn.classList.add('matched');
+  }
+  
+  const rightBtn = document.getElementById('mr-' + i);
+  if (rightBtn) rightBtn.classList.add('matched');
+  
   matchState.leftSel = null; 
 }
 
@@ -1083,14 +1177,15 @@ async function submitExercise() {
       const q = content[0]; 
       totalQ = q.items.length;
       document.querySelectorAll('.dnd-chip').forEach(chip => {
-          const word = chip.textContent; 
+          const word = chip.textContent.trim(); 
           const expectedCat = q.items.find(x => x.word === word)?.category;
           const parentCol = chip.closest('.dnd-col'); 
           const actualCat = parentCol ? parentCol.dataset.cat : null;
           chip.onclick = null;
           
           if (actualCat === expectedCat) { 
-            correct++; chip.classList.add('correct'); 
+            correct++; 
+            chip.classList.add('correct'); 
           } else { 
             chip.classList.add('wrong'); 
           }
@@ -1103,44 +1198,76 @@ async function submitExercise() {
       const given = studentAnswers[i]; 
       const ok = given === q.right; 
       if (ok) correct++; 
-      if (!ok) document.getElementById('ml-' + i)?.classList.add('wrong-match'); 
-      results.push({ prompt: q.left, answer: q.right, given, ok }); 
+      
+      const mlBtn = document.getElementById('ml-' + i);
+      if (!ok && mlBtn) mlBtn.classList.add('wrong-match'); 
+      
+      results.push({ prompt: q.left, answer: q.right, given: given, ok: ok }); 
     });
   } else {
     content.forEach((q, i) => {
       const correctAns = q.answer || (Array.isArray(q.options) && q.options[q.correctIndex || 0]) || (Array.isArray(q.options) && q.options[0]) || '';
       let given = '';
-      if (currentLesson.task_type === 'fill_in_blank') given = document.getElementById('fitb-' + i)?.value.trim() || '';
-      else if (currentLesson.task_type === 'dictation') given = document.getElementById('dict-' + i)?.value.trim() || '';
-      else if (currentLesson.task_type === 'open_answer') given = document.getElementById('oa-' + i)?.value.trim() || '';
-      else given = studentAnswers[i] || '';
       
-      const ok = currentLesson.task_type === 'open_answer' ? given.length > 0 : given.toLowerCase() === correctAns.toLowerCase();
+      if (currentLesson.task_type === 'fill_in_blank') {
+        const inputEl = document.getElementById('fitb-' + i);
+        given = inputEl ? inputEl.value.trim() : '';
+      }
+      else if (currentLesson.task_type === 'dictation') {
+        const inputEl = document.getElementById('dict-' + i);
+        given = inputEl ? inputEl.value.trim() : '';
+      }
+      else if (currentLesson.task_type === 'open_answer') {
+        const inputEl = document.getElementById('oa-' + i);
+        given = inputEl ? inputEl.value.trim() : '';
+      }
+      else {
+        given = studentAnswers[i] || '';
+      }
+      
+      const ok = currentLesson.task_type === 'open_answer' ? given.length > 0 : String(given).toLowerCase() === String(correctAns).toLowerCase();
       if (ok) correct++;
       
       if (currentLesson.task_type === 'fill_in_blank') { 
         const el = document.getElementById('fitb-'+i); 
-        if(el) { el.classList.add(ok?'correct':'wrong'); el.disabled=true; } 
+        if(el) { 
+          el.classList.add(ok ? 'correct' : 'wrong'); 
+          el.disabled = true; 
+        } 
       }
       else if (currentLesson.task_type === 'open_answer') { 
         const el = document.getElementById('oa-'+i); 
-        if(el) { el.style.borderColor = 'var(--brand)'; el.disabled=true; } 
+        if(el) { 
+          el.style.borderColor = 'var(--brand)'; 
+          el.disabled = true; 
+        } 
       }
       else if (currentLesson.task_type !== 'dictation') { 
-        document.querySelectorAll(`[id^="opt-${i}-"]`).forEach(b=>{
-          b.disabled=true;
-          if(b.textContent===correctAns) b.classList.add('correct');
-          else if(b.classList.contains('selected')) b.classList.add('wrong');
+        document.querySelectorAll(`[id^="opt-${i}-"]`).forEach(b => {
+          b.disabled = true;
+          if(b.textContent.trim() === String(correctAns).trim()) {
+            b.classList.add('correct');
+          } else if(b.classList.contains('selected')) {
+            b.classList.add('wrong');
+          }
         }); 
       }
-      results.push({ prompt: q.prompt, answer: correctAns, given, ok });
+      results.push({ prompt: q.prompt, answer: correctAns, given: given, ok: ok });
     });
   }
   
   showScore(correct, totalQ, results, false);
-  document.getElementById('submit-btn').disabled = true; 
-  document.getElementById('submit-btn').style.display = 'none'; 
-  document.getElementById('retry-btn').style.display = 'inline-block';
+  
+  const submitBtn = document.getElementById('submit-btn');
+  const retryBtn = document.getElementById('retry-btn');
+  
+  if (submitBtn) {
+    submitBtn.disabled = true; 
+    submitBtn.style.display = 'none'; 
+  }
+  if (retryBtn) {
+    retryBtn.style.display = 'inline-block';
+  }
   
   if (currentUser && currentLesson) { 
     await sb.from('student_progress').upsert(
@@ -1157,16 +1284,18 @@ function retryExercise() {
 }
 
 function showScore(correct, total, results, readonly) {
-  const pct = total > 0 ? Math.round(correct / total * 100) : 0; 
+  const pct = total > 0 ? Math.round((correct / total) * 100) : 0; 
   const cls = pct >= 80 ? 'great' : pct >= 50 ? 'ok' : 'low';
   const msg = pct >= 80 ? '¡Great work! 🎉' : pct >= 50 ? 'Good effort — keep practicing!' : 'Review and try again.';
   
-  const rows = results.map(r => `
-    <div class="score-row ${r.ok?'c':'w'}">
-      ${r.ok?'✓':'✗'} <em>${r.prompt}</em> → <strong>${r.answer}</strong>
-      ${!r.ok && r.given ? `<span class="ans"> (your answer: ${r.given})</span>` : ''}
-    </div>
-  `).join('');
+  let rowsHtml = '';
+  results.forEach(r => {
+    rowsHtml += `
+    <div class="score-row ${r.ok ? 'c' : 'w'}">
+      ${r.ok ? '✓' : '✗'} <em>${esc(r.prompt)}</em> → <strong>${esc(r.answer)}</strong>
+      ${!r.ok && r.given ? `<span class="ans"> (your answer: ${esc(r.given)})</span>` : ''}
+    </div>`;
+  });
   
   document.getElementById('score-area').innerHTML = `
     <div class="score-panel">
@@ -1180,7 +1309,7 @@ function showScore(correct, total, results, readonly) {
           <div class="sub">${correct} correct out of ${total}</div>
         </div>
       </div>
-      ${rows ? `<div class="score-details">${rows}</div>` : ''}
+      ${rowsHtml ? `<div class="score-details">${rowsHtml}</div>` : ''}
     </div>
   `;
   document.getElementById('score-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1196,6 +1325,7 @@ async function saveModule() {
   
   const payload = editId ? { title } : { title, order_index: dbModules.length }; 
   const res = editId ? await sb.from('modules').update(payload).eq('id', editId) : await sb.from('modules').insert([payload]); 
+  
   if (res.error) { alert('Error: ' + res.error.message); return; } 
   
   await fetchData(); 
@@ -1244,10 +1374,12 @@ async function saveSubmodule() {
   
   if (!title || !modId) { alert('Select module and add name.'); return; } 
   
-  const payload = editId ? { title, module_id: modId } : { title, module_id: modId, order_index: dbSubmodules.filter(s=>s.module_id===modId).length }; 
+  const orderIdx = dbSubmodules.filter(s => s.module_id === modId).length;
+  const payload = editId ? { title, module_id: modId } : { title, module_id: modId, order_index: orderIdx }; 
   const res = editId ? await sb.from('submodules').update(payload).eq('id', editId) : await sb.from('submodules').insert([payload]); 
   
   if (res.error) { alert('Error: ' + res.error.message); return; } 
+  
   await fetchData(); 
   alert(editId ? 'Subfolder updated!' : 'Subfolder created!'); 
   cancelEditSub(); 
@@ -1297,7 +1429,10 @@ function toggleLessonFields() {
 }
 
 function updateModuleSelect() { 
-   const mHtml = dbModules.map(m => `<option value="${m.id}">${m.title}</option>`).join('');
+   let mHtml = '';
+   dbModules.forEach(m => {
+     mHtml += `<option value="${esc(m.id)}">${esc(m.title)}</option>`;
+   });
    document.getElementById('t-les-module').innerHTML = mHtml; 
    document.getElementById('t-sub-parent').innerHTML = mHtml;
    updateSubfolderSelect();
@@ -1306,7 +1441,11 @@ function updateModuleSelect() {
 function updateSubfolderSelect() {
    const modId = document.getElementById('t-les-module').value;
    const subs = dbSubmodules.filter(s => s.module_id === modId);
-   document.getElementById('t-les-submodule').innerHTML = `<option value="">-- No subfolder (Main module) --</option>` + subs.map(s => `<option value="${s.id}">${s.title}</option>`).join('');
+   let html = `<option value="">-- No subfolder (Main module) --</option>`;
+   subs.forEach(s => {
+     html += `<option value="${esc(s.id)}">${esc(s.title)}</option>`;
+   });
+   document.getElementById('t-les-submodule').innerHTML = html;
 }
 
 async function saveLesson() {
@@ -1340,14 +1479,16 @@ async function saveLesson() {
        const catsStr = document.getElementById('dnd-cats-input').value; 
        const cats = catsStr.split(',').map(s=>s.trim()).filter(Boolean);
        const dndItems = []; 
+       
        document.querySelectorAll('.dnd-item-row').forEach(row => { 
          const w = row.querySelector('.dnd-w').value.trim(); 
          const c = row.querySelector('.dnd-c').value; 
-         if(w && c) dndItems.push({word:w, category:c}); 
+         if(w && c) dndItems.push({word: w, category: c}); 
        });
+       
        payload.task_content = [{ prompt: document.getElementById('dnd-prompt').value, categories: cats, items: dndItems }];
     } else { 
-      payload.task_content = questionRows; 
+       payload.task_content = questionRows; 
     }
     
     const audioFile = document.getElementById('t-ex-audio').files[0];
@@ -1355,25 +1496,37 @@ async function saveLesson() {
       const fn = `ex_${Date.now()}.${audioFile.name.split('.').pop()}`; 
       await sb.storage.from('audios').upload(fn, audioFile); 
       payload.audio_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl; 
-    } else if (editId) { 
-      payload.audio_url = dbLessons.find(l => l.id === editId)?.audio_url || null; 
+    }
+    else if (editId) { 
+      const existing = dbLessons.find(l => l.id === editId);
+      payload.audio_url = existing ? existing.audio_url : null; 
     }
   }
   
   const resFiles = document.getElementById('t-les-resources').files; 
-  let resources = editId ? safeParseJSON(dbLessons.find(l => l.id === editId)?.resources) : [];
+  let resources = [];
+  
+  if (editId) {
+    const existing = dbLessons.find(l => l.id === editId);
+    resources = safeParseJSON(existing ? existing.resources : []);
+  }
   
   if (resFiles.length) { 
     for (const f of resFiles) { 
       const fn = `res_${Date.now()}_${f.name.replace(/\s+/g, '_')}`; 
       const { error } = await sb.storage.from('audios').upload(fn, f); 
-      if (!error) resources.push({ name: f.name, url: sb.storage.from('audios').getPublicUrl(fn).data.publicUrl }); 
+      if (!error) {
+        const publicUrl = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
+        resources.push({ name: f.name, url: publicUrl }); 
+      }
     } 
   }
   
   payload.resources = resources;
+  
   if (!editId) {
-    payload.order_index = dbLessons.filter(l => l.module_id === moduleId && l.submodule_id === (submodId||null)).length;
+    const siblings = dbLessons.filter(l => l.module_id === moduleId && l.submodule_id === (submodId||null));
+    payload.order_index = siblings.length;
   }
   
   const res = editId ? await sb.from('lessons').update(payload).eq('id', editId) : await sb.from('lessons').insert([payload]);
@@ -1407,11 +1560,7 @@ function editLesson(id) {
   if (l.type === 'text') quillEditor.root.innerHTML = l.text_content || '';
   if (l.type === 'task') { 
       document.getElementById('t-ex-type').value = l.task_type || 'open_answer'; 
-      if(l.task_type === 'drag_drop') { 
-        questionRows = safeParseJSON(l.task_content); 
-      } else { 
-        questionRows = safeParseJSON(l.task_content); 
-      }
+      questionRows = safeParseJSON(l.task_content); 
       renderQFields();
   }
   
@@ -1419,8 +1568,11 @@ function editLesson(id) {
   renderTempAudios();
   
   const resArr = safeParseJSON(l.resources); 
-  document.getElementById('t-les-resources-current').textContent = resArr.length ? `${resArr.length} file(s) already attached` : ''; 
-  document.getElementById('t-ex-audio-current').textContent = l.audio_url ? 'Audio already saved' : '';
+  const resCurrent = document.getElementById('t-les-resources-current');
+  resCurrent.textContent = resArr.length ? `${resArr.length} file(s) already attached` : ''; 
+  
+  const audioCurrent = document.getElementById('t-ex-audio-current');
+  audioCurrent.textContent = l.audio_url ? 'Audio already saved' : '';
   
   document.getElementById('panel-title-les').textContent = '✏️ Edit lesson'; 
   document.getElementById('btn-cancel-les').style.display = 'inline-block'; 
@@ -1491,12 +1643,15 @@ async function addSharedAudio() {
 }
 
 function renderTempAudios() { 
-  document.getElementById('t-shared-audios-render').innerHTML = tempAudios.map((a, i) => `
+  let html = '';
+  tempAudios.forEach((a, i) => {
+    html += `
     <div class="audio-saved-item">
-      <span>🔊 ${a.label}</span>
+      <span>🔊 ${esc(a.label)}</span>
       <button class="danger-btn" style="padding:2px 8px;font-size:10px;" onclick="tempAudios.splice(${i},1);renderTempAudios();">Remove</button>
-    </div>
-  `).join(''); 
+    </div>`;
+  });
+  document.getElementById('t-shared-audios-render').innerHTML = html; 
 }
 
 /* ══════════════════════════════════════════
@@ -1526,12 +1681,18 @@ function renderQFields() {
            <div class="dnd-item-row" style="display:flex;gap:8px;margin-bottom:8px;">
               <input type="text" class="dnd-w" placeholder="Word" value="${esc(item.word)}" oninput="questionRows[0].items[${idx}].word=this.value" style="flex:2;margin:0;"/>
               <select class="dnd-c" style="flex:1;margin:0;" onchange="questionRows[0].items[${idx}].category=this.value">
-                 ${q.categories.map(c => `<option value="${esc(c)}" ${item.category===c?'selected':''}>${esc(c)}</option>`).join('')}
+         `;
+         q.categories.forEach(c => {
+           const selected = item.category === c ? 'selected' : '';
+           html += `<option value="${esc(c)}" ${selected}>${esc(c)}</option>`;
+         });
+         html += `
               </select>
               <button class="danger-btn" style="padding:4px 8px" onclick="removeDndItem(${idx})">×</button>
            </div>
          `;
       });
+      
       html += `
            </div>
            <button class="secondary-btn" style="padding:6px;font-size:11px;" onclick="addDndItem()">+ Add word</button>
@@ -1541,7 +1702,11 @@ function renderQFields() {
       return;
   }
   
-  wrap.innerHTML = questionRows.map((q, i) => buildQRow(type, q, i)).join('');
+  let html = '';
+  questionRows.forEach((q, i) => {
+    html += buildQRow(type, q, i);
+  });
+  wrap.innerHTML = html;
 }
 
 function updateDndCats(val) { 
@@ -1576,13 +1741,11 @@ function removeQOption(i, j) {
     alert('You need at least 2 options.'); return; 
   } 
   questionRows[i].options.splice(j, 1); 
-  
   if (questionRows[i].correctIndex === j) {
-    questionRows[i].correctIndex = 0; 
+    questionRows[i].correctIndex = 0;
   } else if (questionRows[i].correctIndex > j) {
-    questionRows[i].correctIndex--; 
+    questionRows[i].correctIndex--;
   }
-  
   questionRows[i].answer = questionRows[i].options[questionRows[i].correctIndex]; 
   renderQFields(); 
 }
@@ -1598,8 +1761,8 @@ function buildQRow(type, q, i) {
       <div class="q-row">
         <div class="q-row-label">Pair ${i+1}</div>
         <button class="remove-q" onclick="removeQ(${i})">×</button>
-        <input type="text" placeholder="Word (left)" value="${q.left||''}" oninput="questionRows[${i}].left=this.value"/>
-        <input type="text" placeholder="Sound / meaning (right)" value="${q.right||''}" oninput="questionRows[${i}].right=this.value"/>
+        <input type="text" placeholder="Word (left)" value="${esc(q.left)}" oninput="questionRows[${i}].left=this.value"/>
+        <input type="text" placeholder="Sound / meaning (right)" value="${esc(q.right)}" oninput="questionRows[${i}].right=this.value"/>
       </div>
     `;
   }
@@ -1609,9 +1772,9 @@ function buildQRow(type, q, i) {
       <div class="q-row">
         <div class="q-row-label">Question ${i+1}</div>
         <button class="remove-q" onclick="removeQ(${i})">×</button>
-        <textarea placeholder="Sentence with ___ for blank" oninput="questionRows[${i}].prompt=this.value">${q.prompt||''}</textarea>
-        <input type="text" placeholder="Correct answer" value="${q.answer||''}" oninput="questionRows[${i}].answer=this.value"/>
-        <input type="text" placeholder="Hint (optional)" value="${q.hint||''}" oninput="questionRows[${i}].hint=this.value"/>
+        <textarea placeholder="Sentence with ___ for blank" oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt)}</textarea>
+        <input type="text" placeholder="Correct answer" value="${esc(q.answer)}" oninput="questionRows[${i}].answer=this.value"/>
+        <input type="text" placeholder="Hint (optional)" value="${esc(q.hint)}" oninput="questionRows[${i}].hint=this.value"/>
       </div>
     `;
   }
@@ -1621,8 +1784,8 @@ function buildQRow(type, q, i) {
       <div class="q-row">
         <div class="q-row-label">Question ${i+1}</div>
         <button class="remove-q" onclick="removeQ(${i})">×</button>
-        <textarea placeholder="Instruction for student" oninput="questionRows[${i}].prompt=this.value">${q.prompt||''}</textarea>
-        <input type="text" placeholder="Expected answer" value="${q.answer||''}" oninput="questionRows[${i}].answer=this.value"/>
+        <textarea placeholder="Instruction for student" oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt)}</textarea>
+        <input type="text" placeholder="Expected answer" value="${esc(q.answer)}" oninput="questionRows[${i}].answer=this.value"/>
         <span class="field-label">Audio for this question (optional)</span>
         <input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/>
         <div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted);">${q.audio_url?'Audio saved':''}</div>
@@ -1635,8 +1798,8 @@ function buildQRow(type, q, i) {
       <div class="q-row">
         <div class="q-row-label">Question ${i+1}</div>
         <button class="remove-q" onclick="removeQ(${i})">×</button>
-        <textarea placeholder="Ask your question here..." oninput="questionRows[${i}].prompt=this.value">${q.prompt||''}</textarea>
-        <textarea placeholder="Provide an expected answer or keywords (for student self-correction)" oninput="questionRows[${i}].answer=this.value">${q.answer||''}</textarea>
+        <textarea placeholder="Ask your question here..." oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt)}</textarea>
+        <textarea placeholder="Provide an expected answer or keywords (for student self-correction)" oninput="questionRows[${i}].answer=this.value">${esc(q.answer)}</textarea>
         <span class="field-label">Audio for this question (optional)</span>
         <input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/>
         <div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted);">${q.audio_url?'✅ Audio saved':''}</div>
@@ -1648,55 +1811,66 @@ function buildQRow(type, q, i) {
   q.correctIndex = q.correctIndex !== undefined ? q.correctIndex : 0; 
   if (q.correctIndex >= q.options.length) q.correctIndex = 0;
   
-  let optsHtml = q.options.map((o, j) => `
-    <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px; background:var(--bg); padding:6px 10px; border-radius:var(--radius-sm); border:1px solid ${q.correctIndex === j ? 'var(--green)' : 'var(--border)'};">
-      <input type="radio" name="correct_${i}" value="${j}" ${q.correctIndex === j ? 'checked' : ''} onchange="questionRows[${i}].correctIndex = ${j}; questionRows[${i}].answer = questionRows[${i}].options[${j}]; renderQFields();" title="Mark as correct answer" style="margin:0; width:16px; height:16px; accent-color:var(--green); cursor:pointer;">
-      <input type="text" placeholder="Option ${j+1}" value="${esc(o)}" oninput="updateQOption(${i},${j},this.value)" style="margin:0; flex:1; border:none; background:transparent;">
-      <button class="danger-btn" style="padding:4px 8px; font-size:12px; border:none;" onclick="removeQOption(${i},${j})">×</button>
-    </div>
-  `).join('');
-  
-  let audioUploadHtml = `
-    <div style="margin-top:10px;">
-      <span class="field-label">Audio for this question (optional)</span>
-      <input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/>
-      <div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted);">${q.audio_url?'✅ Audio saved':''}</div>
-    </div>
-  `;
-  
-  return `
+  let html = `
     <div class="q-row">
       <div class="q-row-label">Question ${i+1} <span style="text-transform:none; font-weight:500; color:var(--text-muted);">(Select the radio button for the correct answer)</span></div>
       <button class="remove-q" onclick="removeQ(${i})">×</button>
-      <textarea placeholder="Question prompt..." oninput="questionRows[${i}].prompt=this.value" style="margin-bottom:12px;">${q.prompt||''}</textarea>
-      ${optsHtml}
+      <textarea placeholder="Question prompt..." oninput="questionRows[${i}].prompt=this.value" style="margin-bottom:12px;">${esc(q.prompt)}</textarea>
+  `;
+  
+  q.options.forEach((o, j) => {
+    const isCorrect = q.correctIndex === j;
+    const borderCol = isCorrect ? 'var(--green)' : 'var(--border)';
+    const checkedStr = isCorrect ? 'checked' : '';
+    
+    html += `
+      <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px; background:var(--bg); padding:6px 10px; border-radius:var(--radius-sm); border:1px solid ${borderCol};">
+        <input type="radio" name="correct_${i}" value="${j}" ${checkedStr} onchange="questionRows[${i}].correctIndex = ${j}; questionRows[${i}].answer = questionRows[${i}].options[${j}]; renderQFields();" title="Mark as correct answer" style="margin:0; width:16px; height:16px; accent-color:var(--green); cursor:pointer;">
+        <input type="text" placeholder="Option ${j+1}" value="${esc(o)}" oninput="updateQOption(${i},${j},this.value)" style="margin:0; flex:1; border:none; background:transparent;">
+        <button class="danger-btn" style="padding:4px 8px; font-size:12px; border:none;" onclick="removeQOption(${i},${j})">×</button>
+      </div>
+    `;
+  });
+  
+  html += `
       <button class="secondary-btn" style="font-size:11px; padding:6px 10px; margin-bottom:8px;" onclick="addQOption(${i})">+ Add option</button>
-      ${audioUploadHtml}
+      <div style="margin-top:10px;">
+        <span class="field-label">Audio for this question (optional)</span>
+        <input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/>
+        <div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted);">${q.audio_url?'✅ Audio saved':''}</div>
+      </div>
     </div>
   `;
+  
+  return html;
 }
 
 function addQuestion() {
   const type = document.getElementById('t-ex-type').value;
   if(type === 'drag_drop') return; 
-  questionRows.push( 
-    type === 'matching' ? {left:'', right:''} : 
-    type === 'fill_in_blank' ? {prompt:'', answer:'', hint:''} : 
-    type === 'dictation' ? {prompt:'', answer:'', audio_url:''} : 
-    type === 'open_answer' ? {prompt:'', answer:'', audio_url:''} : 
-    {prompt:'', options:['',''], correctIndex:0, answer:'', audio_url:''} 
-  );
+  
+  let newQ = {};
+  if (type === 'matching') newQ = {left:'', right:''};
+  else if (type === 'fill_in_blank') newQ = {prompt:'', answer:'', hint:''};
+  else if (type === 'dictation') newQ = {prompt:'', answer:'', audio_url:''};
+  else if (type === 'open_answer') newQ = {prompt:'', answer:'', audio_url:''};
+  else newQ = {prompt:'', options:['',''], correctIndex:0, answer:'', audio_url:''};
+  
+  questionRows.push(newQ);
   renderQFields();
 }
 
 async function uploadQAudio(event, i) {
   const file = event.target.files[0]; 
   if (!file) return; 
+  
   isUploadingAudio = true; 
   const fn = `qa_${Date.now()}.${file.name.split('.').pop()}`; 
   const { error } = await sb.storage.from('audios').upload(fn, file); 
+  
   isUploadingAudio = false; 
   if (error) { alert('Upload error: ' + error.message); return; } 
+  
   questionRows[i].audio_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl; 
   const el = document.getElementById('q-audio-' + i); 
   if (el) el.textContent = '✅ Audio uploaded';
@@ -1720,7 +1894,7 @@ function renderManageList() {
   dbModules.forEach(m => {
      html += `
       <div class="manage-item" style="background:var(--skool-hover);border-radius:var(--radius-sm);margin-bottom:4px;border:1px solid var(--border)">
-        <span class="manage-title">📘 ${m.title}</span>
+        <span class="manage-title">📘 ${esc(m.title)}</span>
         <div class="manage-actions">
           <button class="secondary-btn" onclick="moveModule('${m.id}',-1)">↑</button>
           <button class="secondary-btn" onclick="moveModule('${m.id}',1)">↓</button>
@@ -1734,7 +1908,7 @@ function renderManageList() {
      subs.forEach(sub => {
         html += `
           <div class="manage-item" style="background:var(--bg);margin-left:1.5rem;border-left:2px solid var(--brand);margin-bottom:2px;">
-            <span class="manage-title">📁 ${sub.title}</span>
+            <span class="manage-title">📁 ${esc(sub.title)}</span>
             <div class="manage-actions">
               <button class="secondary-btn" onclick="moveSubmodule('${sub.id}',-1)">↑</button>
               <button class="secondary-btn" onclick="moveSubmodule('${sub.id}',1)">↓</button>
@@ -1746,9 +1920,10 @@ function renderManageList() {
         
         const subLessons = dbLessons.filter(l => l.submodule_id === sub.id);
         subLessons.forEach(l => {
+           const icon = iconMap[l.type] || '📄';
            html += `
             <div class="manage-item" style="padding-left:3rem;">
-              <span class="manage-title" style="color:var(--text-muted)">${iconMap[l.type]||'📄'} ${l.title}</span>
+              <span class="manage-title" style="color:var(--text-muted)">${icon} ${esc(l.title)}</span>
               <div class="manage-actions">
                 <button class="secondary-btn" onclick="moveLesson('${l.id}',-1)">↑</button>
                 <button class="secondary-btn" onclick="moveLesson('${l.id}',1)">↓</button>
@@ -1762,9 +1937,10 @@ function renderManageList() {
 
      const orphanLessons = dbLessons.filter(l => l.module_id === m.id && !l.submodule_id);
      orphanLessons.forEach(l => {
+         const icon = iconMap[l.type] || '📄';
          html += `
           <div class="manage-item" style="padding-left:1.5rem;">
-            <span class="manage-title" style="color:var(--text-muted)">${iconMap[l.type]||'📄'} ${l.title}</span>
+            <span class="manage-title" style="color:var(--text-muted)">${icon} ${esc(l.title)}</span>
             <div class="manage-actions">
               <button class="secondary-btn" onclick="moveLesson('${l.id}',-1)">↑</button>
               <button class="secondary-btn" onclick="moveLesson('${l.id}',1)">↓</button>
@@ -1775,11 +1951,12 @@ function renderManageList() {
          `;
      });
   });
+  
   list.innerHTML = html;
 }
 
 /* ══════════════════════════════════════════
-   SOUND DATA — NO TOCAR
+   SOUND DATA
 ══════════════════════════════════════════ */
 const vowels = {
   pure: [
@@ -2094,34 +2271,37 @@ function bl(t) { return t==="rcolored"?"r-colored":t; }
 function renderCard(s, isActive, onclick) { 
   const d = document.createElement('div'); 
   d.className = 'sound-card' + (isActive ? ' active' : ''); 
-  d.innerHTML = `
-    <div class="sound-ipa">${s.ipa}</div>
-    <div class="sound-mw">${s.mw}</div>
-    <div class="sound-example">as in "<strong>${s.keyword}</strong>"</div>
+  
+  let html = `
+    <div class="sound-ipa">${esc(s.ipa)}</div>
+    <div class="sound-mw">${esc(s.mw)}</div>
+    <div class="sound-example">as in "<strong>${esc(s.keyword)}</strong>"</div>
     <span class="sound-type-badge ${bc(s.type||'consonant')}">${bl(s.type||'consonant')}</span>
     <div>
-      <button class="play-btn" onclick="event.stopPropagation();playWord('${s.keyword}')">
+      <button class="play-btn" onclick='event.stopPropagation(); playWord(${escJS(s.keyword)})'>
         <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
           <polygon points="2,1 9,5 2,9"/>
         </svg>
-        ${s.keyword}
+        ${esc(s.keyword)}
       </button>
     </div>
   `; 
+  
+  d.innerHTML = html;
   d.onclick = onclick; 
   return d; 
 }
 
 function renderDetail(pid, s, isCon) { 
-  document.getElementById(pid).innerHTML = `
+  let html = `
     <div class="detail-header">
       <div>
-        <div class="detail-big-ipa">${s.ipa}</div>
-        <div class="detail-big-mw">${s.mw}</div>
+        <div class="detail-big-ipa">${esc(s.ipa)}</div>
+        <div class="detail-big-mw">${esc(s.mw)}</div>
       </div>
       <div>
-        <div class="detail-name">${s.name}</div>
-        <div class="detail-keyword">as in "<strong>${s.keyword}</strong>"</div>
+        <div class="detail-name">${esc(s.name)}</div>
+        <div class="detail-keyword">as in "<strong>${esc(s.keyword)}</strong>"</div>
         <span class="sound-type-badge ${isCon?'badge-consonant':bc(s.type)}" style="margin-top:6px;display:inline-block">${isCon?'consonant':bl(s.type)}</span>
       </div>
     </div>
@@ -2129,38 +2309,63 @@ function renderDetail(pid, s, isCon) {
       <div class="detail-section">
         <div class="detail-section-label">${isCon?'Example words':'Practice words'}</div>
         <div class="words-wrap">
-          ${s.words.map((w,i)=>`<span class="word-pill${i===0?' highlight':''}" onclick="playWord('${w}')">${w} ▶</span>`).join('')}
+  `;
+  
+  s.words.forEach((w, i) => {
+    html += `<span class="word-pill${i===0?' highlight':''}" onclick='playWord(${escJS(w)})'>${esc(w)} ▶</span>`;
+  });
+  
+  html += `
         </div>
       </div>
       <div class="detail-section">
         <div class="detail-section-label">${isCon?'All spellings':'How it\'s spelled'}</div>
         <div class="words-wrap">
-          ${s.spellings.map(sp=>`<span class="word-pill">${sp}</span>`).join('')}
+  `;
+  
+  s.spellings.forEach(sp => {
+    html += `<span class="word-pill">${esc(sp)}</span>`;
+  });
+  
+  html += `
         </div>
       </div>
     </div>
     <div class="tip-box">
       <div class="tip-label">For Spanish speakers</div>
-      <div class="tip-text">${s.tip}</div>
+      <div class="tip-text">${esc(s.tip)}</div>
     </div>
-  `; 
+  `;
+  
+  document.getElementById(pid).innerHTML = html;
 }
 
 function buildGrid(cid, list, getA, setA, pid, isCon, rebuild) { 
   const c = document.getElementById(cid); 
   if (!c) return; 
   c.innerHTML = ''; 
-  list.forEach(s => c.appendChild(renderCard(s, getA()===s.ipa, () => { setA(s.ipa); renderDetail(pid,s,isCon); rebuild(); }))); 
+  list.forEach(s => {
+    const isActive = getA() === s.ipa;
+    c.appendChild(renderCard(s, isActive, () => { 
+      setA(s.ipa); 
+      renderDetail(pid, s, isCon); 
+      rebuild(); 
+    }));
+  }); 
 }
 
 function buildAllVowelGrids() { 
   const ga=()=>activeVowel, sa=v=>{activeVowel=v;}; 
-  [['pure-vowel-grid','pure'],['diphthong-grid','diphthongs'],['rcolored-grid','rcolored']].forEach(([id,k])=>buildGrid(id,vowels[k],ga,sa,'vowel-detail',false,buildAllVowelGrids)); 
+  [['pure-vowel-grid','pure'],['diphthong-grid','diphthongs'],['rcolored-grid','rcolored']].forEach(([id,k])=> {
+    buildGrid(id, vowels[k], ga, sa, 'vowel-detail', false, buildAllVowelGrids);
+  }); 
 }
 
 function buildAllConsonantGrids() { 
   const ga=()=>activeConsonant, sa=v=>{activeConsonant=v;}; 
-  [['stops-grid','stops'],['fricatives-grid','fricatives'],['affricates-grid','affricates'],['nasals-grid','nasals'],['liquids-grid','liquids']].forEach(([id,k])=>buildGrid(id,consonants[k],ga,sa,'consonant-detail',true,buildAllConsonantGrids)); 
+  [['stops-grid','stops'],['fricatives-grid','fricatives'],['affricates-grid','affricates'],['nasals-grid','nasals'],['liquids-grid','liquids']].forEach(([id,k])=> {
+    buildGrid(id, consonants[k], ga, sa, 'consonant-detail', true, buildAllConsonantGrids);
+  }); 
 }
 
 buildAllVowelGrids(); 
