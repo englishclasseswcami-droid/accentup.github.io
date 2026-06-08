@@ -522,13 +522,14 @@ function safeParseJSON(data) {
   return [];
 }
 
-/* Escapes seguros para HTML y para JavaScript interno */
+/* Escudo 1: Para HTML seguro (innerText) */
 function esc(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/'/g, '&#39;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-function escJS(val) {
-  return JSON.stringify(val || '').replace(/"/g, '&quot;');
+/* Escudo 2: Para pasar strings dentro de eventos onclick de Javascript, ej: onclick="playWord('AQUÍ')" */
+function escapeJSArg(str) {
+  return String(str || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, '\\n').replace(/\r/g, '\\r');
 }
 
 /* ══════════════════════════════════════════
@@ -829,8 +830,7 @@ function renderAudios(panelId, list) {
   if (!el) return; 
   const arr = safeParseJSON(list); 
   if (!arr.length) { 
-    el.style.display = 'none'; 
-    return; 
+    el.style.display = 'none'; return; 
   } 
   el.style.display = 'block'; 
   
@@ -850,8 +850,7 @@ function renderResources(panelId, list) {
   if (!el) return; 
   const arr = safeParseJSON(list); 
   if (!arr.length) { 
-    el.style.display = 'none'; 
-    return; 
+    el.style.display = 'none'; return; 
   } 
   el.style.display = 'block'; 
   
@@ -1028,13 +1027,13 @@ function renderPlayerQuestions() {
              <div class="match-col-label">Words</div>`;
              
     lefts.forEach((l,i) => {
-       html += `<div class="match-chip" id="ml-${i}" onclick='matchLeft(${i}, ${escJS(l)})'>${esc(l)}</div>`;
+       html += `<div class="match-chip" id="ml-${i}" onclick="matchLeft(${i}, '${escapeJSArg(l)}')">${esc(l)}</div>`;
     });
     
     html += `</div><div><div class="match-col-label">Sounds / meanings</div>`;
     
     rights.forEach((r,i) => {
-       html += `<div class="match-chip" id="mr-${i}" onclick='matchRight(${i}, ${escJS(r)})'>${esc(r)}</div>`;
+       html += `<div class="match-chip" id="mr-${i}" onclick="matchRight(${i}, '${escapeJSArg(r)}')">${esc(r)}</div>`;
     });
     
     html += `</div></div></div>`;
@@ -1098,7 +1097,7 @@ function renderPlayerQuestions() {
     
     shuffled.forEach((o, j) => {
       html += `
-        <button class="opt-btn" id="opt-${i}-${j}" onclick='selectOpt(${i}, ${j}, ${escJS(o)}, ${escJS(shuffled)})'>
+        <button class="opt-btn" id="opt-${i}-${j}" onclick="selectOpt(${i}, ${j}, '${escapeJSArg(o)}', ${shuffled.length})">
           ${esc(o)}
         </button>
       `;
@@ -1127,11 +1126,11 @@ function dndZoneClick(zoneEl) {
    document.querySelectorAll('.dnd-col, .dnd-bank').forEach(c => c.classList.remove('active-drop'));
 }
 
-function selectOpt(qi, oi, val, opts) { 
-  opts.forEach((_, j) => { 
+function selectOpt(qi, oi, val, numOpts) { 
+  for(let j=0; j<numOpts; j++){
     const b = document.getElementById(`opt-${qi}-${j}`); 
     if (b) b.classList.remove('selected'); 
-  }); 
+  }
   const selectedBtn = document.getElementById(`opt-${qi}-${oi}`);
   if (selectedBtn) selectedBtn.classList.add('selected'); 
   studentAnswers[qi] = val; 
@@ -1560,7 +1559,11 @@ function editLesson(id) {
   if (l.type === 'text') quillEditor.root.innerHTML = l.text_content || '';
   if (l.type === 'task') { 
       document.getElementById('t-ex-type').value = l.task_type || 'open_answer'; 
-      questionRows = safeParseJSON(l.task_content); 
+      if(l.task_type === 'drag_drop') { 
+        questionRows = safeParseJSON(l.task_content); 
+      } else { 
+        questionRows = safeParseJSON(l.task_content); 
+      }
       renderQFields();
   }
   
@@ -1741,6 +1744,7 @@ function removeQOption(i, j) {
     alert('You need at least 2 options.'); return; 
   } 
   questionRows[i].options.splice(j, 1); 
+  
   if (questionRows[i].correctIndex === j) {
     questionRows[i].correctIndex = 0;
   } else if (questionRows[i].correctIndex > j) {
@@ -2278,7 +2282,7 @@ function renderCard(s, isActive, onclick) {
     <div class="sound-example">as in "<strong>${esc(s.keyword)}</strong>"</div>
     <span class="sound-type-badge ${bc(s.type||'consonant')}">${bl(s.type||'consonant')}</span>
     <div>
-      <button class="play-btn" onclick='event.stopPropagation(); playWord(${escJS(s.keyword)})'>
+      <button class="play-btn" onclick="event.stopPropagation(); playWord('${escapeJSArg(s.keyword)}')">
         <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
           <polygon points="2,1 9,5 2,9"/>
         </svg>
@@ -2312,7 +2316,7 @@ function renderDetail(pid, s, isCon) {
   `;
   
   s.words.forEach((w, i) => {
-    html += `<span class="word-pill${i===0?' highlight':''}" onclick='playWord(${escJS(w)})'>${esc(w)} ▶</span>`;
+    html += `<span class="word-pill${i===0?' highlight':''}" onclick="playWord('${escapeJSArg(w)}')">${esc(w)} ▶</span>`;
   });
   
   html += `
