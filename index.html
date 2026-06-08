@@ -95,7 +95,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .gate h2 { font-size: 22px; font-weight: 800; color: var(--brand); margin-bottom: 6px; }
 .gate p { font-size: 13px; color: var(--text-muted); margin-bottom: 1.5rem; }
 .gate-form { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 300px; }
-.gate-input { padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-family: 'Inter',sans-serif; outline: none; width: 100%; }
+.gate-input { padding: 9px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-family: 'Inter',sans-serif; outline: none; width: 100%; }
 .gate-input:focus { border-color: var(--brand); }
 .gate-btn { padding: 10px 18px; border-radius: var(--radius-sm); background: var(--brand); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; font-family: 'Inter', sans-serif; }
 .gate-btn:hover { background: var(--brand-dark); }
@@ -245,7 +245,6 @@ footer strong { color: var(--brand); }
   <p>Explore every sound of American English and practice with interactive exercises.</p>
 </div>
 
-<!-- VOWELS -->
 <div class="page active" id="page-vowels">
   <div class="section-intro"><h2>Vowel sounds</h2><p>American English has 19 vowel sounds. Click any card to explore mouth position, spellings, and tips for Spanish speakers.</p></div>
   <div id="vowel-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
@@ -254,7 +253,6 @@ footer strong { color: var(--brand); }
   <div class="sub-heading">R-colored vowels</div><div class="sound-grid" id="rcolored-grid"></div>
 </div>
 
-<!-- CONSONANTS -->
 <div class="page" id="page-consonants">
   <div class="section-intro"><h2>Consonant sounds</h2><p>American English has 24 consonant sounds. Every card includes all spelling patterns for that sound.</p></div>
   <div id="consonant-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
@@ -265,7 +263,6 @@ footer strong { color: var(--brand); }
   <div class="sub-heading">Liquids & glides</div><div class="sound-grid" id="liquids-grid"></div>
 </div>
 
-<!-- AUTH -->
 <div class="page" id="page-auth">
   <div class="gate">
     <h2 id="auth-title">Welcome back</h2>
@@ -281,7 +278,6 @@ footer strong { color: var(--brand); }
   </div>
 </div>
 
-<!-- CLASSROOM -->
 <div class="page page-full" id="page-classroom">
   <div id="classroom-grid-view">
     <div class="section-intro">
@@ -320,6 +316,7 @@ footer strong { color: var(--brand); }
         <div id="view-exercise" style="display:none;">
           <h2 id="player-title" class="lesson-title-main"></h2>
           <audio id="player-audio" controls style="display:none;width:100%;margin-bottom:1.25rem;border-radius:30px;"></audio>
+          <div id="cv-task-audios" class="lesson-audios-box" style="display:none;"></div>
           <div id="player-questions"></div>
           <div class="player-footer">
             <button class="submit-btn" id="submit-btn" onclick="submitExercise()">Check my answers</button>
@@ -333,14 +330,12 @@ footer strong { color: var(--brand); }
   </div>
 </div>
 
-<!-- TEACHER -->
 <div class="page" id="page-teacher">
   <div class="teacher-header">
     <h2>Teacher Dashboard</h2>
     <p>Organize your content in Folders (Modules) and Pages (Lessons).</p>
   </div>
   <div class="teacher-layout">
-    <!-- FOLDER FORM -->
     <div>
       <div class="t-panel">
         <h3 id="panel-title-mod">📂 Create folder</h3>
@@ -353,7 +348,6 @@ footer strong { color: var(--brand); }
         </div>
       </div>
 
-      <!-- LESSON FORM -->
       <div class="t-panel">
         <h3 id="panel-title-les">📝 Add lesson</h3>
         <input type="hidden" id="edit-les-id" value=""/>
@@ -369,19 +363,16 @@ footer strong { color: var(--brand); }
         <input type="text" id="t-les-title" placeholder="e.g. Lesson 1 — Short I vs Long E"/>
         <hr style="border:0;border-top:1px solid var(--skool-border);margin:1.25rem 0;"/>
 
-        <!-- VIDEO FIELDS -->
         <div id="fields-video">
           <span class="field-label">YouTube URL</span>
           <input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..."/>
         </div>
 
-        <!-- TEXT FIELDS -->
         <div id="fields-text" style="display:none;">
           <span class="field-label">Reading content</span>
           <div id="quill-editor-container"></div>
         </div>
 
-        <!-- TASK FIELDS -->
         <div id="fields-task" style="display:none;">
           <span class="field-label">Exercise type</span>
           <select id="t-ex-type" onchange="renderQuestionFields()">
@@ -399,7 +390,6 @@ footer strong { color: var(--brand); }
           <button class="add-q-btn" onclick="addQuestion()">+ Add question</button>
         </div>
 
-        <!-- SHARED AUDIOS -->
         <div style="margin-top:1.25rem;background:#F0FDF4;padding:14px;border-radius:var(--radius-sm);border:1px solid #BBF7D0;">
           <p style="font-size:12px;font-weight:700;color:#166534;margin-bottom:4px;">🎧 Lesson audio examples</p>
           <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">Add clickable audios for practice words or examples.</p>
@@ -411,7 +401,6 @@ footer strong { color: var(--brand); }
           <div id="t-shared-audios-render"></div>
         </div>
 
-        <!-- RESOURCES -->
         <div style="margin-top:1.25rem;background:#FFF9F6;padding:14px;border-radius:var(--radius-sm);border:1px solid var(--accent);">
           <p style="font-size:12px;font-weight:700;color:var(--accent-dark);margin-bottom:4px;">📎 Attach resources (PDFs, guides, images)</p>
           <input type="file" id="t-les-resources" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" multiple/>
@@ -425,7 +414,6 @@ footer strong { color: var(--brand); }
       </div>
     </div>
 
-    <!-- CONTENT MANAGER -->
     <div>
       <div class="t-panel">
         <h3>🛠 Content manager</h3>
@@ -441,8 +429,8 @@ footer strong { color: var(--brand); }
 /* ══════════════════════════════════════════
    CONFIG
 ══════════════════════════════════════════ */
-const TEACHER_EMAIL = 'englishclasseswcami@gmail.com'; // ← CAMBIÁ ESTO por tu email real
-const STUDENT_ACCESS_CODE = 'ACCENTUP-7774392'; // ← Código para que se registren tus estudiantes
+const TEACHER_EMAIL = 'englishclasseswcami@gmail.com'; 
+const STUDENT_ACCESS_CODE = 'ACCENTUP-7774392'; 
 const SUPABASE_URL = 'https://flfyifdaitfnxncoxzxe.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsZnlpZmRhaXRmbnhuY294enhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4Njc0NTQsImV4cCI6MjA5NjQ0MzQ1NH0.wKMJk0EIYi1hRwoE1EN5lfEGIn2c9YrJhPi_UO2w2gI';
 
@@ -454,6 +442,14 @@ let currentLesson = null, activeModuleId = null;
 let studentAnswers = {}, matchState = { leftSel: null, pairs: {} };
 let questionRows = [], tempAudios = [], isUploadingAudio = false;
 let quillEditor = null;
+
+function safeParseJSON(data) {
+  if (Array.isArray(data)) return data;
+  if (typeof data === 'string') {
+    try { return JSON.parse(data); } catch(e) { return []; }
+  }
+  return [];
+}
 
 /* ══════════════════════════════════════════
    INIT
@@ -477,11 +473,7 @@ document.addEventListener('DOMContentLoaded', () => {
    AUTH
 ══════════════════════════════════════════ */
 function handleNavAuth() {
-  if (currentUser) {
-    sb.auth.signOut();
-  } else {
-    goToPage('auth');
-  }
+  if (currentUser) { sb.auth.signOut(); } else { goToPage('auth'); }
 }
 
 function updateAuthUI() {
@@ -494,7 +486,6 @@ function updateAuthUI() {
     if (currentUser.email === TEACHER_EMAIL) {
       teacherTab.style.display = 'inline-block';
     }
-    // If on auth page, redirect to classroom
     if (document.getElementById('page-auth').classList.contains('active')) {
       goToPage('classroom');
     }
@@ -503,7 +494,6 @@ function updateAuthUI() {
     btn.classList.remove('logout-btn-nav');
     btn.classList.add('auth-btn');
     teacherTab.style.display = 'none';
-    // If on protected page, redirect to vowels
     const activePage = document.querySelector('.page.active')?.id;
     if (activePage === 'page-classroom' || activePage === 'page-teacher') {
       goToPage('vowels');
@@ -648,7 +638,7 @@ function hideAllViews() {
 
 function renderAudios(panelId, list) {
   const el = document.getElementById(panelId); if (!el) return;
-  const arr = Array.isArray(list) ? list : [];
+  const arr = safeParseJSON(list);
   if (!arr.length) { el.style.display = 'none'; return; }
   el.style.display = 'block';
   el.innerHTML = arr.map(a => `<div class="lesson-audio-row"><span class="lesson-audio-label">🔊 ${a.label}</span><audio controls src="${a.url}"></audio></div>`).join('');
@@ -656,7 +646,7 @@ function renderAudios(panelId, list) {
 
 function renderResources(panelId, list) {
   const el = document.getElementById(panelId); if (!el) return;
-  const arr = Array.isArray(list) ? list : [];
+  const arr = safeParseJSON(list);
   if (!arr.length) { el.style.display = 'none'; return; }
   el.style.display = 'block';
   el.innerHTML = `<div class="resources-heading">Resources</div><div class="resources-list">${arr.map(r => `<a href="${r.url}" target="_blank" class="resource-link">📎 ${r.name}</a>`).join('')}</div>`;
@@ -668,13 +658,12 @@ function showLesson(lessonId) {
   currentLesson = dbLessons.find(l => l.id === lessonId);
   if (!currentLesson) return;
 
-  const audios = Array.isArray(currentLesson.content) ? currentLesson.content : [];
-  const resources = Array.isArray(currentLesson.resources) ? currentLesson.resources : [];
+  const audios = safeParseJSON(currentLesson.content);
+  const resources = safeParseJSON(currentLesson.resources);
 
   if (currentLesson.type === 'video') {
     document.getElementById('view-video').style.display = 'block';
     document.getElementById('cv-video-title').textContent = currentLesson.title;
-    // ── FIX: convert YouTube URL to embed before rendering ──
     const embedUrl = formatYouTubeUrl(currentLesson.video_url);
     if (embedUrl) {
       document.getElementById('cv-video-player').innerHTML = `<iframe src="${embedUrl}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
@@ -702,9 +691,11 @@ function showLesson(lessonId) {
     document.getElementById('submit-btn').style.display = 'inline-block';
     document.getElementById('retry-btn').style.display = 'none';
     document.getElementById('score-area').innerHTML = '';
+    
+    renderAudios('cv-task-audios', audios);
     renderPlayerQuestions();
     renderResources('cv-task-resources', resources);
-    // Show previous score if already done
+    
     const prev = dbProgress.find(p => p.lesson_id === lessonId);
     if (prev) showScore(prev.score, prev.total_questions, [], true);
   }
@@ -716,14 +707,11 @@ function showLesson(lessonId) {
 function formatYouTubeUrl(url) {
   if (!url || url.trim() === '') return '';
   url = url.trim();
-  // Already an embed URL
   if (url.includes('youtube.com/embed/')) return url;
-  // youtu.be short link
   if (url.includes('youtu.be/')) {
     const id = url.split('youtu.be/')[1].split('?')[0].split('&')[0];
     return `https://www.youtube.com/embed/${id}`;
   }
-  // Standard watch URL
   if (url.includes('youtube.com/watch')) {
     const params = new URL(url).searchParams;
     const id = params.get('v');
@@ -737,7 +725,8 @@ function formatYouTubeUrl(url) {
 ══════════════════════════════════════════ */
 function renderPlayerQuestions() {
   const wrap = document.getElementById('player-questions');
-  const content = Array.isArray(currentLesson.task_content) ? currentLesson.task_content : [];
+  const content = safeParseJSON(currentLesson.task_content);
+  
   if (currentLesson.task_type === 'matching') {
     const lefts = content.map(q => q.left);
     const rights = shuffle([...content.map(q => q.right)]);
@@ -745,18 +734,24 @@ function renderPlayerQuestions() {
       <div><div class="match-col-label">Words</div>${lefts.map((l,i) => `<div class="match-chip" id="ml-${i}" onclick="matchLeft(${i},'${esc(l)}')">${l}</div>`).join('')}</div>
       <div><div class="match-col-label">Sounds / meanings</div>${rights.map((r,i) => `<div class="match-chip" id="mr-${i}" onclick="matchRight(${i},'${esc(r)}')">${r}</div>`).join('')}</div>
     </div></div>`;
-    window._matchRights = rights; return;
+    return;
   }
+  
   wrap.innerHTML = content.map((q, i) => {
     const qAudio = q.audio_url ? `<audio controls src="${q.audio_url}" style="width:100%;height:36px;margin-bottom:10px;border-radius:20px;"></audio>` : '';
+    
     if (currentLesson.task_type === 'fill_in_blank') {
       return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${q.prompt}</div><input class="fitb-input" id="fitb-${i}" type="text" placeholder="Your answer…" autocomplete="off" oninput="studentAnswers[${i}]=this.value"/></div>`;
     }
     if (currentLesson.task_type === 'dictation') {
       return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${q.prompt}</div><textarea class="dictation-input" id="dict-${i}" placeholder="Write what you hear…" oninput="studentAnswers[${i}]=this.value"></textarea></div>`;
     }
-    const opts = Array.isArray(q.options) ? q.options : [];
-    const shuffled = currentLesson.task_type === 'minimal_pairs' ? shuffle([...opts]) : opts;
+    
+    // Multiple Choice & Minimal Pairs
+    const rawOpts = Array.isArray(q.options) ? q.options : [];
+    const opts = rawOpts.filter(o => o && o.trim() !== ''); // Evitamos botones vacíos
+    const shuffled = (currentLesson.task_type === 'minimal_pairs' || currentLesson.task_type === 'multiple_choice') ? shuffle([...opts]) : opts;
+    
     return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${q.prompt}</div>
       <div class="options-grid">${shuffled.map((o, j) => `<button class="opt-btn" id="opt-${i}-${j}" onclick="selectOpt(${i},${j},'${esc(o)}',${JSON.stringify(shuffled).replace(/"/g,'&quot;')})">${o}</button>`).join('')}</div>
     </div>`;
@@ -786,7 +781,7 @@ function matchRight(i, val) {
 }
 
 async function submitExercise() {
-  const content = Array.isArray(currentLesson.task_content) ? currentLesson.task_content : [];
+  const content = safeParseJSON(currentLesson.task_content);
   let correct = 0; const results = [];
   if (currentLesson.task_type === 'matching') {
     content.forEach((q, i) => {
@@ -796,7 +791,8 @@ async function submitExercise() {
     });
   } else {
     content.forEach((q, i) => {
-      const correctAns = q.answer || (Array.isArray(q.options) && q.options[0]) || '';
+      // Tomamos la respuesta oficial, si no existe usamos la primera del array como backup
+      const correctAns = q.answer || (Array.isArray(q.options) && q.options[q.correctIndex || 0]) || (Array.isArray(q.options) && q.options[0]) || '';
       let given = '';
       if (currentLesson.task_type === 'fill_in_blank') given = document.getElementById('fitb-' + i)?.value.trim() || '';
       else if (currentLesson.task_type === 'dictation') given = document.getElementById('dict-' + i)?.value.trim() || '';
@@ -849,8 +845,9 @@ async function saveModule() {
     ? await sb.from('modules').update(payload).eq('id', editId)
     : await sb.from('modules').insert([payload]);
   if (res.error) { alert('Error: ' + res.error.message); return; }
+  await fetchData();
   alert(editId ? 'Folder updated!' : 'Folder created!');
-  cancelEditMod(); fetchData();
+  cancelEditMod();
 }
 function editModule(id) {
   const m = dbModules.find(x => x.id === id); if (!m) return;
@@ -921,9 +918,8 @@ async function saveLesson() {
     }
   }
 
-  // Handle resource uploads
   const resFiles = document.getElementById('t-les-resources').files;
-  let resources = editId ? (dbLessons.find(l => l.id === editId)?.resources || []) : [];
+  let resources = editId ? safeParseJSON(dbLessons.find(l => l.id === editId)?.resources) : [];
   if (resFiles.length) {
     for (const f of resFiles) {
       const fn = `res_${Date.now()}_${f.name.replace(/\s+/g, '_')}`;
@@ -937,10 +933,16 @@ async function saveLesson() {
   const res = editId
     ? await sb.from('lessons').update(payload).eq('id', editId)
     : await sb.from('lessons').insert([payload]);
+  
+  await fetchData();
+  
   btn.disabled = false; btn.textContent = 'Save lesson';
   if (res.error) { alert('Error: ' + res.error.message); return; }
-  alert('Lesson saved!'); cancelEditLes(); fetchData();
+  
+  alert('Lesson saved!'); 
+  cancelEditLes(); 
 }
+
 function editLesson(id) {
   const l = dbLessons.find(x => x.id === id); if (!l) return;
   document.getElementById('edit-les-id').value = l.id;
@@ -948,18 +950,26 @@ function editLesson(id) {
   document.getElementById('t-les-type').value = l.type;
   document.getElementById('t-les-title').value = l.title;
   toggleLessonFields();
+  
   if (l.type === 'video') document.getElementById('t-les-video-url').value = l.video_url || '';
   if (l.type === 'text') quillEditor.root.innerHTML = l.text_content || '';
-  if (l.type === 'task') { document.getElementById('t-ex-type').value = l.task_type || 'minimal_pairs'; questionRows = JSON.parse(JSON.stringify(l.task_content || [])); renderQFields(); }
-  tempAudios = Array.isArray(l.content) ? JSON.parse(JSON.stringify(l.content)) : [];
+  if (l.type === 'task') { 
+      document.getElementById('t-ex-type').value = l.task_type || 'minimal_pairs'; 
+      questionRows = safeParseJSON(l.task_content); 
+      renderQFields(); 
+  }
+  
+  tempAudios = safeParseJSON(l.content);
   renderTempAudios();
-  const resCurrent = document.getElementById('t-les-resources-current');
-  resCurrent.textContent = l.resources?.length ? `${l.resources.length} file(s) already attached` : '';
+  
+  const resArr = safeParseJSON(l.resources);
+  document.getElementById('t-les-resources-current').textContent = resArr.length ? `${resArr.length} file(s) already attached` : '';
   document.getElementById('t-ex-audio-current').textContent = l.audio_url ? 'Audio already saved' : '';
   document.getElementById('panel-title-les').textContent = '✏️ Edit lesson';
   document.getElementById('btn-cancel-les').style.display = 'inline-block';
   window.scrollTo(0, 0);
 }
+
 function cancelEditLes() {
   document.getElementById('edit-les-id').value = '';
   document.getElementById('t-les-title').value = '';
@@ -974,11 +984,13 @@ function cancelEditLes() {
   document.getElementById('panel-title-les').textContent = '📝 Add lesson';
   document.getElementById('btn-cancel-les').style.display = 'none';
 }
+
 async function deleteLesson(id) {
   if (!confirm('Delete this lesson?')) return;
   await sb.from('lessons').delete().eq('id', id);
   fetchData();
 }
+
 async function moveLesson(id, dir) {
   const les = dbLessons.find(l => l.id === id); if (!les) return;
   const modLess = dbLessons.filter(l => l.module_id === les.module_id);
@@ -1015,25 +1027,80 @@ function renderTempAudios() {
 }
 
 /* ══════════════════════════════════════════
-   TEACHER — QUESTIONS
+   TEACHER — QUESTIONS (NUEVO CREADOR DINÁMICO)
 ══════════════════════════════════════════ */
 function renderQFields() {
   const type = document.getElementById('t-ex-type').value;
   document.getElementById('q-builder').innerHTML = questionRows.map((q, i) => buildQRow(type, q, i)).join('');
 }
+
+function updateQOption(i, j, v) {
+  questionRows[i].options[j] = v;
+  if (questionRows[i].correctIndex === j) {
+    questionRows[i].answer = v;
+  }
+}
+
+function addQOption(i) {
+  questionRows[i].options.push('');
+  renderQFields();
+}
+
+function removeQOption(i, j) {
+  if (questionRows[i].options.length <= 2) {
+    alert('You need at least 2 options for this type of question.');
+    return;
+  }
+  questionRows[i].options.splice(j, 1);
+  if (questionRows[i].correctIndex === j) questionRows[i].correctIndex = 0;
+  else if (questionRows[i].correctIndex > j) questionRows[i].correctIndex--;
+  questionRows[i].answer = questionRows[i].options[questionRows[i].correctIndex];
+  renderQFields();
+}
+
 function buildQRow(type, q, i) {
   if (type === 'matching') return `<div class="q-row"><div class="q-row-label">Pair ${i+1}</div><button class="remove-q" onclick="removeQ(${i})">×</button><input type="text" placeholder="Word (left)" value="${q.left||''}" oninput="questionRows[${i}].left=this.value"/><input type="text" placeholder="Sound / meaning (right)" value="${q.right||''}" oninput="questionRows[${i}].right=this.value"/></div>`;
   if (type === 'fill_in_blank') return `<div class="q-row"><div class="q-row-label">Question ${i+1}</div><button class="remove-q" onclick="removeQ(${i})">×</button><textarea placeholder="Sentence with ___ for blank" oninput="questionRows[${i}].prompt=this.value">${q.prompt||''}</textarea><input type="text" placeholder="Correct answer" value="${q.answer||''}" oninput="questionRows[${i}].answer=this.value"/><input type="text" placeholder="Hint (optional)" value="${q.hint||''}" oninput="questionRows[${i}].hint=this.value"/></div>`;
   if (type === 'dictation') return `<div class="q-row"><div class="q-row-label">Question ${i+1}</div><button class="remove-q" onclick="removeQ(${i})">×</button><textarea placeholder="Instruction for student" oninput="questionRows[${i}].prompt=this.value">${q.prompt||''}</textarea><input type="text" placeholder="Expected answer" value="${q.answer||''}" oninput="questionRows[${i}].answer=this.value"/><span class="field-label">Audio for this question (optional)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/><div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted);">${q.audio_url?'Audio saved':''}</div></div>`;
-  const opts = q.options || ['','','',''];
-  return `<div class="q-row"><div class="q-row-label">Question ${i+1}</div><button class="remove-q" onclick="removeQ(${i})">×</button><textarea placeholder="Question prompt" oninput="questionRows[${i}].prompt=this.value">${q.prompt||''}</textarea>${opts.map((o,j)=>`<input type="text" placeholder="Option ${j+1}${j===0?' (correct)':''}" value="${o}" oninput="questionRows[${i}].options[${j}]=this.value"/>`).join('')}<span class="field-label">Audio for this question (optional)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/><div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted);">${q.audio_url?'Audio saved':''}</div></div>`;
+  
+  // Novedad: Creador Dinámico para Minimal Pairs y Multiple Choice
+  q.options = q.options || ['',''];
+  q.correctIndex = q.correctIndex !== undefined ? q.correctIndex : 0;
+  if (q.correctIndex >= q.options.length) q.correctIndex = 0;
+
+  let optsHtml = q.options.map((o, j) => `
+    <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px; background:var(--bg); padding:6px 10px; border-radius:var(--radius-sm); border:1px solid ${q.correctIndex === j ? 'var(--green)' : 'var(--border)'};">
+      <input type="radio" name="correct_${i}" value="${j}" ${q.correctIndex === j ? 'checked' : ''} onchange="questionRows[${i}].correctIndex = ${j}; questionRows[${i}].answer = questionRows[${i}].options[${j}]; renderQFields();" title="Mark as correct answer" style="margin:0; width:16px; height:16px; accent-color:var(--green); cursor:pointer;">
+      <input type="text" placeholder="Option ${j+1}" value="${esc(o)}" oninput="updateQOption(${i},${j},this.value)" style="margin:0; flex:1; border:none; background:transparent;">
+      <button class="danger-btn" style="padding:4px 8px; font-size:12px; border:none;" onclick="removeQOption(${i},${j})">×</button>
+    </div>
+  `).join('');
+
+  let audioUploadHtml = `<div style="margin-top:10px;"><span class="field-label">Audio for this question (optional)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/><div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted);">${q.audio_url?'✅ Audio saved':''}</div></div>`;
+
+  return `<div class="q-row">
+    <div class="q-row-label">Question ${i+1} <span style="text-transform:none; font-weight:500; color:var(--text-muted);">(Select the radio button for the correct answer)</span></div>
+    <button class="remove-q" onclick="removeQ(${i})">×</button>
+    <textarea placeholder="Question prompt..." oninput="questionRows[${i}].prompt=this.value" style="margin-bottom:12px;">${q.prompt||''}</textarea>
+    ${optsHtml}
+    <button class="secondary-btn" style="font-size:11px; padding:6px 10px; margin-bottom:8px;" onclick="addQOption(${i})">+ Add option</button>
+    ${audioUploadHtml}
+  </div>`;
 }
+
 function addQuestion() {
   const type = document.getElementById('t-ex-type').value;
-  questionRows.push(type==='matching'?{left:'',right:''}:type==='fill_in_blank'?{prompt:'',answer:'',hint:''}:type==='dictation'?{prompt:'',answer:'',audio_url:''}:{prompt:'',options:['','','',''],audio_url:''});
+  questionRows.push(
+    type === 'matching' ? {left:'', right:''} :
+    type === 'fill_in_blank' ? {prompt:'', answer:'', hint:''} :
+    type === 'dictation' ? {prompt:'', answer:'', audio_url:''} :
+    {prompt:'', options:['',''], correctIndex:0, answer:'', audio_url:''}
+  );
   renderQFields();
 }
+
 function removeQ(i) { questionRows.splice(i,1); renderQFields(); }
+
 async function uploadQAudio(event, i) {
   const file = event.target.files[0]; if (!file) return;
   isUploadingAudio = true;
