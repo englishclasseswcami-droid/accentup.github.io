@@ -351,6 +351,16 @@ footer strong { color: var(--brand); }
              <button class="submit-btn" id="btn-complete-text" onclick="markCurrentLessonComplete()">Mark as complete</button>
           </div>
         </div>
+
+        <div id="view-embed" style="display:none;">
+          <h2 id="cv-embed-title" class="lesson-title-main"></h2>
+          <div id="cv-embed-audios" class="lesson-audios-box" style="display:none;"></div>
+          <div id="cv-embed-container" style="width:100%; border-radius:var(--radius); overflow:hidden; margin-bottom:1.5rem;"></div>
+          <div id="cv-embed-resources" class="resources-panel" style="display:none;"></div>
+          <div class="lesson-complete-wrap">
+             <button class="submit-btn" id="btn-complete-embed" onclick="markCurrentLessonComplete()">Mark as complete</button>
+          </div>
+        </div>
         
         <div id="view-exercise" style="display:none;">
           <h2 id="player-title" class="lesson-title-main"></h2>
@@ -416,6 +426,7 @@ footer strong { color: var(--brand); }
           <option value="video">📺 Video</option>
           <option value="text">📄 Reading material</option>
           <option value="task">📝 Interactive exercise</option>
+          <option value="embed">🌐 Embed (Educaplay, Quizlet, etc.)</option>
         </select>
         <span class="field-label">Lesson title</span>
         <input type="text" id="t-les-title" placeholder="e.g. Lesson 1 — Short I vs Long E"/>
@@ -429,6 +440,11 @@ footer strong { color: var(--brand); }
         <div id="fields-text" style="display:none;">
           <span class="field-label">Content (Reading material or Text below video)</span>
           <div id="quill-editor-container"></div>
+        </div>
+
+        <div id="fields-embed" style="display:none;">
+          <span class="field-label">Embed Code (iframe)</span>
+          <textarea id="t-les-embed-code" placeholder="Paste your <iframe> code here..." style="font-family:monospace; min-height:100px;"></textarea>
         </div>
 
         <div id="fields-task" style="display:none;">
@@ -756,7 +772,7 @@ function renderSidebar(moduleId) {
   const subs = dbSubmodules.filter(s => s.module_id === moduleId);
   const orphanLessons = dbLessons.filter(l => l.module_id === moduleId && !l.submodule_id);
   
-  const iconMap = { video: '📺', text: '📄', task: '📝' };
+  const iconMap = { video: '📺', text: '📄', task: '📝', embed: '🌐' };
   
   let html = '';
   
@@ -820,12 +836,14 @@ function setActiveSidebarItem(id) {
 }
 
 function hideAllViews() { 
-  ['view-welcome','view-video','view-text','view-exercise'].forEach(id => { 
+  ['view-welcome','view-video','view-text','view-exercise','view-embed'].forEach(id => { 
     const el = document.getElementById(id); 
     if (el) el.style.display = 'none'; 
   }); 
   const vp = document.getElementById('cv-video-player'); 
   if (vp) vp.innerHTML = ''; 
+  const ep = document.getElementById('cv-embed-container');
+  if (ep) ep.innerHTML = '';
 }
 
 function renderAudios(panelId, list) { 
@@ -904,6 +922,17 @@ function showLesson(lessonId) {
     renderResources('cv-text-resources', resources);
     updateCompleteButton('btn-complete-text', isDone);
   }
+  else if (currentLesson.type === 'embed') {
+    document.getElementById('view-embed').style.display = 'block'; 
+    document.getElementById('cv-embed-title').textContent = currentLesson.title;
+    
+    // Acá se inyecta el iframe real sin escapar (es seguro porque lo pone la profe)
+    document.getElementById('cv-embed-container').innerHTML = currentLesson.text_content || '';
+    
+    renderAudios('cv-embed-audios', audios); 
+    renderResources('cv-embed-resources', resources);
+    updateCompleteButton('btn-complete-embed', isDone);
+  }
   else if (currentLesson.type === 'task') {
     studentAnswers = {}; 
     matchState = { leftSel: null, pairs: {} }; 
@@ -955,6 +984,7 @@ async function markCurrentLessonComplete() {
   
   updateCompleteButton('btn-complete-video', true); 
   updateCompleteButton('btn-complete-text', true);
+  updateCompleteButton('btn-complete-embed', true);
   
   await sb.from('student_progress').upsert(
     { user_id: currentUser.id, lesson_id: currentLesson.id, score: 100, total_questions: 1 }, 
@@ -1430,6 +1460,7 @@ function toggleLessonFields() {
   document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none'; 
   document.getElementById('fields-text').style.display = (type === 'text' || type === 'video') ? 'block' : 'none'; 
   document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none'; 
+  document.getElementById('fields-embed').style.display = type === 'embed' ? 'block' : 'none'; 
 }
 
 function updateModuleSelect() { 
@@ -1475,6 +1506,9 @@ async function saveLesson() {
   }
   else if (type === 'text') { 
     payload.text_content = quillEditor.root.innerHTML; 
+  }
+  else if (type === 'embed') {
+    payload.text_content = document.getElementById('t-les-embed-code').value.trim();
   }
   else if (type === 'task') {
     payload.task_type = document.getElementById('t-ex-type').value;
@@ -1562,6 +1596,8 @@ function editLesson(id) {
     quillEditor.root.innerHTML = l.text_content || ''; 
   }
   if (l.type === 'text') quillEditor.root.innerHTML = l.text_content || '';
+  if (l.type === 'embed') document.getElementById('t-les-embed-code').value = l.text_content || '';
+  
   if (l.type === 'task') { 
       document.getElementById('t-ex-type').value = l.task_type || 'open_answer'; 
       questionRows = safeParseJSON(l.task_content); 
@@ -1587,6 +1623,7 @@ function cancelEditLes() {
   document.getElementById('edit-les-id').value = ''; 
   document.getElementById('t-les-title').value = ''; 
   document.getElementById('t-les-video-url').value = ''; 
+  document.getElementById('t-les-embed-code').value = '';
   document.getElementById('t-ex-audio').value = ''; 
   document.getElementById('t-les-resources').value = ''; 
   document.getElementById('t-les-resources-current').textContent = ''; 
@@ -1893,7 +1930,7 @@ function renderManageList() {
     return; 
   }
   
-  const iconMap = { video:'📺', text:'📄', task:'📝' };
+  const iconMap = { video:'📺', text:'📄', task:'📝', embed: '🌐' };
   let html = '';
   
   dbModules.forEach(m => {
@@ -1958,430 +1995,6 @@ function renderManageList() {
   });
   
   list.innerHTML = html;
-}
-
-/* ══════════════════════════════════════════
-   SOUND DATA
-══════════════════════════════════════════ */
-const vowels = {
-  pure: [
-    {
-      ipa: "/iː/", mw: "[ee]", name: "Long E", keyword: "he", type: "vowel",
-      words: ["he","see","feel","team","people","key","ski","machine","belief"],
-      spellings: ["e — he, me","ee — see, feel","ea — team, read","ie — belief","ey — key","i — ski, machine"],
-      tip: "Similar to Spanish /i/ but held slightly longer. Tense the tongue high and spread the lips slightly."
-    },
-    {
-      ipa: "/ɪ/", mw: "[ih]", name: "Short I", keyword: "hit", type: "vowel",
-      words: ["hit","sit","win","big","quick","busy","women","build","gym"],
-      spellings: ["i — hit, sit","y — gym, symbol","ui — build","u — busy","o — women"],
-      tip: "Not the Spanish /i/. The lips are relaxed — not spread. Much shorter and laxer."
-    },
-    {
-      ipa: "/ɛ/", mw: "[eh]", name: "Short E", keyword: "head", type: "vowel",
-      words: ["head","bed","said","friend","many","any","weather","says"],
-      spellings: ["e — bed","ea — head, weather","ai — said","ie — friend","a — many, any"],
-      tip: "Close to Spanish /e/ but a little lower and more open."
-    },
-    {
-      ipa: "/æ/", mw: "[a]", name: "Short A", keyword: "cap", type: "vowel",
-      words: ["cap","cat","man","bad","apple","laugh","plaid","half"],
-      spellings: ["a — cap, cat","au — laugh","ai — plaid"],
-      tip: "Doesn't exist in Spanish. Open the mouth wide, push the tongue forward and low. Tense and bright."
-    },
-    {
-      ipa: "/ɑ/", mw: "[ah]", name: "Open A", keyword: "cop", type: "vowel",
-      words: ["cop","hot","father","calm","palm","spa","watch","want"],
-      spellings: ["o — cop, hot","a — father, calm","al — palm","wa — watch, want"],
-      tip: "Wide-open, relaxed /a/ pushed back in the throat. The mouth is fully open."
-    },
-    {
-      ipa: "/ə/ or /ʌ/", mw: "[uh]", name: "Schwa", keyword: "cup", type: "vowel",
-      words: ["cup","fun","done","love","about","sofa","button","pencil"],
-      spellings: ["u — cup, fun","o — love, done","a — about (unstressed)","o — sofa (unstressed)"],
-      tip: "The most common sound in English! Every unstressed syllable tends to become /ə/."
-    },
-    {
-      ipa: "/uː/", mw: "[u]", name: "Long OO", keyword: "who", type: "vowel",
-      words: ["who","food","moon","true","blue","school","through","suit"],
-      spellings: ["oo — food, moon","ue — true, blue","ew — chew, brew","ou — through","ui — suit"],
-      tip: "Similar to Spanish /u/ but sometimes starts with a /j/ glide. Lips tightly rounded."
-    },
-    {
-      ipa: "/ʊ/", mw: "[uu]", name: "Short OO", keyword: "took", type: "vowel",
-      words: ["took","book","foot","good","could","would","pull","put"],
-      spellings: ["oo — book, foot","ou — could, would","u — pull, put","o — wolf"],
-      tip: "A short, relaxed version of /uː/. Practice the difference: 'food' vs 'foot'."
-    },
-    {
-      ipa: "/ɔː/", mw: "[aw]", name: "AW sound", keyword: "law", type: "vowel",
-      words: ["law","call","also","thought","caught","ball","walk","water"],
-      spellings: ["aw — law, saw","al — call, ball, walk","au — caught, water","ou — thought","o — also"],
-      tip: "A mid-back rounded vowel. Lips are loosely rounded."
-    }
-  ],
-  diphthongs: [
-    {
-      ipa: "/eɪ/", mw: "[ei]", name: "Long A", keyword: "hey", type: "diphthong",
-      words: ["hey","day","made","great","they","vein","weigh","eight"],
-      spellings: ["ay — day, say","a_e — made, late","ey — they, hey","ei — vein, eight","ai — rain"],
-      tip: "Must glide upward — the mouth closes as you say it. Not a flat Spanish /e/."
-    },
-    {
-      ipa: "/oʊ/", mw: "[ou]", name: "Long O", keyword: "home", type: "diphthong",
-      words: ["home","go","know","phone","road","though","toe","boat"],
-      spellings: ["o — go, so","o_e — home, phone","ow — know, show","oa — road, boat","ou — though"],
-      tip: "Starts in the center and glides toward a rounded /ʊ/ at the end."
-    },
-    {
-      ipa: "/aɪ/", mw: "[ai]", name: "Long I", keyword: "hi", type: "diphthong",
-      words: ["hi","my","time","high","fly","night","buy","pie","guide"],
-      spellings: ["i_e — time, bike","y — my, fly","igh — night, high","uy — buy","ie — pie"],
-      tip: "Starts with a wide open /ɑ/ and glides up toward /ɪ/."
-    },
-    {
-      ipa: "/aʊ/", mw: "[au]", name: "OW sound", keyword: "how", type: "diphthong",
-      words: ["how","now","loud","down","about","crowd","out","mouth"],
-      spellings: ["ow — how, now, crowd","ou — loud, out, about, mouth"],
-      tip: "Starts open and the lips round at the end toward /ʊ/."
-    },
-    {
-      ipa: "/ɔɪ/", mw: "[oi]", name: "OY sound", keyword: "boy", type: "diphthong",
-      words: ["boy","voice","coin","toy","oil","noise","royal","joint"],
-      spellings: ["oy — boy, toy, royal","oi — coin, oil, voice, noise"],
-      tip: "Starts with rounded lips /ɔ/ and glides up toward /ɪ/."
-    }
-  ],
-  rcolored: [
-    {
-      ipa: "/ɝ/", mw: "[er]", name: "Stressed ER", keyword: "her", type: "rcolored",
-      words: ["her","bird","word","nurse","earth","first","hurt","work"],
-      spellings: ["er — her, fern","ir — bird, first","ur — nurse, hurt","or — word, work","ear — earth, learn"],
-      tip: "The tongue curls back while the vowel is produced. No equivalent in Spanish."
-    },
-    {
-      ipa: "/ɚ/", mw: "[er]", name: "Unstressed ER", keyword: "bigger", type: "rcolored",
-      words: ["bigger","butter","doctor","teacher","mother","color","dollar"],
-      spellings: ["er — bigger, mother","or — doctor, color","ar — dollar, popular"],
-      tip: "The unstressed /ɝ/. Very common in '-er', '-or', '-ar' endings."
-    },
-    {
-      ipa: "/ɑr/", mw: "[ar]", name: "AR sound", keyword: "far", type: "rcolored",
-      words: ["far","car","heart","park","start","guard"],
-      spellings: ["ar — far, car, park","ear — heart","ua — guard"],
-      tip: "Wide-open /ɑ/ followed by the American R curl."
-    },
-    {
-      ipa: "/ɛr/", mw: "[er]", name: "AIR sound", keyword: "fare", type: "rcolored",
-      words: ["fare","care","air","there","where","wear","bear","their"],
-      spellings: ["are — fare, care","air — air, fair","ere — there, where","ear — wear, bear"],
-      tip: "A mid-front /ɛ/ that transitions into the American R."
-    },
-    {
-      ipa: "/ɪr/", mw: "[eer]", name: "EAR sound", keyword: "here", type: "rcolored",
-      words: ["here","ear","fear","deer","beer","cheer","year"],
-      spellings: ["ere — here","ear — ear, fear","eer — deer, beer, cheer"],
-      tip: "Starts with the high /iː/ position then curls into the R."
-    },
-    {
-      ipa: "/ɔr/", mw: "[or]", name: "OR sound", keyword: "or", type: "rcolored",
-      words: ["or","for","more","door","four","floor","war","born"],
-      spellings: ["or — or, for, born","ore — more, store","oor — door, floor","our — four, court","ar — war"],
-      tip: "A rounded /ɔ/ that flows into the American R."
-    }
-  ]
-};
-
-const consonants = {
-  stops: [
-    {
-      ipa: "/p/", mw: "[p]", name: "P sound", keyword: "pen", type: "consonant",
-      words: ["pen","top","happy","apple","camp"],
-      spellings: ["p — pen, top","pp — happy, apple"],
-      tip: "Aspirated at the start of stressed syllables — you feel a puff of air."
-    },
-    {
-      ipa: "/b/", mw: "[b]", name: "B sound", keyword: "big", type: "consonant",
-      words: ["big","cab","able","baby","job","ebb"],
-      spellings: ["b — big, cab","bb — ebb"],
-      tip: "No aspiration. Always keep it a full stop with both lips."
-    },
-    {
-      ipa: "/t/", mw: "[t]", name: "T sound", keyword: "top", type: "consonant",
-      words: ["top","cat","water","butter","action","nature","question"],
-      spellings: ["t — top, cat","tt — butter","ti — action (=/ʃ/)","tu — nature (=/tʃ/)"],
-      tip: "Between vowels, American /t/ becomes a quick flap — like a fast /d/."
-    },
-    {
-      ipa: "/d/", mw: "[d]", name: "D sound", keyword: "dog", type: "consonant",
-      words: ["dog","ride","made","middle","add","loved","could"],
-      spellings: ["d — dog, ride","dd — middle, add","ed — loved (past tense)"],
-      tip: "Between vowels it can sound like a flap. Focus on voicing."
-    },
-    {
-      ipa: "/k/", mw: "[k]", name: "K sound", keyword: "cat", type: "consonant",
-      words: ["cat","kite","queen","school","fix","account","antique","choir"],
-      spellings: ["c — cat","k — kite","ck — back","qu — queen (=/kw/)","x — fix (=/ks/)","ch — choir"],
-      tip: "Spelled many ways: c, k, ck, ch, x."
-    },
-    {
-      ipa: "/g/", mw: "[g]", name: "G sound", keyword: "go", type: "consonant",
-      words: ["go","big","egg","ghost","guest","exact"],
-      spellings: ["g — go, big","gg — egg","gh — ghost","gu — guest","x — exact (=/gz/)"],
-      tip: "'Gh' is silent in many words but sounds like /g/ in 'ghost'."
-    }
-  ],
-  fricatives: [
-    {
-      ipa: "/f/", mw: "[f]", name: "F sound", keyword: "fan", type: "consonant",
-      words: ["fan","off","phone","cough","laugh"],
-      spellings: ["f — fan, feel","ff — off","ph — phone","gh — cough, laugh"],
-      tip: "'Ph' always makes this sound. 'Gh' at the end also makes /f/."
-    },
-    {
-      ipa: "/v/", mw: "[v]", name: "V sound", keyword: "van", type: "consonant",
-      words: ["van","have","love","of","vivid","river"],
-      spellings: ["v — van, vivid","f — of (=/v/)"],
-      tip: "Spanish doesn't have a true /v/. Top teeth must press on the lower lip and vibrate."
-    },
-    {
-      ipa: "/θ/", mw: "[th]", name: "TH voiceless", keyword: "think", type: "consonant",
-      words: ["think","bath","three","tooth","through","author"],
-      spellings: ["th — think, bath, three, author"],
-      tip: "Tongue tip between teeth, blow air — no voice. Don't substitute /t/, /s/, or /f/."
-    },
-    {
-      ipa: "/ð/", mw: "[th]", name: "TH voiced", keyword: "the", type: "consonant",
-      words: ["the","this","mother","breathe","father"],
-      spellings: ["th — the, this, mother, breathe"],
-      tip: "Same position as voiceless TH but with voicing. Spanish speakers often use /d/."
-    },
-    {
-      ipa: "/s/", mw: "[s]", name: "S sound", keyword: "see", type: "consonant",
-      words: ["see","miss","city","psychology","scene","science"],
-      spellings: ["s — see","ss — miss","c — city (before e/i)","sc — scene","ps — psychology"],
-      tip: "'c' before e/i/y makes /s/. 'Ps' at the start — the P is silent."
-    },
-    {
-      ipa: "/z/", mw: "[z]", name: "Z sound", keyword: "zoo", type: "consonant",
-      words: ["zoo","fizz","rose","dogs","his","scissors","xylophone"],
-      spellings: ["z — zoo","zz — fizz","s — rose, dogs (voiced)","ss — scissors","x — xylophone"],
-      tip: "Most plurals spelled '-s' are actually /z/ ('dogs', 'runs', 'plays')."
-    },
-    {
-      ipa: "/ʃ/", mw: "[sh]", name: "SH sound", keyword: "she", type: "consonant",
-      words: ["she","ship","nation","special","sure","machine","chef","ocean"],
-      spellings: ["sh — she, ship","ti — nation","ci — special","su — sure","ch — chef","ce — ocean"],
-      tip: "Hides in 'ti' (nation), 'ci' (special), 'ch' (chef)."
-    },
-    {
-      ipa: "/ʒ/", mw: "[zh]", name: "ZH sound", keyword: "measure", type: "consonant",
-      words: ["measure","vision","usual","beige","genre"],
-      spellings: ["si — vision","su — measure, usual","ge — beige","g — genre"],
-      tip: "The voiced /ʃ/. The 's' in 'vision'."
-    },
-    {
-      ipa: "/h/", mw: "[h]", name: "H sound", keyword: "hat", type: "consonant",
-      words: ["hat","ahead","who","hello","whole"],
-      spellings: ["h — hat, hello","wh — who, whole (=/h/)"],
-      tip: "A gentle breath — much softer than the Spanish /x/ (as in 'Juan')."
-    }
-  ],
-  affricates: [
-    {
-      ipa: "/tʃ/", mw: "[ch]", name: "CH sound", keyword: "chin", type: "consonant",
-      words: ["chin","watch","teacher","nature","question","cello"],
-      spellings: ["ch — chin","tch — watch","tu — nature","ti — question","c — cello"],
-      tip: "Starts like /t/ and releases as /ʃ/."
-    },
-    {
-      ipa: "/dʒ/", mw: "[j]", name: "J sound", keyword: "job", type: "consonant",
-      words: ["job","judge","gym","age","bridge","soldier"],
-      spellings: ["j — job","g — gym, age (before e/i/y)","dge — judge, bridge","di — soldier"],
-      tip: "'G' before e, i, y often makes /dʒ/. 'Dge' always makes /dʒ/."
-    }
-  ],
-  nasals: [
-    {
-      ipa: "/m/", mw: "[m]", name: "M sound", keyword: "man", type: "consonant",
-      words: ["man","him","summer","dumb","climb"],
-      spellings: ["m — man","mm — summer","mb — dumb, climb (silent b)"],
-      tip: "Watch for silent letters: 'climb' (b silent)."
-    },
-    {
-      ipa: "/n/", mw: "[n]", name: "N sound", keyword: "no", type: "consonant",
-      words: ["no","sun","know","knife","gnat","inn"],
-      spellings: ["n — no, sun","kn — know (silent k)","gn — gnat (silent g)","nn — inn"],
-      tip: "'Kn' at the start — the K is always silent."
-    },
-    {
-      ipa: "/ŋ/", mw: "[ng]", name: "NG sound", keyword: "sing", type: "consonant",
-      words: ["sing","thing","think","long","ring","bank"],
-      spellings: ["ng — sing, ring","n — think, bank (before /k/)"],
-      tip: "One sound — back of tongue to soft palate."
-    }
-  ],
-  liquids: [
-    {
-      ipa: "/r/", mw: "[r]", name: "American R", keyword: "red", type: "consonant",
-      words: ["red","car","bird","world","river","write","wrap"],
-      spellings: ["r — red, river","rr — sorry","wr — write (silent w)","rh — rhyme (silent h)"],
-      tip: "The tongue curls back without touching anything. Unlike Spanish trilled /r/."
-    },
-    {
-      ipa: "/l/", mw: "[l]", name: "L sound", keyword: "like", type: "consonant",
-      words: ["like","call","feel","hello","people","walk","half","calm"],
-      spellings: ["l — like, feel","ll — call, hello","le — people","lk — walk (silent l)","lf — half (silent l)"],
-      tip: "Light L (start of syllable) vs dark L (end — almost a vowel). Many silent L words."
-    },
-    {
-      ipa: "/j/", mw: "[y]", name: "Y glide", keyword: "yes", type: "consonant",
-      words: ["yes","you","year","use","cute","few","onion"],
-      spellings: ["y — yes, year","u — use, cute (=/juː/)","ew — few (=/juː/)","i — onion (=/j/)"],
-      tip: "'U' in 'use' and 'cute' starts with this /j/ glide."
-    },
-    {
-      ipa: "/w/", mw: "[w]", name: "W sound", keyword: "we", type: "consonant",
-      words: ["we","world","quick","away","always","one","once"],
-      spellings: ["w — we, world","wh — where, when","qu — quick (=/kw/)","o — one (=/w/)"],
-      tip: "Start with lips tightly rounded like /uː/, then move quickly into the next vowel."
-    }
-  ]
-};
-
-/* System Boot */
-const USE_REAL_AUDIO = false;
-
-function playWord(word) { 
-  if (USE_REAL_AUDIO) { 
-    const a = new Audio('audio/' + word.toLowerCase() + '.mp3'); 
-    a.play().catch(() => speakWord(word)); 
-  } else {
-    speakWord(word);
-  }
-}
-
-function speakWord(word) { 
-  if (!window.speechSynthesis) return; 
-  window.speechSynthesis.cancel(); 
-  const u = new SpeechSynthesisUtterance(word); 
-  u.lang = 'en-US'; 
-  u.rate = 0.85; 
-  window.speechSynthesis.speak(u); 
-}
-
-function bc(t) { return t==="vowel"?"badge-vowel":t==="diphthong"?"badge-diphthong":t==="rcolored"?"badge-rcolored":"badge-consonant"; }
-function bl(t) { return t==="rcolored"?"r-colored":t; }
-
-function renderCard(s, isActive, onclick) { 
-  const d = document.createElement('div'); 
-  d.className = 'sound-card' + (isActive ? ' active' : ''); 
-  
-  let html = `
-    <div class="sound-ipa">${esc(s.ipa)}</div>
-    <div class="sound-mw">${esc(s.mw)}</div>
-    <div class="sound-example">as in "<strong>${esc(s.keyword)}</strong>"</div>
-    <span class="sound-type-badge ${bc(s.type||'consonant')}">${bl(s.type||'consonant')}</span>
-    <div>
-      <button class="play-btn" onclick="event.stopPropagation(); playWord('${escapeJSArg(s.keyword)}')">
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
-          <polygon points="2,1 9,5 2,9"/>
-        </svg>
-        ${esc(s.keyword)}
-      </button>
-    </div>
-  `; 
-  
-  d.innerHTML = html;
-  d.onclick = onclick; 
-  return d; 
-}
-
-function renderDetail(pid, s, isCon) { 
-  let html = `
-    <div class="detail-header">
-      <div>
-        <div class="detail-big-ipa">${esc(s.ipa)}</div>
-        <div class="detail-big-mw">${esc(s.mw)}</div>
-      </div>
-      <div>
-        <div class="detail-name">${esc(s.name)}</div>
-        <div class="detail-keyword">as in "<strong>${esc(s.keyword)}</strong>"</div>
-        <span class="sound-type-badge ${isCon?'badge-consonant':bc(s.type)}" style="margin-top:6px;display:inline-block">${isCon?'consonant':bl(s.type)}</span>
-      </div>
-    </div>
-    <div class="detail-body">
-      <div class="detail-section">
-        <div class="detail-section-label">${isCon?'Example words':'Practice words'}</div>
-        <div class="words-wrap">
-  `;
-  
-  s.words.forEach((w, i) => {
-    html += `<span class="word-pill${i===0?' highlight':''}" onclick="playWord('${escapeJSArg(w)}')">${esc(w)} ▶</span>`;
-  });
-  
-  html += `
-        </div>
-      </div>
-      <div class="detail-section">
-        <div class="detail-section-label">${isCon?'All spellings':'How it\'s spelled'}</div>
-        <div class="words-wrap">
-  `;
-  
-  s.spellings.forEach(sp => {
-    html += `<span class="word-pill">${esc(sp)}</span>`;
-  });
-  
-  html += `
-        </div>
-      </div>
-    </div>
-    <div class="tip-box">
-      <div class="tip-label">For Spanish speakers</div>
-      <div class="tip-text">${esc(s.tip)}</div>
-    </div>
-  `;
-  
-  document.getElementById(pid).innerHTML = html;
-}
-
-function buildGrid(cid, list, getA, setA, pid, isCon, rebuild) { 
-  const c = document.getElementById(cid); 
-  if (!c) return; 
-  c.innerHTML = ''; 
-  list.forEach(s => {
-    const isActive = getA() === s.ipa;
-    c.appendChild(renderCard(s, isActive, () => { 
-      setA(s.ipa); 
-      renderDetail(pid, s, isCon); 
-      rebuild(); 
-    }));
-  }); 
-}
-
-function buildAllVowelGrids() { 
-  const ga=()=>activeVowel, sa=v=>{activeVowel=v;}; 
-  [['pure-vowel-grid','pure'],['diphthong-grid','diphthongs'],['rcolored-grid','rcolored']].forEach(([id,k])=> {
-    buildGrid(id, vowels[k], ga, sa, 'vowel-detail', false, buildAllVowelGrids);
-  }); 
-}
-
-function buildAllConsonantGrids() { 
-  const ga=()=>activeConsonant, sa=v=>{activeConsonant=v;}; 
-  [['stops-grid','stops'],['fricatives-grid','fricatives'],['affricates-grid','affricates'],['nasals-grid','nasals'],['liquids-grid','liquids']].forEach(([id,k])=> {
-    buildGrid(id, consonants[k], ga, sa, 'consonant-detail', true, buildAllConsonantGrids);
-  }); 
-}
-
-buildAllVowelGrids(); 
-buildAllConsonantGrids();
-
-function shuffle(arr){
-  for(let i=arr.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [arr[i],arr[j]]=[arr[j],arr[i]];
-  }
-  return arr;
 }
 </script>
 </body>
