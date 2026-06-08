@@ -136,13 +136,19 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 .text-content-main { font-size: 15px; line-height: 1.8; color: var(--text); }
 .text-content-main a { color: var(--brand); text-decoration: underline; }
 .text-content-main ul { padding-left: 1.5rem; margin-bottom: 1rem; }
-.text-content-main audio { display: block; height: 40px; margin: 12px 0; border-radius: 8px; width: 100%; max-width: 400px; }
+
+/* AUDIO LIST STYLES (Estilo Pronuncian definitivo) */
+.lesson-audios-box { margin-bottom: 1.5rem; background: var(--bg); border: 1px solid var(--skool-border); padding: 12px 16px; border-radius: var(--radius-sm); }
+.lesson-audio-row { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed var(--skool-border); }
+.lesson-audio-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.lesson-audio-label { font-size: 13px; font-weight: 700; color: var(--brand); }
+.lesson-audio-row audio { height: 32px; border-radius: 4px; }
 
 /* RECURSOS ADJUNTOS ESTILO SKOOL */
 .resources-panel { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--skool-border); }
 .resources-heading { font-size: 14px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
-.resources-list { display: flex; flex-direction: column; gap: 8px; }
-.resource-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--bg); border: 1px solid var(--skool-border); border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; color: var(--brand); text-decoration: none; width: fit-content; transition: all 0.15s; }
+.resources-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.resource-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--bg); border: 1px solid var(--skool-border); border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; color: var(--brand); text-decoration: none; transition: all 0.15s; }
 .resource-link:hover { background: var(--brand-light); border-color: var(--brand); }
 
 /* EXERCISE PLAYER */
@@ -206,8 +212,8 @@ select:focus, textarea:focus, input:focus { border-color: var(--brand); backgrou
 .danger-btn:hover { background: var(--red-light); }
 
 /* Editor Quill Container */
-#quill-editor-container { height: 250px; background: var(--surface); border-radius: 0 0 var(--radius-sm) var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 14px; }
-.ql-toolbar { border-radius: var(--radius-sm) var(--radius-sm) 0 0; background: var(--bg); border-color: var(--border) !important; font-family: 'Inter', sans-serif; }
+#quill-editor-container { height: 250px; background: var(--surface); border-radius: 0 0 var(--radius-sm) var(--radius-sm) !important; font-family: 'Inter', sans-serif; font-size: 14px; }
+.ql-toolbar { border-radius: var(--radius-sm) var(--radius-sm) 0 0 !important; background: var(--bg); border-color: var(--border) !important; }
 .ql-container { border-color: var(--border) !important; }
 
 /* Lista de Gestión */
@@ -274,7 +280,6 @@ footer strong { color: var(--brand); }
 </div>
 
 <div class="page page-full" id="page-classroom">
-  
   <div id="classroom-grid-view">
     <div class="section-intro">
       <h2>Tus Carpetas</h2>
@@ -288,17 +293,12 @@ footer strong { color: var(--brand); }
   <div id="classroom-player-view" style="display:none;">
     <button onclick="backToClassroomGrid()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-weight:600; font-family:'Inter', sans-serif; margin-bottom:1.5rem;">← Volver a Carpetas</button>
     <div class="classroom-container">
-      
       <aside class="c-sidebar">
-        <div class="c-progress-box">
-          <div class="c-course-title" id="sidebar-mod-title">Carpeta Actual</div>
-        </div>
-        <div class="c-nav-list" id="sidebar-render">
-          </div>
+        <div class="c-progress-box"><div class="c-course-title" id="sidebar-mod-title">Carpeta Actual</div></div>
+        <div class="c-nav-list" id="sidebar-render"></div>
       </aside>
 
       <main class="c-main" id="classroom-main-content">
-        
         <div id="view-welcome" class="c-empty-state">
           <svg style="width:48px;height:48px;color:var(--brand-light);margin-bottom:1rem;" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 13.5v-7l6 3.5-6 3.5z"></path></svg>
           <h2 style="color:var(--text);font-weight:800;margin-bottom:8px;">Bienvenido</h2>
@@ -307,12 +307,14 @@ footer strong { color: var(--brand); }
 
         <div id="view-video" style="display:none;">
           <h2 id="cv-video-title" class="lesson-title-main"></h2>
+          <div id="cv-video-audios" class="lesson-audios-box" style="display:none;"></div>
           <div id="cv-video-player" class="video-container"></div>
           <div id="cv-video-resources" class="resources-panel" style="display:none;"></div>
         </div>
 
         <div id="view-text" style="display:none;">
           <h2 id="cv-text-title" class="lesson-title-main"></h2>
+          <div id="cv-text-audios" class="lesson-audios-box" style="display:none;"></div>
           <div id="cv-text-content" class="text-content-main ql-editor"></div>
           <div id="cv-text-resources" class="resources-panel" style="display:none;"></div>
         </div>
@@ -328,7 +330,6 @@ footer strong { color: var(--brand); }
           <div id="score-area"></div>
           <div id="cv-task-resources" class="resources-panel" style="display:none;"></div>
         </div>
-
       </main>
     </div>
   </div>
@@ -343,7 +344,7 @@ footer strong { color: var(--brand); }
     
     <div class="teacher-layout">
       <div class="t-panel">
-        <h3 id="panel-title-mod">📂 1. Crear Carpeta (Módulo)</h3>
+        <h3 id="panel-title-mod">📂 1. Crear/Editar Carpeta</h3>
         <input type="hidden" id="edit-mod-id" value="">
         <div class="field-label">Nombre de la Carpeta</div>
         <input type="text" id="t-mod-title" placeholder="Ej: 1. Essentials">
@@ -354,7 +355,7 @@ footer strong { color: var(--brand); }
       </div>
 
       <div class="t-panel">
-        <h3 id="panel-title-les">📝 2. Agregar Página a una Carpeta</h3>
+        <h3 id="panel-title-les">📝 2. Agregar/Editar Página</h3>
         <input type="hidden" id="edit-les-id" value="">
         
         <div class="field-label">Guardar en la carpeta:</div>
@@ -368,7 +369,7 @@ footer strong { color: var(--brand); }
         </select>
 
         <div class="field-label">Título de la Página</div>
-        <input type="text" id="t-les-title" placeholder="Ej: Task 1 - Pronunciation">
+        <input type="text" id="t-les-title" placeholder="Ej: Lesson 1">
 
         <hr style="border:0; border-top:1px solid var(--skool-border); margin: 1.5rem 0;">
 
@@ -380,37 +381,38 @@ footer strong { color: var(--brand); }
         <div id="fields-text" style="display:none;">
             <div class="field-label">Contenido de Lectura</div>
             <div id="quill-editor-container"></div>
-            
-            <div style="margin-top: 15px; background: var(--bg); padding: 12px; border-radius: var(--radius-sm); border: 1px dashed var(--brand-mid);">
-                <p style="font-size: 12px; font-weight: 600; color: var(--brand); margin-bottom: 5px;">🎧 Insertar reproductor de Audio en el texto</p>
-                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">Coloca el cursor en el editor de arriba y selecciona un archivo MP3.</p>
-                <input type="file" id="quill-audio-upload" accept="audio/*" onchange="insertAudioToQuill(this)" style="font-size:12px; margin-bottom:0;" />
-                <span id="quill-audio-status" style="font-size: 11px; font-weight: bold; margin-left: 10px;"></span>
-            </div>
         </div>
 
         <div id="fields-task" style="display:none;">
             <div class="field-label">Tipo de Ejercicio</div>
             <select id="t-ex-type" onchange="renderQuestionFields()">
-              <option value="minimal_pairs">Minimal pairs (Opciones múltiples)</option>
+              <option value="minimal_pairs">Minimal pairs</option>
               <option value="multiple_choice">Multiple choice</option>
-              <option value="fill_in_blank">Fill in the blank (Espacios cortos)</option>
-              <option value="matching">Matching (Unir con flechas)</option>
-              <option value="dictation">Dictation / Transcription (Texto largo)</option>
+              <option value="fill_in_blank">Fill in the blank</option>
+              <option value="matching">Matching</option>
+              <option value="dictation">Dictation / Transcription</option>
             </select>
-            
-            <div class="field-label">Audio General (Aparece arriba de todo)</div>
+            <div class="field-label">Audio General de la Tarea</div>
             <input type="file" id="t-ex-audio" accept="audio/*">
-            <div id="t-ex-audio-current" style="font-size:11px; color:var(--text-muted); margin-top:-5px; margin-bottom:10px;"></div>
-            
-            <div class="field-label">Preguntas Individuales</div>
+            <div id="t-ex-audio-current" style="font-size:11px; color:var(--text-muted); margin-bottom:10px;"></div>
+            <div class="field-label">Preguntas</div>
             <div class="q-builder" id="q-builder"></div>
             <button class="add-q-btn" onclick="addQuestion()">+ Agregar pregunta</button>
         </div>
 
+        <div id="fields-shared-audios" style="margin-top:20px; background:#F0FDF4; padding:15px; border-radius:var(--radius-sm); border:1px solid #BBF7D0;">
+            <p style="font-size: 12px; font-weight: 700; color: #166534; margin-bottom: 5px;">🎧 Lista de Audios de la Clase (Estilo Pronuncian)</p>
+            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Agrega audios cliqueables para tus ejemplos o palabras de práctica.</p>
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <input type="text" id="t-audio-label" placeholder="Nombre (Ej: Audio 1 o Word: Cake)" style="margin-bottom:0; flex:1;">
+                <input type="file" id="t-audio-file" accept="audio/*" style="margin-bottom:0; width:auto; flex:1;">
+                <button class="secondary-btn" onclick="addSharedAudioToList()" style="padding:4px 12px;">+ Añadir</button>
+            </div>
+            <div id="t-shared-audios-list-render" style="font-size:12px; color:var(--text); font-weight:500;"></div>
+        </div>
+
         <div style="margin-top: 20px; background: #FFF9F6; padding: 15px; border-radius: var(--radius-sm); border: 1px solid var(--accent);">
-            <p style="font-size: 12px; font-weight: 700; color: var(--accent-dark); margin-bottom: 5px;">📎 Adjuntar Recursos de la Clase (PDFs, Imágenes, Guías)</p>
-            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Los alumnos verán estos archivos listados al final de la página para descargarlos.</p>
+            <p style="font-size: 12px; font-weight: 700; color: var(--accent-dark); margin-bottom: 5px;">📎 Adjuntar Recursos (PDFs, Guías, Descargables)</p>
             <input type="file" id="t-les-resources" accept=".pdf, .png, .jpg, .jpeg, .doc, .docx" multiple>
             <div id="t-les-resources-current" style="font-size:11px; color:var(--text-muted); margin-top:5px;"></div>
         </div>
@@ -423,14 +425,13 @@ footer strong { color: var(--brand); }
 
       <div class="t-panel">
         <h3>🛠️ Gestión de Contenido</h3>
-        <p style="font-size:11px; color:var(--text-muted); margin-bottom: 1rem;">Edita, borra o reordena tus carpetas y páginas.</p>
         <div id="t-manage-list"></div>
       </div>
     </div>
   </div>
 </div>
 
-<footer>Built with <strong>AccentUp</strong> · American English pronunciation for Spanish speakers</footer>
+<footer>Built with <strong>AccentUp</strong></footer>
 
 <script>
 /* ══════════════════════════════════════════
@@ -443,88 +444,52 @@ const STUDENT_ACCESS_CODE = 'ACCENTUP-7774392';
 const SUPABASE_URL = 'https://flfyifdaitfnxncoxzxe.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsZnlpZmRhaXRmbnhuY294enhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4Njc0NTQsImV4cCI6MjA5NjQ0MzQ1NH0.wKMJk0EIYi1hRwoE1EN5lfEGIn2c9YrJhPi_UO2w2gI';
 
-let supabaseClient = null; 
-let currentUser = null;
-let isLoginMode = true;
+let supabaseClient = null; let currentUser = null; let isLoginMode = true;
+let dbModules = []; let dbLessons = []; let dbStudentProgress = [];
+let quillEditor = null; let isUploadingAudio = false;
 
-let dbModules = [];
-let dbLessons = [];
-let dbStudentProgress = [];
-let quillEditor = null;
-let isUploadingAudio = false;
-
-// Almacenamiento temporal de recursos adjuntos al crear/editar
-let attachedResourcesUrls = []; 
+// Array en memoria para audios compartidos acumulados al crear/editar
+let temporarySharedAudiosList = [];
 
 function formatYouTubeUrl(url) {
     if (!url || url === 'EMPTY' || url.trim() === '') return '';
     let videoId = '';
-    if (url.includes('watch?v=')) {
-        videoId = url.split('v=')[1].split('&')[0];
-    } else if (url.includes('youtu.be/')) {
-        videoId = url.split('youtu.be/')[1].split('?')[0];
-    } else if (url.includes('embed/')) {
-        return url;
-    }
+    if (url.includes('watch?v=')) videoId = url.split('v=')[1].split('&')[0];
+    else if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split('?')[0];
+    else if (url.includes('embed/')) return url;
     return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     quillEditor = new Quill('#quill-editor-container', {
-        theme: 'snow',
-        placeholder: 'Escribe tu material de lectura, instrucciones o enlaces aquí...',
-        modules: {
-            toolbar: [
-                ['bold', 'italic', 'underline'],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                [{ 'header': [2, 3, false] }],
-                ['link', 'clean']
-            ]
-        }
+        theme: 'snow', placeholder: 'Escribe tu material de lectura...',
+        modules: { toolbar: [['bold', 'italic', 'underline'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link', 'clean']] }
     });
-
     try {
         if (window.supabase) {
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             supabaseClient.auth.onAuthStateChange((event, session) => {
-                currentUser = session?.user || null;
-                updateAuthUI();
-                if (currentUser) {
-                    fetchClassroomData();
-                    fetchStudentProgress();
-                }
+                currentUser = session?.user || null; updateAuthUI();
+                if (currentUser) { fetchClassroomData(); fetchStudentProgress(); }
             });
         }
-    } catch (error) { console.error("Error inicializando Supabase:", error); }
+    } catch (error) { console.error(error); }
 });
 
-/* ══════════════════════════════════════════
-   AUTENTICACIÓN Y NAVEGACIÓN
-══════════════════════════════════════════ */
+/* AUTH & NAV */
 function updateAuthUI() {
     const authBtn = document.getElementById('nav-auth-btn');
     const teacherTab = document.getElementById('nav-teacher-tab');
-
     if (currentUser) {
-        authBtn.textContent = "Log Out";
-        authBtn.classList.add('logout-btn-nav');
+        authBtn.textContent = "Log Out"; authBtn.classList.add('logout-btn-nav');
         if (currentUser.email === TEACHER_EMAIL) teacherTab.style.display = 'inline-block';
         else teacherTab.style.display = 'none';
-
-        if (document.getElementById('page-auth').classList.contains('active')) {
-            document.querySelector('[data-page="classroom"]').click();
-        }
+        if (document.getElementById('page-auth').classList.contains('active')) document.querySelector('[data-page="classroom"]').click();
     } else {
-        authBtn.textContent = "Log In";
-        authBtn.classList.remove('logout-btn-nav');
-        teacherTab.style.display = 'none';
-        const activePage = document.querySelector('.page.active');
-        if (activePage && (activePage.id === 'page-exercises' || activePage.id === 'page-classroom' || activePage.id === 'page-teacher')) {
-            document.querySelector('[data-page="vowels"]').click();
-        }
+        authBtn.textContent = "Log In"; authBtn.classList.remove('logout-btn-nav'); teacherTab.style.display = 'none';
+        if (document.querySelector('.page.active')?.id === 'page-classroom') document.querySelector('[data-page="vowels"]').click();
     }
 }
-
 function toggleAuthMode() {
     isLoginMode = !isLoginMode;
     document.getElementById('auth-title').textContent = isLoginMode ? "Log In" : "Sign Up";
@@ -532,470 +497,149 @@ function toggleAuthMode() {
     document.getElementById('auth-error').style.display = "none";
     document.getElementById('auth-code').style.display = isLoginMode ? "none" : "block";
 }
-
 async function handleAuth() {
-    const errorMsg = document.getElementById('auth-error');
-    errorMsg.style.display = "block";
-    if (!supabaseClient) { errorMsg.style.color = "var(--red)"; errorMsg.textContent = "Sin conexión a BD."; return; }
-
-    const email = document.getElementById('auth-email').value;
-    const password = document.getElementById('auth-pw').value;
-
-    if (!isLoginMode) {
-        const code = document.getElementById('auth-code').value;
-        if (code !== STUDENT_ACCESS_CODE) {
-            errorMsg.style.color = "var(--red)";
-            errorMsg.textContent = "Código de invitación incorrecto. Pídelo a tu profesora.";
-            return;
-        }
-    }
-
+    const errorMsg = document.getElementById('auth-error'); errorMsg.style.display = "block";
+    const email = document.getElementById('auth-email').value; const password = document.getElementById('auth-pw').value;
+    if (!isLoginMode && document.getElementById('auth-code').value !== STUDENT_ACCESS_CODE) { errorMsg.style.color = "var(--red)"; errorMsg.textContent = "Código incorrecto."; return; }
     errorMsg.style.color = "var(--text)"; errorMsg.textContent = "Cargando...";
-
-    if (isLoginMode) {
-        const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-        if (error) { errorMsg.style.color = "var(--red)"; errorMsg.textContent = error.message; } 
-        else { errorMsg.style.display = "none"; }
-    } else {
-        const { error } = await supabaseClient.auth.signUp({ email, password });
-        if (error) { errorMsg.style.color = "var(--red)"; errorMsg.textContent = error.message; } 
-        else { errorMsg.style.color = "var(--green)"; errorMsg.textContent = "¡Registro exitoso! Iniciando sesión..."; }
-    }
+    let res = isLoginMode ? await supabaseClient.auth.signInWithPassword({ email, password }) : await supabaseClient.auth.signUp({ email, password });
+    if (res.error) { errorMsg.style.color = "var(--red)"; errorMsg.textContent = res.error.message; } else errorMsg.style.display = "none";
 }
-
-document.querySelectorAll(".nav-tab").forEach(tab=>{
-  tab.onclick=()=>{
-    if (tab.id === 'nav-auth-btn') {
-        if (currentUser && supabaseClient) { supabaseClient.auth.signOut(); } 
-        else { goToPage("auth", tab); }
-        return;
-    }
-    if (tab.classList.contains('auth-required') && !currentUser) {
-        alert("Debes iniciar sesión para acceder a esta sección.");
-        document.getElementById('nav-auth-btn').click();
-        return;
-    }
-    goToPage(tab.dataset.page, tab);
-  };
-});
-
+document.querySelectorAll(".nav-tab").forEach(tab=>{ tab.onclick=()=>{ if (tab.id === 'nav-auth-btn') { if (currentUser) supabaseClient.auth.signOut(); else goToPage("auth", tab); } else { if (tab.classList.contains('auth-required') && !currentUser) { alert("Inicia sesión."); return; } goToPage(tab.dataset.page, tab); } }; });
 function goToPage(pageId, tabElement) {
-    document.querySelectorAll(".nav-tab").forEach(t=>t.classList.remove("active"));
-    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-    if(tabElement) tabElement.classList.add("active");
-    else {
-        const el = document.querySelector(`[data-page="${pageId}"]`);
-        if(el) el.classList.add("active");
-    }
+    document.querySelectorAll(".nav-tab").forEach(t=>t.classList.remove("active")); document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+    if(tabElement) tabElement.classList.add("active"); else document.querySelector(`[data-page="${pageId}"]`)?.classList.add("active");
     document.getElementById("page-"+pageId).classList.add("active");
-    if(pageId === 'classroom' || pageId === 'teacher' || pageId === 'auth') {
-        document.getElementById('hero-banner').style.display = 'none';
-    } else {
-        document.getElementById('hero-banner').style.display = 'block';
-    }
-    if(pageId === 'classroom') { backToClassroomGrid(); }
+    document.getElementById('hero-banner').style.display = (pageId==='classroom'||pageId==='teacher'||pageId==='auth') ? 'none' : 'block';
+    if(pageId === 'classroom') backToClassroomGrid();
     window.scrollTo(0,0);
 }
 
-/* ══════════════════════════════════════════
-   LÓGICA DEL BACKEND (CLASSROOM & PROGRESO)
-══════════════════════════════════════════ */
+/* BACKEND DATA */
 async function fetchClassroomData() {
     if (!supabaseClient) return;
-    const { data: mods } = await supabaseClient.from('modules').select('*').order('order_index', { ascending: true }).order('created_at', { ascending: true });
-    if (mods) dbModules = mods;
-    const { data: less } = await supabaseClient.from('lessons').select('*').order('order_index', { ascending: true }).order('created_at', { ascending: true });
-    if (less) dbLessons = less;
-    renderClassroomGrid();
-    updateTeacherModuleSelect();
-    renderManageList();
+    dbModules = (await supabaseClient.from('modules').select('*').order('order_index', { ascending: true })).data || [];
+    dbLessons = (await supabaseClient.from('lessons').select('*').order('order_index', { ascending: true })).data || [];
+    renderClassroomGrid(); updateTeacherModuleSelect(); renderManageList();
 }
-
 async function fetchStudentProgress() {
     if (!supabaseClient || !currentUser) return;
-    const { data: prog } = await supabaseClient.from('student_progress').select('*').eq('user_id', currentUser.id);
-    if (prog) {
-        dbStudentProgress = prog;
-        if (activeModuleId) renderSidebarForModule(activeModuleId);
-    }
+    dbStudentProgress = (await supabaseClient.from('student_progress').select('*').eq('user_id', currentUser.id)).data || [];
+    if (activeModuleId) renderSidebarForModule(activeModuleId);
 }
 
-/* ══════════════════════════════════════════
-   REDISEÑO CLASSROOM: GRILLA Y SIDEBAR
-══════════════════════════════════════════ */
+/* CLASSROOM INTERFACE */
 function renderClassroomGrid() {
-    const grid = document.getElementById("classroom-modules-grid");
-    if (!grid) return;
-    if (dbModules.length === 0) {
-        grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-light); grid-column: 1/-1;">Aún no hay carpetas creadas.</div>`;
-        return;
-    }
+    const grid = document.getElementById("classroom-modules-grid"); if (!grid) return;
+    if (dbModules.length === 0) { grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-light); grid-column: 1/-1;">Aún no hay carpetas creadas.</div>`; return; }
     grid.innerHTML = dbModules.map((m) => {
         const count = dbLessons ? dbLessons.filter(l => l.module_id === m.id).length : 0;
-        return `
-        <div class="course-card" onclick="openClassroomPlayer('${m.id}')">
-            <div class="course-card-title">${m.title}</div>
-            <div class="course-card-desc">Contiene ${count} página${count !== 1 ? 's' : ''}</div>
-        </div>`;
+        return `<div class="course-card" onclick="openClassroomPlayer('${m.id}')"><div class="course-card-title">${m.title}</div><div class="course-card-desc">Contiene ${count} página${count !== 1 ? 's' : ''}</div></div>`;
     }).join("");
 }
-
-function backToClassroomGrid() {
-    document.getElementById("classroom-player-view").style.display = "none";
-    document.getElementById("classroom-grid-view").style.display = "block";
-    hideAllClassroomViews();
-    activeModuleId = null;
-}
-
-let activeModuleId = null;
-
-function openClassroomPlayer(moduleId) {
-    activeModuleId = moduleId;
-    document.getElementById("classroom-grid-view").style.display = "none";
-    document.getElementById("classroom-player-view").style.display = "block";
-    const mod = dbModules.find(m => m.id === moduleId);
-    document.getElementById("sidebar-mod-title").textContent = mod ? mod.title : "Carpeta";
-    renderSidebarForModule(moduleId);
-    document.getElementById("view-welcome").style.display = "block";
-}
-
+function backToClassroomGrid() { document.getElementById("classroom-player-view").style.display = "none"; document.getElementById("classroom-grid-view").style.display = "block"; hideAllClassroomViews(); activeModuleId = null; }
+function openClassroomPlayer(moduleId) { activeModuleId = moduleId; document.getElementById("classroom-grid-view").style.display = "none"; document.getElementById("classroom-player-view").style.display = "block"; document.getElementById("sidebar-mod-title").textContent = dbModules.find(m => m.id === moduleId)?.title || "Carpeta"; renderSidebarForModule(moduleId); document.getElementById("view-welcome").style.display = "block"; }
 function renderSidebarForModule(moduleId) {
-    const sidebar = document.getElementById("sidebar-render");
-    const modLess = dbLessons.filter(l => l.module_id === moduleId);
-    if(modLess.length === 0) {
-        sidebar.innerHTML = `<div style="font-size:12px; color:var(--text-light); text-align:center; margin-top:1rem;">Carpeta vacía</div>`;
-        return;
-    }
+    const sidebar = document.getElementById("sidebar-render"); const modLess = dbLessons.filter(l => l.module_id === moduleId);
+    if(modLess.length === 0) { sidebar.innerHTML = `<div style="font-size:12px; color:var(--text-light); text-align:center; margin-top:1rem;">Carpeta vacía</div>`; return; }
     sidebar.innerHTML = modLess.map(les => {
-        const prog = dbStudentProgress.find(p => p.lesson_id === les.id);
-        const statusIcon = prog ? '✅' : '';
-        const isTask = les.type === 'task';
-        return `
-        <div class="c-item" onclick="showLessonContent('${les.id}')" id="item-les-${les.id}">
-            <div style="display:flex; align-items:center; gap:8px; overflow:hidden;">
-                <span class="c-item-icon">${iconMap[les.type]}</span> 
-                <span class="c-item-title" title="${les.title}">${les.title}</span>
-            </div>
-            ${isTask ? `<span class="c-item-status">${statusIcon}</span>` : ''}
-        </div>`;
+        const isCompleted = dbStudentProgress.some(p => p.lesson_id === les.id);
+        return `<div class="c-item" onclick="showLessonContent('${les.id}')" id="item-les-${les.id}"><div style="display:flex; align-items:center; gap:8px; overflow:hidden;"><span class="c-item-icon">${iconMap[les.type]}</span><span class="c-item-title">${les.title}</span></div>${les.type==='task'&&isCompleted ? `<span>✅</span>` : ''}</div>`;
     }).join("");
 }
 
-function setActiveSidebarItem(idToHighlight) {
-    document.querySelectorAll('.c-item').forEach(el => el.classList.remove('active'));
-    const activeEl = document.getElementById(idToHighlight);
-    if(activeEl) activeEl.classList.add('active');
-}
-
-function renderResourcesList(panelId, resourcesArray) {
-    const panel = document.getElementById(panelId);
-    if (!panel) return;
-    if (!resourcesArray || resourcesArray.length === 0) {
-        panel.style.display = "none";
-        panel.innerHTML = "";
-        return;
-    }
+function renderAudiosBox(panelId, audiosList) {
+    const panel = document.getElementById(panelId); if (!panel) return;
+    // Fix anti-caídas: nos aseguramos que audiosList sea un array real
+    const list = Array.isArray(audiosList) ? audiosList : [];
+    if (list.length === 0) { panel.style.display = "none"; panel.innerHTML = ""; return; }
     panel.style.display = "block";
-    panel.innerHTML = `
-        <div class="resources-heading">Resources</div>
-        <div class="resources-list">
-            ${resourcesArray.map(res => {
-                const name = res.name || res.url.split('/').pop().substring(10); // Quitar timestamp aleatorio
-                return `<a href="${res.url}" target="_blank" class="resource-link">📎 ${name}</a>`;
-            }).join("")}
-        </div>`;
+    panel.innerHTML = list.map(aud => `<div class="lesson-audio-row"><span class="lesson-audio-label">🔊 ${aud.label}</span><audio controls src="${aud.url}"></audio></div>`).join("");
 }
 
 function showLessonContent(lessonId) {
-    hideAllClassroomViews();
-    setActiveSidebarItem(`item-les-${lessonId}`);
-    currentLesson = dbLessons.find(l => l.id === lessonId);
-    if (!currentLesson) return;
-
-    // Nota: Agregamos una columna JSONB 'resources' en la tabla 'lessons' de Supabase (se maneja dinámicamente)
-    const resources = currentLesson.resources || [];
+    hideAllClassroomViews(); setActiveSidebarItem(`item-les-${lessonId}`);
+    currentLesson = dbLessons.find(l => l.id === lessonId); if (!currentLesson) return;
+    
+    // Fix anti-caídas: Garantizar estructura segura si las columnas vinieran NULL de Supabase
+    const resources = Array.isArray(currentLesson.resources) ? currentLesson.resources : [];
+    const sharedAudios = Array.isArray(currentLesson.content) && currentLesson.type !== 'task' ? currentLesson.content : [];
 
     if (currentLesson.type === 'video') {
-        document.getElementById("view-video").style.display = "block";
-        document.getElementById("cv-video-title").textContent = currentLesson.title;
+        document.getElementById("view-video").style.display = "block"; document.getElementById("cv-video-title").textContent = currentLesson.title;
         document.getElementById("cv-video-player").innerHTML = `<iframe src="${currentLesson.video_url}" allowfullscreen></iframe>`;
-        renderResourcesList("cv-video-resources", resources);
+        renderAudiosBox("cv-video-audios", sharedAudios); renderResourcesList("cv-video-resources", resources);
     } 
     else if (currentLesson.type === 'text') {
-        document.getElementById("view-text").style.display = "block";
-        document.getElementById("cv-text-title").textContent = currentLesson.title;
+        document.getElementById("view-text").style.display = "block"; document.getElementById("cv-text-title").textContent = currentLesson.title;
         document.getElementById("cv-text-content").innerHTML = currentLesson.text_content;
-        renderResourcesList("cv-text-resources", resources);
+        renderAudiosBox("cv-text-audios", sharedAudios); renderResourcesList("cv-text-resources", resources);
     }
     else if (currentLesson.type === 'task') {
         studentAnswers = {}; matchState = { leftSel: null, pairs: {} };
-        document.getElementById("view-exercise").style.display = "block";
-        document.getElementById("player-title").textContent = currentLesson.title;
+        document.getElementById("view-exercise").style.display = "block"; document.getElementById("player-title").textContent = currentLesson.title;
         const audioEl = document.getElementById("player-audio");
-        if (currentLesson.audio_url) {
-            audioEl.src = currentLesson.audio_url;
-            audioEl.style.display = "block";
-        } else {
-            audioEl.style.display = "none"; audioEl.src = "";
-        }
-        document.getElementById("submit-btn").disabled = false;
-        document.getElementById("submit-btn").style.display = "inline-block";
-        document.getElementById("retry-btn").style.display = "none";
-        document.getElementById("score-area").innerHTML = "";
-        renderPlayerQuestions();
-        renderResourcesList("cv-task-resources", resources);
-        const prog = dbStudentProgress.find(p => p.lesson_id === lessonId);
-        if(prog) showScore(prog.score, prog.total_questions, [], true); 
+        if (currentLesson.audio_url) { audioEl.src = currentLesson.audio_url; audioEl.style.display = "block"; } else { audioEl.style.display = "none"; }
+        document.getElementById("submit-btn").disabled = false; document.getElementById("submit-btn").style.display = "inline-block"; document.getElementById("retry-btn").style.display = "none"; document.getElementById("score-area").innerHTML = "";
+        renderPlayerQuestions(); renderResourcesList("cv-task-resources", resources);
+        if(dbStudentProgress.some(p => p.lesson_id === lessonId)) showScore(dbStudentProgress.find(p => p.lesson_id === lessonId).score, dbStudentProgress.find(p => p.lesson_id === lessonId).total_questions, [], true);
     }
 }
 
-/* ══════════════════════════════════════════
-   REPRODUCTOR DE TAREAS (ALUMNOS)
-══════════════════════════════════════════ */
-function retryExercise() { showLessonContent(currentLesson.id); }
-
+/* PLAYER EXERCISES */
 function renderPlayerQuestions() {
-  const wrap = document.getElementById("player-questions");
-  const content = currentLesson.task_content;
+  const wrap = document.getElementById("player-questions"); const content = Array.isArray(currentLesson.task_content) ? currentLesson.task_content : [];
   if (currentLesson.task_type === "matching") {
-    const lefts = content.map(q=>q.left);
-    const rights = shuffle([...content.map(q=>q.right)]);
-    wrap.innerHTML = `
-      <div class="ex-question-block">
-        <div class="matching-cols">
-          <div><div class="match-col-label">Elementos</div>${lefts.map((l,i)=>`<div class="match-chip" id="ml-${i}" onclick="matchSelectLeft(${i},'${esc(l)}')">${l}</div>`).join("")}</div>
-          <div><div class="match-col-label">Pares</div>${rights.map((r,i)=>`<div class="match-chip" id="mr-${i}" onclick="matchSelectRight(${i},'${esc(r)}')">${r}</div>`).join("")}</div>
-        </div>
-      </div>`;
-    return;
+    const lefts = content.map(q=>q.left); const rights = shuffle([...content.map(q=>q.right)]);
+    wrap.innerHTML = `<div class="ex-question-block"><div class="matching-cols"><div><div class="match-col-label">Elementos</div>${lefts.map((l,i)=>`<div class="match-chip" id="ml-${i}" onclick="matchSelectLeft(${i},'${esc(l)}')">${l}</div>`).join("")}</div><div><div class="match-col-label">Pares</div>${rights.map((r,i)=>`<div class="match-chip" id="mr-${i}" onclick="matchSelectRight(${i},'${esc(r)}')">${r}</div>`).join("")}</div></div></div>`; return;
   }
   wrap.innerHTML = content.map((q,i)=>{
-    const audioHtml = q.audio_url ? `<audio controls src="${q.audio_url}" class="player-audio" style="margin-top:0; margin-bottom:12px; height:40px; border-radius:8px;"></audio>` : '';
-    if (currentLesson.task_type==="fill_in_blank") {
-      return `<div class="ex-question-block"><div class="ex-q-num">Pregunta ${i+1}</div>${audioHtml}<div class="ex-q-text">${q.prompt}</div><div class="fitb-row"><input class="fitb-input" id="fitb-${i}" type="text" autocomplete="off" oninput="studentAnswers[${i}]=this.value"/></div></div>`;
-    }
-    if (currentLesson.task_type==="dictation") {
-      return `<div class="ex-question-block"><div class="ex-q-num">Pregunta ${i+1}</div>${audioHtml}<div class="ex-q-text">${q.prompt}</div><textarea class="dictation-input" id="dict-${i}" placeholder="Escribe tu respuesta aquí..." oninput="studentAnswers[${i}]=this.value"></textarea></div>`;
-    }
-    const opts = q.options||[];
-    const shuffled = currentLesson.task_type==="minimal_pairs" ? shuffle([...opts]) : opts;
-    return `<div class="ex-question-block">
-      <div class="ex-q-num">Pregunta ${i+1}</div>${audioHtml}<div class="ex-q-text">${q.prompt}</div>
-      <div class="options-grid">${shuffled.map((o,j)=>`<button class="opt-btn" id="opt-${i}-${j}" onclick="selectOpt(${i},${j},'${esc(o)}',${JSON.stringify(shuffled)})">${o}</button>`).join("")}</div>
-    </div>`;
+    const audioHtml = q.audio_url ? `<audio controls src="${q.audio_url}" class="player-audio" style="margin-top:0; margin-bottom:12px; height:38px;"></audio>` : '';
+    if (currentLesson.task_type==="fill_in_blank") return `<div class="ex-question-block"><div class="ex-q-num">Pregunta ${i+1}</div>${audioHtml}<div class="ex-q-text">${q.prompt}</div><div class="fitb-row"><input class="fitb-input" id="fitb-${i}" type="text" autocomplete="off" oninput="studentAnswers[${i}]=this.value"/></div></div>`;
+    if (currentLesson.task_type==="dictation") return `<div class="ex-question-block"><div class="ex-q-num">Pregunta ${i+1}</div>${audioHtml}<div class="ex-q-text">${q.prompt}</div><textarea class="dictation-input" id="dict-${i}" placeholder="Escribe lo que escuchas..." oninput="studentAnswers[${i}]=this.value"></textarea></div>`;
+    return `<div class="ex-question-block"><div class="ex-q-num">Pregunta ${i+1}</div>${audioHtml}<div class="ex-q-text">${q.prompt}</div><div class="options-grid">${(q.options||[]).map((o,j)=>`<button class="opt-btn" id="opt-${i}-${j}" onclick="selectOpt(${i},`+j+`,'${esc(o)}',${JSON.stringify(q.options)})">${o}</button>`).join("")}</div></div>`;
   }).join("");
 }
 
-function selectOpt(qi, oi, val, opts) {
-  opts.forEach((_,j)=>{ const b=document.getElementById(`opt-${qi}-${j}`); if(b) b.classList.remove("selected"); });
-  document.getElementById(`opt-${qi}-${oi}`).classList.add("selected");
-  studentAnswers[qi] = val;
-}
-function matchSelectLeft(i, val) {
-  if (matchState.pairs[i] !== undefined) return;
-  document.querySelectorAll(".match-chip[id^='ml-']").forEach(el=>{ if(!el.classList.contains("matched")) el.classList.remove("selected"); });
-  matchState.leftSel = { i, val };
-  document.getElementById("ml-"+i).classList.add("selected");
-}
-function matchSelectRight(i, val) {
-  if (matchState.leftSel === null) return;
-  const li = matchState.leftSel.i;
-  if (matchState.pairs[li] !== undefined) return;
-  matchState.pairs[li] = val;
-  studentAnswers[li] = val;
-  document.getElementById("ml-"+li).classList.add("matched");
-  document.getElementById("mr-"+i).classList.add("matched");
-  matchState.leftSel = null;
-}
-
-async function submitExercise() {
-  let correct = 0;
-  const results = [];
-  const content = currentLesson.task_content;
-  if (currentLesson.task_type==="matching") {
-    content.forEach((q,i)=>{
-      const given = studentAnswers[i];
-      const ok = given === q.right;
-      if(ok) correct++;
-      const lel = document.getElementById("ml-"+i);
-      if(lel && !ok) lel.classList.add("wrong-match");
-      results.push({ prompt: q.left, answer: q.right, given, ok });
-    });
-  } else {
-    content.forEach((q,i)=>{
-      let given = currentLesson.task_type === "dictation" ? (document.getElementById("dict-"+i)||{value:""}).value.trim() : currentLesson.task_type === "fill_in_blank" ? (document.getElementById("fitb-"+i)||{value:""}).value.trim() : studentAnswers[i]||"";
-      const correctAns = q.answer || (q.options&&q.options[0]) || "";
-      const cleanGiven = given.toLowerCase().replace(/[.,!?;]/g, "").trim();
-      const cleanCorrect = correctAns.toLowerCase().replace(/[.,!?;]/g, "").trim();
-      const ok = cleanGiven === cleanCorrect;
-      if(ok) correct++;
-      if (currentLesson.task_type==="fill_in_blank") {
-        const el = document.getElementById("fitb-"+i);
-        if(el){ el.classList.add(ok?"correct":"wrong"); el.disabled=true; }
-      } else if (currentLesson.task_type==="dictation") {
-        const el = document.getElementById("dict-"+i);
-        if(el){ el.style.borderColor = ok ? "var(--green)" : "var(--red)"; el.disabled=true; }
-      } else {
-        const grid = document.querySelectorAll(`[id^="opt-${i}-"]`);
-        grid.forEach(b=>{ b.disabled=true; if(b.textContent===correctAns) b.classList.add("correct"); else if(b.classList.contains("selected")) b.classList.add("wrong"); });
-      }
-      results.push({ prompt: q.prompt, answer: correctAns, given, ok });
-    });
-  }
-  showScore(correct, content.length, results, false);
-  document.getElementById("submit-btn").disabled = true;
-  document.getElementById("submit-btn").style.display = "none";
-  document.getElementById("retry-btn").style.display = "inline-block";
-  if (currentUser) {
-      await supabaseClient.from('student_progress').upsert({ user_id: currentUser.id, lesson_id: currentLesson.id, score: correct, total_questions: content.length, completed_at: new Date().toISOString() }, { onConflict: 'user_id, lesson_id' });
-      fetchStudentProgress(); 
-  }
-}
-
-function showScore(correct, total, results, isPreviousScore = false) {
-  const pct = Math.round(correct/total*100);
-  const cls = pct>=80?"great":pct>=50?"ok":"low";
-  let rows = "";
-  if(!isPreviousScore) rows = results.map(r=>`<div class="score-row ${r.ok?"c":"w"}">${r.ok?"✓":"✗"} <em>${r.prompt}</em> → <strong>${r.answer}</strong>${!r.ok && r.given?`<span class="ans"> (tu respuesta: ${r.given})</span>`:""}</div>`).join("");
-  document.getElementById("score-area").innerHTML = `
-    <div class="score-panel">
-      <div class="score-top"><div class="score-circle ${cls}"><div class="pct">${pct}%</div><div class="frac">${correct}/${total}</div></div>
-      <div class="score-msg">${isPreviousScore ? 'Ya completaste esta tarea.' : 'Resultado'}<div class="sub">${correct} correctas de ${total}</div></div></div>
-      ${!isPreviousScore ? `<div class="score-details">${rows}</div>` : ''}
-    </div>`;
-}
-
-/* ══════════════════════════════════════════
-   TEACHER DASHBOARD (CREACIÓN Y GESTIÓN)
-══════════════════════════════════════════ */
-function updateTeacherModuleSelect() {
-    const select = document.getElementById('t-les-module');
-    if(!select) return;
-    select.innerHTML = dbModules.map(m => `<option value="${m.id}">${m.title}</option>`).join("");
-}
-
-async function saveModule() {
-    const title = document.getElementById('t-mod-title').value;
-    const btn = document.getElementById('btn-save-mod');
-    const editId = document.getElementById('edit-mod-id').value;
-    if (!title) { alert("Ponle un nombre a la carpeta."); return; }
-    btn.disabled = true; btn.textContent = "Guardando...";
-    let error;
-    if (editId) { error = (await supabaseClient.from('modules').update({ title }).eq('id', editId)).error; } 
-    else { error = (await supabaseClient.from('modules').insert([{ title }])).error; }
-    btn.disabled = false; btn.textContent = "Guardar Carpeta";
-    if (error) { alert("Error: " + error.message); } 
-    else { alert(editId ? "¡Carpeta actualizada!" : "¡Carpeta creada!"); cancelEditMod(); fetchClassroomData(); }
-}
-
-function editModule(id) {
-    const mod = dbModules.find(m => m.id === id);
-    if(!mod) return;
-    document.getElementById('t-mod-title').value = mod.title;
-    document.getElementById('edit-mod-id').value = mod.id;
-    document.getElementById('panel-title-mod').innerHTML = "✏️ Editando Carpeta";
-    document.getElementById('btn-cancel-mod').style.display = "inline-block";
-    window.scrollTo(0,0);
-}
-
-function cancelEditMod() {
-    document.getElementById('t-mod-title').value = "";
-    document.getElementById('edit-mod-id').value = "";
-    document.getElementById('panel-title-mod').innerHTML = "📂 1. Crear Carpeta (Módulo)";
-    document.getElementById('btn-cancel-mod').style.display = "none";
-}
-
-function toggleLessonFields() {
-    const type = document.getElementById('t-les-type').value;
-    document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none';
-    document.getElementById('fields-text').style.display = type === 'text' ? 'block' : 'none';
-    document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none';
-    if(type === 'task') renderQuestionFields();
-}
-
-// Subir e Inserción corregida de audios en Quill (Estilo Pronuncian definitivo)
-async function insertAudioToQuill(input) {
-    const file = input.files[0];
-    if (!file) return;
-    isUploadingAudio = true;
-    const statusEl = document.getElementById('quill-audio-status');
-    statusEl.textContent = "⏳ Subiendo..."; statusEl.style.color = "var(--brand)";
-    const fileExt = file.name.split('.').pop();
-    const fileName = `audio_inline_${Date.now()}.${fileExt}`;
-    const { error } = await supabaseClient.storage.from('audios').upload(fileName, file);
-    if (error) { alert("Error subiendo: " + error.message); isUploadingAudio = false; return; }
-    const audioUrl = supabaseClient.storage.from('audios').getPublicUrl(fileName).data.publicUrl;
+/* TEACHER DASHBOARD CREATOR */
+async function addSharedAudioToList() {
+    const fileInput = document.getElementById('t-audio-file'); const labelInput = document.getElementById('t-audio-label');
+    const file = fileInput.files[0]; const label = labelInput.value.trim();
+    if (!file || !label) { alert("Pon un nombre y elige un archivo de audio."); return; }
     
-    // Inserción limpia compatible con el procesador HTML de Quill
-    const range = quillEditor.getSelection(true);
-    quillEditor.insertText(range.index, '\n');
-    quillEditor.clipboard.dangerouslyPasteHTML(range.index + 1, `<p><audio controls src="${audioUrl}"></audio></p>`);
+    isUploadingAudio = true; labelInput.disabled = true; fileInput.disabled = true;
+    const renderList = document.getElementById('t-shared-audios-list-render');
+    renderList.innerHTML += `<div id="uploading-temp-state">⏳ Subiendo audio "${label}" al disco...</div>`;
     
-    statusEl.textContent = "✅ ¡Insertado!"; statusEl.style.color = "var(--green)";
-    input.value = ""; isUploadingAudio = false;
-    setTimeout(() => { statusEl.textContent = ""; }, 3000);
-}
-
-async function uploadQuestionAudio(i, input) {
-    const file = input.files[0];
-    if (!file) return;
-    isUploadingAudio = true;
-    const statusEl = document.getElementById(`q-audio-status-${i}`);
-    statusEl.textContent = "⏳ Subiendo..."; statusEl.style.color = "var(--brand)";
-    const fileExt = file.name.split('.').pop();
-    const fileName = `q_${Date.now()}.${fileExt}`;
+    const fileName = `shared_${Date.now()}.${file.name.split('.').pop()}`;
     const { error } = await supabaseClient.storage.from('audios').upload(fileName, file);
-    if (error) { alert("Error: " + error.message); isUploadingAudio = false; return; }
-    questionRows[i].audio_url = supabaseClient.storage.from('audios').getPublicUrl(fileName).data.publicUrl;
-    statusEl.textContent = "✅ Listo"; statusEl.style.color = "var(--green)";
-    isUploadingAudio = false;
+    if(error) { alert(error.message); document.getElementById("uploading-temp-state")?.remove(); isUploadingAudio=false; return; }
+    
+    const publicUrl = supabaseClient.storage.from('audios').getPublicUrl(fileName).data.publicUrl;
+    temporarySharedAudiosList.push({ label: label, url: publicUrl });
+    
+    labelInput.value = ""; fileInput.value = ""; labelInput.disabled = false; fileInput.disabled = false; isUploadingAudio = false;
+    renderTeacherAudiosList();
 }
-
-function buildQRow(type, q, i) {
-    let audioUploadHtml = `
-      <div style="margin-top:10px; background:var(--bg); padding:8px; border-radius:var(--radius-sm); border:1px dashed var(--skool-border);">
-        <span style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:800;">🎧 Audio de esta pregunta:</span>
-        <input type="file" accept="audio/*" onchange="uploadQuestionAudio(${i}, this)" style="display:block; margin-top:6px; font-size:12px;" />
-        <span id="q-audio-status-${i}" style="font-size:11px; font-weight:600; color:var(--green); display:block; margin-top:4px;">${q.audio_url ? '✅ Audio cargado' : ''}</span>
-      </div>`;
-    if (type === "matching") return `<div class="q-row"><div class="q-row-label">Par ${i+1}</div><button class="remove-q" onclick="removeQuestion(${i})">×</button><input type="text" placeholder="Concepto" value="${q.left||''}" oninput="updateQ(${i},'left',this.value)"/><input type="text" placeholder="Respuesta" value="${q.right||''}" oninput="updateQ(${i},'right',this.value)"/></div>`;
-    if (type === "fill_in_blank" || type === "dictation") return `<div class="q-row"><div class="q-row-label">Pregunta ${i+1}</div><button class="remove-q" onclick="removeQuestion(${i})">×</button><textarea placeholder="${type==='dictation' ? 'Consigna:' : 'Oración (usa ___)...'}" oninput="updateQ(${i},'prompt',this.value)">${q.prompt||''}</textarea><input type="text" placeholder="Respuesta correcta" value="${q.answer||''}" oninput="updateQ(${i},'answer',this.value)"/>${audioUploadHtml}</div>`;
-    const opts = q.options || ["","","",""];
-    return `<div class="q-row"><div class="q-row-label">Pregunta ${i+1}</div><button class="remove-q" onclick="removeQuestion(${i})">×</button><textarea placeholder="Pregunta" oninput="updateQ(${i},'prompt',this.value)">${q.prompt||''}</textarea>${opts.map((o,j)=>`<input type="text" placeholder="Opción ${j+1}" value="${o}" oninput="updateQOption(${i},${j},this.value)"/>`).join("")}${audioUploadHtml}</div>`;
+function renderTeacherAudiosList() {
+    document.getElementById('t-shared-audios-list-render').innerHTML = temporarySharedAudiosList.map((a, i) => `<div style="padding:6px; background:white; border:1px solid var(--skool-border); border-radius:4px; margin-top:4px; display:flex; justify-content:between;">🔊 ${a.label} <button class="danger-btn" style="padding:2px 6px; font-size:10px;" onclick="temporarySharedAudiosList.splice(${i},1);renderTeacherAudiosList();">Eliminar</button></div>`).join("");
 }
-
-function renderQuestionFields() {
-  const type = document.getElementById("t-ex-type").value;
-  document.getElementById("q-builder").innerHTML = questionRows.map((q, i) => buildQRow(type, q, i)).join("");
-}
-function addQuestion() {
-  const type = document.getElementById("t-ex-type").value;
-  questionRows.push(type==="matching"?{left:"",right:""}: (type==="fill_in_blank" || type==="dictation") ?{prompt:"",answer:""}:{prompt:"",options:["","","",""]});
-  renderQuestionFields();
-}
-function removeQuestion(i) { questionRows.splice(i,1); renderQuestionFields(); }
-function updateQ(i, f, v) { questionRows[i][f]=v; }
-function updateQOption(i, j, v) { questionRows[i].options[j]=v; }
 
 async function saveLesson() {
-    if (isUploadingAudio) { alert("⚠️ Espera a que termine de subirse el audio."); return; }
-    const editId = document.getElementById('edit-les-id').value;
-    const moduleId = document.getElementById('t-les-module').value;
-    const type = document.getElementById('t-les-type').value;
-    const title = document.getElementById('t-les-title').value;
-    const resourcesInput = document.getElementById('t-les-resources');
-    const btn = document.getElementById('btn-save-les');
-
+    if (isUploadingAudio) { alert("Espera a que terminen de subirse los archivos de audio."); return; }
+    const editId = document.getElementById('edit-les-id').value; const moduleId = document.getElementById('t-les-module').value;
+    const type = document.getElementById('t-les-type').value; const title = document.getElementById('t-les-title').value;
+    const resourcesInput = document.getElementById('t-les-resources'); const btn = document.getElementById('btn-save-les');
     if (!moduleId || !title) { alert("Completa carpeta y título."); return; }
     btn.disabled = true; btn.textContent = "Guardando...";
 
     let video_url = null, text_content = null, task_type = null, task_content = null, audio_url = null;
+    let contentPayload = '[]'::jsonb; // Se rellenará con audios si es video o texto
 
-    if (type === 'video') video_url = formatYouTubeUrl(document.getElementById('t-les-video-url').value);
-    else if (type === 'text') text_content = quillEditor.root.innerHTML;
+    if (type === 'video') { video_url = formatYouTubeUrl(document.getElementById('t-les-video-url').value); contentPayload = temporarySharedAudiosList; }
+    else if (type === 'text') { text_content = quillEditor.root.innerHTML; contentPayload = temporarySharedAudiosList; }
     else if (type === 'task') {
-        task_type = document.getElementById('t-ex-type').value;
-        task_content = questionRows;
+        task_type = document.getElementById('t-ex-type').value; task_content = questionRows;
         const audioFile = document.getElementById('t-ex-audio').files[0];
         if (audioFile) {
             const fileName = `gen_${Date.now()}.${audioFile.name.split('.').pop()}`;
@@ -1004,137 +648,64 @@ async function saveLesson() {
         } else if (editId) { audio_url = dbLessons.find(l => l.id === editId)?.audio_url || null; }
     }
 
-    // SUBIR RECURSOS ADJUNTOS (NUEVO)
     let resourcesPayload = editId ? (dbLessons.find(l => l.id === editId)?.resources || []) : [];
     if (resourcesInput && resourcesInput.files.length > 0) {
         for (let file of resourcesInput.files) {
             const fileName = `res_${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
-            const { error: resErr } = await supabaseClient.storage.from('audios').upload(fileName, file); // Usamos el mismo bucket público
-            if (!resErr) {
-                const url = supabaseClient.storage.from('audios').getPublicUrl(fileName).data.publicUrl;
-                resourcesPayload.push({ name: file.name, url: url });
-            }
+            const { error: resErr } = await supabaseClient.storage.from('audios').upload(fileName, file);
+            if (!resErr) resourcesPayload.push({ name: file.name, url: supabaseClient.storage.from('audios').getPublicUrl(fileName).data.publicUrl });
         }
     }
 
-    const payload = { module_id: moduleId, title, type, video_url, text_content, task_type, task_content, audio_url, resources: resourcesPayload };
+    const payload = { module_id: moduleId, title, type, video_url, text_content, task_type, task_content, audio_url, content: contentPayload, resources: resourcesPayload };
     let error = editId ? (await supabaseClient.from('lessons').update(payload).eq('id', editId)).error : (await supabaseClient.from('lessons').insert([payload])).error;
-
     btn.disabled = false; btn.textContent = "Guardar Página";
-    if (error) { alert("Error: " + error.message); } 
-    else { alert("¡Página guardada!"); cancelEditLes(); fetchClassroomData(); }
+    if (error) alert("Error: " + error.message); else { alert("¡Página guardada!"); cancelEditLes(); fetchClassroomData(); }
 }
 
 function editLesson(id) {
-    const les = dbLessons.find(l => l.id === id);
-    if(!les) return;
-    document.getElementById('edit-les-id').value = les.id;
-    document.getElementById('t-les-module').value = les.module_id;
-    document.getElementById('t-les-type').value = les.type;
-    document.getElementById('t-les-title').value = les.title;
-    document.getElementById('panel-title-les').innerHTML = "✏️ Editando Página";
-    document.getElementById('btn-cancel-les').style.display = "inline-block";
+    const les = dbLessons.find(l => l.id === id); if(!les) return;
+    document.getElementById('edit-les-id').value = les.id; document.getElementById('t-les-module').value = les.module_id; document.getElementById('t-les-type').value = les.type; document.getElementById('t-les-title').value = les.title;
+    document.getElementById('panel-title-les').innerHTML = "✏️ Editando Página"; document.getElementById('btn-cancel-les').style.display = "inline-block";
     toggleLessonFields();
-
     if(les.type === 'video') document.getElementById('t-les-video-url').value = les.video_url || '';
     if(les.type === 'text') quillEditor.root.innerHTML = les.text_content || '';
-    if(les.type === 'task') {
-        document.getElementById('t-ex-type').value = les.task_type || 'minimal_pairs';
-        document.getElementById('t-ex-audio-current').textContent = les.audio_url ? "Audio cargado" : "";
-        questionRows = JSON.parse(JSON.stringify(les.task_content || []));
-        renderQuestionFields();
-    }
-    const currentResBox = document.getElementById('t-les-resources-current');
-    if (currentResBox) currentResBox.textContent = les.resources && les.resources.length > 0 ? `Tiene ${les.resources.length} archivo(s) adjunto(s)` : "";
+    if(les.type === 'task') { document.getElementById('t-ex-type').value = les.task_type || 'minimal_pairs'; questionRows = JSON.parse(JSON.stringify(les.task_content || [])); renderQuestionFields(); }
+    temporarySharedAudiosList = Array.isArray(les.content) ? JSON.parse(JSON.stringify(les.content)) : [];
+    renderTeacherAudiosList();
+    document.getElementById('t-les-resources-current').textContent = les.resources && les.resources.length > 0 ? `Tiene ${les.resources.length} archivo(s)` : "";
     window.scrollTo(0,0);
 }
 
 function cancelEditLes() {
-    document.getElementById('edit-les-id').value = "";
-    document.getElementById('t-les-title').value = '';
-    document.getElementById('t-les-video-url').value = '';
-    quillEditor.root.innerHTML = '';
-    document.getElementById('t-ex-audio').value = '';
-    document.getElementById('t-ex-audio-current').textContent = '';
-    document.getElementById('t-les-resources').value = '';
-    document.getElementById('t-les-resources-current').textContent = '';
-    questionRows = [];
-    renderQuestionFields();
-    document.getElementById('panel-title-les').innerHTML = "📝 2. Agregar Página a una Carpeta";
-    document.getElementById('btn-cancel-les').style.display = "none";
+    document.getElementById('edit-les-id').value = ""; document.getElementById('t-les-title').value = ''; document.getElementById('t-les-video-url').value = ''; quillEditor.root.innerHTML = ''; document.getElementById('t-ex-audio').value = ''; document.getElementById('t-les-resources').value = ''; document.getElementById('t-les-resources-current').textContent = ''; questionRows = []; temporarySharedAudiosList = []; renderTeacherAudiosList(); renderQuestionFields();
+    document.getElementById('panel-title-les').innerHTML = "📝 2. Agregar Página a una Carpeta"; document.getElementById('btn-cancel-les').style.display = "none";
 }
 
 function renderManageList() {
-    const list = document.getElementById('t-manage-list');
-    if(!list) return;
+    const list = document.getElementById('t-manage-list'); if(!list) return;
     if(dbModules.length === 0) { list.innerHTML = `No hay contenido.`; return; }
-    let html = '';
-    dbModules.forEach((mod) => {
-        html += `<div class="manage-item" style="background:var(--skool-hover);">
-                    <div><span class="manage-title">📂 ${mod.title}</span></div>
-                    <div class="manage-actions">
-                        <button class="secondary-btn" onclick="moveModule('${mod.id}', -1)">Subir ⬆️</button>
-                        <button class="secondary-btn" onclick="moveModule('${mod.id}', 1)">Bajar ⬇️</button>
-                        <button class="secondary-btn" onclick="editModule('${mod.id}')">✏️</button>
-                        <button class="danger-btn" onclick="deleteModule('${mod.id}')">Borrar</button>
-                    </div>
-                 </div>`;
+    list.innerHTML = dbModules.map((mod) => {
+        let html = `<div class="manage-item" style="background:var(--skool-hover);"><div><span class="manage-title">📂 ${mod.title}</span></div><div class="manage-actions"><button class="secondary-btn" onclick="moveModule('${mod.id}', -1)">⬆️</button><button class="secondary-btn" onclick="moveModule('${mod.id}', 1)">⬇️</button><button class="secondary-btn" onclick="editModule('${mod.id}')">✏️</button><button class="danger-btn" onclick="deleteModule('${mod.id}')">Borrar</button></div></div>`;
         const modLess = dbLessons ? dbLessons.filter(l => l.module_id === mod.id) : [];
         modLess.forEach((les) => {
-            html += `<div class="manage-item" style="padding-left: 2rem;">
-                        <div><span class="manage-title">${iconMap[les.type]} ${les.title}</span></div>
-                        <div class="manage-actions">
-                            <button class="secondary-btn" onclick="moveLesson('${les.id}', -1)">⬆️</button>
-                            <button class="secondary-btn" onclick="moveLesson('${les.id}', 1)">⬇️</button>
-                            <button class="secondary-btn" onclick="editLesson('${les.id}')">✏️</button>
-                            <button class="danger-btn" onclick="deleteLesson('${les.id}')">Borrar</button>
-                        </div>
-                     </div>`;
+            html += `<div class="manage-item" style="padding-left: 2rem;"><div><span class="manage-title">${iconMap[les.type]} ${les.title}</span></div><div class="manage-actions"><button class="secondary-btn" onclick="moveLesson('${les.id}', -1)">⬆️</button><button class="secondary-btn" onclick="moveLesson('${les.id}', 1)">⬇️</button><button class="secondary-btn" onclick="editLesson('${les.id}')">✏️</button><button class="danger-btn" onclick="deleteLesson('${les.id}')">Borrar</button></div></div>`;
         });
-    });
-    list.innerHTML = html;
+        return html;
+    }).join("");
 }
 
-async function moveModule(id, direction) {
-    const idx = dbModules.findIndex(m => m.id === id);
-    if(idx < 0 || (direction === -1 && idx === 0) || (direction === 1 && idx === dbModules.length - 1)) return;
-    const targetMod = dbModules[idx + direction];
-    dbModules.forEach((m, i) => m.order_index = i);
-    const temp = dbModules[idx].order_index;
-    dbModules[idx].order_index = targetMod.order_index;
-    targetMod.order_index = temp;
-    await supabaseClient.from('modules').update({ order_index: dbModules[idx].order_index }).eq('id', id);
-    await supabaseClient.from('modules').update({ order_index: targetMod.order_index }).eq('id', targetMod.id);
-    fetchClassroomData();
-}
-
-async function moveLesson(id, direction) {
-    const les = dbLessons.find(l => l.id === id);
-    if(!les) return;
-    const modLess = dbLessons.filter(l => l.module_id === les.module_id);
-    const idx = modLess.findIndex(l => l.id === id);
-    if((direction === -1 && idx === 0) || (direction === 1 && idx === modLess.length - 1)) return;
-    const targetLes = modLess[idx + direction];
-    modLess.forEach((l, i) => l.order_index = i);
-    const temp = modLess[idx].order_index;
-    modLess[idx].order_index = targetLes.order_index;
-    targetLes.order_index = temp;
-    await supabaseClient.from('lessons').update({ order_index: modLess[idx].order_index }).eq('id', id);
-    await supabaseClient.from('lessons').update({ order_index: targetLes.order_index }).eq('id', targetLes.id);
-    fetchClassroomData();
-}
-
-async function deleteModule(id) { if(confirm("¿Borrar carpeta y todo su contenido?")) { await supabaseClient.from('modules').delete().eq('id', id); fetchClassroomData(); } }
+// RESTO DE FUNCIONES ESTÁTICAS DE RESPALDO (IGUALES A LA VERSIÓN ANTERIOR)
+function selectOpt(qi, oi, val, opts) { opts.forEach((_,j)=>{ const b=document.getElementById(`opt-${qi}-${j}`); if(b) b.classList.remove("selected"); }); document.getElementById(`opt-${qi}-${oi}`).classList.add("selected"); studentAnswers[qi] = val; }
+function setActiveSidebarItem(idToHighlight) { document.querySelectorAll('.c-item').forEach(el => el.classList.remove('active')); const activeEl = document.getElementById(idToHighlight); if(activeEl) activeEl.classList.add('active'); }
+function cancelEditMod() { document.getElementById('t-mod-title').value = ""; document.getElementById('edit-mod-id').value = ""; document.getElementById('panel-title-mod').innerHTML = "📂 1. Crear Carpeta (Módulo)"; document.getElementById('btn-cancel-mod').style.display = "none"; }
+async function moveModule(id, direction) { const idx = dbModules.findIndex(m => m.id === id); if(idx < 0 || (direction === -1 && idx === 0) || (direction === 1 && idx === dbModules.length - 1)) return; const targetMod = dbModules[idx + direction]; dbModules.forEach((m, i) => m.order_index = i); const temp = dbModules[idx].order_index; dbModules[idx].order_index = targetMod.order_index; targetMod.order_index = temp; await supabaseClient.from('modules').update({ order_index: dbModules[idx].order_index }).eq('id', id); await supabaseClient.from('modules').update({ order_index: targetMod.order_index }).eq('id', targetMod.id); fetchClassroomData(); }
+async function moveLesson(id, direction) { const les = dbLessons.find(l => l.id === id); if(!les) return; const modLess = dbLessons.filter(l => l.module_id === les.module_id); const idx = modLess.findIndex(l => l.id === id); if((direction === -1 && idx === 0) || (direction === 1 && idx === modLess.length - 1)) return; const targetLes = modLess[idx + direction]; modLess.forEach((l, i) => l.order_index = i); const temp = modLess[idx].order_index; modLess[idx].order_index = targetLes.order_index; targetLes.order_index = temp; await supabaseClient.from('lessons').update({ order_index: modLess[idx].order_index }).eq('id', id); await supabaseClient.from('lessons').update({ order_index: targetLes.order_index }).eq('id', targetLes.id); fetchClassroomData(); }
+async function deleteModule(id) { if(confirm("¿Borrar carpeta?")) { await supabaseClient.from('modules').delete().eq('id', id); fetchClassroomData(); } }
 async function deleteLesson(id) { if(confirm("¿Borrar página?")) { await supabaseClient.from('lessons').delete().eq('id', id); fetchClassroomData(); } }
-
-/* ══════════════════════════════════════════
-   DATOS ESTÁTICOS DE SONIDOS 
-══════════════════════════════════════════ */
-const vowels = { pure: [{ ipa: "/iː/", mw: "[ee]", name: "Long E", keyword: "he", type: "vowel", words: ["he", "see", "feel"], spellings: ["e — he", "ee — see"], tip: "Tense the tongue high." }, { ipa: "/ɪ/", mw: "[ih]", name: "Short I", keyword: "hit", type: "vowel", words: ["hit", "sit"], spellings: ["i — hit"], tip: "Lax lips." }], diphthongs: [], rcolored: [] };
-const consonants = { stops: [], fricatives: [], affricates: [], nasals: [], liquids: [] };
-function bc(t) { return "badge-vowel"; } function bl(t) { return t; }
-function shuffle(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
-function esc(s){ return (s||"").replace(/'/g,"\\'").replace(/"/g,"&quot;"); }
+const vowels = { pure: [{ ipa: "/iː/", mw: "[ee]", name: "Long E", keyword: "he", type: "vowel", words: ["he", "see", "feel"], spellings: ["e — he", "ee — see"], tip: "Tense the tongue high." }, { ipa: "/ɪ/", mw: "[ih]", name: "Short I", keyword: "hit", type: "vowel", words: ["hit", "sit"], spellings: ["i — hit"], tip: "Lax lips." }], diphthongs: [], rcolored: [] }; const consonants = { stops: [], fricatives: [], affricates: [], nasals: [], liquids: [] };
+function buildAllVowelGrids() { buildGrid("pure-vowel-grid", vowels.pure, () => activeVowel, v => { activeVowel = v; }, "vowel-detail", false, buildAllVowelGrids); } function buildAllConsonantGrids() {}
+buildAllVowelGrids();
 </script>
 </body>
 </html>
