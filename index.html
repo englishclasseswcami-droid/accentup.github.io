@@ -9,25 +9,27 @@
 <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
+  /* PALETA ACCENTUP */
   --brand-dark: #07216b;
   --brand: #2150e3;
   --brand-light: #EEEDFE;
   --accent: #cafc05;
   --accent-light: #fffbca;
+  
   --bg:#F7F7FB;--surface:#FFFFFF;
   --text:#14141F;--text-muted:#6B6B80;--text-light:#A0A0B5;
-  --border:rgba(0,0,0,0.08);--radius:14px;--radius-sm:8px;
+  --border:rgba(0,0,0,0.08);--radius:16px;--radius-sm:8px;
   --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;
   --red:#D85A30;--red-light:#FAECE7;--red-dark:#4A1B0C;
   --skool-border:#E5E7EB;--skool-hover:#F3F4F6;
 }
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;gap:.75rem;flex-wrap:wrap}
-.logo{font-size:20px;font-weight:800;color:var(--brand-dark);letter-spacing:-.5px;white-space:nowrap}
+.logo{font-size:22px;font-weight:900;color:var(--brand-dark);letter-spacing:-1px;white-space:nowrap}
 .logo span{color:var(--brand)}
 .nav-tabs{display:flex;gap:4px;flex-wrap:wrap}
 .nav-tab{padding:7px 15px;border-radius:30px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text-muted);transition:all .18s;white-space:nowrap;font-family:'Inter',sans-serif}
@@ -46,59 +48,106 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .section-intro h2{font-size:20px;font-weight:800;color:var(--brand-dark);margin-bottom:5px}
 .section-intro p{font-size:13px;color:var(--text-muted);line-height:1.6}
 
-/* LANDING PAGE STYLES */
+/* ════════ RE-DESIGNED LANDING PAGE STYLES ════════ */
 .lp-page { padding: 0 !important; max-width: 100% !important; }
-.lp-hero { background: var(--brand-dark); color: #fff; padding: 5rem 1.5rem; text-align: center; }
-.lp-container { max-width: 900px; margin: 0 auto; }
-.lp-tag { display: inline-block; background: rgba(255,255,255,0.1); color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 14px; border-radius: 30px; margin-bottom: 1.5rem; }
-.lp-h1 { font-size: clamp(32px, 5vw, 54px); font-weight: 800; letter-spacing: -1px; line-height: 1.15; margin-bottom: 1.5rem; }
-.lp-h1 em { color: var(--accent); font-style: normal; position: relative; }
-.lp-subtitle { font-size: 17px; opacity: 0.85; max-width: 700px; margin: 0 auto 2.5rem; line-height: 1.6; }
-.lp-cta-btn { display: inline-block; background: var(--accent); color: var(--brand-dark); font-size: 16px; font-weight: 800; text-decoration: none; padding: 14px 32px; border-radius: 30px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 14px rgba(202, 252, 5, 0.3); border: none; cursor: pointer; }
-.lp-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(202, 252, 5, 0.5); }
-.lp-micro { display: block; font-size: 12px; opacity: 0.6; margin-top: 12px; }
-.lp-section { padding: 5rem 1.5rem; }
+.lp-container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+
+/* Hero */
+.lp-hero { background: var(--brand-dark); color: #fff; padding: 6rem 0 5rem; position: relative; overflow: hidden; }
+.lp-hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+@media(max-width: 860px) { .lp-hero-inner { grid-template-columns: 1fr; text-align: center; } }
+.lp-tag { display: inline-block; background: rgba(202, 252, 5, 0.15); color: var(--accent); font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 16px; border-radius: 30px; margin-bottom: 1.5rem; border: 1px solid rgba(202, 252, 5, 0.3); }
+.lp-h1 { font-size: clamp(36px, 5vw, 56px); font-weight: 900; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 1.5rem; }
+.lp-h1 em { color: var(--accent); font-style: normal; text-decoration: underline; text-decoration-color: var(--brand); text-underline-offset: 4px; }
+.lp-subtitle { font-size: 17px; opacity: 0.85; line-height: 1.6; margin-bottom: 2.5rem; font-weight: 400; }
+.lp-cta-btn { display: inline-block; background: var(--accent); color: var(--brand-dark); font-size: 17px; font-weight: 800; text-decoration: none; padding: 16px 36px; border-radius: 40px; transition: all 0.2s; box-shadow: 0 8px 24px rgba(202, 252, 5, 0.2); }
+.lp-cta-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 32px rgba(202, 252, 5, 0.3); }
+.lp-micro { display: block; font-size: 12px; opacity: 0.6; margin-top: 14px; font-weight: 500; }
+.lp-hero-visual { position: relative; }
+.lp-hero-shape { background: var(--brand); width: 100%; aspect-ratio: 4/3; border-radius: 24px; transform: rotate(3deg); display:flex; align-items:center; justify-content:center; font-size: 80px; border: 2px dashed rgba(255,255,255,0.2); }
+
+/* Sections */
+.lp-section { padding: 6rem 0; }
 .lp-section.cream { background: var(--accent-light); }
 .lp-section.blue { background: var(--brand); color: #fff; }
-.lp-h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 800; color: var(--brand-dark); margin-bottom: 1.5rem; text-align: center; letter-spacing: -0.5px; line-height: 1.2; }
+.lp-h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 900; color: var(--brand-dark); margin-bottom: 1rem; text-align: center; letter-spacing: -1px; line-height: 1.15; }
 .blue .lp-h2 { color: #fff; }
-.lp-p { font-size: 16px; color: var(--text-muted); line-height: 1.7; text-align: center; max-width: 760px; margin: 0 auto 3rem; }
-.blue .lp-p { color: rgba(255,255,255,0.8); }
-.lp-quotes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
-.lp-quote-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border-left: 4px solid var(--brand); }
-.lp-quote-card p { font-size: 15px; font-weight: 500; color: var(--text); font-style: italic; line-height: 1.5; }
-.lp-mech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
-.lp-mech-card { background: var(--surface); border-radius: var(--radius); padding: 2rem; border: 1px solid var(--border); text-align: left; }
-.lp-mech-icon { font-size: 32px; margin-bottom: 1rem; }
-.lp-mech-card h3 { font-size: 18px; font-weight: 800; color: var(--brand-dark); margin-bottom: 10px; }
-.lp-mech-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
-.lp-table-wrap { overflow-x: auto; margin: 3rem 0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border-radius: var(--radius); }
-.lp-table { width: 100%; min-width: 600px; border-collapse: collapse; background: var(--surface); text-align: left; }
-.lp-table th { padding: 1.5rem; font-size: 16px; font-weight: 800; border-bottom: 2px solid var(--border); }
-.lp-table th.trad { color: var(--text-muted); width: 50%; background: #F9FAFB; }
-.lp-table th.accent { color: var(--brand-dark); width: 50%; background: var(--accent-light); }
-.lp-table td { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.5; color: var(--text); }
-.lp-table tr:last-child td { border-bottom: none; }
-.lp-table td.trad-col { background: #F9FAFB; color: var(--text-muted); }
-.lp-table td.accent-col { font-weight: 500; }
-.lp-offer-box { background: var(--brand-dark); border-radius: var(--radius); padding: 3rem; color: #fff; margin-top: 2rem; }
-.lp-offer-box h3 { color: var(--accent); font-size: 22px; margin-bottom: 1.5rem; }
-.lp-offer-list { list-style: none; margin-bottom: 2rem; }
-.lp-offer-list li { font-size: 15px; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
-.lp-offer-list li::before { content: '✅'; flex-shrink: 0; }
-.lp-price-box { background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: var(--radius-sm); text-align: center; margin-top: 2rem; }
-.lp-price { font-size: 32px; font-weight: 800; color: var(--accent); margin: 10px 0; }
-.lp-mentor { display: flex; gap: 3rem; align-items: center; }
-@media(max-width: 768px){ .lp-mentor { flex-direction: column; text-align: center; } }
-.lp-mentor-img { width: 250px; height: 250px; border-radius: 50%; background: var(--brand-light); flex-shrink: 0; border: 4px solid var(--accent); display:flex; align-items:center; justify-content:center; font-size: 50px;}
-.lp-mentor-text h3 { font-size: 24px; font-weight: 800; color: var(--brand-dark); margin-bottom: 1rem; }
-.lp-mentor-text p { font-size: 15px; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem; }
-.lp-faq { max-width: 700px; margin: 0 auto; }
-.lp-faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1.5rem; margin-bottom: 1rem; text-align: left; }
-.lp-faq-q { font-size: 16px; font-weight: 700; color: var(--brand-dark); margin-bottom: 8px; }
-.lp-faq-a { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+.lp-p { font-size: 17px; color: var(--text-muted); line-height: 1.7; text-align: center; max-width: 800px; margin: 0 auto 3rem; }
+.blue .lp-p { color: rgba(255,255,255,0.85); }
 
-/* SOUND GRID */
+/* Speech Bubbles (Pain points) */
+.lp-quotes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+.lp-speech-bubble { background: var(--surface); padding: 1.75rem; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,0.04); position: relative; border: 1px solid var(--border); }
+.lp-speech-bubble::after { content: ''; position: absolute; bottom: -10px; left: 30px; border-width: 10px 10px 0; border-style: solid; border-color: var(--surface) transparent transparent transparent; display: block; width: 0; }
+.lp-speech-bubble::before { content: ''; position: absolute; bottom: -12px; left: 29px; border-width: 11px 11px 0; border-style: solid; border-color: var(--border) transparent transparent transparent; display: block; width: 0; z-index: -1; }
+.lp-speech-bubble p { font-size: 16px; font-weight: 600; color: var(--brand-dark); font-style: italic; line-height: 1.5; }
+
+/* The Bridge */
+.lp-bridge { background: var(--surface); border: 2px solid var(--brand); border-radius: var(--radius); padding: 3rem; text-align: center; max-width: 800px; margin: 0 auto; box-shadow: 0 20px 40px rgba(33, 80, 227, 0.08); }
+.lp-bridge p { font-size: 18px; color: var(--text); line-height: 1.6; margin-bottom: 1rem; }
+.lp-bridge strong { color: var(--brand-dark); font-weight: 900; }
+
+/* Unique Mechanism */
+.lp-mech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+.lp-mech-card { background: var(--surface); border-radius: var(--radius); padding: 2.5rem 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border-top: 4px solid var(--brand); transition: transform 0.2s; }
+.lp-mech-card:hover { transform: translateY(-5px); }
+.lp-mech-step { display: inline-block; background: var(--brand-light); color: var(--brand); font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 20px; margin-bottom: 1rem; letter-spacing: 0.05em; }
+.lp-mech-card h3 { font-size: 20px; font-weight: 900; color: var(--brand-dark); margin-bottom: 12px; letter-spacing: -0.5px; }
+.lp-mech-card p { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+
+/* Us Vs Them */
+.lp-compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
+@media(max-width: 768px) { .lp-compare-grid { grid-template-columns: 1fr; } }
+.lp-compare-col { background: var(--surface); border-radius: var(--radius); padding: 2rem; }
+.lp-compare-col.bad { border: 1px solid var(--border); }
+.lp-compare-col.good { border: 2px solid var(--accent); box-shadow: 0 10px 30px rgba(202,252,5,0.15); background: var(--brand-dark); color: #fff; }
+.lp-compare-header { font-size: 18px; font-weight: 800; margin-bottom: 1.5rem; text-align: center; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+.lp-compare-col.good .lp-compare-header { border-color: rgba(255,255,255,0.1); color: var(--accent); }
+.lp-compare-item { display: flex; gap: 12px; margin-bottom: 1.25rem; font-size: 14px; line-height: 1.5; }
+.lp-compare-item span { flex-shrink: 0; font-size: 16px; }
+.lp-compare-col.bad .lp-compare-item { color: var(--text-muted); }
+.lp-compare-col.good .lp-compare-item { color: rgba(255,255,255,0.9); }
+
+/* Offer & Pricing */
+.lp-offer-list { list-style: none; margin-bottom: 2rem; max-width: 800px; margin: 0 auto 3rem; text-align: left; }
+.lp-offer-list li { font-size: 16px; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 12px; line-height: 1.5; background: rgba(255,255,255,0.05); padding: 1rem 1.5rem; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.1); }
+.lp-offer-list li::before { content: '✅'; flex-shrink: 0; }
+.lp-offer-list strong { color: var(--accent); }
+
+.lp-pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 900px; margin: 0 auto; }
+@media(max-width: 768px) { .lp-pricing-grid { grid-template-columns: 1fr; } }
+.lp-pricing-card { background: var(--surface); border-radius: var(--radius); padding: 2.5rem; text-align: center; color: var(--text); border: 1px solid var(--border); display: flex; flex-direction: column; }
+.lp-pricing-card.best { border: 3px solid var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.15); transform: scale(1.05); position: relative; }
+@media(max-width: 768px) { .lp-pricing-card.best { transform: scale(1); } }
+.lp-pricing-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--brand-dark); font-size: 11px; font-weight: 900; padding: 6px 16px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.1em; }
+.lp-pricing-title { font-size: 20px; font-weight: 800; color: var(--brand-dark); margin-bottom: 10px; }
+.lp-pricing-price { font-size: 42px; font-weight: 900; color: var(--brand); margin-bottom: 1rem; line-height: 1; }
+.lp-pricing-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 2rem; font-weight: 500; }
+.lp-pricing-card.best .lp-pricing-price { color: var(--brand-dark); }
+.lp-pricing-features { text-align: left; margin-bottom: 2rem; flex: 1; }
+.lp-pricing-features p { font-size: 14px; margin-bottom: 10px; display: flex; gap: 8px; color: var(--text-muted); }
+.lp-pricing-features p.bonus { color: var(--brand); font-weight: 700; }
+.lp-pricing-features p::before { content: '✓'; color: var(--green); }
+.lp-pricing-card .lp-cta-btn { width: 100%; padding: 14px; font-size: 15px; }
+
+/* Mentor */
+.lp-mentor { display: flex; gap: 4rem; align-items: center; max-width: 900px; margin: 0 auto; }
+@media(max-width: 768px){ .lp-mentor { flex-direction: column; text-align: center; gap: 2rem; } }
+.lp-mentor-img { width: 280px; height: 280px; border-radius: 50%; background: var(--brand-light); flex-shrink: 0; border: 6px solid var(--accent); display:flex; align-items:center; justify-content:center; font-size: 80px; box-shadow: 0 10px 30px rgba(7, 33, 107, 0.1); }
+.lp-mentor-text h3 { font-size: 28px; font-weight: 900; color: var(--brand-dark); margin-bottom: 1.25rem; letter-spacing: -0.5px; }
+.lp-mentor-text p { font-size: 16px; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem; }
+
+/* FAQ Accordion */
+.lp-faq { max-width: 760px; margin: 0 auto; }
+.lp-faq details { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 1rem; overflow: hidden; }
+.lp-faq summary { padding: 1.5rem; font-size: 17px; font-weight: 800; color: var(--brand-dark); cursor: pointer; list-style: none; position: relative; padding-right: 3rem; }
+.lp-faq summary::-webkit-details-marker { display: none; }
+.lp-faq summary::after { content: '+'; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--brand); font-weight: 400; }
+.lp-faq details[open] summary::after { content: '−'; }
+.lp-faq details p { padding: 0 1.5rem 1.5rem; font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+
+/* ════════ END LANDING PAGE STYLES ════════ */
+
 .sound-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:2rem}
 .sound-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:1rem .9rem .9rem;cursor:pointer;transition:border-color .15s,transform .1s;text-align:center}
 .sound-card:hover{border-color:var(--brand);transform:translateY(-2px)}
@@ -248,7 +297,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .dnd-col.active-drop{border-color:var(--brand);background:var(--brand-light)}
 .dnd-col-header{padding:12px 10px;font-weight:800;text-align:center;border-bottom:1.5px solid var(--border);background:var(--bg);border-radius:var(--radius-sm) var(--radius-sm) 0 0;color:var(--text)}
 .dnd-col-body{padding:10px;flex:1;min-height:120px;display:flex;flex-direction:column;gap:8px;align-items:center}
-
 .matching-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .match-col-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-light);margin-bottom:8px}
 .match-chip{padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;background:var(--surface);margin-bottom:8px}
@@ -293,7 +341,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 
 /* TEACHER */
 .teacher-header{margin-bottom:1.5rem}
-.teacher-header h2{font-size:20px;font-weight:800;color:var(--accent-dark);margin-bottom:4px}
+.teacher-header h2{font-size:20px;font-weight:800;color:var(--brand-dark);margin-bottom:4px}
 .teacher-header p{font-size:13px;color:var(--text-muted)}
 .teacher-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
 @media(max-width:720px){.teacher-layout{grid-template-columns:1fr}}
@@ -330,7 +378,6 @@ textarea{resize:vertical;min-height:70px}
 .audio-saved-item{display:flex;justify-content:space-between;align-items:center;background:var(--surface);border:1px solid var(--skool-border);border-radius:var(--radius-sm);padding:6px 10px;margin-bottom:6px;font-size:12px;font-weight:600;color:var(--text)}
 footer{text-align:center;padding:2rem;font-size:12px;color:var(--text-light);border-top:1px solid var(--border);margin-top:3rem}
 footer strong{color:var(--brand)}
-
 .student-prog-row{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid var(--skool-border)}
 .student-prog-row:last-child{border-bottom:none}
 .student-prog-name{font-size:14px;font-weight:600;color:var(--text)}
@@ -367,13 +414,19 @@ footer strong{color:var(--brand)}
 </nav>
 
 <div class="page active lp-page" id="page-home">
+  
   <section class="lp-hero">
-    <div class="lp-container">
-      <span class="lp-tag">For professional women with Intermediate/Advanced level</span>
-      <h1 class="lp-h1">Speak English with the same <em>authority</em> you have in your native language.</h1>
-      <p class="lp-subtitle">You already know the grammar and have the vocabulary, but your lack of confidence when speaking is hitting a career ceiling. Unlock your oral fluency in 6 months with AccentUp and stop being "just another voice" in important meetings.</p>
-      <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn">👉 Apply for the program (Let's chat on WhatsApp)</a>
-      <span class="lp-micro">Personalized, 1-on-1 6-month program. Strictly limited spots.</span>
+    <div class="lp-container lp-hero-inner">
+      <div style="text-align: left;">
+        <span class="lp-tag">For professional women with Intermediate/Advanced level</span>
+        <h1 class="lp-h1">Speak English with the same <em>authority</em> you have in your native language.</h1>
+        <p class="lp-subtitle">You already know the grammar and have the vocabulary, but your lack of confidence when speaking is hitting a career ceiling. Unlock your oral fluency in 6 months with AccentUp and stop being "just another voice" in important meetings.</p>
+        <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn">👉 Let's chat on WhatsApp</a>
+        <span class="lp-micro">Personalized, 1-on-1 6-month program. Strictly limited spots.</span>
+      </div>
+      <div class="lp-hero-visual">
+        <div class="lp-hero-shape">🗣️</div>
+      </div>
     </div>
   </section>
 
@@ -383,16 +436,19 @@ footer strong{color:var(--brand)}
       <p class="lp-p">If you are here, it’s probably because these thoughts cross your mind more often than you'd like to admit:</p>
       
       <div class="lp-quotes-grid">
-        <div class="lp-quote-card"><p>“I hate when someone says ‘What?’ and I have to repeat myself.”</p></div>
-        <div class="lp-quote-card"><p>“I sound angry even when I’m not.”</p></div>
-        <div class="lp-quote-card"><p>“I sound so much smarter in my first language.”</p></div>
-        <div class="lp-quote-card"><p>“I understand so much… but when I speak, I can only express half of it.”</p></div>
-        <div class="lp-quote-card"><p>“I’ve been learning English for years, and I still get stuck."</p></div>
-        <div class="lp-quote-card"><p>“I know the answer, but I usually keep it to myself.”</p></div>
+        <div class="lp-speech-bubble"><p>“I hate when someone says ‘What?’ and I have to repeat myself.”</p></div>
+        <div class="lp-speech-bubble"><p>“I sound angry even when I’m not.”</p></div>
+        <div class="lp-speech-bubble"><p>“I sound so much smarter in my first language.”</p></div>
+        <div class="lp-speech-bubble"><p>“I understand so much… but when I speak, I can only express half of it.”</p></div>
+        <div class="lp-speech-bubble"><p>“I’ve been learning English for years, and I still get stuck."</p></div>
+        <div class="lp-speech-bubble"><p>“I know the answer, but I usually keep it to myself.”</p></div>
       </div>
       
-      <p class="lp-p" style="font-weight:500; color:var(--text); margin-bottom: 1rem;">You stay quieter than you’d like in meetings or social situations. You feel like the most interesting part of you is missing. Over time, this starts to affect more than your English. You feel less confident. Less present.</p>
-      <p class="lp-p" style="font-weight:700; color:var(--brand-dark);">The truth is, conventional English courses focus heavily on theory. Rules. Word lists. Spelling.<br>But speaking isn't theory. Speaking is physical.</p>
+      <div class="lp-bridge">
+        <p>You stay quieter than you’d like in meetings or social situations. You feel like the most interesting part of you is missing. Over time, this starts to affect more than your English. You feel less confident. Less present.</p>
+        <p>The truth is, conventional English courses focus heavily on theory. Rules. Word lists. Spelling.</p>
+        <p><strong>But speaking isn't theory. Speaking is physical.</strong></p>
+      </div>
     </div>
   </section>
 
@@ -404,17 +460,20 @@ footer strong{color:var(--brand)}
       <div class="lp-mech-grid">
         <div class="lp-mech-card">
           <div class="lp-mech-icon">🧏</div>
-          <h3>1. HEAR IT</h3>
+          <span class="lp-mech-step">STEP 1</span>
+          <h3>HEAR IT</h3>
           <p>Decode the real language. Before you can say a sound, you need to truly hear it. We analyze the English language through its sound system using materials you actually enjoy—your favorite series, movies, TED Talks, or songs.</p>
         </div>
         <div class="lp-mech-card">
           <div class="lp-mech-icon">🌐</div>
-          <h3>2. OWN IT</h3>
+          <span class="lp-mech-step">STEP 2</span>
+          <h3>OWN IT</h3>
           <p>Intentional practice. This is where the physical training happens. We practice real-world pronunciation by diving deep into connected speech, linking, and natural intonation through intensive shadowing techniques.</p>
         </div>
         <div class="lp-mech-card">
           <div class="lp-mech-icon">👄</div>
-          <h3>3. SAY IT</h3>
+          <span class="lp-mech-step">STEP 3</span>
+          <h3>SAY IT</h3>
           <p>Automate your speech. We simulate your real professional life: practicing upcoming presentations, simulating high-stakes meetings, and role-playing interviews. Speak under pressure without getting stuck.</p>
         </div>
       </div>
@@ -424,67 +483,65 @@ footer strong{color:var(--brand)}
   <section class="lp-section cream">
     <div class="lp-container">
       <h2 class="lp-h2">Why AccentUp works where other courses fail</h2>
-      <div class="lp-table-wrap">
-        <table class="lp-table">
-          <thead>
-            <tr>
-              <th class="trad">Traditional English Learning ❌</th>
-              <th class="accent">AccentUp: The New Sound Method ✅</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="trad-col">Focuses on information and rules, assuming that understanding automatically leads to speaking.</td>
-              <td class="accent-col">Focuses on practical spoken English and trains speaking as a physical skill.</td>
-            </tr>
-            <tr>
-              <td class="trad-col">Prioritizes reading and writing instead of intentional speaking practice.</td>
-              <td class="accent-col">Prioritizes pronunciation, rhythm, intonation, and real-life communication.</td>
-            </tr>
-            <tr>
-              <td class="trad-col">Treats mistakes as something to be avoided at all costs.</td>
-              <td class="accent-col">Treats mistakes as a natural and necessary part of the learning process.</td>
-            </tr>
-            <tr>
-              <td class="trad-col">Ignores confidence, fear, and mindset, assuming confidence will come naturally with fluency.</td>
-              <td class="accent-col">Builds confidence and a growth mindset as skills you intentionally develop to unlock fluency.</td>
-            </tr>
-            <tr>
-              <td class="trad-col">Creates reliance on constant feedback and always needing "the next course" to improve.</td>
-              <td class="accent-col">Teaches you how to recognize your own patterns, change them, and take full ownership of your progress.</td>
-            </tr>
-          </tbody>
-        </table>
+      
+      <div class="lp-compare-grid">
+        <div class="lp-compare-col bad">
+          <div class="lp-compare-header">Traditional English Learning ❌</div>
+          <div class="lp-compare-item"><span>•</span> Focuses on information and rules, assuming that understanding automatically leads to speaking.</div>
+          <div class="lp-compare-item"><span>•</span> Prioritizes reading and writing instead of intentional speaking practice.</div>
+          <div class="lp-compare-item"><span>•</span> Treats mistakes as something to be avoided at all costs.</div>
+          <div class="lp-compare-item"><span>•</span> Ignores confidence, fear, and mindset, assuming confidence will come naturally with fluency.</div>
+          <div class="lp-compare-item"><span>•</span> Creates reliance on constant feedback and always needing "the next course" to improve.</div>
+        </div>
+        
+        <div class="lp-compare-col good">
+          <div class="lp-compare-header">AccentUp: The New Sound Method ✅</div>
+          <div class="lp-compare-item"><span>✓</span> Focuses on practical spoken English and trains speaking as a physical skill.</div>
+          <div class="lp-compare-item"><span>✓</span> Prioritizes pronunciation, rhythm, intonation, and real-life communication.</div>
+          <div class="lp-compare-item"><span>✓</span> Treats mistakes as a natural and necessary part of the learning process.</div>
+          <div class="lp-compare-item"><span>✓</span> Builds confidence and a growth mindset as skills you intentionally develop to unlock fluency.</div>
+          <div class="lp-compare-item"><span>✓</span> Teaches you how to recognize your own patterns, change them, and take full ownership of your progress.</div>
+        </div>
       </div>
     </div>
   </section>
 
   <section class="lp-section blue">
     <div class="lp-container">
-      <h2 class="lp-h2" style="margin-bottom:0.5rem">The AccentUp 6-Month Mentorship</h2>
-      <p class="lp-p" style="color:var(--accent-light);">A personalized, 1-on-1 coaching program designed to permanently transform the way you speak English.</p>
+      <h2 class="lp-h2">The AccentUp 6-Month Mentorship</h2>
+      <p class="lp-p">A personalized, 1-on-1 coaching program designed to permanently transform the way you speak English.</p>
       
-      <div class="lp-offer-box">
-        <h3>💎 The Core Program Includes:</h3>
-        <ul class="lp-offer-list">
-          <li><strong>Live 60-Minute 1-on-1 Sessions:</strong> Highly focused, private coaching sessions with instant, actionable feedback. No generic lessons—we work directly on your oral roadblocks.</li>
-          <li><strong>The AccentUp Interactive Platform:</strong> 24/7 access to our custom-built platform featuring step-by-step explainer videos, phonetic charts, and extra interactive practice.</li>
-        </ul>
+      <ul class="lp-offer-list">
+        <li><strong>Live 60-Minute 1-on-1 Sessions:</strong> Highly focused, private coaching sessions with instant, actionable feedback. No generic lessons—we work directly on your oral roadblocks.</li>
+        <li><strong>The AccentUp Interactive Platform:</strong> 24/7 access to our custom-built platform featuring step-by-step explainer videos, phonetic charts, and extra interactive practice.</li>
+      </ul>
+      
+      <div class="lp-pricing-grid">
+        <div class="lp-pricing-card">
+          <div class="lp-pricing-title">Payment Plan</div>
+          <div class="lp-pricing-price">$200,000<span style="font-size:16px"> ARS</span></div>
+          <div class="lp-pricing-sub">3 monthly payments</div>
+          <div class="lp-pricing-features">
+            <p>Full 6-Month Mentorship</p>
+            <p>AccentUp Platform Access</p>
+            <p>Personalized Weekly Routine</p>
+            <p>The Private Community</p>
+          </div>
+          <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn" style="background:var(--brand-dark); color:#fff; box-shadow:none;">Apply on WhatsApp</a>
+        </div>
         
-        <h3 style="margin-top:2.5rem;">🎁 Exclusive Bonuses:</h3>
-        <ul class="lp-offer-list">
-          <li><strong>Personalized Weekly Routine:</strong> You get a customized training plan to keep improving your pronunciation on your own time.</li>
-          <li><strong>"Pronunciation Weekly Requests":</strong> A weekly video series addressing the exact words, sounds, or phrases you requested.</li>
-          <li><strong>The Private Community:</strong> Access to our exclusive member network to share wins, exchange resources, and practice together.</li>
-          <li><strong>Extended Platform Access:</strong> Get an extra 3 months of full access to the platform to review and solidify your progress after the program ends.</li>
-          <li><strong>"Boost Your Practice" Masterclass:</strong> A special video training on how to optimize your study time.</li>
-        </ul>
-        
-        <div class="lp-price-box">
-          <p style="font-size:14px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;">Your Investment in Your Career</p>
-          <div class="lp-price">$530,000 ARS</div>
-          <p style="font-size:13px; opacity:0.8; margin-bottom:1.5rem;">(or 3 monthly payments of $200,000 ARS)</p>
-          <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn">👉 Secure your spot on WhatsApp</a>
+        <div class="lp-pricing-card best">
+          <div class="lp-pricing-badge">BEST VALUE 🔥</div>
+          <div class="lp-pricing-title">Pay in Full</div>
+          <div class="lp-pricing-price">$530,000<span style="font-size:16px"> ARS</span></div>
+          <div class="lp-pricing-sub">One-time payment</div>
+          <div class="lp-pricing-features">
+            <p><strong>Everything in Payment Plan, plus:</strong></p>
+            <p class="bonus">🎁 Extended Platform Access (3 extra months)</p>
+            <p class="bonus">🎁 "Boost Your Practice" Masterclass</p>
+            <p class="bonus">🎁 "Pronunciation Weekly Requests"</p>
+          </div>
+          <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn">👉 Secure your spot now</a>
         </div>
       </div>
     </div>
@@ -495,7 +552,7 @@ footer strong{color:var(--brand)}
       <div class="lp-mentor">
         <div class="lp-mentor-img">👩🏻‍🏫</div>
         <div class="lp-mentor-text">
-          <h2 class="lp-h2" style="text-align:left; margin-bottom:10px;">Hi, I’m Camila. And I know exactly what’s holding your English back.</h2>
+          <h2 class="lp-h2" style="text-align:left;">Hi, I’m Camila. And I know exactly what’s holding your English back.</h2>
           <p>For years, I’ve watched incredibly talented, intelligent professional women shrink in meeting rooms or avoid speaking up because they felt insecure about their English pronunciation.</p>
           <p>They had the vocabulary. They knew the grammar. But the traditional education system completely ignored the most important part of communication: <strong>the physical skill of speaking with authority.</strong></p>
           <p>I created AccentUp because I was tired of seeing brilliant women hit a language ceiling in their careers. My mission is to give you the exact framework, tools, and feedback you need to stop overthinking every word and start speaking with the confidence and clarity your professional talent deserves.</p>
@@ -508,22 +565,23 @@ footer strong{color:var(--brand)}
     <div class="lp-container">
       <h2 class="lp-h2">Frequently Asked Questions</h2>
       <div class="lp-faq">
-        <div class="lp-faq-item">
-          <div class="lp-faq-q">Is this program right for beginners?</div>
-          <div class="lp-faq-a">No. AccentUp is exclusively designed for professionals who already have an intermediate or advanced understanding of English grammar and vocabulary, but struggle with oral fluency, pronunciation, and confidence.</div>
-        </div>
-        <div class="lp-faq-item">
-          <div class="lp-faq-q">I have a very busy schedule. How much time do I need to invest?</div>
-          <div class="lp-faq-a">The program is built for busy professionals. Alongside our highly focused 60-minute weekly live session, you will get a personalized routine using our 24/7 interactive platform. You don't need hours a day—you just need consistent, intentional practice (even 15 minutes a day makes a huge difference).</div>
-        </div>
-        <div class="lp-faq-item">
-          <div class="lp-faq-q">Is this a group class or 1-on-1?</div>
-          <div class="lp-faq-a">This is a highly personalized, 1-on-1 mentorship. I work directly with you, using your own real-world materials (like your upcoming presentations or meetings) to tackle your specific blind spots.</div>
-        </div>
-        <div class="lp-faq-item">
-          <div class="lp-faq-q">How do I secure my spot?</div>
-          <div class="lp-faq-a">Because this is a personalized 1-on-1 experience, I only work with a small number of students at a time to ensure the highest quality of feedback. Click the button below to reach out to me directly on WhatsApp so we can see if you are a good fit for the program!</div>
-        </div>
+        <details>
+          <summary>Is this program right for beginners?</summary>
+          <p>No. AccentUp is exclusively designed for professionals who already have an intermediate or advanced understanding of English grammar and vocabulary, but struggle with oral fluency, pronunciation, and confidence.</p>
+        </details>
+        <details>
+          <summary>I have a very busy schedule. How much time do I need to invest?</summary>
+          <p>The program is built for busy professionals. Alongside our highly focused 60-minute weekly live session, you will get a personalized routine using our 24/7 interactive platform. You don't need hours a day—you just need consistent, intentional practice (even 15 minutes a day makes a huge difference).</p>
+        </details>
+        <details>
+          <summary>Is this a group class or 1-on-1?</summary>
+          <p>This is a highly personalized, 1-on-1 mentorship. I work directly with you, using your own real-world materials (like your upcoming presentations or meetings) to tackle your specific blind spots.</p>
+        </details>
+        <details>
+          <summary>How do I secure my spot?</summary>
+          <p>Because this is a personalized 1-on-1 experience, I only work with a small number of students at a time to ensure the highest quality of feedback. Click the button below to reach out to me directly on WhatsApp so we can see if you are a good fit for the program!</p>
+        </details>
+        
         <div style="text-align:center; margin-top:3rem;">
           <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn" style="font-size:18px; padding:18px 40px;">👉 Let's talk on WhatsApp and unlock your voice</a>
         </div>
@@ -1516,7 +1574,6 @@ async function saveModule() {
   await fetchData(); alert(editId ? 'Module updated!' : 'Module created!'); cancelEditMod();
 }
 function editModule(id) {
-  // Cuando vas a editar, busca en TODOS los modulos de la DB, incluso si tu vista esta filtrada
   const m = dbModules.find(x => x.id === id); if (!m) return;
   document.getElementById('t-mod-title').value = m.title; 
   document.getElementById('edit-mod-id').value = m.id;
@@ -1566,7 +1623,6 @@ async function moveSubmodule(id, dir) {
 function toggleLessonFields() {
   const type = document.getElementById('t-les-type').value;
   document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none';
-  // Texto siempre visible para TODOS los tipos
   document.getElementById('fields-text').style.display = 'block';
   document.getElementById('fields-embed').style.display = type === 'embed' ? 'block' : 'none';
   document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none';
@@ -1609,7 +1665,6 @@ async function saveLesson() {
 
   let payload = { module_id: moduleId, submodule_id: submodId || null, type, title, content: tempAudios };
   
-  // Guardar siempre el contenido de texto (ahora aplica para task también)
   payload.text_content = quillEditor.root.innerHTML;
 
   if (type === 'video') {
@@ -1666,7 +1721,6 @@ function editLesson(id) {
   document.getElementById('t-les-title').value = l.title;
   toggleLessonFields();
   
-  // Ahora TODOS cargan el texto
   quillEditor.root.innerHTML = l.text_content || '';
   
   if (l.type === 'video') { document.getElementById('t-les-video-url').value = l.video_url || ''; }
@@ -1802,7 +1856,6 @@ function renderManageList() {
   const list = document.getElementById('t-manage-list'); if (!list) return;
   if (!dbModules.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div>'; return; }
   
-  // Guardar el estado de los acordeones
   const openStates = {};
   document.querySelectorAll('[id^="mod-children-"]').forEach(el => {
     openStates[el.id] = el.style.display;
@@ -1862,7 +1915,7 @@ function renderTeacherProgress(allProgress) {
 }
 
 /* ══════════════════════════════════════════
-   MOTOR DE SONIDOS (INTOCABLE Y ORIGINAL)
+   MOTOR DE SONIDOS
 ══════════════════════════════════════════ */
 const vowels = {
   pure:[
