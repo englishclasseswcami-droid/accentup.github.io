@@ -13,13 +13,11 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* PALETA ACCENTUP */
   --brand-dark: #07216b;
   --brand: #2150e3;
   --brand-light: #EEEDFE;
   --accent: #cafc05;
   --accent-light: #fffbca;
-  
   --bg:#F7F7FB;--surface:#FFFFFF;
   --text:#14141F;--text-muted:#6B6B80;--text-light:#A0A0B5;
   --border:rgba(0,0,0,0.08);--radius:16px;--radius-sm:8px;
@@ -48,7 +46,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .section-intro h2{font-size:20px;font-weight:800;color:var(--brand-dark);margin-bottom:5px}
 .section-intro p{font-size:13px;color:var(--text-muted);line-height:1.6}
 
-/* ════════ RE-DESIGNED LANDING PAGE STYLES ════════ */
+/* LANDING PAGE STYLES */
 .lp-page { padding: 0 !important; max-width: 100% !important; }
 .lp-container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
 
@@ -60,11 +58,13 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .lp-h1 { font-size: clamp(36px, 5vw, 56px); font-weight: 900; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 1.5rem; }
 .lp-h1 em { color: var(--accent); font-style: normal; text-decoration: underline; text-decoration-color: var(--brand); text-underline-offset: 4px; }
 .lp-subtitle { font-size: 17px; opacity: 0.85; line-height: 1.6; margin-bottom: 2.5rem; font-weight: 400; }
-.lp-cta-btn { display: inline-block; background: var(--accent); color: var(--brand-dark); font-size: 17px; font-weight: 800; text-decoration: none; padding: 16px 36px; border-radius: 40px; transition: all 0.2s; box-shadow: 0 8px 24px rgba(202, 252, 5, 0.2); }
+.lp-cta-btn { display: inline-block; background: var(--accent); color: var(--brand-dark); font-size: 17px; font-weight: 800; text-decoration: none; padding: 16px 36px; border-radius: 40px; transition: all 0.2s; box-shadow: 0 8px 24px rgba(202, 252, 5, 0.2); border: none; cursor: pointer;}
 .lp-cta-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 32px rgba(202, 252, 5, 0.3); }
 .lp-micro { display: block; font-size: 12px; opacity: 0.6; margin-top: 14px; font-weight: 500; }
+
 .lp-hero-visual { position: relative; }
-.lp-hero-shape { background: var(--brand); width: 100%; aspect-ratio: 4/3; border-radius: 24px; transform: rotate(3deg); display:flex; align-items:center; justify-content:center; font-size: 80px; border: 2px dashed rgba(255,255,255,0.2); }
+.lp-hero-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 24px; transform: rotate(3deg); border: 4px solid var(--accent); box-shadow: 0 20px 50px rgba(0,0,0,0.4); transition: transform 0.3s ease; }
+.lp-hero-img:hover { transform: rotate(0deg); }
 
 /* Sections */
 .lp-section { padding: 6rem 0; }
@@ -76,16 +76,18 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .blue .lp-p { color: rgba(255,255,255,0.85); }
 
 /* Speech Bubbles (Pain points) */
-.lp-quotes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+.lp-quotes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 4rem; }
 .lp-speech-bubble { background: var(--surface); padding: 1.75rem; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,0.04); position: relative; border: 1px solid var(--border); }
 .lp-speech-bubble::after { content: ''; position: absolute; bottom: -10px; left: 30px; border-width: 10px 10px 0; border-style: solid; border-color: var(--surface) transparent transparent transparent; display: block; width: 0; }
 .lp-speech-bubble::before { content: ''; position: absolute; bottom: -12px; left: 29px; border-width: 11px 11px 0; border-style: solid; border-color: var(--border) transparent transparent transparent; display: block; width: 0; z-index: -1; }
 .lp-speech-bubble p { font-size: 16px; font-weight: 600; color: var(--brand-dark); font-style: italic; line-height: 1.5; }
 
 /* The Bridge */
-.lp-bridge { background: var(--surface); border: 2px solid var(--brand); border-radius: var(--radius); padding: 3rem; text-align: center; max-width: 800px; margin: 0 auto; box-shadow: 0 20px 40px rgba(33, 80, 227, 0.08); }
-.lp-bridge p { font-size: 18px; color: var(--text); line-height: 1.6; margin-bottom: 1rem; }
-.lp-bridge strong { color: var(--brand-dark); font-weight: 900; }
+.lp-bridge { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; background: var(--surface); border: 2px solid var(--brand); border-radius: var(--radius); padding: 3rem; max-width: 1000px; margin: 0 auto; box-shadow: 0 20px 40px rgba(33, 80, 227, 0.08); text-align: left; }
+@media(max-width: 768px) { .lp-bridge { grid-template-columns: 1fr; text-align: center; padding: 2rem; } }
+.lp-bridge-text p { font-size: 17px; color: var(--text); line-height: 1.6; margin-bottom: 1rem; }
+.lp-bridge-text strong { color: var(--brand-dark); font-weight: 900; font-size: 19px;}
+.lp-bridge-img img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: var(--radius-sm); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
 
 /* Unique Mechanism */
 .lp-mech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
@@ -133,7 +135,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 /* Mentor */
 .lp-mentor { display: flex; gap: 4rem; align-items: center; max-width: 900px; margin: 0 auto; }
 @media(max-width: 768px){ .lp-mentor { flex-direction: column; text-align: center; gap: 2rem; } }
-.lp-mentor-img { width: 280px; height: 280px; border-radius: 50%; background: var(--brand-light); flex-shrink: 0; border: 6px solid var(--accent); display:flex; align-items:center; justify-content:center; font-size: 80px; box-shadow: 0 10px 30px rgba(7, 33, 107, 0.1); }
+.lp-mentor-img { width: 300px; height: 300px; border-radius: 50%; background: var(--brand-light); flex-shrink: 0; border: 6px solid var(--accent); object-fit: cover; box-shadow: 0 10px 30px rgba(7, 33, 107, 0.1); }
 .lp-mentor-text h3 { font-size: 28px; font-weight: 900; color: var(--brand-dark); margin-bottom: 1.25rem; letter-spacing: -0.5px; }
 .lp-mentor-text p { font-size: 16px; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem; }
 
@@ -425,7 +427,7 @@ footer strong{color:var(--brand)}
         <span class="lp-micro">Personalized, 1-on-1 6-month program. Strictly limited spots.</span>
       </div>
       <div class="lp-hero-visual">
-        <div class="lp-hero-shape">🗣️</div>
+        <img src="https://flfyifdaitfnxncoxzxe.supabase.co/storage/v1/object/public/images/foto%20uno.jpg" alt="Teacher speaking" class="lp-hero-img" />
       </div>
     </div>
   </section>
@@ -445,10 +447,16 @@ footer strong{color:var(--brand)}
       </div>
       
       <div class="lp-bridge">
-        <p>You stay quieter than you’d like in meetings or social situations. You feel like the most interesting part of you is missing. Over time, this starts to affect more than your English. You feel less confident. Less present.</p>
-        <p>The truth is, conventional English courses focus heavily on theory. Rules. Word lists. Spelling.</p>
-        <p><strong>But speaking isn't theory. Speaking is physical.</strong></p>
+        <div class="lp-bridge-text">
+          <p>You stay quieter than you’d like in meetings or social situations. You feel like the most interesting part of you is missing. Over time, this starts to affect more than your English. You feel less confident. Less present.</p>
+          <p>The truth is, conventional English courses focus heavily on theory. Rules. Word lists. Spelling.</p>
+          <p><strong>But speaking isn't theory. Speaking is physical.</strong></p>
+        </div>
+        <div class="lp-bridge-img">
+           <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?q=80&w=800&auto=format&fit=crop" alt="Professional woman looking thoughtful" />
+        </div>
       </div>
+
     </div>
   </section>
 
@@ -495,7 +503,7 @@ footer strong{color:var(--brand)}
         </div>
         
         <div class="lp-compare-col good">
-          <div class="lp-compare-header">AccentUp: The New Sound Method ✅</div>
+          <div class="lp-compare-header">AccentUp: Hear It. Own It. Say It. ✅</div>
           <div class="lp-compare-item"><span>✓</span> Focuses on practical spoken English and trains speaking as a physical skill.</div>
           <div class="lp-compare-item"><span>✓</span> Prioritizes pronunciation, rhythm, intonation, and real-life communication.</div>
           <div class="lp-compare-item"><span>✓</span> Treats mistakes as a natural and necessary part of the learning process.</div>
@@ -550,7 +558,8 @@ footer strong{color:var(--brand)}
   <section class="lp-section">
     <div class="lp-container">
       <div class="lp-mentor">
-        <div class="lp-mentor-img">👩🏻‍🏫</div>
+        <img src="https://flfyifdaitfnxncoxzxe.supabase.co/storage/v1/object/public/images/foto%20tres.jpg=80&w=600&auto=format&fit=crop" alt="Camila Mentor" class="lp-mentor-img" />
+        
         <div class="lp-mentor-text">
           <h2 class="lp-h2" style="text-align:left;">Hi, I’m Camila. And I know exactly what’s holding your English back.</h2>
           <p>For years, I’ve watched incredibly talented, intelligent professional women shrink in meeting rooms or avoid speaking up because they felt insecure about their English pronunciation.</p>
