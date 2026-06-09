@@ -206,7 +206,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .post-date{font-size:12px;color:var(--text-light);margin-left:auto}
 .post-title{font-size:17px;font-weight:800;color:var(--text);margin-bottom:6px}
 .post-preview{font-size:14px;color:var(--text-muted);line-height:1.5;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.post-full-body{font-size:15px;color:var(--text);line-height:1.6;margin-bottom:1.5rem}
+.post-full-body{font-size:15px;color:var(--text);line-height:1.6;margin-bottom:1.5rem;white-space:pre-wrap}
 .post-full-body img{max-width:100%;border-radius:var(--radius-sm)}
 .post-actions{display:flex;gap:16px;border-top:1px solid var(--skool-border);padding-top:12px;flex-wrap:wrap;align-items:center}
 .action-btn{background:transparent;border:none;color:var(--text-muted);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;transition:color .15s}
@@ -272,7 +272,6 @@ footer strong{color:var(--brand)}
 </head>
 <body>
 
-<!-- EDIT POST MODAL -->
 <div class="modal-overlay hidden" id="edit-post-modal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeEditPostModal()">×</button>
@@ -291,8 +290,8 @@ footer strong{color:var(--brand)}
   <div class="nav-tabs">
     <button class="nav-tab active" data-page="vowels">Vowel sounds</button>
     <button class="nav-tab" data-page="consonants">Consonant sounds</button>
-    <button class="nav-tab" data-page="classroom">Classroom</button>
-    <button class="nav-tab" data-page="community">Community</button>
+    <button class="nav-tab" data-page="classroom" id="nav-classroom">Classroom</button>
+    <button class="nav-tab" data-page="community" id="nav-community">Community</button>
     <button class="nav-tab" data-page="profile" id="nav-profile-tab" style="display:none">Profile</button>
     <button class="nav-tab teacher-tab" id="nav-teacher-tab" data-page="teacher">Teacher ✦</button>
     <button class="nav-tab auth-btn" id="nav-auth-btn" onclick="handleNavAuth()">Log in</button>
@@ -305,7 +304,6 @@ footer strong{color:var(--brand)}
   <p>Explore every sound of American English and practice with interactive exercises.</p>
 </div>
 
-<!-- VOWELS -->
 <div class="page active" id="page-vowels">
   <div class="section-intro"><h2>Vowel sounds</h2><p>American English has 19 vowel sounds. Click any card to explore mouth position, spellings, and tips for Spanish speakers.</p></div>
   <div id="vowel-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
@@ -314,7 +312,6 @@ footer strong{color:var(--brand)}
   <div class="sub-heading">R-colored vowels</div><div class="sound-grid" id="rcolored-grid"></div>
 </div>
 
-<!-- CONSONANTS -->
 <div class="page" id="page-consonants">
   <div class="section-intro"><h2>Consonant sounds</h2><p>American English has 24 consonant sounds. Every card includes all spelling patterns for that sound.</p></div>
   <div id="consonant-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
@@ -325,7 +322,6 @@ footer strong{color:var(--brand)}
   <div class="sub-heading">Liquids & glides</div><div class="sound-grid" id="liquids-grid"></div>
 </div>
 
-<!-- AUTH -->
 <div class="page" id="page-auth">
   <div class="gate">
     <h2 id="auth-title">Welcome back</h2>
@@ -341,7 +337,6 @@ footer strong{color:var(--brand)}
   </div>
 </div>
 
-<!-- PROFILE -->
 <div class="page" id="page-profile">
   <div class="t-panel" style="max-width:500px;margin:0 auto">
     <h3>👤 Edit Profile</h3>
@@ -354,7 +349,6 @@ footer strong{color:var(--brand)}
   </div>
 </div>
 
-<!-- COMMUNITY -->
 <div class="page page-full" id="page-community">
   <div class="community-container">
     <div id="community-feed-view">
@@ -386,7 +380,6 @@ footer strong{color:var(--brand)}
   </div>
 </div>
 
-<!-- CLASSROOM -->
 <div class="page page-full" id="page-classroom">
   <div id="classroom-grid-view">
     <div class="section-intro"><h2>Classroom</h2><p>Select a folder to see its lessons and activities.</p></div>
@@ -447,7 +440,6 @@ footer strong{color:var(--brand)}
   </div>
 </div>
 
-<!-- TEACHER -->
 <div class="page" id="page-teacher">
   <div class="teacher-header">
     <h2>Teacher Dashboard</h2>
@@ -573,7 +565,7 @@ let dbPosts = [], dbComments = [], dbLikes = [], dbProfiles = [];
 let currentLesson = null, activeModuleId = null, currentViewedPostId = null;
 let studentAnswers = {}, matchState = { leftSel: null, pairs: {} }, selectedDragChip = null;
 let questionRows = [], tempAudios = [], isUploadingAudio = false;
-let quillEditor = null, communityQuill = null;
+let quillEditor = null, communityQuill = null, editPostQuill = null;
 let activeVowel = null, activeConsonant = null;
 
 /* ── UTILS ── */
@@ -619,8 +611,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   communityQuill = new Quill('#community-editor-container', {
     theme: 'snow', placeholder: 'Share something with the community...',
-    modules: { toolbar: [['bold','italic','underline'],['link','image'],[ { list:'bullet' }]] }
+    modules: { toolbar: [['bold','italic','underline'],['link','image','video'],[ { list:'bullet' }]] }
   });
+  
   sb.auth.onAuthStateChange((_e, session) => {
     currentUser = session?.user || null;
     updateAuthUI();
@@ -690,11 +683,15 @@ document.querySelectorAll('.nav-tab[data-page]').forEach(tab => {
 function goToPage(pageId) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  
   document.querySelector(`.nav-tab[data-page="${pageId}"]`)?.classList.add('active');
-  document.getElementById('page-' + pageId)?.classList.add('active');
+  const pageEl = document.getElementById('page-' + pageId);
+  if (pageEl) pageEl.classList.add('active');
+  
   const hiddenHero = ['classroom','teacher','auth','community','profile'];
   const hero = document.getElementById('hero-banner');
   if (hero) hero.style.display = hiddenHero.includes(pageId) ? 'none' : 'block';
+  
   if (pageId === 'classroom') renderClassroomGrid();
   if (pageId === 'community') renderCommunityFeed();
   if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); }
@@ -800,19 +797,34 @@ function openEditPostModal(postId) {
   const post = dbPosts.find(p => p.id === postId); if (!post) return;
   document.getElementById('edit-post-id').value = postId;
   document.getElementById('edit-post-title').value = post.title;
-  document.getElementById('edit-post-content').value = post.content.replace(/<[^>]*>?/gm, '');
+  // Convertimos html simple a texto plano para el textarea nativo
+  document.getElementById('edit-post-content').value = post.content.replace(/<br>/g, '\n').replace(/<[^>]*>?/gm, '');
   document.getElementById('edit-post-modal').classList.remove('hidden');
 }
-function closeEditPostModal() { document.getElementById('edit-post-modal').classList.add('hidden'); }
+
+function closeEditPostModal() { 
+  document.getElementById('edit-post-modal').classList.add('hidden'); 
+}
+
 async function saveEditedPost() {
   const id = document.getElementById('edit-post-id').value;
   const title = document.getElementById('edit-post-title').value.trim();
   const content = document.getElementById('edit-post-content').value.trim();
   if (!title || !content) { alert('Please fill in both fields.'); return; }
+  
+  const btn = document.querySelector('#edit-post-modal .primary-btn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  
   const { error } = await sb.from('posts').update({ title, content }).eq('id', id).eq('user_id', currentUser.id);
+  
+  btn.disabled = false; btn.textContent = 'Save changes';
   if (error) { alert('Error: ' + error.message); return; }
-  closeEditPostModal(); await fetchData();
+  
+  closeEditPostModal(); 
+  await fetchData();
+  if (currentViewedPostId === id) renderPostDetail();
 }
+
 async function deletePost(postId) {
   if (!confirm('Delete this post?')) return;
   await sb.from('comments').delete().eq('post_id', postId);
@@ -1033,7 +1045,6 @@ function showLesson(lessonId) {
     document.getElementById('submit-btn').disabled = false; document.getElementById('submit-btn').style.display = 'inline-block';
     document.getElementById('retry-btn').style.display = 'none'; document.getElementById('score-area').innerHTML = '';
     renderAudios('cv-task-audios', audios); renderPlayerQuestions(); renderResources('cv-task-resources', resources);
-    // FIX: show previous score only for scored exercises; open_answer just shows "completed"
     if (isDone) {
       const prev = dbProgress.find(p => p.lesson_id === lessonId);
       if (prev) {
@@ -1111,7 +1122,6 @@ async function submitExercise() {
   let correct = 0, totalQ = content.length;
   const results = [];
 
-  // ── Open Answer: reveal expected answers, mark as done ──
   if (currentLesson.task_type === 'open_answer') {
     content.forEach((q, i) => {
       const el = document.getElementById('oa-' + i);
@@ -1253,7 +1263,6 @@ async function moveSubmodule(id, dir) {
 function toggleLessonFields() {
   const type = document.getElementById('t-les-type').value;
   document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none';
-  // text editor shows for video (text below video), text, and embed types
   document.getElementById('fields-text').style.display = (type === 'text' || type === 'video' || type === 'embed') ? 'block' : 'none';
   document.getElementById('fields-embed').style.display = type === 'embed' ? 'block' : 'none';
   document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none';
@@ -1315,7 +1324,6 @@ async function saveLesson() {
     }
   }
 
-  // Resources upload
   const resFiles = document.getElementById('t-les-resources').files;
   let resources = editId ? safeParseJSON(dbLessons.find(l => l.id === editId)?.resources) : [];
   for (const f of resFiles) {
@@ -1345,7 +1353,6 @@ function editLesson(id) {
   if (l.type === 'embed') { document.getElementById('t-les-embed-code').value = l.video_url || ''; quillEditor.root.innerHTML = l.text_content || ''; }
   if (l.type === 'task') {
     document.getElementById('t-ex-type').value = l.task_type || 'open_answer';
-    // FIX: safeParseJSON used here for task_content
     questionRows = safeParseJSON(l.task_content);
     renderQFields();
   }
@@ -1403,7 +1410,6 @@ function renderQFields() {
   const type = document.getElementById('t-ex-type').value;
   const wrap = document.getElementById('q-builder'); if (!wrap) return;
   if (type === 'drag_drop') {
-    // FIX: guard against undefined questionRows[0]
     if (!questionRows.length || !questionRows[0]?.categories) questionRows = [{ prompt:'', categories:[], items:[] }];
     const q = questionRows[0];
     const catsStr = (q.categories || []).join(', ');
@@ -1440,7 +1446,6 @@ function buildQRow(type, q, i) {
     const placeholder = type === 'open_answer' ? 'Ask your question here...' : 'Instruction for student';
     return `<div class="q-row"><div class="q-row-label">Question ${i+1}</div><button class="remove-q" onclick="removeQ(${i})">×</button><textarea placeholder="${placeholder}" oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt||'')}</textarea><span class="field-label">${label}</span><textarea placeholder="e.g. /ɪ/ — the vowel is short and relaxed" oninput="questionRows[${i}].answer=this.value">${esc(q.answer||'')}</textarea><span class="field-label">Audio for this question (optional)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/><div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted)">${q.audio_url?'✅ Audio saved':''}</div></div>`;
   }
-  // multiple_choice
   const opts = q.options || ['', ''];
   const correctIndex = q.correctIndex !== undefined ? q.correctIndex : 0;
   let html = `<div class="q-row"><div class="q-row-label">Question ${i+1} <span style="text-transform:none;font-weight:500;color:var(--text-muted)">(radio = correct answer)</span></div><button class="remove-q" onclick="removeQ(${i})">×</button><textarea placeholder="Question prompt..." oninput="questionRows[${i}].prompt=this.value" style="margin-bottom:12px">${esc(q.prompt||'')}</textarea>`;
@@ -1489,7 +1494,7 @@ function renderManageList() {
 }
 
 /* ══════════════════════════════════════════
-   SOUND DATA
+   MOTOR DE SONIDOS (INTOCABLE Y ORIGINAL)
 ══════════════════════════════════════════ */
 const vowels = {
   pure:[
@@ -1532,7 +1537,7 @@ const consonants = {
     {ipa:"/f/",mw:"[f]",name:"F sound",keyword:"fan",words:["fan","off","phone","cough","laugh"],spellings:["f — fan, feel","ff — off","ph — phone","gh — cough, laugh"],tip:"'Ph' always makes this sound. 'Gh' at the end also makes /f/."},
     {ipa:"/v/",mw:"[v]",name:"V sound",keyword:"van",words:["van","have","love","of","vivid","river"],spellings:["v — van, vivid","f — of (=/v/)"],tip:"Spanish doesn't have a true /v/. Top teeth must press on the lower lip and vibrate."},
     {ipa:"/θ/",mw:"[th]",name:"TH voiceless",keyword:"think",words:["think","bath","three","tooth","through","author"],spellings:["th — think, bath, three, author"],tip:"Tongue tip between teeth, blow air — no voice. Don't substitute /t/, /s/, or /f/."},
-    {ipa:"/ð/",mw:"[th]",name:"TH voiced",keyword:"the",words:["the","this","mother","breathe","father"],spellings:["th — the, this, mother, breathe"],tip:"Same position as voiceless TH but with voicing. Spanish speakers often use /d/."},
+    {ipa:"/ð/",mw:"[th]",name:"TH voiced",keyword:"the",words:["the","this","mother","breathe","father"],spellings:["th — th, this, mother, breathe"],tip:"Same position as voiceless TH but with voicing. Spanish speakers often use /d/."},
     {ipa:"/s/",mw:"[s]",name:"S sound",keyword:"see",words:["see","miss","city","psychology","scene","science"],spellings:["s — see","ss — miss","c — city (before e/i)","sc — scene","ps — psychology"],tip:"'c' before e/i/y makes /s/. 'Ps' at the start — the P is silent."},
     {ipa:"/z/",mw:"[z]",name:"Z sound",keyword:"zoo",words:["zoo","fizz","rose","dogs","his","scissors","xylophone"],spellings:["z — zoo","zz — fizz","s — rose, dogs (voiced)","ss — scissors","x — xylophone"],tip:"Most plurals spelled '-s' are actually /z/ ('dogs', 'runs', 'plays')."},
     {ipa:"/ʃ/",mw:"[sh]",name:"SH sound",keyword:"she",words:["she","ship","nation","special","sure","machine","chef","ocean"],spellings:["sh — she, ship","ti — nation","ci — special","su — sure","ch — chef","ce — ocean"],tip:"Hides in 'ti' (nation), 'ci' (special), 'ch' (chef)."},
@@ -1556,9 +1561,6 @@ const consonants = {
   ]
 };
 
-/* ══════════════════════════════════════════
-   SOUND EXPLORER
-══════════════════════════════════════════ */
 const USE_REAL_AUDIO = false;
 function playWord(word) {
   if (USE_REAL_AUDIO) { const a = new Audio('audio/' + word.toLowerCase() + '.mp3'); a.play().catch(() => speakWord(word)); }
@@ -1570,14 +1572,17 @@ function speakWord(word) {
   const u = new SpeechSynthesisUtterance(word); u.lang = 'en-US'; u.rate = 0.85;
   window.speechSynthesis.speak(u);
 }
+
 function bc(t){return t==="vowel"?"badge-vowel":t==="diphthong"?"badge-diphthong":t==="rcolored"?"badge-rcolored":"badge-consonant";}
 function bl(t){return t==="rcolored"?"r-colored":t;}
+
 function renderCard(s, isActive, onclick) {
   const d = document.createElement('div');
   d.className = 'sound-card' + (isActive ? ' active' : '');
   d.innerHTML = `<div class="sound-ipa">${s.ipa}</div><div class="sound-mw">${s.mw}</div><div class="sound-example">as in "<strong>${s.keyword}</strong>"</div><span class="sound-type-badge ${bc(s.type||'consonant')}">${bl(s.type||'consonant')}</span><div><button class="play-btn" onclick="event.stopPropagation();playWord('${escapeJSArg(s.keyword)}')"><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg>${s.keyword}</button></div>`;
   d.onclick = onclick; return d;
 }
+
 function renderDetail(pid, s, isCon) {
   document.getElementById(pid).innerHTML = `
     <div class="detail-header">
@@ -1588,15 +1593,16 @@ function renderDetail(pid, s, isCon) {
       <div class="detail-section"><div class="detail-section-label">${isCon?'Example words':'Practice words'}</div>
         <div class="words-wrap">${s.words.map((w,i)=>`<span class="word-pill${i===0?' highlight':''}" onclick="playWord('${escapeJSArg(w)}')">${w} ▶</span>`).join('')}</div>
       </div>
-      <div class="detail-section"><div class="detail-section-label">${isCon?'All spellings':"How it's spelled"}</div>
+      <div class="detail-section"><div class="detail-section-label">${isCon?'All spellings':'How it\'s spelled'}</div>
         <div class="words-wrap">${s.spellings.map(sp=>`<span class="word-pill">${sp}</span>`).join('')}</div>
       </div>
     </div>
     <div class="tip-box"><div class="tip-label">For Spanish speakers</div><div class="tip-text">${s.tip}</div></div>`;
 }
+
 function buildGrid(cid, list, getA, setA, pid, isCon, rebuild) {
   const c = document.getElementById(cid); if (!c) return; c.innerHTML = '';
-  list.forEach(s => c.appendChild(renderCard(s, getA() === s.ipa, () => { setA(s.ipa); renderDetail(pid, s, isCon); rebuild(); })));
+  list.forEach(s => c.appendChild(renderCard(s, getA()===s.ipa, () => { setA(s.ipa); renderDetail(pid,s,isCon); rebuild(); })));
 }
 function buildAllVowelGrids() {
   const ga=()=>activeVowel, sa=v=>{activeVowel=v;};
