@@ -94,10 +94,11 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .gate-toggle:hover{text-decoration:underline}
 /* CLASSROOM */
 .course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem;margin-top:1.5rem}
-.course-card{background:var(--surface);border:1px solid var(--skool-border);border-radius:var(--radius);padding:1.5rem;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.03)}
+.course-card{background:var(--surface);border:1px solid var(--skool-border);border-radius:var(--radius);padding:1.5rem;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.03);position:relative}
 .course-card:hover{transform:translateY(-3px);border-color:var(--brand);box-shadow:0 8px 24px rgba(0,0,0,.07)}
 .course-card-title{font-size:17px;font-weight:800;color:var(--text);margin-bottom:6px}
 .course-card-desc{font-size:13px;color:var(--text-muted);margin-bottom:12px}
+.private-badge{position:absolute;top:1rem;right:1rem;background:var(--red-light);color:var(--red-dark);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em}
 .classroom-container{display:flex;gap:1.5rem;min-height:75vh;align-items:flex-start}
 @media(max-width:768px){.classroom-container{flex-direction:column}}
 .c-sidebar{width:280px;flex-shrink:0}
@@ -268,6 +269,12 @@ textarea{resize:vertical;min-height:70px}
 .audio-saved-item{display:flex;justify-content:space-between;align-items:center;background:var(--surface);border:1px solid var(--skool-border);border-radius:var(--radius-sm);padding:6px 10px;margin-bottom:6px;font-size:12px;font-weight:600;color:var(--text)}
 footer{text-align:center;padding:2rem;font-size:12px;color:var(--text-light);border-top:1px solid var(--border);margin-top:3rem}
 footer strong{color:var(--brand)}
+
+/* Progreso del estudiante (Teacher View) */
+.student-prog-row{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid var(--skool-border)}
+.student-prog-row:last-child{border-bottom:none}
+.student-prog-name{font-size:14px;font-weight:600;color:var(--text)}
+.student-prog-stats{font-size:12px;color:var(--text-muted)}
 </style>
 </head>
 <body>
@@ -280,7 +287,7 @@ footer strong{color:var(--brand)}
     <span class="field-label">Title</span>
     <input type="text" id="edit-post-title" placeholder="Post title"/>
     <span class="field-label">Content</span>
-    <textarea id="edit-post-content" style="min-height:120px;" placeholder="Post content..."></textarea>
+    <div id="edit-post-editor-container" style="min-height:120px;margin-bottom:1rem;border-radius:var(--radius-sm);border:1px solid var(--border)"></div>
     <button class="primary-btn" onclick="saveEditedPost()">Save changes</button>
   </div>
 </div>
@@ -443,7 +450,7 @@ footer strong{color:var(--brand)}
 <div class="page" id="page-teacher">
   <div class="teacher-header">
     <h2>Teacher Dashboard</h2>
-    <p>Organize your content in Modules, Subfolders, and Lessons.</p>
+    <p>Organize your content, control access, and view student progress.</p>
   </div>
   <div class="teacher-layout">
     <div>
@@ -452,11 +459,23 @@ footer strong{color:var(--brand)}
         <input type="hidden" id="edit-mod-id" value=""/>
         <span class="field-label">Module name</span>
         <input type="text" id="t-mod-title" placeholder="e.g. Pronunciation Basics"/>
+        
+        <span class="field-label">Access Control</span>
+        <label style="font-size:13px;display:flex;align-items:center;gap:6px;margin-bottom:8px">
+           <input type="checkbox" id="t-mod-private" onchange="document.getElementById('t-mod-emails-wrap').style.display = this.checked ? 'block' : 'none'" style="width:auto;margin:0"/>
+           Make module private (invite-only)
+        </label>
+        <div id="t-mod-emails-wrap" style="display:none; margin-bottom:12px;">
+           <span class="field-label">Allowed emails (comma separated)</span>
+           <textarea id="t-mod-emails" placeholder="e.g. student1@gmail.com, student2@yahoo.com" style="min-height:60px;"></textarea>
+        </div>
+
         <div style="display:flex;gap:8px">
           <button class="primary-btn" onclick="saveModule()">Save module</button>
           <button class="secondary-btn" id="btn-cancel-mod" style="display:none;margin-top:.9rem" onclick="cancelEditMod()">Cancel</button>
         </div>
       </div>
+
       <div class="t-panel">
         <h3 id="panel-title-sub">📁 2. Create Subfolder</h3>
         <input type="hidden" id="edit-sub-id" value=""/>
@@ -469,6 +488,7 @@ footer strong{color:var(--brand)}
           <button class="secondary-btn" id="btn-cancel-sub" style="display:none;margin-top:.9rem" onclick="cancelEditSub()">Cancel</button>
         </div>
       </div>
+
       <div class="t-panel">
         <h3 id="panel-title-les">📝 3. Add Lesson</h3>
         <input type="hidden" id="edit-les-id" value=""/>
@@ -486,6 +506,7 @@ footer strong{color:var(--brand)}
         <span class="field-label">Lesson title</span>
         <input type="text" id="t-les-title" placeholder="e.g. Lesson 1 — Short I vs Long E"/>
         <hr style="border:0;border-top:1px solid var(--skool-border);margin:1.25rem 0"/>
+        
         <div id="fields-video">
           <span class="field-label">YouTube URL</span>
           <input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..."/>
@@ -515,6 +536,7 @@ footer strong{color:var(--brand)}
           <div id="q-builder"></div>
           <button class="add-q-btn" onclick="addQuestion()">+ Add item</button>
         </div>
+
         <div style="margin-top:1.25rem;background:#F0FDF4;padding:14px;border-radius:var(--radius-sm);border:1px solid #BBF7D0">
           <p style="font-size:12px;font-weight:700;color:#166534;margin-bottom:4px">🎧 Lesson audio examples</p>
           <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Add clickable audios for practice words or examples.</p>
@@ -540,6 +562,10 @@ footer strong{color:var(--brand)}
       <div class="t-panel">
         <h3>🛠 Content manager</h3>
         <div id="t-manage-list"><div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div></div>
+      </div>
+      <div class="t-panel">
+        <h3>📊 Student Progress</h3>
+        <div id="t-student-progress-list"><div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">Loading...</div></div>
       </div>
     </div>
   </div>
@@ -611,6 +637,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   communityQuill = new Quill('#community-editor-container', {
     theme: 'snow', placeholder: 'Share something with the community...',
+    modules: { toolbar: [['bold','italic','underline'],['link','image','video'],[ { list:'bullet' }]] }
+  });
+  editPostQuill = new Quill('#edit-post-editor-container', {
+    theme: 'snow', placeholder: 'Edit your post...',
     modules: { toolbar: [['bold','italic','underline'],['link','image','video'],[ { list:'bullet' }]] }
   });
   
@@ -694,7 +724,7 @@ function goToPage(pageId) {
   
   if (pageId === 'classroom') renderClassroomGrid();
   if (pageId === 'community') renderCommunityFeed();
-  if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); }
+  if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); renderTeacherProgress(); }
   if (pageId === 'profile') {
     const p = dbProfiles.find(x => x.id === currentUser?.id);
     if (p) document.getElementById('profile-username').value = p.username || '';
@@ -707,7 +737,9 @@ function goToPage(pageId) {
 ══════════════════════════════════════════ */
 async function fetchData() {
   if (!currentUser) return;
-  const [rMod, rSub, rLes, rProg, rPosts, rComments, rLikes, rProfiles] = await Promise.all([
+  const isTeacher = currentUser.email === TEACHER_EMAIL;
+
+  const [rMod, rSub, rLes, rProg, rPosts, rComments, rLikes, rProfiles, rAllProg] = await Promise.all([
     sb.from('modules').select('*').order('order_index'),
     sb.from('submodules').select('*').order('order_index'),
     sb.from('lessons').select('*').order('order_index'),
@@ -715,11 +747,18 @@ async function fetchData() {
     sb.from('posts').select('*').order('created_at', { ascending: false }),
     sb.from('comments').select('*').order('created_at', { ascending: true }),
     sb.from('likes').select('*'),
-    sb.from('user_profiles').select('*')
+    sb.from('user_profiles').select('*'),
+    isTeacher ? sb.from('student_progress').select('*') : Promise.resolve({data:[]})
   ]);
-  dbModules = rMod.data || []; dbSubmodules = rSub.data || []; dbLessons = rLes.data || []; dbProgress = rProg.data || [];
+  
+  const allModules = rMod.data || [];
+  dbModules = allModules.filter(m => isTeacher || !m.is_private || (m.allowed_emails && m.allowed_emails.toLowerCase().includes(currentUser.email.toLowerCase())));
+  
+  dbSubmodules = rSub.data || []; dbLessons = rLes.data || []; dbProgress = rProg.data || [];
   dbPosts = rPosts.data || []; dbComments = rComments.data || []; dbLikes = rLikes.data || []; dbProfiles = rProfiles.data || [];
+  
   renderClassroomGrid(); updateModuleSelect(); renderManageList();
+  if (isTeacher) renderTeacherProgress(rAllProg.data || []);
   if (document.getElementById('page-community').classList.contains('active')) renderCommunityFeed();
 }
 
@@ -792,13 +831,11 @@ async function submitPost() {
   await fetchData();
 }
 
-/* ── Edit/Delete Post ── */
 function openEditPostModal(postId) {
   const post = dbPosts.find(p => p.id === postId); if (!post) return;
   document.getElementById('edit-post-id').value = postId;
   document.getElementById('edit-post-title').value = post.title;
-  // Convertimos html simple a texto plano para el textarea nativo
-  document.getElementById('edit-post-content').value = post.content.replace(/<br>/g, '\n').replace(/<[^>]*>?/gm, '');
+  editPostQuill.root.innerHTML = post.content;
   document.getElementById('edit-post-modal').classList.remove('hidden');
 }
 
@@ -809,19 +846,14 @@ function closeEditPostModal() {
 async function saveEditedPost() {
   const id = document.getElementById('edit-post-id').value;
   const title = document.getElementById('edit-post-title').value.trim();
-  const content = document.getElementById('edit-post-content').value.trim();
-  if (!title || !content) { alert('Please fill in both fields.'); return; }
-  
+  const content = editPostQuill.root.innerHTML;
+  if (!title || editPostQuill.getText().trim() === '') { alert('Please fill in both fields.'); return; }
   const btn = document.querySelector('#edit-post-modal .primary-btn');
   btn.disabled = true; btn.textContent = 'Saving...';
-  
   const { error } = await sb.from('posts').update({ title, content }).eq('id', id).eq('user_id', currentUser.id);
-  
   btn.disabled = false; btn.textContent = 'Save changes';
   if (error) { alert('Error: ' + error.message); return; }
-  
-  closeEditPostModal(); 
-  await fetchData();
+  closeEditPostModal(); await fetchData();
   if (currentViewedPostId === id) renderPostDetail();
 }
 
@@ -916,7 +948,9 @@ function renderClassroomGrid() {
     const total = modLessons.length;
     const done = modLessons.filter(l => dbProgress.some(p => p.lesson_id === l.id)).length;
     const pct = total === 0 ? 0 : Math.round(done / total * 100);
+    const privateBadge = m.is_private ? `<span class="private-badge">Private</span>` : '';
     return `<div class="course-card" onclick="openModule('${m.id}')">
+      ${privateBadge}
       <div class="course-card-title">${esc(m.title)}</div>
       <div class="course-card-desc">${total} lesson${total !== 1 ? 's' : ''}</div>
       <div style="display:flex;align-items:center;gap:8px">
@@ -951,7 +985,7 @@ function renderSidebar(moduleId) {
     html += `<div class="c-subfolder-group"><div class="c-subfolder-header"><span>${esc(sub.title)}</span><span class="c-subfolder-prog ${pct===100?'done':''}">${pct}%</span></div>`;
     subLessons.forEach(l => {
       const isDone = dbProgress.some(p => p.lesson_id === l.id);
-      html += `<div class="c-item" id="item-${l.id}" onclick="showLesson('${l.id}')"><div style="display:flex;align-items:center;gap:8px;overflow:hidden"><span>${iconMap[l.type]||'📄'}</span><span class="c-item-title">${esc(l.title)}</span></div>${isDone?'<span>✅</span>':''}</div>`;
+      html += `<div class="c-item" id="item-${l.id}" onclick="showLesson('${l.id}')"><div style="display:flex;align-items:center;gap:8px;overflow:hidden"><span>${iconMap[l.type]||'📄'}</span><span class="c-item-title">${esc(l.title)}</span></div>${isDone?'<span>✅</span>':'<span style="font-size:10px">⚪</span>'}</div>`;
     });
     html += '</div>';
   });
@@ -960,7 +994,7 @@ function renderSidebar(moduleId) {
     html += '<div class="c-subfolder-group">';
     orphans.forEach(l => {
       const isDone = dbProgress.some(p => p.lesson_id === l.id);
-      html += `<div class="c-item" id="item-${l.id}" onclick="showLesson('${l.id}')"><div style="display:flex;align-items:center;gap:8px;overflow:hidden"><span>${iconMap[l.type]||'📄'}</span><span class="c-item-title">${esc(l.title)}</span></div>${isDone?'<span>✅</span>':''}</div>`;
+      html += `<div class="c-item" id="item-${l.id}" onclick="showLesson('${l.id}')"><div style="display:flex;align-items:center;gap:8px;overflow:hidden"><span>${iconMap[l.type]||'📄'}</span><span class="c-item-title">${esc(l.title)}</span></div>${isDone?'<span>✅</span>':'<span style="font-size:10px">⚪</span>'}</div>`;
     });
     html += '</div>';
   }
@@ -1042,9 +1076,14 @@ function showLesson(lessonId) {
     document.getElementById('player-title').textContent = currentLesson.title;
     const audioEl = document.getElementById('player-audio');
     if (currentLesson.audio_url) { audioEl.src = currentLesson.audio_url; audioEl.style.display = 'block'; } else audioEl.style.display = 'none';
+    
     document.getElementById('submit-btn').disabled = false; document.getElementById('submit-btn').style.display = 'inline-block';
     document.getElementById('retry-btn').style.display = 'none'; document.getElementById('score-area').innerHTML = '';
-    renderAudios('cv-task-audios', audios); renderPlayerQuestions(); renderResources('cv-task-resources', resources);
+    
+    renderAudios('cv-task-audios', audios); 
+    renderPlayerQuestions(isDone); 
+    renderResources('cv-task-resources', resources);
+    
     if (isDone) {
       const prev = dbProgress.find(p => p.lesson_id === lessonId);
       if (prev) {
@@ -1058,9 +1097,12 @@ function showLesson(lessonId) {
 /* ══════════════════════════════════════════
    EXERCISE PLAYER
 ══════════════════════════════════════════ */
-function renderPlayerQuestions() {
+function renderPlayerQuestions(isDone = false) {
   const wrap = document.getElementById('player-questions');
   const content = safeParseJSON(currentLesson.task_content);
+  const prev = isDone ? dbProgress.find(p => p.lesson_id === currentLesson.id) : null;
+  const prevAnswers = prev?.answers || {}; // Recuperar respuestas guardadas
+
   if (currentLesson.task_type === 'drag_drop') {
     const q = content[0] || { prompt:'', categories:[], items:[] };
     const words = shuffle([...(q.items||[])]);
@@ -1076,16 +1118,22 @@ function renderPlayerQuestions() {
   }
   wrap.innerHTML = content.map((q, i) => {
     const qAudio = q.audio_url ? `<audio controls src="${esc(q.audio_url)}" style="width:100%;height:36px;margin-bottom:10px;border-radius:20px"></audio>` : '';
-    if (currentLesson.task_type === 'fill_in_blank') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${esc(q.prompt)}</div><input class="fitb-input" id="fitb-${i}" type="text" placeholder="Your answer…" autocomplete="off" oninput="studentAnswers[${i}]=this.value"/></div>`;
-    if (currentLesson.task_type === 'dictation') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="dict-${i}" placeholder="Write what you hear…" oninput="studentAnswers[${i}]=this.value"></textarea></div>`;
+    let given = prevAnswers[i] || ''; // Respuesta que dio la alumna antes
+    let disabledAttr = isDone ? 'disabled' : '';
+
+    if (currentLesson.task_type === 'fill_in_blank') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${esc(q.prompt)}</div><input class="fitb-input" id="fitb-${i}" type="text" placeholder="Your answer…" value="${esc(given)}" autocomplete="off" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}/></div>`;
+    if (currentLesson.task_type === 'dictation') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="dict-${i}" placeholder="Write what you hear…" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(given)}</textarea></div>`;
     if (currentLesson.task_type === 'open_answer') {
-      const revealHtml = q.answer ? `<div class="open-answer-reveal" id="reveal-${i}"><strong>Expected answer / keywords:</strong> ${esc(q.answer)}</div>` : '';
-      return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="oa-${i}" placeholder="Type your answer here..." oninput="studentAnswers[${i}]=this.value"></textarea>${revealHtml}</div>`;
+      const revealHtml = q.answer ? `<div class="open-answer-reveal ${isDone?'visible':''}" id="reveal-${i}"><strong>Expected answer / keywords:</strong> ${esc(q.answer)}</div>` : '';
+      return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="oa-${i}" placeholder="Type your answer here..." oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(given)}</textarea>${revealHtml}</div>`;
     }
     const rawOpts = Array.isArray(q.options) ? q.options : [];
     const opts = rawOpts.filter(o => o && String(o).trim() !== '');
     const shuffled = shuffle([...opts]);
-    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${esc(q.prompt)}</div><div class="options-grid">${shuffled.map((o,j)=>`<button class="opt-btn" id="opt-${i}-${j}" onclick="selectOpt(${i},${j},'${escapeJSArg(o)}',${shuffled.length})">${esc(o)}</button>`).join('')}</div></div>`;
+    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${esc(q.prompt)}</div><div class="options-grid">${shuffled.map((o,j)=>{
+      const isSelected = given === o ? 'selected' : '';
+      return `<button class="opt-btn ${isSelected}" id="opt-${i}-${j}" onclick="selectOpt(${i},${j},'${escapeJSArg(o)}',${shuffled.length})" ${disabledAttr}>${esc(o)}</button>`;
+    }).join('')}</div></div>`;
   }).join('');
 }
 
@@ -1125,16 +1173,15 @@ async function submitExercise() {
   if (currentLesson.task_type === 'open_answer') {
     content.forEach((q, i) => {
       const el = document.getElementById('oa-' + i);
-      if (el) { el.style.borderColor = 'var(--brand)'; el.disabled = true; }
+      if (el) { el.style.borderColor = 'var(--brand)'; el.disabled = true; studentAnswers[i] = el.value; }
       const revealEl = document.getElementById('reveal-' + i);
       if (revealEl) revealEl.classList.add('visible');
     });
     showOpenAnswerCompleted();
-    document.getElementById('submit-btn').disabled = true;
-    document.getElementById('submit-btn').style.display = 'none';
+    document.getElementById('submit-btn').disabled = true; document.getElementById('submit-btn').style.display = 'none';
     document.getElementById('retry-btn').style.display = 'inline-block';
     if (currentUser && currentLesson) {
-      await sb.from('student_progress').upsert({ user_id: currentUser.id, lesson_id: currentLesson.id, score: 1, total_questions: 1 }, { onConflict: 'user_id,lesson_id' });
+      await sb.from('student_progress').upsert({ user_id: currentUser.id, lesson_id: currentLesson.id, score: 1, total_questions: 1, answers: studentAnswers }, { onConflict: 'user_id,lesson_id' });
       await fetchData(); if (activeModuleId) renderSidebar(activeModuleId);
     }
     return;
@@ -1167,8 +1214,12 @@ async function submitExercise() {
       if (currentLesson.task_type === 'fill_in_blank') given = document.getElementById('fitb-'+i)?.value.trim() || '';
       else if (currentLesson.task_type === 'dictation') given = document.getElementById('dict-'+i)?.value.trim() || '';
       else given = studentAnswers[i] || '';
+      
+      studentAnswers[i] = given; // Guardar para la BD
+      
       const ok = String(given).toLowerCase().trim() === String(correctAns).toLowerCase().trim();
       if (ok) correct++;
+      
       if (currentLesson.task_type === 'fill_in_blank') { const el = document.getElementById('fitb-'+i); if(el){ el.classList.add(ok?'correct':'wrong'); el.disabled = true; } }
       else if (currentLesson.task_type !== 'dictation') {
         document.querySelectorAll(`[id^="opt-${i}-"]`).forEach(b => {
@@ -1185,7 +1236,7 @@ async function submitExercise() {
   document.getElementById('submit-btn').disabled = true; document.getElementById('submit-btn').style.display = 'none';
   document.getElementById('retry-btn').style.display = 'inline-block';
   if (currentUser && currentLesson) {
-    await sb.from('student_progress').upsert({ user_id: currentUser.id, lesson_id: currentLesson.id, score: correct, total_questions: totalQ }, { onConflict: 'user_id,lesson_id' });
+    await sb.from('student_progress').upsert({ user_id: currentUser.id, lesson_id: currentLesson.id, score: correct, total_questions: totalQ, answers: studentAnswers }, { onConflict: 'user_id,lesson_id' });
     await fetchData(); if (activeModuleId) renderSidebar(activeModuleId);
   }
 }
@@ -1220,18 +1271,34 @@ function showScore(correct, total, results, readonly) {
 async function saveModule() {
   const title = document.getElementById('t-mod-title').value.trim();
   const editId = document.getElementById('edit-mod-id').value;
+  const isPrivate = document.getElementById('t-mod-private').checked;
+  const allowedEmails = document.getElementById('t-mod-emails').value.trim();
+  
   if (!title) { alert('Add a module name.'); return; }
-  const payload = editId ? { title } : { title, order_index: dbModules.length };
+  const payload = editId ? { title, is_private: isPrivate, allowed_emails: allowedEmails } : { title, order_index: dbModules.length, is_private: isPrivate, allowed_emails: allowedEmails };
   const res = editId ? await sb.from('modules').update(payload).eq('id', editId) : await sb.from('modules').insert([payload]);
   if (res.error) { alert('Error: ' + res.error.message); return; }
   await fetchData(); alert(editId ? 'Module updated!' : 'Module created!'); cancelEditMod();
 }
 function editModule(id) {
   const m = dbModules.find(x => x.id === id); if (!m) return;
-  document.getElementById('t-mod-title').value = m.title; document.getElementById('edit-mod-id').value = m.id;
+  document.getElementById('t-mod-title').value = m.title; 
+  document.getElementById('edit-mod-id').value = m.id;
+  document.getElementById('t-mod-private').checked = m.is_private;
+  document.getElementById('t-mod-emails-wrap').style.display = m.is_private ? 'block' : 'none';
+  document.getElementById('t-mod-emails').value = m.allowed_emails || '';
+  
   document.getElementById('panel-title-mod').textContent = '✏️ Edit module'; document.getElementById('btn-cancel-mod').style.display = 'inline-block'; window.scrollTo(0, 0);
 }
-function cancelEditMod() { document.getElementById('t-mod-title').value = ''; document.getElementById('edit-mod-id').value = ''; document.getElementById('panel-title-mod').textContent = '📂 1. Create Module'; document.getElementById('btn-cancel-mod').style.display = 'none'; }
+function cancelEditMod() { 
+  document.getElementById('t-mod-title').value = ''; 
+  document.getElementById('edit-mod-id').value = ''; 
+  document.getElementById('t-mod-private').checked = false;
+  document.getElementById('t-mod-emails-wrap').style.display = 'none';
+  document.getElementById('t-mod-emails').value = '';
+  document.getElementById('panel-title-mod').textContent = '📂 1. Create Module'; 
+  document.getElementById('btn-cancel-mod').style.display = 'none'; 
+}
 async function deleteModule(id) { if (!confirm('Delete this module and ALL its content?')) return; await sb.from('lessons').delete().eq('module_id', id); await sb.from('submodules').delete().eq('module_id', id); await sb.from('modules').delete().eq('id', id); fetchData(); }
 async function moveModule(id, dir) { const idx = dbModules.findIndex(m => m.id === id); const t = dbModules[idx + dir]; if (!t) return; await sb.from('modules').update({ order_index: t.order_index }).eq('id', id); await sb.from('modules').update({ order_index: dbModules[idx].order_index }).eq('id', t.id); fetchData(); }
 
@@ -1471,25 +1538,30 @@ async function uploadQAudio(event, i) {
   const el = document.getElementById('q-audio-' + i); if (el) el.textContent = '✅ Audio uploaded';
 }
 
-/* ── MANAGE LIST ── */
-function renderManageList() {
-  const list = document.getElementById('t-manage-list'); if (!list) return;
-  if (!dbModules.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div>'; return; }
-  const iconMap = { video:'📺', text:'📄', task:'📝', embed:'🌐' };
-  list.innerHTML = dbModules.map(m => {
-    const subs = dbSubmodules.filter(s => s.module_id === m.id);
-    const orphans = dbLessons.filter(l => l.module_id === m.id && !l.submodule_id);
-    let html = `<div class="manage-item" style="background:var(--skool-hover);border-radius:var(--radius-sm);margin-bottom:4px;border:1px solid var(--border)"><span class="manage-title">📘 ${esc(m.title)}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveModule('${m.id}',-1)">↑</button><button class="secondary-btn" onclick="moveModule('${m.id}',1)">↓</button><button class="secondary-btn" onclick="editModule('${m.id}')">Edit</button><button class="danger-btn" onclick="deleteModule('${m.id}')">Delete</button></div></div>`;
-    subs.forEach(sub => {
-      html += `<div class="manage-item" style="background:var(--bg);margin-left:1.5rem;border-left:2px solid var(--brand);margin-bottom:2px"><span class="manage-title">📁 ${esc(sub.title)}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveSubmodule('${sub.id}',-1)">↑</button><button class="secondary-btn" onclick="moveSubmodule('${sub.id}',1)">↓</button><button class="secondary-btn" onclick="editSubmodule('${sub.id}')">Edit</button><button class="danger-btn" onclick="deleteSubmodule('${sub.id}')">Delete</button></div></div>`;
-      dbLessons.filter(l => l.submodule_id === sub.id).forEach(l => {
-        html += `<div class="manage-item" style="padding-left:3rem"><span class="manage-title" style="color:var(--text-muted)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveLesson('${l.id}',-1)">↑</button><button class="secondary-btn" onclick="moveLesson('${l.id}',1)">↓</button><button class="secondary-btn" onclick="editLesson('${l.id}')">Edit</button><button class="danger-btn" onclick="deleteLesson('${l.id}')">Delete</button></div></div>`;
-      });
-    });
-    orphans.forEach(l => {
-      html += `<div class="manage-item" style="padding-left:1.5rem"><span class="manage-title" style="color:var(--text-muted)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveLesson('${l.id}',-1)">↑</button><button class="secondary-btn" onclick="moveLesson('${l.id}',1)">↓</button><button class="secondary-btn" onclick="editLesson('${l.id}')">Edit</button><button class="danger-btn" onclick="deleteLesson('${l.id}')">Delete</button></div></div>`;
-    });
-    return html;
+/* ── STUDENT PROGRESS PANEL ── */
+function renderTeacherProgress(allProgress) {
+  const list = document.getElementById('t-student-progress-list'); if (!list) return;
+  if (!dbProfiles.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No students registered yet.</div>'; return; }
+  
+  // No mostramos al profesor en la lista de alumnos
+  const students = dbProfiles.filter(p => p.id !== currentUser.id);
+  
+  if (!students.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No students registered yet.</div>'; return; }
+
+  list.innerHTML = students.map(s => {
+    // Calculamos cuántas lecciones hizo este alumno
+    const done = allProgress.filter(p => p.user_id === s.id).length;
+    return `
+      <div class="student-prog-row">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="post-avatar" style="width:30px;height:30px;font-size:12px">${renderAvatarHTML(s.id, s.username || 'Student')}</div>
+          <div class="student-prog-name">${esc(s.username || 'Unnamed Student')}</div>
+        </div>
+        <div class="student-prog-stats">
+          <span style="font-weight:700;color:var(--brand)">${done}</span> lessons completed
+        </div>
+      </div>
+    `;
   }).join('');
 }
 
@@ -1518,102 +1590,4 @@ const vowels = {
   rcolored:[
     {ipa:"/ɝ/",mw:"[er]",name:"Stressed ER",keyword:"her",type:"rcolored",words:["her","bird","word","nurse","earth","first","hurt","work"],spellings:["er — her, fern","ir — bird, first","ur — nurse, hurt","or — word, work","ear — earth, learn"],tip:"The tongue curls back while the vowel is produced. No equivalent in Spanish."},
     {ipa:"/ɚ/",mw:"[er]",name:"Unstressed ER",keyword:"bigger",type:"rcolored",words:["bigger","butter","doctor","teacher","mother","color","dollar"],spellings:["er — bigger, mother","or — doctor, color","ar — dollar, popular"],tip:"The unstressed /ɝ/. Very common in '-er', '-or', '-ar' endings."},
-    {ipa:"/ɑr/",mw:"[ar]",name:"AR sound",keyword:"far",type:"rcolored",words:["far","car","heart","park","start","guard"],spellings:["ar — far, car, park","ear — heart","ua — guard"],tip:"Wide-open /ɑ/ followed by the American R curl."},
-    {ipa:"/ɛr/",mw:"[er]",name:"AIR sound",keyword:"fare",type:"rcolored",words:["fare","care","air","there","where","wear","bear","their"],spellings:["are — fare, care","air — air, fair","ere — there, where","ear — wear, bear"],tip:"A mid-front /ɛ/ that transitions into the American R."},
-    {ipa:"/ɪr/",mw:"[eer]",name:"EAR sound",keyword:"here",type:"rcolored",words:["here","ear","fear","deer","beer","cheer","year"],spellings:["ere — here","ear — ear, fear","eer — deer, beer, cheer"],tip:"Starts with the high /iː/ position then curls into the R."},
-    {ipa:"/ɔr/",mw:"[or]",name:"OR sound",keyword:"or",type:"rcolored",words:["or","for","more","door","four","floor","war","born"],spellings:["or — or, for, born","ore — more, store","oor — door, floor","our — four, court","ar — war"],tip:"A rounded /ɔ/ that flows into the American R."}
-  ]
-};
-const consonants = {
-  stops:[
-    {ipa:"/p/",mw:"[p]",name:"P sound",keyword:"pen",words:["pen","top","happy","apple","camp"],spellings:["p — pen, top","pp — happy, apple"],tip:"Aspirated at the start of stressed syllables — you feel a puff of air."},
-    {ipa:"/b/",mw:"[b]",name:"B sound",keyword:"big",words:["big","cab","able","baby","job","ebb"],spellings:["b — big, cab","bb — ebb"],tip:"No aspiration. Always keep it a full stop with both lips."},
-    {ipa:"/t/",mw:"[t]",name:"T sound",keyword:"top",words:["top","cat","water","butter","action","nature","question"],spellings:["t — top, cat","tt — butter","ti — action (=/ʃ/)","tu — nature (=/tʃ/)"],tip:"Between vowels, American /t/ becomes a quick flap — like a fast /d/."},
-    {ipa:"/d/",mw:"[d]",name:"D sound",keyword:"dog",words:["dog","ride","made","middle","add","loved","could"],spellings:["d — dog, ride","dd — middle, add","ed — loved (past tense)"],tip:"Between vowels it can sound like a flap. Focus on voicing."},
-    {ipa:"/k/",mw:"[k]",name:"K sound",keyword:"cat",words:["cat","kite","queen","school","fix","account","antique","choir"],spellings:["c — cat","k — kite","ck — back","qu — queen (=/kw/)","x — fix (=/ks/)","ch — choir"],tip:"Spelled many ways: c, k, ck, ch, x."},
-    {ipa:"/g/",mw:"[g]",name:"G sound",keyword:"go",words:["go","big","egg","ghost","guest","exact"],spellings:["g — go, big","gg — egg","gh — ghost","gu — guest","x — exact (=/gz/)"],tip:"'Gh' is silent in many words but sounds like /g/ in 'ghost'."}
-  ],
-  fricatives:[
-    {ipa:"/f/",mw:"[f]",name:"F sound",keyword:"fan",words:["fan","off","phone","cough","laugh"],spellings:["f — fan, feel","ff — off","ph — phone","gh — cough, laugh"],tip:"'Ph' always makes this sound. 'Gh' at the end also makes /f/."},
-    {ipa:"/v/",mw:"[v]",name:"V sound",keyword:"van",words:["van","have","love","of","vivid","river"],spellings:["v — van, vivid","f — of (=/v/)"],tip:"Spanish doesn't have a true /v/. Top teeth must press on the lower lip and vibrate."},
-    {ipa:"/θ/",mw:"[th]",name:"TH voiceless",keyword:"think",words:["think","bath","three","tooth","through","author"],spellings:["th — think, bath, three, author"],tip:"Tongue tip between teeth, blow air — no voice. Don't substitute /t/, /s/, or /f/."},
-    {ipa:"/ð/",mw:"[th]",name:"TH voiced",keyword:"the",words:["the","this","mother","breathe","father"],spellings:["th — th, this, mother, breathe"],tip:"Same position as voiceless TH but with voicing. Spanish speakers often use /d/."},
-    {ipa:"/s/",mw:"[s]",name:"S sound",keyword:"see",words:["see","miss","city","psychology","scene","science"],spellings:["s — see","ss — miss","c — city (before e/i)","sc — scene","ps — psychology"],tip:"'c' before e/i/y makes /s/. 'Ps' at the start — the P is silent."},
-    {ipa:"/z/",mw:"[z]",name:"Z sound",keyword:"zoo",words:["zoo","fizz","rose","dogs","his","scissors","xylophone"],spellings:["z — zoo","zz — fizz","s — rose, dogs (voiced)","ss — scissors","x — xylophone"],tip:"Most plurals spelled '-s' are actually /z/ ('dogs', 'runs', 'plays')."},
-    {ipa:"/ʃ/",mw:"[sh]",name:"SH sound",keyword:"she",words:["she","ship","nation","special","sure","machine","chef","ocean"],spellings:["sh — she, ship","ti — nation","ci — special","su — sure","ch — chef","ce — ocean"],tip:"Hides in 'ti' (nation), 'ci' (special), 'ch' (chef)."},
-    {ipa:"/ʒ/",mw:"[zh]",name:"ZH sound",keyword:"measure",words:["measure","vision","usual","beige","genre"],spellings:["si — vision","su — measure, usual","ge — beige","g — genre"],tip:"The voiced /ʃ/. The 's' in 'vision'."},
-    {ipa:"/h/",mw:"[h]",name:"H sound",keyword:"hat",words:["hat","ahead","who","hello","whole"],spellings:["h — hat, hello","wh — who, whole (=/h/)"],tip:"A gentle breath — much softer than the Spanish /x/ (as in 'Juan')."}
-  ],
-  affricates:[
-    {ipa:"/tʃ/",mw:"[ch]",name:"CH sound",keyword:"chin",words:["chin","watch","teacher","nature","question","cello"],spellings:["ch — chin","tch — watch","tu — nature","ti — question","c — cello"],tip:"Starts like /t/ and releases as /ʃ/."},
-    {ipa:"/dʒ/",mw:"[j]",name:"J sound",keyword:"job",words:["job","judge","gym","age","bridge","soldier"],spellings:["j — job","g — gym, age (before e/i/y)","dge — judge, bridge","di — soldier"],tip:"'G' before e, i, y often makes /dʒ/. 'Dge' always makes /dʒ/."}
-  ],
-  nasals:[
-    {ipa:"/m/",mw:"[m]",name:"M sound",keyword:"man",words:["man","him","summer","dumb","climb"],spellings:["m — man","mm — summer","mb — dumb, climb (silent b)"],tip:"Watch for silent letters: 'climb' (b silent)."},
-    {ipa:"/n/",mw:"[n]",name:"N sound",keyword:"no",words:["no","sun","know","knife","gnat","inn"],spellings:["n — no, sun","kn — know (silent k)","gn — gnat (silent g)","nn — inn"],tip:"'Kn' at the start — the K is always silent."},
-    {ipa:"/ŋ/",mw:"[ng]",name:"NG sound",keyword:"sing",words:["sing","thing","think","long","ring","bank"],spellings:["ng — sing, ring","n — think, bank (before /k/)"],tip:"One sound — back of tongue to soft palate."}
-  ],
-  liquids:[
-    {ipa:"/r/",mw:"[r]",name:"American R",keyword:"red",words:["red","car","bird","world","river","write","wrap"],spellings:["r — red, river","rr — sorry","wr — write (silent w)","rh — rhyme (silent h)"],tip:"The tongue curls back without touching anything. Unlike Spanish trilled /r/."},
-    {ipa:"/l/",mw:"[l]",name:"L sound",keyword:"like",words:["like","call","feel","hello","people","walk","half","calm"],spellings:["l — like, feel","ll — call, hello","le — people","lk — walk (silent l)","lf — half (silent l)"],tip:"Light L (start of syllable) vs dark L (end — almost a vowel). Many silent L words."},
-    {ipa:"/j/",mw:"[y]",name:"Y glide",keyword:"yes",words:["yes","you","year","use","cute","few","onion"],spellings:["y — yes, year","u — use, cute (=/juː/)","ew — few (=/juː/)","i — onion (=/j/)"],tip:"'U' in 'use' and 'cute' starts with this /j/ glide."},
-    {ipa:"/w/",mw:"[w]",name:"W sound",keyword:"we",words:["we","world","quick","away","always","one","once"],spellings:["w — we, world","wh — where, when","qu — quick (=/kw/)","o — one (=/w/)"],tip:"Start with lips tightly rounded like /uː/, then move quickly into the next vowel."}
-  ]
-};
-
-const USE_REAL_AUDIO = false;
-function playWord(word) {
-  if (USE_REAL_AUDIO) { const a = new Audio('audio/' + word.toLowerCase() + '.mp3'); a.play().catch(() => speakWord(word)); }
-  else speakWord(word);
-}
-function speakWord(word) {
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(word); u.lang = 'en-US'; u.rate = 0.85;
-  window.speechSynthesis.speak(u);
-}
-
-function bc(t){return t==="vowel"?"badge-vowel":t==="diphthong"?"badge-diphthong":t==="rcolored"?"badge-rcolored":"badge-consonant";}
-function bl(t){return t==="rcolored"?"r-colored":t;}
-
-function renderCard(s, isActive, onclick) {
-  const d = document.createElement('div');
-  d.className = 'sound-card' + (isActive ? ' active' : '');
-  d.innerHTML = `<div class="sound-ipa">${s.ipa}</div><div class="sound-mw">${s.mw}</div><div class="sound-example">as in "<strong>${s.keyword}</strong>"</div><span class="sound-type-badge ${bc(s.type||'consonant')}">${bl(s.type||'consonant')}</span><div><button class="play-btn" onclick="event.stopPropagation();playWord('${escapeJSArg(s.keyword)}')"><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg>${s.keyword}</button></div>`;
-  d.onclick = onclick; return d;
-}
-
-function renderDetail(pid, s, isCon) {
-  document.getElementById(pid).innerHTML = `
-    <div class="detail-header">
-      <div><div class="detail-big-ipa">${s.ipa}</div><div class="detail-big-mw">${s.mw}</div></div>
-      <div><div class="detail-name">${s.name}</div><div class="detail-keyword">as in "<strong>${s.keyword}</strong>"</div><span class="sound-type-badge ${isCon?'badge-consonant':bc(s.type)}" style="margin-top:6px;display:inline-block">${isCon?'consonant':bl(s.type)}</span></div>
-    </div>
-    <div class="detail-body">
-      <div class="detail-section"><div class="detail-section-label">${isCon?'Example words':'Practice words'}</div>
-        <div class="words-wrap">${s.words.map((w,i)=>`<span class="word-pill${i===0?' highlight':''}" onclick="playWord('${escapeJSArg(w)}')">${w} ▶</span>`).join('')}</div>
-      </div>
-      <div class="detail-section"><div class="detail-section-label">${isCon?'All spellings':'How it\'s spelled'}</div>
-        <div class="words-wrap">${s.spellings.map(sp=>`<span class="word-pill">${sp}</span>`).join('')}</div>
-      </div>
-    </div>
-    <div class="tip-box"><div class="tip-label">For Spanish speakers</div><div class="tip-text">${s.tip}</div></div>`;
-}
-
-function buildGrid(cid, list, getA, setA, pid, isCon, rebuild) {
-  const c = document.getElementById(cid); if (!c) return; c.innerHTML = '';
-  list.forEach(s => c.appendChild(renderCard(s, getA()===s.ipa, () => { setA(s.ipa); renderDetail(pid,s,isCon); rebuild(); })));
-}
-function buildAllVowelGrids() {
-  const ga=()=>activeVowel, sa=v=>{activeVowel=v;};
-  [['pure-vowel-grid','pure'],['diphthong-grid','diphthongs'],['rcolored-grid','rcolored']].forEach(([id,k])=>buildGrid(id,vowels[k],ga,sa,'vowel-detail',false,buildAllVowelGrids));
-}
-function buildAllConsonantGrids() {
-  const ga=()=>activeConsonant, sa=v=>{activeConsonant=v;};
-  [['stops-grid','stops'],['fricatives-grid','fricatives'],['affricates-grid','affricates'],['nasals-grid','nasals'],['liquids-grid','liquids']].forEach(([id,k])=>buildGrid(id,consonants[k],ga,sa,'consonant-detail',true,buildAllConsonantGrids));
-}
-buildAllVowelGrids();
-buildAllConsonantGrids();
-</script>
-</body>
-</html>
+    {ipa:"/ɑr/",mw:"[ar]",name:"AR sound",keyword:"far",type:"rcolored",words:["far","car","heart","park","start","guard"],spellings:["ar — far, car, park","ear — heart","ua — guard
