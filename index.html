@@ -678,7 +678,7 @@ function updateAuthUI() {
     btn.textContent = 'Log out'; btn.classList.add('logout-btn-nav'); btn.classList.remove('auth-btn');
     profileTab.style.display = 'inline-block';
     if (currentUser.email === TEACHER_EMAIL) teacherTab.style.display = 'inline-block';
-    if (document.getElementById('page-auth').classList.contains('active')) goToPage('community');
+    if (document.getElementById('page-auth').classList.contains('active')) goToPage('classroom');
   } else {
     btn.textContent = 'Log in'; btn.classList.remove('logout-btn-nav'); btn.classList.add('auth-btn');
     teacherTab.style.display = 'none'; profileTab.style.display = 'none';
@@ -769,14 +769,9 @@ async function fetchData() {
  dbSubmodules = rSub.data || []; dbLessons = rLes.data || []; dbProgress = rProg.data || [];
   dbPosts = rPosts.data || []; dbComments = rComments.data || []; dbLikes = rLikes.data || []; dbProfiles = rProfiles.data || [];
 
-  renderClassroomGrid(); 
-  updateModuleSelect(); 
-  
-  if (typeof renderManageList === 'function') renderManageList();
-  if (isTeacher) renderTeacherProgress(rAllProg.data || []);
-  if (document.getElementById('page-community').classList.contains('active')) renderCommunityFeed();
-  
-  renderClassroomGrid(); updateModuleSelect(); renderManageList();
+  renderClassroomGrid();
+  updateModuleSelect();
+  renderManageList();
   if (isTeacher) renderTeacherProgress(rAllProg.data || []);
   if (document.getElementById('page-community').classList.contains('active')) renderCommunityFeed();
 }
@@ -1698,7 +1693,8 @@ function buildAllConsonantGrids() {
 }
 buildAllVowelGrids();
 buildAllConsonantGrids();
-  function renderManageList() {
+
+function renderManageList() {
   const list = document.getElementById('t-manage-list'); if (!list) return;
   if (!dbModules.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div>'; return; }
   const iconMap = { video:'📺', text:'📄', task:'📝', embed:'🌐' };
