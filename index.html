@@ -1698,6 +1698,26 @@ function buildAllConsonantGrids() {
 }
 buildAllVowelGrids();
 buildAllConsonantGrids();
+  function renderManageList() {
+  const list = document.getElementById('t-manage-list'); if (!list) return;
+  if (!dbModules.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div>'; return; }
+  const iconMap = { video:'📺', text:'📄', task:'📝', embed:'🌐' };
+  list.innerHTML = dbModules.map(m => {
+    const subs = dbSubmodules.filter(s => s.module_id === m.id);
+    const orphans = dbLessons.filter(l => l.module_id === m.id && !l.submodule_id);
+    let html = `<div class="manage-item" style="background:var(--skool-hover);border-radius:var(--radius-sm);margin-bottom:4px;border:1px solid var(--border)"><span class="manage-title">📘 ${esc(m.title)}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveModule('${m.id}',-1)">↑</button><button class="secondary-btn" onclick="moveModule('${m.id}',1)">↓</button><button class="secondary-btn" onclick="editModule('${m.id}')">Edit</button><button class="danger-btn" onclick="deleteModule('${m.id}')">Delete</button></div></div>`;
+    subs.forEach(sub => {
+      html += `<div class="manage-item" style="background:var(--bg);margin-left:1.5rem;border-left:2px solid var(--brand);margin-bottom:2px"><span class="manage-title">📁 ${esc(sub.title)}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveSubmodule('${sub.id}',-1)">↑</button><button class="secondary-btn" onclick="moveSubmodule('${sub.id}',1)">↓</button><button class="secondary-btn" onclick="editSubmodule('${sub.id}')">Edit</button><button class="danger-btn" onclick="deleteSubmodule('${sub.id}')">Delete</button></div></div>`;
+      dbLessons.filter(l => l.submodule_id === sub.id).forEach(l => {
+        html += `<div class="manage-item" style="padding-left:3rem"><span class="manage-title" style="color:var(--text-muted)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveLesson('${l.id}',-1)">↑</button><button class="secondary-btn" onclick="moveLesson('${l.id}',1)">↓</button><button class="secondary-btn" onclick="editLesson('${l.id}')">Edit</button><button class="danger-btn" onclick="deleteLesson('${l.id}')">Delete</button></div></div>`;
+      });
+    });
+    orphans.forEach(l => {
+      html += `<div class="manage-item" style="padding-left:1.5rem"><span class="manage-title" style="color:var(--text-muted)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveLesson('${l.id}',-1)">↑</button><button class="secondary-btn" onclick="moveLesson('${l.id}',1)">↓</button><button class="secondary-btn" onclick="editLesson('${l.id}')">Edit</button><button class="danger-btn" onclick="deleteLesson('${l.id}')">Delete</button></div></div>`;
+    });
+    return html;
+  }).join('');
+}
 </script>
 </body>
 </html>
