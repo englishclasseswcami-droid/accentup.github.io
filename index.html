@@ -13,13 +13,11 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* NUEVA PALETA ACCENTUP */
   --brand-dark: #07216b;
   --brand: #2150e3;
   --brand-light: #EEEDFE;
   --accent: #cafc05;
   --accent-light: #fffbca;
-  
   --bg:#F7F7FB;--surface:#FFFFFF;
   --text:#14141F;--text-muted:#6B6B80;--text-light:#A0A0B5;
   --border:rgba(0,0,0,0.08);--radius:14px;--radius-sm:8px;
@@ -48,7 +46,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .section-intro h2{font-size:20px;font-weight:800;color:var(--brand-dark);margin-bottom:5px}
 .section-intro p{font-size:13px;color:var(--text-muted);line-height:1.6}
 
-/* ════════ LANDING PAGE STYLES ════════ */
+/* LANDING PAGE STYLES */
 .lp-page { padding: 0 !important; max-width: 100% !important; }
 .lp-hero { background: var(--brand-dark); color: #fff; padding: 5rem 1.5rem; text-align: center; }
 .lp-container { max-width: 900px; margin: 0 auto; }
@@ -59,7 +57,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .lp-cta-btn { display: inline-block; background: var(--accent); color: var(--brand-dark); font-size: 16px; font-weight: 800; text-decoration: none; padding: 14px 32px; border-radius: 30px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 14px rgba(202, 252, 5, 0.3); border: none; cursor: pointer; }
 .lp-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(202, 252, 5, 0.5); }
 .lp-micro { display: block; font-size: 12px; opacity: 0.6; margin-top: 12px; }
-
 .lp-section { padding: 5rem 1.5rem; }
 .lp-section.cream { background: var(--accent-light); }
 .lp-section.blue { background: var(--brand); color: #fff; }
@@ -67,17 +64,14 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .blue .lp-h2 { color: #fff; }
 .lp-p { font-size: 16px; color: var(--text-muted); line-height: 1.7; text-align: center; max-width: 760px; margin: 0 auto 3rem; }
 .blue .lp-p { color: rgba(255,255,255,0.8); }
-
 .lp-quotes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
 .lp-quote-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border-left: 4px solid var(--brand); }
 .lp-quote-card p { font-size: 15px; font-weight: 500; color: var(--text); font-style: italic; line-height: 1.5; }
-
 .lp-mech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
 .lp-mech-card { background: var(--surface); border-radius: var(--radius); padding: 2rem; border: 1px solid var(--border); text-align: left; }
 .lp-mech-icon { font-size: 32px; margin-bottom: 1rem; }
 .lp-mech-card h3 { font-size: 18px; font-weight: 800; color: var(--brand-dark); margin-bottom: 10px; }
 .lp-mech-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
-
 .lp-table-wrap { overflow-x: auto; margin: 3rem 0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border-radius: var(--radius); }
 .lp-table { width: 100%; min-width: 600px; border-collapse: collapse; background: var(--surface); text-align: left; }
 .lp-table th { padding: 1.5rem; font-size: 16px; font-weight: 800; border-bottom: 2px solid var(--border); }
@@ -87,7 +81,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .lp-table tr:last-child td { border-bottom: none; }
 .lp-table td.trad-col { background: #F9FAFB; color: var(--text-muted); }
 .lp-table td.accent-col { font-weight: 500; }
-
 .lp-offer-box { background: var(--brand-dark); border-radius: var(--radius); padding: 3rem; color: #fff; margin-top: 2rem; }
 .lp-offer-box h3 { color: var(--accent); font-size: 22px; margin-bottom: 1.5rem; }
 .lp-offer-list { list-style: none; margin-bottom: 2rem; }
@@ -95,20 +88,17 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .lp-offer-list li::before { content: '✅'; flex-shrink: 0; }
 .lp-price-box { background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: var(--radius-sm); text-align: center; margin-top: 2rem; }
 .lp-price { font-size: 32px; font-weight: 800; color: var(--accent); margin: 10px 0; }
-
 .lp-mentor { display: flex; gap: 3rem; align-items: center; }
 @media(max-width: 768px){ .lp-mentor { flex-direction: column; text-align: center; } }
 .lp-mentor-img { width: 250px; height: 250px; border-radius: 50%; background: var(--brand-light); flex-shrink: 0; border: 4px solid var(--accent); display:flex; align-items:center; justify-content:center; font-size: 50px;}
 .lp-mentor-text h3 { font-size: 24px; font-weight: 800; color: var(--brand-dark); margin-bottom: 1rem; }
 .lp-mentor-text p { font-size: 15px; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem; }
-
 .lp-faq { max-width: 700px; margin: 0 auto; }
 .lp-faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1.5rem; margin-bottom: 1rem; text-align: left; }
 .lp-faq-q { font-size: 16px; font-weight: 700; color: var(--brand-dark); margin-bottom: 8px; }
 .lp-faq-a { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
 
-/* ════════ END LANDING PAGE STYLES ════════ */
-
+/* SOUND GRID */
 .sound-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:2rem}
 .sound-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:1rem .9rem .9rem;cursor:pointer;transition:border-color .15s,transform .1s;text-align:center}
 .sound-card:hover{border-color:var(--brand);transform:translateY(-2px)}
@@ -244,7 +234,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .score-row.oa{color:var(--brand-mid)}
 .score-row .ans{color:var(--text-muted);font-size:12px}
 
-/* Drag and Drop UI */
 .dnd-instruction{font-size:12px;color:var(--brand);margin-bottom:12px;font-weight:600;display:flex;align-items:center;gap:6px}
 .dnd-bank{display:flex;flex-wrap:wrap;gap:8px;padding:15px;background:var(--surface);border:2px dashed var(--border);border-radius:var(--radius-sm);min-height:70px;margin-bottom:1.5rem;transition:background .2s}
 .dnd-bank.active-drop{background:var(--brand-light);border-color:var(--brand)}
@@ -260,7 +249,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .dnd-col-header{padding:12px 10px;font-weight:800;text-align:center;border-bottom:1.5px solid var(--border);background:var(--bg);border-radius:var(--radius-sm) var(--radius-sm) 0 0;color:var(--text)}
 .dnd-col-body{padding:10px;flex:1;min-height:120px;display:flex;flex-direction:column;gap:8px;align-items:center}
 
-/* Matching fallback */
 .matching-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .match-col-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-light);margin-bottom:8px}
 .match-chip{padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;background:var(--surface);margin-bottom:8px}
@@ -296,7 +284,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .comment-author{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
 .comment-text{font-size:14px;color:var(--text-muted);line-height:1.5}
 #community-editor-container{min-height:120px;border-radius:0 0 var(--radius-sm) var(--radius-sm);font-family:'Inter',sans-serif;font-size:14px}
-/* EDIT POST MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem}
 .modal-overlay.hidden{display:none}
 .modal-box{background:var(--surface);border-radius:var(--radius);padding:1.75rem;width:100%;max-width:560px;position:relative}
@@ -900,7 +887,10 @@ function updateAuthUI() {
   if (currentUser) {
     btn.textContent = 'Log out'; btn.classList.add('logout-btn-nav'); btn.classList.remove('auth-btn');
     profileTab.style.display = 'inline-block';
-    if (currentUser.email === TEACHER_EMAIL) teacherTab.style.display = 'inline-block';
+    
+    const isTeacher = currentUser.email.toLowerCase() === TEACHER_EMAIL.toLowerCase();
+    if (isTeacher) teacherTab.style.display = 'inline-block';
+    
     if (document.getElementById('page-auth').classList.contains('active')) goToPage('classroom');
   } else {
     btn.textContent = 'Log in'; btn.classList.remove('logout-btn-nav'); btn.classList.add('auth-btn');
@@ -974,29 +964,35 @@ function goToPage(pageId) {
 ══════════════════════════════════════════ */
 async function fetchData() {
   if (!currentUser) return;
-  const isTeacher = currentUser.email === TEACHER_EMAIL;
+  try {
+    const isTeacher = currentUser.email.toLowerCase() === TEACHER_EMAIL.toLowerCase();
 
-  const [rMod, rSub, rLes, rProg, rPosts, rComments, rLikes, rProfiles, rAllProg] = await Promise.all([
-    sb.from('modules').select('*').order('order_index'),
-    sb.from('submodules').select('*').order('order_index'),
-    sb.from('lessons').select('*').order('order_index'),
-    sb.from('student_progress').select('*').eq('user_id', currentUser.id),
-    sb.from('posts').select('*').order('created_at', { ascending: false }),
-    sb.from('comments').select('*').order('created_at', { ascending: true }),
-    sb.from('likes').select('*'),
-    sb.from('user_profiles').select('*'),
-    isTeacher ? sb.from('student_progress').select('*') : Promise.resolve({data:[]})
-  ]);
-  
-  const allModules = rMod.data || [];
-  dbModules = allModules.filter(m => isTeacher || !m.is_private || (m.allowed_emails && m.allowed_emails.toLowerCase().includes(currentUser.email.toLowerCase())));
-  
-  dbSubmodules = rSub.data || []; dbLessons = rLes.data || []; dbProgress = rProg.data || [];
-  dbPosts = rPosts.data || []; dbComments = rComments.data || []; dbLikes = rLikes.data || []; dbProfiles = rProfiles.data || [];
-  
-  renderClassroomGrid(); updateModuleSelect(); renderManageList();
-  if (isTeacher) renderTeacherProgress(rAllProg.data || []);
-  if (document.getElementById('page-community').classList.contains('active')) renderCommunityFeed();
+    const [rMod, rSub, rLes, rProg, rPosts, rComments, rLikes, rProfiles, rAllProg] = await Promise.all([
+      sb.from('modules').select('*').order('order_index'),
+      sb.from('submodules').select('*').order('order_index'),
+      sb.from('lessons').select('*').order('order_index'),
+      sb.from('student_progress').select('*').eq('user_id', currentUser.id),
+      sb.from('posts').select('*').order('created_at', { ascending: false }),
+      sb.from('comments').select('*').order('created_at', { ascending: true }),
+      sb.from('likes').select('*'),
+      sb.from('user_profiles').select('*'),
+      isTeacher ? sb.from('student_progress').select('*') : Promise.resolve({data:[]})
+    ]);
+    
+    const allModules = rMod.data || [];
+    dbModules = allModules.filter(m => isTeacher || !m.is_private || (m.allowed_emails && m.allowed_emails.toLowerCase().includes(currentUser.email.toLowerCase())));
+    
+    dbSubmodules = rSub.data || []; dbLessons = rLes.data || []; dbProgress = rProg.data || [];
+    dbPosts = rPosts.data || []; dbComments = rComments.data || []; dbLikes = rLikes.data || []; dbProfiles = rProfiles.data || [];
+    
+    renderClassroomGrid(); 
+    updateModuleSelect(); 
+    renderManageList();
+    if (isTeacher) renderTeacherProgress(rAllProg.data || []);
+    if (document.getElementById('page-community').classList.contains('active')) renderCommunityFeed();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 }
 
 /* ══════════════════════════════════════════
@@ -1039,7 +1035,7 @@ function renderCommunityFeed() {
     const pLikes = dbLikes.filter(l => l.post_id === post.id);
     const isLiked = pLikes.some(l => l.user_id === currentUser?.id);
     const cCount = dbComments.filter(c => c.post_id === post.id).length;
-    const isOwner = currentUser?.id === post.user_id || currentUser?.email === TEACHER_EMAIL;
+    const isOwner = currentUser?.id === post.user_id || currentUser?.email.toLowerCase() === TEACHER_EMAIL.toLowerCase();
     const ownerBtns = isOwner ? `<button class="action-btn edit-post-btn" onclick="event.stopPropagation();openEditPostModal('${post.id}')">✏️ Edit</button><button class="action-btn delete-post-btn" onclick="event.stopPropagation();deletePost('${post.id}')">🗑 Delete</button>` : '';
     return `<div class="post-card" onclick="openPost('${post.id}')">
       <div class="post-header">
@@ -1113,7 +1109,7 @@ function renderPostDetail() {
   const post = dbPosts.find(p => p.id === currentViewedPostId); if (!post) { backToCommunityFeed(); return; }
   const pLikes = dbLikes.filter(l => l.post_id === post.id);
   const isLiked = pLikes.some(l => l.user_id === currentUser?.id);
-  const isOwner = currentUser?.id === post.user_id || currentUser?.email === TEACHER_EMAIL;
+  const isOwner = currentUser?.id === post.user_id || currentUser?.email.toLowerCase() === TEACHER_EMAIL.toLowerCase();
   const ownerBtns = isOwner ? `<button class="action-btn edit-post-btn" onclick="openEditPostModal('${post.id}')">✏️ Edit</button><button class="action-btn delete-post-btn" onclick="deletePost('${post.id}')">🗑 Delete</button>` : '';
   document.getElementById('single-post-render').innerHTML = `
     <div style="background:var(--surface);border:1px solid var(--skool-border);border-radius:var(--radius);padding:1.5rem">
@@ -1129,7 +1125,7 @@ function renderPostDetail() {
   const cList = document.getElementById('comments-list');
   if (!pComments.length) { cList.innerHTML = '<div style="color:var(--text-light);font-size:13px">No comments yet.</div>'; return; }
   cList.innerHTML = pComments.map(c => {
-    const isCommentOwner = currentUser?.id === c.user_id || currentUser?.email === TEACHER_EMAIL;
+    const isCommentOwner = currentUser?.id === c.user_id || currentUser?.email.toLowerCase() === TEACHER_EMAIL.toLowerCase();
     return `<div class="comment-item">
       <div class="post-avatar" style="width:30px;height:30px;font-size:12px">${renderAvatarHTML(c.user_id, c.user_email)}</div>
       <div class="comment-bubble">
@@ -1307,7 +1303,6 @@ function showLesson(lessonId) {
     document.getElementById('view-exercise').style.display = 'block';
     document.getElementById('player-title').textContent = currentLesson.title;
     
-    // Novedad: ¡Texto siempre visible para tareas también!
     const taskTextEl = document.getElementById('cv-task-text');
     if (taskTextEl) {
       taskTextEl.innerHTML = currentLesson.text_content || '';
@@ -1521,6 +1516,7 @@ async function saveModule() {
   await fetchData(); alert(editId ? 'Module updated!' : 'Module created!'); cancelEditMod();
 }
 function editModule(id) {
+  // Cuando vas a editar, busca en TODOS los modulos de la DB, incluso si tu vista esta filtrada
   const m = dbModules.find(x => x.id === id); if (!m) return;
   document.getElementById('t-mod-title').value = m.title; 
   document.getElementById('edit-mod-id').value = m.id;
@@ -1764,7 +1760,6 @@ function removeQOption(i, j) {
 function buildQRow(type, q, i) {
   q = q || {};
   
-  // Novedad: Protección de datos para Multiple Choice (evita que se borre el texto al escribir)
   if (type === 'multiple_choice') {
     if (!Array.isArray(q.options)) q.options = ['', ''];
     if (typeof q.correctIndex !== 'number') q.correctIndex = 0;
@@ -1800,6 +1795,46 @@ async function uploadQAudio(event, i) {
   if (error) { alert('Upload error: ' + error.message); return; }
   if (questionRows[i]) questionRows[i].audio_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
   const el = document.getElementById('q-audio-' + i); if (el) el.textContent = '✅ Audio uploaded';
+}
+
+/* ── MANAGE LIST ── */
+function renderManageList() {
+  const list = document.getElementById('t-manage-list'); if (!list) return;
+  if (!dbModules.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div>'; return; }
+  
+  // Guardar el estado de los acordeones
+  const openStates = {};
+  document.querySelectorAll('[id^="mod-children-"]').forEach(el => {
+    openStates[el.id] = el.style.display;
+  });
+
+  const iconMap = { video:'📺', text:'📄', task:'📝', embed:'🌐' };
+  list.innerHTML = dbModules.map(m => {
+    const subs = dbSubmodules.filter(s => s.module_id === m.id);
+    const orphans = dbLessons.filter(l => l.module_id === m.id && !l.submodule_id);
+    
+    const childId = `mod-children-${m.id}`;
+    const dState = openStates[childId] || 'none'; 
+    
+    let html = `<div class="manage-item" style="background:var(--skool-hover);border-radius:var(--radius-sm);margin-bottom:4px;border:1px solid var(--border)">
+      <span class="manage-title" style="cursor:pointer;display:flex;align-items:center;gap:6px;flex:1" onclick="const e=document.getElementById('${childId}'); e.style.display = e.style.display === 'none' ? 'block' : 'none';">
+        📘 ${esc(m.title)} <span style="font-size:10px;background:var(--border);padding:2px 6px;border-radius:10px;color:var(--text-muted)">Show/Hide</span>
+      </span>
+      <div class="manage-actions"><button class="secondary-btn" onclick="moveModule('${m.id}',-1)">↑</button><button class="secondary-btn" onclick="moveModule('${m.id}',1)">↓</button><button class="secondary-btn" onclick="editModule('${m.id}')">Edit</button><button class="danger-btn" onclick="deleteModule('${m.id}')">Delete</button></div></div>
+      <div id="${childId}" style="display:${dState};margin-bottom:8px;padding-left:4px;">`;
+    
+    subs.forEach(sub => {
+      html += `<div class="manage-item" style="background:var(--bg);margin-left:1.5rem;border-left:2px solid var(--brand);margin-bottom:2px"><span class="manage-title">📁 ${esc(sub.title)}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveSubmodule('${sub.id}',-1)">↑</button><button class="secondary-btn" onclick="moveSubmodule('${sub.id}',1)">↓</button><button class="secondary-btn" onclick="editSubmodule('${sub.id}')">Edit</button><button class="danger-btn" onclick="deleteSubmodule('${sub.id}')">Delete</button></div></div>`;
+      dbLessons.filter(l => l.submodule_id === sub.id).forEach(l => {
+        html += `<div class="manage-item" style="padding-left:3rem"><span class="manage-title" style="color:var(--text-muted)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveLesson('${l.id}',-1)">↑</button><button class="secondary-btn" onclick="moveLesson('${l.id}',1)">↓</button><button class="secondary-btn" onclick="editLesson('${l.id}')">Edit</button><button class="danger-btn" onclick="deleteLesson('${l.id}')">Delete</button></div></div>`;
+      });
+    });
+    orphans.forEach(l => {
+      html += `<div class="manage-item" style="padding-left:1.5rem"><span class="manage-title" style="color:var(--text-muted)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveLesson('${l.id}',-1)">↑</button><button class="secondary-btn" onclick="moveLesson('${l.id}',1)">↓</button><button class="secondary-btn" onclick="editLesson('${l.id}')">Edit</button><button class="danger-btn" onclick="deleteLesson('${l.id}')">Delete</button></div></div>`;
+    });
+    html += `</div>`;
+    return html;
+  }).join('');
 }
 
 /* ── STUDENT PROGRESS PANEL ── */
