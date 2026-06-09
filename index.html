@@ -16,7 +16,7 @@
   /* PALETA ACCENTUP */
   --brand-dark: #07216b;
   --brand: #2150e3;
-  --brand-mid: #1639a8; /* Agregado por auditoria */
+  --brand-mid: #1639a8;
   --brand-light: #EEEDFE;
   --accent: #cafc05;
   --accent-light: #fffbca;
@@ -343,7 +343,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-light);line-height:1}
 .modal-close:hover{color:var(--text)}
 
-/* TEACHER */
+/* TEACHER DASHBOARD */
 .teacher-header{margin-bottom:1.5rem}
 .teacher-header h2{font-size:20px;font-weight:800;color:var(--brand-dark);margin-bottom:4px}
 .teacher-header p{font-size:13px;color:var(--text-muted)}
@@ -356,12 +356,24 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 select,textarea,input[type=text],input[type=password],input[type=email],input[type=url],input[type=file]{width:100%;padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .15s;margin-bottom:8px}
 select:focus,textarea:focus,input:focus{border-color:var(--brand);background:#fff}
 textarea{resize:vertical;min-height:70px}
-.q-row{background:var(--surface);border-radius:var(--radius-sm);padding:1rem;margin-bottom:10px;position:relative;border:1px solid var(--skool-border)}
-.q-row-label{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin-bottom:8px}
-.remove-q{position:absolute;top:8px;right:8px;background:none;border:none;color:var(--text-light);font-size:18px;cursor:pointer;padding:2px 6px;line-height:1}
-.remove-q:hover{color:var(--red)}
-.add-q-btn{width:100%;padding:9px;border:1.5px dashed var(--border);border-radius:var(--radius-sm);background:transparent;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s}
-.add-q-btn:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-light)}
+
+/* NUEVAS TARJETAS COLAPSABLES PARA PREGUNTAS (UX MEJORADA) */
+.q-card { background: var(--surface); border-radius: var(--radius-sm); border: 1px solid var(--skool-border); margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); overflow: hidden; }
+.q-card-header { padding: 12px 16px; background: var(--bg); display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-bottom: 1px solid transparent; transition: background 0.2s; }
+.q-card-header:hover { background: var(--brand-light); }
+.q-card-header.open { border-bottom-color: var(--skool-border); }
+.q-card-title { font-size: 13px; font-weight: 700; color: var(--brand-dark); }
+.q-card-summary { font-size: 12px; color: var(--text-muted); margin-left: 10px; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; display: inline-block; vertical-align: middle; }
+.q-card-actions { display: flex; gap: 8px; align-items: center; }
+.q-card-body { padding: 16px; display: none; }
+.q-card-body.open { display: block; }
+.q-card-toggle { font-size: 12px; color: var(--text-muted); background: none; border: none; cursor: pointer; font-weight: 600; font-family:'Inter',sans-serif; }
+.q-card-toggle:hover { color: var(--brand); }
+.q-card-delete { font-size: 16px; color: var(--text-light); background: none; border: none; cursor: pointer; line-height: 1; padding: 0 4px; }
+.q-card-delete:hover { color: var(--red); }
+
+.add-q-btn{width:100%;padding:10px;border:1.5px dashed var(--brand-mid);border-radius:var(--radius-sm);background:var(--brand-light);font-size:13px;font-weight:700;color:var(--brand);cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s}
+.add-q-btn:hover{background:var(--brand);color:#fff;border-style:solid;}
 .primary-btn{width:100%;padding:10px;border-radius:var(--radius-sm);background:var(--brand);color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;margin-top:.9rem;transition:background .15s;font-family:'Inter',sans-serif}
 .primary-btn:hover{background:var(--brand-dark)}
 .primary-btn:disabled{opacity:.6;cursor:not-allowed}
@@ -369,10 +381,12 @@ textarea{resize:vertical;min-height:70px}
 .secondary-btn:hover{border-color:var(--brand);color:var(--brand)}
 .danger-btn{background:transparent;color:var(--red);border:1px solid var(--red-light);padding:6px 12px;border-radius:var(--radius-sm);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
 .danger-btn:hover{background:var(--red-light)}
+
 #quill-editor-container{min-height:350px;background:var(--surface);border-radius:0 0 var(--radius-sm) var(--radius-sm);font-family:'Inter',sans-serif;font-size:15px}
 .ql-toolbar{border-radius:var(--radius-sm) var(--radius-sm) 0 0!important;background:var(--bg);border-color:var(--border)!important}
 .ql-container{border-color:var(--border)!important}
 .ql-editor img{max-width:100%;border-radius:var(--radius-sm)}
+
 .manage-item{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid var(--skool-border);gap:10px}
 .manage-item:last-child{border-bottom:none}
 .manage-title{font-size:13px;font-weight:600;color:var(--text)}
@@ -380,6 +394,7 @@ textarea{resize:vertical;min-height:70px}
 .audio-add-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
 .audio-add-row input{margin-bottom:0}
 .audio-saved-item{display:flex;justify-content:space-between;align-items:center;background:var(--surface);border:1px solid var(--skool-border);border-radius:var(--radius-sm);padding:6px 10px;margin-bottom:6px;font-size:12px;font-weight:600;color:var(--text)}
+
 footer{text-align:center;padding:2rem;font-size:12px;color:var(--text-light);border-top:1px solid var(--border);margin-top:3rem}
 footer strong{color:var(--brand)}
 .student-prog-row{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid var(--skool-border)}
@@ -418,7 +433,6 @@ footer strong{color:var(--brand)}
 </nav>
 
 <div class="page active lp-page" id="page-home">
-  
   <section class="lp-hero">
     <div class="lp-container lp-hero-inner">
       <div style="text-align: left;">
@@ -458,7 +472,6 @@ footer strong{color:var(--brand)}
            <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?q=80&w=800&auto=format&fit=crop" alt="Professional woman looking thoughtful" />
         </div>
       </div>
-
     </div>
   </section>
 
@@ -822,7 +835,8 @@ footer strong{color:var(--brand)}
           <span class="field-label">General audio for exercise (optional)</span>
           <input type="file" id="t-ex-audio" accept="audio/*"/>
           <div id="t-ex-audio-current" style="font-size:11px;color:var(--text-muted);margin-top:-4px;margin-bottom:8px"></div>
-          <span class="field-label">Questions / Items</span>
+          
+          <span class="field-label" style="margin-top: 1.5rem; margin-bottom: 8px;">Questions / Items</span>
           <div id="q-builder"></div>
           <button class="add-q-btn" onclick="addQuestion()">+ Add item</button>
         </div>
@@ -883,6 +897,7 @@ let studentAnswers = {}, matchState = { leftSel: null, pairs: {} }, selectedDrag
 let questionRows = [], tempAudios = [], isUploadingAudio = false;
 let quillEditor = null, communityQuill = null, editPostQuill = null;
 let activeVowel = null, activeConsonant = null;
+let openQStates = {}; // Estado global para saber qué tarjeta de pregunta está abierta
 
 /* ── UTILS ── */
 function safeParseJSON(data) {
@@ -993,7 +1008,6 @@ async function handleAuth() {
     errEl.textContent = res.error.message; errEl.style.display = 'block'; 
     btn.disabled = false; btn.textContent = isLoginMode ? 'Log in' : 'Create account';
   } else {
-    // AUTO-CREAR PERFIL (Soluciona el bug de estudiantes invisibles en el Dashboard)
     if (!isLoginMode || res.data?.user) {
        const checkProf = await sb.from('user_profiles').select('id').eq('id', res.data.user.id).single();
        if (!checkProf.data) {
@@ -1024,6 +1038,10 @@ function goToPage(pageId) {
   
   const pageEl = document.getElementById('page-' + pageId);
   if (pageEl) pageEl.classList.add('active');
+  
+  const hiddenHero = ['home','classroom','teacher','auth','community','profile'];
+  const hero = document.getElementById('hero-banner');
+  if (hero) hero.style.display = hiddenHero.includes(pageId) ? 'none' : 'block';
   
   if (pageId === 'classroom') renderClassroomGrid();
   if (pageId === 'community') renderCommunityFeed();
@@ -1653,8 +1671,7 @@ async function moveSubmodule(id, dir) {
 function toggleLessonFields() {
   const type = document.getElementById('t-les-type').value;
   document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none';
-  // Siempre visible por pedido explícito de Cami para dar introducciones a las actividades interactivas:
-  document.getElementById('fields-text').style.display = 'block';
+  document.getElementById('fields-text').style.display = 'block'; // Siempre visible
   document.getElementById('fields-embed').style.display = type === 'embed' ? 'block' : 'none';
   document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none';
 }
@@ -1759,6 +1776,8 @@ function editLesson(id) {
   if (l.type === 'task') {
     document.getElementById('t-ex-type').value = l.task_type || 'open_answer';
     questionRows = safeParseJSON(l.task_content);
+    // Expandir la primera pregunta al editar para mejor UX
+    openQStates = {}; if(questionRows.length > 0) openQStates[0] = true;
     renderQFields();
   }
   tempAudios = safeParseJSON(l.content); renderTempAudios();
@@ -1774,7 +1793,7 @@ function cancelEditLes() {
   document.getElementById('t-les-video-url').value = ''; document.getElementById('t-les-embed-code').value = '';
   document.getElementById('t-ex-audio').value = ''; document.getElementById('t-les-resources').value = '';
   document.getElementById('t-les-resources-current').textContent = ''; document.getElementById('t-ex-audio-current').textContent = '';
-  quillEditor.root.innerHTML = ''; questionRows = []; tempAudios = [];
+  quillEditor.root.innerHTML = ''; questionRows = []; tempAudios = []; openQStates = {};
   renderQFields(); renderTempAudios();
   document.getElementById('panel-title-les').textContent = '📝 3. Add Lesson';
   document.getElementById('btn-cancel-les').style.display = 'none';
@@ -1810,25 +1829,52 @@ function renderTempAudios() {
   ).join('');
 }
 
-/* ── QUESTION BUILDER ── */
+/* ── QUESTION BUILDER (COLLAPSIBLE CARDS) ── */
+function toggleQCard(i, event) {
+  if(event) { event.stopPropagation(); }
+  openQStates[i] = !openQStates[i];
+  renderQFields();
+}
+
 function renderQFields() {
   const type = document.getElementById('t-ex-type').value;
   const wrap = document.getElementById('q-builder'); if (!wrap) return;
+  
   if (type === 'drag_drop') {
     if (!questionRows.length || !questionRows[0]?.categories) questionRows = [{ prompt:'', categories:[], items:[] }];
     const q = questionRows[0];
     const catsStr = (q.categories || []).join(', ');
-    let html = `<div class="q-row"><span class="field-label">Instruction text</span><input type="text" id="dnd-prompt" placeholder="e.g. Sort the past tense sounds" value="${esc(q.prompt)}" oninput="questionRows[0].prompt=this.value"/><span class="field-label">Categories (comma-separated)</span><input type="text" id="dnd-cats-input" placeholder="e.g. /t/, /d/, /id/" value="${esc(catsStr)}" onchange="updateDndCats(this.value)"/><span class="field-label">Words to sort</span><div id="dnd-items-wrap">`;
+    
+    // Drag & Drop as a Card
+    let html = `<div class="q-card">
+      <div class="q-card-header open">
+        <span class="q-card-title">Drag & Drop Setup</span>
+      </div>
+      <div class="q-card-body open">
+        <span class="field-label" style="margin-top:0">Instruction text</span>
+        <input type="text" id="dnd-prompt" placeholder="e.g. Sort the past tense sounds" value="${esc(q.prompt)}" oninput="questionRows[0].prompt=this.value"/>
+        <span class="field-label">Categories (comma-separated)</span>
+        <input type="text" id="dnd-cats-input" placeholder="e.g. /t/, /d/, /id/" value="${esc(catsStr)}" onchange="updateDndCats(this.value)"/>
+        <span class="field-label">Words to sort</span>
+        <div id="dnd-items-wrap">`;
+        
     (q.items || []).forEach((item, idx) => {
-      html += `<div class="dnd-item-row" style="display:flex;gap:8px;margin-bottom:8px"><input type="text" class="dnd-w" placeholder="Word" value="${esc(item.word)}" oninput="questionRows[0].items[${idx}].word=this.value" style="flex:2;margin:0"/><select class="dnd-c" style="flex:1;margin:0" onchange="questionRows[0].items[${idx}].category=this.value">`;
+      html += `<div class="dnd-item-row" style="display:flex;gap:8px;margin-bottom:8px">
+        <input type="text" class="dnd-w" placeholder="Word" value="${esc(item.word)}" oninput="questionRows[0].items[${idx}].word=this.value" style="flex:2;margin:0"/>
+        <select class="dnd-c" style="flex:1;margin:0" onchange="questionRows[0].items[${idx}].category=this.value">`;
       (q.categories || []).forEach(c => { html += `<option value="${esc(c)}" ${item.category===c?'selected':''}>${esc(c)}</option>`; });
-      html += `</select><button class="danger-btn" style="padding:4px 8px" onclick="removeDndItem(${idx})">×</button></div>`;
+      html += `</select><button class="q-card-delete" style="background:var(--bg); border-radius:4px; padding:0 8px;" onclick="removeDndItem(${idx})">×</button></div>`;
     });
-    html += `</div><button class="secondary-btn" style="padding:6px;font-size:11px" onclick="addDndItem()">+ Add word</button></div>`;
-    wrap.innerHTML = html; return;
+    
+    html += `</div><button class="add-q-btn" style="padding:6px;font-size:12px;margin-top:8px" onclick="addDndItem()">+ Add word to sort</button>
+      </div></div>`;
+    wrap.innerHTML = html; 
+    return;
   }
+  
   wrap.innerHTML = questionRows.map((q, i) => buildQRow(type, q, i)).join('');
 }
+
 function updateDndCats(val) { if (questionRows[0]) { questionRows[0].categories = val.split(',').map(s=>s.trim()).filter(Boolean); renderQFields(); } }
 function addDndItem() { if (questionRows[0]) { questionRows[0].items.push({ word:'', category: questionRows[0].categories[0]||'' }); renderQFields(); } }
 function removeDndItem(i) { if (questionRows[0]) { questionRows[0].items.splice(i,1); renderQFields(); } }
@@ -1842,6 +1888,7 @@ function removeQOption(i, j) {
   else if (questionRows[i].correctIndex > j) questionRows[i].correctIndex--;
   questionRows[i].answer = questionRows[i].options[questionRows[i].correctIndex]; renderQFields();
 }
+
 function buildQRow(type, q, i) {
   q = q || {};
   
@@ -1849,30 +1896,87 @@ function buildQRow(type, q, i) {
     if (!Array.isArray(q.options)) q.options = ['', ''];
     if (typeof q.correctIndex !== 'number') q.correctIndex = 0;
   }
+  
+  const isOpen = openQStates[i] !== false; // Abierto por defecto
+  const dState = isOpen ? 'open' : '';
+  const toggleText = isOpen ? 'Hide' : 'Edit';
+  const summary = (type === 'matching') ? (q.left ? esc(q.left) + '...' : '(Empty)') : (q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)');
 
-  if (type === 'matching') return `<div class="q-row"><div class="q-row-label">Pair ${i+1}</div><button class="remove-q" onclick="removeQ(${i})">×</button><input type="text" placeholder="Word (left)" value="${esc(q.left||'')}" oninput="questionRows[${i}].left=this.value"/><input type="text" placeholder="Sound / meaning (right)" value="${esc(q.right||'')}" oninput="questionRows[${i}].right=this.value"/></div>`;
-  if (type === 'fill_in_blank') return `<div class="q-row"><div class="q-row-label">Question ${i+1}</div><button class="remove-q" onclick="removeQ(${i})">×</button><textarea placeholder="Sentence with ___ for blank" oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt||'')}</textarea><input type="text" placeholder="Correct answer" value="${esc(q.answer||'')}" oninput="questionRows[${i}].answer=this.value"/><input type="text" placeholder="Hint (optional)" value="${esc(q.hint||'')}" oninput="questionRows[${i}].hint=this.value"/></div>`;
-  if (type === 'dictation' || type === 'open_answer') {
+  let html = `<div class="q-card">
+    <div class="q-card-header ${dState}" onclick="toggleQCard(${i})">
+      <div><span class="q-card-title">Question ${i+1}</span> <span class="q-card-summary">${summary}</span></div>
+      <div class="q-card-actions">
+        <button class="q-card-toggle" onclick="toggleQCard(${i}, event)">${toggleText}</button>
+        <button class="q-card-delete" onclick="event.stopPropagation(); removeQ(${i})" title="Delete item">×</button>
+      </div>
+    </div>
+    <div class="q-card-body ${dState}">`;
+
+  if (type === 'matching') {
+    html += `<span class="field-label" style="margin-top:0">Word (Left side)</span>
+      <input type="text" placeholder="e.g. Pronunciation" value="${esc(q.left||'')}" oninput="questionRows[${i}].left=this.value"/>
+      <span class="field-label">Match / Meaning (Right side)</span>
+      <input type="text" placeholder="e.g. The way in which a word is spoken" value="${esc(q.right||'')}" oninput="questionRows[${i}].right=this.value"/>`;
+  } 
+  else if (type === 'fill_in_blank') {
+    html += `<span class="field-label" style="margin-top:0">Sentence (Use ___ for blank)</span>
+      <textarea placeholder="e.g. She went ___ the store." oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt||'')}</textarea>
+      <span class="field-label">Correct answer</span>
+      <input type="text" placeholder="e.g. to" value="${esc(q.answer||'')}" oninput="questionRows[${i}].answer=this.value"/>
+      <span class="field-label">Hint (optional)</span>
+      <input type="text" placeholder="e.g. preposition of direction" value="${esc(q.hint||'')}" oninput="questionRows[${i}].hint=this.value"/>`;
+  } 
+  else if (type === 'dictation' || type === 'open_answer') {
     const label = type === 'open_answer' ? 'Expected answer / keywords (shown to student after submitting)' : 'Expected answer (for correction)';
-    const placeholder = type === 'open_answer' ? 'Ask your question here...' : 'Instruction for student';
-    return `<div class="q-row"><div class="q-row-label">Question ${i+1}</div><button class="remove-q" onclick="removeQ(${i})">×</button><textarea placeholder="${placeholder}" oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt||'')}</textarea><span class="field-label">${label}</span><textarea placeholder="e.g. /ɪ/ — the vowel is short and relaxed" oninput="questionRows[${i}].answer=this.value">${esc(q.answer||'')}</textarea><span class="field-label">Audio for this question (optional)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/><div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted)">${q.audio_url?'✅ Audio saved':''}</div></div>`;
+    html += `<span class="field-label" style="margin-top:0">Instruction for student</span>
+      <textarea placeholder="Write the instruction or question here..." oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt||'')}</textarea>
+      <span class="field-label">${label}</span>
+      <textarea placeholder="e.g. /ɪ/ — the vowel is short and relaxed" oninput="questionRows[${i}].answer=this.value">${esc(q.answer||'')}</textarea>
+      <span class="field-label">Audio for this question (optional)</span>
+      <input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/>
+      <div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted)">${q.audio_url?'✅ Audio saved':''}</div>`;
+  } 
+  else {
+    // Multiple Choice
+    const opts = q.options || ['', ''];
+    const correctIndex = q.correctIndex !== undefined ? q.correctIndex : 0;
+    
+    html += `<span class="field-label" style="margin-top:0">Question prompt</span>
+      <textarea placeholder="Write the question here..." oninput="questionRows[${i}].prompt=this.value" style="margin-bottom:12px">${esc(q.prompt||'')}</textarea>
+      <span class="field-label">Options (Check the radio button for the correct answer)</span>`;
+      
+    opts.forEach((o, j) => {
+      const isCorrect = correctIndex === j;
+      const borderCol = isCorrect ? 'var(--green)' : 'var(--border)';
+      html += `<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;background:var(--bg);padding:6px 10px;border-radius:var(--radius-sm);border:1px solid ${borderCol}">
+        <input type="radio" name="correct_${i}" value="${j}" ${isCorrect?'checked':''} onchange="questionRows[${i}].correctIndex=${j};questionRows[${i}].answer=questionRows[${i}].options[${j}];renderQFields()" title="Mark as correct" style="margin:0;width:16px;height:16px;accent-color:var(--green);cursor:pointer">
+        <input type="text" placeholder="Answer option ${j+1}" value="${esc(o)}" oninput="updateQOption(${i},${j},this.value)" style="margin:0;flex:1;border:none;background:transparent">
+        <button class="q-card-delete" onclick="removeQOption(${i},${j})">×</button>
+      </div>`;
+    });
+    
+    html += `<button class="secondary-btn" style="font-size:11px;padding:6px 10px;margin-bottom:8px" onclick="addQOption(${i})">+ Add option</button>
+      <div style="margin-top:10px">
+        <span class="field-label">Audio for this question (optional)</span>
+        <input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/>
+        <div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted)">${q.audio_url?'✅ Audio saved':''}</div>
+      </div>`;
   }
-  const opts = q.options || ['', ''];
-  const correctIndex = q.correctIndex !== undefined ? q.correctIndex : 0;
-  let html = `<div class="q-row"><div class="q-row-label">Question ${i+1} <span style="text-transform:none;font-weight:500;color:var(--text-muted)">(radio = correct answer)</span></div><button class="remove-q" onclick="removeQ(${i})">×</button><textarea placeholder="Question prompt..." oninput="questionRows[${i}].prompt=this.value" style="margin-bottom:12px">${esc(q.prompt||'')}</textarea>`;
-  opts.forEach((o, j) => {
-    const isCorrect = correctIndex === j;
-    const borderCol = isCorrect ? 'var(--green)' : 'var(--border)';
-    html += `<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;background:var(--bg);padding:6px 10px;border-radius:var(--radius-sm);border:1px solid ${borderCol}"><input type="radio" name="correct_${i}" value="${j}" ${isCorrect?'checked':''} onchange="questionRows[${i}].correctIndex=${j};questionRows[${i}].answer=questionRows[${i}].options[${j}];renderQFields()" title="Mark as correct" style="margin:0;width:16px;height:16px;accent-color:var(--green);cursor:pointer"><input type="text" placeholder="Option ${j+1}" value="${esc(o)}" oninput="updateQOption(${i},${j},this.value)" style="margin:0;flex:1;border:none;background:transparent"><button class="danger-btn" style="padding:4px 8px;font-size:12px;border:none" onclick="removeQOption(${i},${j})">×</button></div>`;
-  });
-  html += `<button class="secondary-btn" style="font-size:11px;padding:6px 10px;margin-bottom:8px" onclick="addQOption(${i})">+ Add option</button><div style="margin-top:10px"><span class="field-label">Audio for this question (optional)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/><div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted)">${q.audio_url?'✅ Audio saved':''}</div></div></div>`;
+  
+  html += `</div></div>`; // Close card-body and card
   return html;
 }
+
 function addQuestion() {
   const type = document.getElementById('t-ex-type').value; if (type === 'drag_drop') return;
   const newQ = type === 'matching' ? { left:'', right:'' } : type === 'fill_in_blank' ? { prompt:'', answer:'', hint:'' } : (type === 'dictation' || type === 'open_answer') ? { prompt:'', answer:'', audio_url:'' } : { prompt:'', options:['',''], correctIndex:0, answer:'', audio_url:'' };
-  questionRows.push(newQ); renderQFields();
+  questionRows.push(newQ); 
+  // Al crear una nueva, la abrimos por defecto y cerramos las demás para mayor limpieza
+  Object.keys(openQStates).forEach(k => openQStates[k] = false);
+  openQStates[questionRows.length - 1] = true;
+  renderQFields();
 }
+
 async function uploadQAudio(event, i) {
   const file = event.target.files[0]; if (!file) return; isUploadingAudio = true;
   const fn = `qa_${Date.now()}.${file.name.split('.').pop()}`;
