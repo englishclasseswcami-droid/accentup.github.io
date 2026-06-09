@@ -766,8 +766,15 @@ async function fetchData() {
   const allModules = rMod.data || [];
   dbModules = allModules.filter(m => isTeacher || !m.is_private || (m.allowed_emails && m.allowed_emails.toLowerCase().includes(currentUser.email.toLowerCase())));
   
-  dbSubmodules = rSub.data || []; dbLessons = rLes.data || []; dbProgress = rProg.data || [];
+ dbSubmodules = rSub.data || []; dbLessons = rLes.data || []; dbProgress = rProg.data || [];
   dbPosts = rPosts.data || []; dbComments = rComments.data || []; dbLikes = rLikes.data || []; dbProfiles = rProfiles.data || [];
+
+  renderClassroomGrid(); 
+  updateModuleSelect(); 
+  
+  if (typeof renderManageList === 'function') renderManageList();
+  if (isTeacher) renderTeacherProgress(rAllProg.data || []);
+  if (document.getElementById('page-community').classList.contains('active')) renderCommunityFeed();
   
   renderClassroomGrid(); updateModuleSelect(); renderManageList();
   if (isTeacher) renderTeacherProgress(rAllProg.data || []);
