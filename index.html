@@ -13,11 +13,14 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
+  /* PALETA ACCENTUP */
   --brand-dark: #07216b;
   --brand: #2150e3;
+  --brand-mid: #1639a8; /* Agregado por auditoria */
   --brand-light: #EEEDFE;
   --accent: #cafc05;
   --accent-light: #fffbca;
+  
   --bg:#F7F7FB;--surface:#FFFFFF;
   --text:#14141F;--text-muted:#6B6B80;--text-light:#A0A0B5;
   --border:rgba(0,0,0,0.08);--radius:16px;--radius-sm:8px;
@@ -46,7 +49,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .section-intro h2{font-size:20px;font-weight:800;color:var(--brand-dark);margin-bottom:5px}
 .section-intro p{font-size:13px;color:var(--text-muted);line-height:1.6}
 
-/* LANDING PAGE STYLES */
+/* ════════ RE-DESIGNED LANDING PAGE STYLES ════════ */
 .lp-page { padding: 0 !important; max-width: 100% !important; }
 .lp-container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
 
@@ -61,7 +64,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .lp-cta-btn { display: inline-block; background: var(--accent); color: var(--brand-dark); font-size: 17px; font-weight: 800; text-decoration: none; padding: 16px 36px; border-radius: 40px; transition: all 0.2s; box-shadow: 0 8px 24px rgba(202, 252, 5, 0.2); border: none; cursor: pointer;}
 .lp-cta-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 32px rgba(202, 252, 5, 0.3); }
 .lp-micro { display: block; font-size: 12px; opacity: 0.6; margin-top: 14px; font-weight: 500; }
-
 .lp-hero-visual { position: relative; }
 .lp-hero-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 24px; transform: rotate(3deg); border: 4px solid var(--accent); box-shadow: 0 20px 50px rgba(0,0,0,0.4); transition: transform 0.3s ease; }
 .lp-hero-img:hover { transform: rotate(0deg); }
@@ -75,7 +77,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .lp-p { font-size: 17px; color: var(--text-muted); line-height: 1.7; text-align: center; max-width: 800px; margin: 0 auto 3rem; }
 .blue .lp-p { color: rgba(255,255,255,0.85); }
 
-/* Speech Bubbles (Pain points) */
+/* Speech Bubbles */
 .lp-quotes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 4rem; }
 .lp-speech-bubble { background: var(--surface); padding: 1.75rem; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,0.04); position: relative; border: 1px solid var(--border); }
 .lp-speech-bubble::after { content: ''; position: absolute; bottom: -10px; left: 30px; border-width: 10px 10px 0; border-style: solid; border-color: var(--surface) transparent transparent transparent; display: block; width: 0; }
@@ -148,8 +150,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .lp-faq details[open] summary::after { content: '−'; }
 .lp-faq details p { padding: 0 1.5rem 1.5rem; font-size: 15px; color: var(--text-muted); line-height: 1.6; }
 
-/* ════════ END LANDING PAGE STYLES ════════ */
-
+/* SOUND GRID */
 .sound-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:2rem}
 .sound-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:1rem .9rem .9rem;cursor:pointer;transition:border-color .15s,transform .1s;text-align:center}
 .sound-card:hover{border-color:var(--brand);transform:translateY(-2px)}
@@ -299,6 +300,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .dnd-col.active-drop{border-color:var(--brand);background:var(--brand-light)}
 .dnd-col-header{padding:12px 10px;font-weight:800;text-align:center;border-bottom:1.5px solid var(--border);background:var(--bg);border-radius:var(--radius-sm) var(--radius-sm) 0 0;color:var(--text)}
 .dnd-col-body{padding:10px;flex:1;min-height:120px;display:flex;flex-direction:column;gap:8px;align-items:center}
+
 .matching-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .match-col-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-light);margin-bottom:8px}
 .match-chip{padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;background:var(--surface);margin-bottom:8px}
@@ -427,7 +429,7 @@ footer strong{color:var(--brand)}
         <span class="lp-micro">Personalized, 1-on-1 6-month program. Strictly limited spots.</span>
       </div>
       <div class="lp-hero-visual">
-        <img src="https://flfyifdaitfnxncoxzxe.supabase.co/storage/v1/object/public/images/foto%20uno.jpg" alt="Teacher speaking" class="lp-hero-img" />
+        <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Teacher speaking" class="lp-hero-img" />
       </div>
     </div>
   </section>
@@ -558,8 +560,7 @@ footer strong{color:var(--brand)}
   <section class="lp-section">
     <div class="lp-container">
       <div class="lp-mentor">
-        <img src="https://flfyifdaitfnxncoxzxe.supabase.co/storage/v1/object/public/images/foto%20tres.jpg" alt="Camila Mentor" class="lp-mentor-img" />
-        
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop" alt="Camila Mentor" class="lp-mentor-img" />
         <div class="lp-mentor-text">
           <h2 class="lp-h2" style="text-align:left;">Hi, I’m Camila. And I know exactly what’s holding your English back.</h2>
           <p>For years, I’ve watched incredibly talented, intelligent professional women shrink in meeting rooms or avoid speaking up because they felt insecure about their English pronunciation.</p>
@@ -987,8 +988,20 @@ async function handleAuth() {
   const res = isLoginMode
     ? await sb.auth.signInWithPassword({ email, password: pw })
     : await sb.auth.signUp({ email, password: pw });
-  btn.disabled = false; btn.textContent = isLoginMode ? 'Log in' : 'Create account';
-  if (res.error) { errEl.textContent = res.error.message; errEl.style.display = 'block'; }
+    
+  if (res.error) { 
+    errEl.textContent = res.error.message; errEl.style.display = 'block'; 
+    btn.disabled = false; btn.textContent = isLoginMode ? 'Log in' : 'Create account';
+  } else {
+    // AUTO-CREAR PERFIL (Soluciona el bug de estudiantes invisibles en el Dashboard)
+    if (!isLoginMode || res.data?.user) {
+       const checkProf = await sb.from('user_profiles').select('id').eq('id', res.data.user.id).single();
+       if (!checkProf.data) {
+         await sb.from('user_profiles').insert([{ id: res.data.user.id, username: email.split('@')[0] }]);
+       }
+    }
+    btn.disabled = false; btn.textContent = isLoginMode ? 'Log in' : 'Create account';
+  }
 }
 
 /* ══════════════════════════════════════════
@@ -1011,10 +1024,6 @@ function goToPage(pageId) {
   
   const pageEl = document.getElementById('page-' + pageId);
   if (pageEl) pageEl.classList.add('active');
-  
-  const hiddenHero = ['home','classroom','teacher','auth','community','profile'];
-  const hero = document.getElementById('hero-banner');
-  if (hero) hero.style.display = hiddenHero.includes(pageId) ? 'none' : 'block';
   
   if (pageId === 'classroom') renderClassroomGrid();
   if (pageId === 'community') renderCommunityFeed();
@@ -1154,9 +1163,16 @@ async function saveEditedPost() {
 }
 async function deletePost(postId) {
   if (!confirm('Delete this post?')) return;
+  const isTeacher = currentUser.email.toLowerCase() === TEACHER_EMAIL.toLowerCase();
+  
+  if (isTeacher) {
+    await sb.from('posts').delete().eq('id', postId);
+  } else {
+    await sb.from('posts').delete().eq('id', postId).eq('user_id', currentUser.id);
+  }
   await sb.from('comments').delete().eq('post_id', postId);
   await sb.from('likes').delete().eq('post_id', postId);
-  await sb.from('posts').delete().eq('id', postId);
+  
   if (currentViewedPostId === postId) backToCommunityFeed(); else await fetchData();
 }
 
@@ -1220,7 +1236,12 @@ async function submitComment() {
 }
 async function deleteComment(commentId) {
   if (!confirm('Delete this comment?')) return;
-  await sb.from('comments').delete().eq('id', commentId);
+  const isTeacher = currentUser.email.toLowerCase() === TEACHER_EMAIL.toLowerCase();
+  if (isTeacher) {
+    await sb.from('comments').delete().eq('id', commentId);
+  } else {
+    await sb.from('comments').delete().eq('id', commentId).eq('user_id', currentUser.id);
+  }
   await fetchData(); renderPostDetail();
 }
 async function toggleLike(postId, inDetail = false) {
@@ -1632,6 +1653,7 @@ async function moveSubmodule(id, dir) {
 function toggleLessonFields() {
   const type = document.getElementById('t-les-type').value;
   document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none';
+  // Siempre visible por pedido explícito de Cami para dar introducciones a las actividades interactivas:
   document.getElementById('fields-text').style.display = 'block';
   document.getElementById('fields-embed').style.display = type === 'embed' ? 'block' : 'none';
   document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none';
