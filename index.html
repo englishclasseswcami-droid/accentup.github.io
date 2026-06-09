@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>AccentUp — Sound Explorer</title>
+<title>AccentUp — Master American English Pronunciation</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
@@ -13,8 +13,13 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --brand:#2D2AE8;--brand-light:#EEEDFE;--brand-mid:#534AB7;--brand-dark:#1a18a0;
-  --accent:#F5C4B3;--accent-dark:#D85A30;
+  /* NUEVA PALETA ACCENTUP */
+  --brand-dark: #07216b;
+  --brand: #2150e3;
+  --brand-light: #EEEDFE;
+  --accent: #cafc05;
+  --accent-light: #fffbca;
+  
   --bg:#F7F7FB;--surface:#FFFFFF;
   --text:#14141F;--text-muted:#6B6B80;--text-light:#A0A0B5;
   --border:rgba(0,0,0,0.08);--radius:14px;--radius-sm:8px;
@@ -24,29 +29,86 @@
 }
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;gap:.75rem;flex-wrap:wrap}
-.logo{font-size:20px;font-weight:800;color:var(--brand);letter-spacing:-.5px;white-space:nowrap}
-.logo span{color:var(--accent-dark)}
+.logo{font-size:20px;font-weight:800;color:var(--brand-dark);letter-spacing:-.5px;white-space:nowrap}
+.logo span{color:var(--brand)}
 .nav-tabs{display:flex;gap:4px;flex-wrap:wrap}
-.nav-tab{padding:7px 15px;border-radius:30px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--text-muted);transition:all .18s;white-space:nowrap;font-family:'Inter',sans-serif}
+.nav-tab{padding:7px 15px;border-radius:30px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text-muted);transition:all .18s;white-space:nowrap;font-family:'Inter',sans-serif}
 .nav-tab:hover{background:var(--brand-light);color:var(--brand)}
 .nav-tab.active{background:var(--brand);color:#fff}
 .nav-tab.teacher-tab{border:1.5px dashed var(--border);display:none}
-.nav-tab.teacher-tab.active{background:var(--accent-dark);border-color:var(--accent-dark);color:#fff}
-.nav-tab.auth-btn{background:var(--brand);color:#fff;font-weight:700}
-.nav-tab.auth-btn:hover{background:var(--brand-dark)}
+.nav-tab.teacher-tab.active{background:var(--brand-dark);border-color:var(--brand-dark);color:var(--accent)}
+.nav-tab.auth-btn{background:var(--brand-dark);color:#fff;font-weight:700}
+.nav-tab.auth-btn:hover{background:var(--brand)}
 .nav-tab.logout-btn-nav{background:var(--red-light);color:var(--red-dark)}
 .nav-tab.logout-btn-nav:hover{background:var(--red);color:#fff}
-.hero{background:var(--brand);color:#fff;padding:3rem 2rem 2.5rem;text-align:center}
-.hero-label{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;opacity:.65;margin-bottom:10px}
-.hero h1{font-size:clamp(24px,4vw,42px);font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:12px}
-.hero h1 em{color:var(--accent);font-style:normal}
-.hero p{font-size:15px;opacity:.75;max-width:500px;margin:0 auto;line-height:1.6}
 .page{display:none;padding:2rem 1.5rem;max-width:960px;margin:0 auto}
 .page.active{display:block}
 .page-full{max-width:1200px}
 .section-intro{margin-bottom:1.75rem}
-.section-intro h2{font-size:20px;font-weight:800;color:var(--brand);margin-bottom:5px}
+.section-intro h2{font-size:20px;font-weight:800;color:var(--brand-dark);margin-bottom:5px}
 .section-intro p{font-size:13px;color:var(--text-muted);line-height:1.6}
+
+/* ════════ LANDING PAGE STYLES ════════ */
+.lp-page { padding: 0 !important; max-width: 100% !important; }
+.lp-hero { background: var(--brand-dark); color: #fff; padding: 5rem 1.5rem; text-align: center; }
+.lp-container { max-width: 900px; margin: 0 auto; }
+.lp-tag { display: inline-block; background: rgba(255,255,255,0.1); color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 14px; border-radius: 30px; margin-bottom: 1.5rem; }
+.lp-h1 { font-size: clamp(32px, 5vw, 54px); font-weight: 800; letter-spacing: -1px; line-height: 1.15; margin-bottom: 1.5rem; }
+.lp-h1 em { color: var(--accent); font-style: normal; position: relative; }
+.lp-subtitle { font-size: 17px; opacity: 0.85; max-width: 700px; margin: 0 auto 2.5rem; line-height: 1.6; }
+.lp-cta-btn { display: inline-block; background: var(--accent); color: var(--brand-dark); font-size: 16px; font-weight: 800; text-decoration: none; padding: 14px 32px; border-radius: 30px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 14px rgba(202, 252, 5, 0.3); border: none; cursor: pointer; }
+.lp-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(202, 252, 5, 0.5); }
+.lp-micro { display: block; font-size: 12px; opacity: 0.6; margin-top: 12px; }
+
+.lp-section { padding: 5rem 1.5rem; }
+.lp-section.cream { background: var(--accent-light); }
+.lp-section.blue { background: var(--brand); color: #fff; }
+.lp-h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 800; color: var(--brand-dark); margin-bottom: 1.5rem; text-align: center; letter-spacing: -0.5px; line-height: 1.2; }
+.blue .lp-h2 { color: #fff; }
+.lp-p { font-size: 16px; color: var(--text-muted); line-height: 1.7; text-align: center; max-width: 760px; margin: 0 auto 3rem; }
+.blue .lp-p { color: rgba(255,255,255,0.8); }
+
+.lp-quotes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+.lp-quote-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border-left: 4px solid var(--brand); }
+.lp-quote-card p { font-size: 15px; font-weight: 500; color: var(--text); font-style: italic; line-height: 1.5; }
+
+.lp-mech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+.lp-mech-card { background: var(--surface); border-radius: var(--radius); padding: 2rem; border: 1px solid var(--border); text-align: left; }
+.lp-mech-icon { font-size: 32px; margin-bottom: 1rem; }
+.lp-mech-card h3 { font-size: 18px; font-weight: 800; color: var(--brand-dark); margin-bottom: 10px; }
+.lp-mech-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+.lp-table-wrap { overflow-x: auto; margin: 3rem 0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border-radius: var(--radius); }
+.lp-table { width: 100%; min-width: 600px; border-collapse: collapse; background: var(--surface); text-align: left; }
+.lp-table th { padding: 1.5rem; font-size: 16px; font-weight: 800; border-bottom: 2px solid var(--border); }
+.lp-table th.trad { color: var(--text-muted); width: 50%; background: #F9FAFB; }
+.lp-table th.accent { color: var(--brand-dark); width: 50%; background: var(--accent-light); }
+.lp-table td { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.5; color: var(--text); }
+.lp-table tr:last-child td { border-bottom: none; }
+.lp-table td.trad-col { background: #F9FAFB; color: var(--text-muted); }
+.lp-table td.accent-col { font-weight: 500; }
+
+.lp-offer-box { background: var(--brand-dark); border-radius: var(--radius); padding: 3rem; color: #fff; margin-top: 2rem; }
+.lp-offer-box h3 { color: var(--accent); font-size: 22px; margin-bottom: 1.5rem; }
+.lp-offer-list { list-style: none; margin-bottom: 2rem; }
+.lp-offer-list li { font-size: 15px; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+.lp-offer-list li::before { content: '✅'; flex-shrink: 0; }
+.lp-price-box { background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: var(--radius-sm); text-align: center; margin-top: 2rem; }
+.lp-price { font-size: 32px; font-weight: 800; color: var(--accent); margin: 10px 0; }
+
+.lp-mentor { display: flex; gap: 3rem; align-items: center; }
+@media(max-width: 768px){ .lp-mentor { flex-direction: column; text-align: center; } }
+.lp-mentor-img { width: 250px; height: 250px; border-radius: 50%; background: var(--brand-light); flex-shrink: 0; border: 4px solid var(--accent); display:flex; align-items:center; justify-content:center; font-size: 50px;}
+.lp-mentor-text h3 { font-size: 24px; font-weight: 800; color: var(--brand-dark); margin-bottom: 1rem; }
+.lp-mentor-text p { font-size: 15px; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem; }
+
+.lp-faq { max-width: 700px; margin: 0 auto; }
+.lp-faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1.5rem; margin-bottom: 1rem; text-align: left; }
+.lp-faq-q { font-size: 16px; font-weight: 700; color: var(--brand-dark); margin-bottom: 8px; }
+.lp-faq-a { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+/* ════════ END LANDING PAGE STYLES ════════ */
+
 .sound-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:2rem}
 .sound-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:1rem .9rem .9rem;cursor:pointer;transition:border-color .15s,transform .1s;text-align:center}
 .sound-card:hover{border-color:var(--brand);transform:translateY(-2px)}
@@ -219,6 +281,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .post-preview{font-size:14px;color:var(--text-muted);line-height:1.5;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .post-full-body{font-size:15px;color:var(--text);line-height:1.6;margin-bottom:1.5rem;white-space:pre-wrap}
 .post-full-body img{max-width:100%;border-radius:var(--radius-sm)}
+.post-full-body iframe{width:100%;aspect-ratio:16/9;border-radius:var(--radius-sm)}
 .post-actions{display:flex;gap:16px;border-top:1px solid var(--skool-border);padding-top:12px;flex-wrap:wrap;align-items:center}
 .action-btn{background:transparent;border:none;color:var(--text-muted);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;transition:color .15s}
 .action-btn:hover{color:var(--brand)}
@@ -233,7 +296,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .comment-author{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
 .comment-text{font-size:14px;color:var(--text-muted);line-height:1.5}
 #community-editor-container{min-height:120px;border-radius:0 0 var(--radius-sm) var(--radius-sm);font-family:'Inter',sans-serif;font-size:14px}
-
 /* EDIT POST MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem}
 .modal-overlay.hidden{display:none}
@@ -282,7 +344,6 @@ textarea{resize:vertical;min-height:70px}
 footer{text-align:center;padding:2rem;font-size:12px;color:var(--text-light);border-top:1px solid var(--border);margin-top:3rem}
 footer strong{color:var(--brand)}
 
-/* Progreso del estudiante (Teacher View) */
 .student-prog-row{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid var(--skool-border)}
 .student-prog-row:last-child{border-bottom:none}
 .student-prog-name{font-size:14px;font-weight:600;color:var(--text)}
@@ -307,8 +368,9 @@ footer strong{color:var(--brand)}
 <nav>
   <div class="logo">Accent<span>Up</span></div>
   <div class="nav-tabs">
-    <button class="nav-tab active" data-page="vowels">Vowel sounds</button>
-    <button class="nav-tab" data-page="consonants">Consonant sounds</button>
+    <button class="nav-tab active" data-page="home" id="nav-home">Home</button>
+    <button class="nav-tab" data-page="vowels">Vowels</button>
+    <button class="nav-tab" data-page="consonants">Consonants</button>
     <button class="nav-tab" data-page="classroom" id="nav-classroom">Classroom</button>
     <button class="nav-tab" data-page="community" id="nav-community">Community</button>
     <button class="nav-tab" data-page="profile" id="nav-profile-tab" style="display:none">Profile</button>
@@ -317,13 +379,173 @@ footer strong{color:var(--brand)}
   </div>
 </nav>
 
-<div class="hero" id="hero-banner">
-  <div class="hero-label">Sound Explorer</div>
-  <h1>Master <em>American English</em><br/>pronunciation</h1>
-  <p>Explore every sound of American English and practice with interactive exercises.</p>
+<div class="page active lp-page" id="page-home">
+  <section class="lp-hero">
+    <div class="lp-container">
+      <span class="lp-tag">For professional women with Intermediate/Advanced level</span>
+      <h1 class="lp-h1">Speak English with the same <em>authority</em> you have in your native language.</h1>
+      <p class="lp-subtitle">You already know the grammar and have the vocabulary, but your lack of confidence when speaking is hitting a career ceiling. Unlock your oral fluency in 6 months with AccentUp and stop being "just another voice" in important meetings.</p>
+      <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn">👉 Apply for the program (Let's chat on WhatsApp)</a>
+      <span class="lp-micro">Personalized, 1-on-1 6-month program. Strictly limited spots.</span>
+    </div>
+  </section>
+
+  <section class="lp-section cream">
+    <div class="lp-container">
+      <h2 class="lp-h2">Your resume says "Advanced English", but everyday reality feels completely different...</h2>
+      <p class="lp-p">If you are here, it’s probably because these thoughts cross your mind more often than you'd like to admit:</p>
+      
+      <div class="lp-quotes-grid">
+        <div class="lp-quote-card"><p>“I hate when someone says ‘What?’ and I have to repeat myself.”</p></div>
+        <div class="lp-quote-card"><p>“I sound angry even when I’m not.”</p></div>
+        <div class="lp-quote-card"><p>“I sound so much smarter in my first language.”</p></div>
+        <div class="lp-quote-card"><p>“I understand so much… but when I speak, I can only express half of it.”</p></div>
+        <div class="lp-quote-card"><p>“I’ve been learning English for years, and I still get stuck."</p></div>
+        <div class="lp-quote-card"><p>“I know the answer, but I usually keep it to myself.”</p></div>
+      </div>
+      
+      <p class="lp-p" style="font-weight:500; color:var(--text); margin-bottom: 1rem;">You stay quieter than you’d like in meetings or social situations. You feel like the most interesting part of you is missing. Over time, this starts to affect more than your English. You feel less confident. Less present.</p>
+      <p class="lp-p" style="font-weight:700; color:var(--brand-dark);">The truth is, conventional English courses focus heavily on theory. Rules. Word lists. Spelling.<br>But speaking isn't theory. Speaking is physical.</p>
+    </div>
+  </section>
+
+  <section class="lp-section">
+    <div class="lp-container">
+      <h2 class="lp-h2">Forget traditional English courses. Speaking is a physical skill.</h2>
+      <p class="lp-p">AccentUp is designed around a unique 3-step framework that shifts you from just "knowing" English to actually owning it.</p>
+      
+      <div class="lp-mech-grid">
+        <div class="lp-mech-card">
+          <div class="lp-mech-icon">🧏</div>
+          <h3>1. HEAR IT</h3>
+          <p>Decode the real language. Before you can say a sound, you need to truly hear it. We analyze the English language through its sound system using materials you actually enjoy—your favorite series, movies, TED Talks, or songs.</p>
+        </div>
+        <div class="lp-mech-card">
+          <div class="lp-mech-icon">🌐</div>
+          <h3>2. OWN IT</h3>
+          <p>Intentional practice. This is where the physical training happens. We practice real-world pronunciation by diving deep into connected speech, linking, and natural intonation through intensive shadowing techniques.</p>
+        </div>
+        <div class="lp-mech-card">
+          <div class="lp-mech-icon">👄</div>
+          <h3>3. SAY IT</h3>
+          <p>Automate your speech. We simulate your real professional life: practicing upcoming presentations, simulating high-stakes meetings, and role-playing interviews. Speak under pressure without getting stuck.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="lp-section cream">
+    <div class="lp-container">
+      <h2 class="lp-h2">Why AccentUp works where other courses fail</h2>
+      <div class="lp-table-wrap">
+        <table class="lp-table">
+          <thead>
+            <tr>
+              <th class="trad">Traditional English Learning ❌</th>
+              <th class="accent">AccentUp: The New Sound Method ✅</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="trad-col">Focuses on information and rules, assuming that understanding automatically leads to speaking.</td>
+              <td class="accent-col">Focuses on practical spoken English and trains speaking as a physical skill.</td>
+            </tr>
+            <tr>
+              <td class="trad-col">Prioritizes reading and writing instead of intentional speaking practice.</td>
+              <td class="accent-col">Prioritizes pronunciation, rhythm, intonation, and real-life communication.</td>
+            </tr>
+            <tr>
+              <td class="trad-col">Treats mistakes as something to be avoided at all costs.</td>
+              <td class="accent-col">Treats mistakes as a natural and necessary part of the learning process.</td>
+            </tr>
+            <tr>
+              <td class="trad-col">Ignores confidence, fear, and mindset, assuming confidence will come naturally with fluency.</td>
+              <td class="accent-col">Builds confidence and a growth mindset as skills you intentionally develop to unlock fluency.</td>
+            </tr>
+            <tr>
+              <td class="trad-col">Creates reliance on constant feedback and always needing "the next course" to improve.</td>
+              <td class="accent-col">Teaches you how to recognize your own patterns, change them, and take full ownership of your progress.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="lp-section blue">
+    <div class="lp-container">
+      <h2 class="lp-h2" style="margin-bottom:0.5rem">The AccentUp 6-Month Mentorship</h2>
+      <p class="lp-p" style="color:var(--accent-light);">A personalized, 1-on-1 coaching program designed to permanently transform the way you speak English.</p>
+      
+      <div class="lp-offer-box">
+        <h3>💎 The Core Program Includes:</h3>
+        <ul class="lp-offer-list">
+          <li><strong>Live 60-Minute 1-on-1 Sessions:</strong> Highly focused, private coaching sessions with instant, actionable feedback. No generic lessons—we work directly on your oral roadblocks.</li>
+          <li><strong>The AccentUp Interactive Platform:</strong> 24/7 access to our custom-built platform featuring step-by-step explainer videos, phonetic charts, and extra interactive practice.</li>
+        </ul>
+        
+        <h3 style="margin-top:2.5rem;">🎁 Exclusive Bonuses:</h3>
+        <ul class="lp-offer-list">
+          <li><strong>Personalized Weekly Routine:</strong> You get a customized training plan to keep improving your pronunciation on your own time.</li>
+          <li><strong>"Pronunciation Weekly Requests":</strong> A weekly video series addressing the exact words, sounds, or phrases you requested.</li>
+          <li><strong>The Private Community:</strong> Access to our exclusive member network to share wins, exchange resources, and practice together.</li>
+          <li><strong>Extended Platform Access:</strong> Get an extra 3 months of full access to the platform to review and solidify your progress after the program ends.</li>
+          <li><strong>"Boost Your Practice" Masterclass:</strong> A special video training on how to optimize your study time.</li>
+        </ul>
+        
+        <div class="lp-price-box">
+          <p style="font-size:14px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;">Your Investment in Your Career</p>
+          <div class="lp-price">$530,000 ARS</div>
+          <p style="font-size:13px; opacity:0.8; margin-bottom:1.5rem;">(or 3 monthly payments of $200,000 ARS)</p>
+          <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn">👉 Secure your spot on WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="lp-section">
+    <div class="lp-container">
+      <div class="lp-mentor">
+        <div class="lp-mentor-img">👩🏻‍🏫</div>
+        <div class="lp-mentor-text">
+          <h2 class="lp-h2" style="text-align:left; margin-bottom:10px;">Hi, I’m Camila. And I know exactly what’s holding your English back.</h2>
+          <p>For years, I’ve watched incredibly talented, intelligent professional women shrink in meeting rooms or avoid speaking up because they felt insecure about their English pronunciation.</p>
+          <p>They had the vocabulary. They knew the grammar. But the traditional education system completely ignored the most important part of communication: <strong>the physical skill of speaking with authority.</strong></p>
+          <p>I created AccentUp because I was tired of seeing brilliant women hit a language ceiling in their careers. My mission is to give you the exact framework, tools, and feedback you need to stop overthinking every word and start speaking with the confidence and clarity your professional talent deserves.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="lp-section cream">
+    <div class="lp-container">
+      <h2 class="lp-h2">Frequently Asked Questions</h2>
+      <div class="lp-faq">
+        <div class="lp-faq-item">
+          <div class="lp-faq-q">Is this program right for beginners?</div>
+          <div class="lp-faq-a">No. AccentUp is exclusively designed for professionals who already have an intermediate or advanced understanding of English grammar and vocabulary, but struggle with oral fluency, pronunciation, and confidence.</div>
+        </div>
+        <div class="lp-faq-item">
+          <div class="lp-faq-q">I have a very busy schedule. How much time do I need to invest?</div>
+          <div class="lp-faq-a">The program is built for busy professionals. Alongside our highly focused 60-minute weekly live session, you will get a personalized routine using our 24/7 interactive platform. You don't need hours a day—you just need consistent, intentional practice (even 15 minutes a day makes a huge difference).</div>
+        </div>
+        <div class="lp-faq-item">
+          <div class="lp-faq-q">Is this a group class or 1-on-1?</div>
+          <div class="lp-faq-a">This is a highly personalized, 1-on-1 mentorship. I work directly with you, using your own real-world materials (like your upcoming presentations or meetings) to tackle your specific blind spots.</div>
+        </div>
+        <div class="lp-faq-item">
+          <div class="lp-faq-q">How do I secure my spot?</div>
+          <div class="lp-faq-a">Because this is a personalized 1-on-1 experience, I only work with a small number of students at a time to ensure the highest quality of feedback. Click the button below to reach out to me directly on WhatsApp so we can see if you are a good fit for the program!</div>
+        </div>
+        <div style="text-align:center; margin-top:3rem;">
+          <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn" style="font-size:18px; padding:18px 40px;">👉 Let's talk on WhatsApp and unlock your voice</a>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
 
-<div class="page active" id="page-vowels">
+<div class="page" id="page-vowels">
   <div class="section-intro"><h2>Vowel sounds</h2><p>American English has 19 vowel sounds. Click any card to explore mouth position, spellings, and tips for Spanish speakers.</p></div>
   <div id="vowel-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
   <div class="sub-heading">Pure vowels</div><div class="sound-grid" id="pure-vowel-grid"></div>
@@ -444,6 +666,7 @@ footer strong{color:var(--brand)}
         </div>
         <div id="view-exercise" style="display:none">
           <h2 id="player-title" class="lesson-title-main"></h2>
+          <div id="cv-task-text" class="text-content-main ql-editor" style="border:none;padding:0;margin-bottom:1.5rem;display:none"></div>
           <audio id="player-audio" controls style="display:none;width:100%;margin-bottom:1.25rem;border-radius:30px"></audio>
           <div id="cv-task-audios" class="lesson-audios-box" style="display:none"></div>
           <div id="player-questions"></div>
@@ -683,7 +906,7 @@ function updateAuthUI() {
     btn.textContent = 'Log in'; btn.classList.remove('logout-btn-nav'); btn.classList.add('auth-btn');
     teacherTab.style.display = 'none'; profileTab.style.display = 'none';
     const ap = document.querySelector('.page.active')?.id;
-    if (['page-classroom','page-teacher','page-community','page-profile'].includes(ap)) goToPage('vowels');
+    if (['page-classroom','page-teacher','page-community','page-profile'].includes(ap)) goToPage('home');
   }
 }
 
@@ -726,11 +949,13 @@ function goToPage(pageId) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   
-  document.querySelector(`.nav-tab[data-page="${pageId}"]`)?.classList.add('active');
+  const tabBtn = document.querySelector(`.nav-tab[data-page="${pageId}"]`);
+  if (tabBtn) tabBtn.classList.add('active');
+  
   const pageEl = document.getElementById('page-' + pageId);
   if (pageEl) pageEl.classList.add('active');
   
-  const hiddenHero = ['classroom','teacher','auth','community','profile'];
+  const hiddenHero = ['home','classroom','teacher','auth','community','profile'];
   const hero = document.getElementById('hero-banner');
   if (hero) hero.style.display = hiddenHero.includes(pageId) ? 'none' : 'block';
   
@@ -766,12 +991,10 @@ async function fetchData() {
   const allModules = rMod.data || [];
   dbModules = allModules.filter(m => isTeacher || !m.is_private || (m.allowed_emails && m.allowed_emails.toLowerCase().includes(currentUser.email.toLowerCase())));
   
- dbSubmodules = rSub.data || []; dbLessons = rLes.data || []; dbProgress = rProg.data || [];
+  dbSubmodules = rSub.data || []; dbLessons = rLes.data || []; dbProgress = rProg.data || [];
   dbPosts = rPosts.data || []; dbComments = rComments.data || []; dbLikes = rLikes.data || []; dbProfiles = rProfiles.data || [];
-
-  renderClassroomGrid();
-  updateModuleSelect();
-  renderManageList();
+  
+  renderClassroomGrid(); updateModuleSelect(); renderManageList();
   if (isTeacher) renderTeacherProgress(rAllProg.data || []);
   if (document.getElementById('page-community').classList.contains('active')) renderCommunityFeed();
 }
@@ -1083,6 +1306,14 @@ function showLesson(lessonId) {
     studentAnswers = {}; matchState = { leftSel: null, pairs: {} }; selectedDragChip = null;
     document.getElementById('view-exercise').style.display = 'block';
     document.getElementById('player-title').textContent = currentLesson.title;
+    
+    // Novedad: ¡Texto siempre visible para tareas también!
+    const taskTextEl = document.getElementById('cv-task-text');
+    if (taskTextEl) {
+      taskTextEl.innerHTML = currentLesson.text_content || '';
+      taskTextEl.style.display = (currentLesson.text_content && currentLesson.text_content !== '<p><br></p>') ? 'block' : 'none';
+    }
+
     const audioEl = document.getElementById('player-audio');
     if (currentLesson.audio_url) { audioEl.src = currentLesson.audio_url; audioEl.style.display = 'block'; } else audioEl.style.display = 'none';
     
@@ -1290,7 +1521,6 @@ async function saveModule() {
   await fetchData(); alert(editId ? 'Module updated!' : 'Module created!'); cancelEditMod();
 }
 function editModule(id) {
-  // Cuando vas a editar, busca en TODOS los modulos de la DB, incluso si tu vista esta filtrada
   const m = dbModules.find(x => x.id === id); if (!m) return;
   document.getElementById('t-mod-title').value = m.title; 
   document.getElementById('edit-mod-id').value = m.id;
@@ -1340,7 +1570,8 @@ async function moveSubmodule(id, dir) {
 function toggleLessonFields() {
   const type = document.getElementById('t-les-type').value;
   document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none';
-  document.getElementById('fields-text').style.display = (type === 'text' || type === 'video' || type === 'embed') ? 'block' : 'none';
+  // Texto siempre visible para TODOS los tipos
+  document.getElementById('fields-text').style.display = 'block';
   document.getElementById('fields-embed').style.display = type === 'embed' ? 'block' : 'none';
   document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none';
 }
@@ -1354,7 +1585,6 @@ function updateModuleSelect() {
   modSelect.innerHTML = mHtml;
   subParentSelect.innerHTML = mHtml;
   
-  // Recuerda la selección anterior si existe
   if (currentMod && dbModules.some(m => m.id === currentMod)) modSelect.value = currentMod;
   if (currentParent && dbModules.some(m => m.id === currentParent)) subParentSelect.value = currentParent;
   
@@ -1368,7 +1598,6 @@ function updateSubfolderSelect() {
   const subs = dbSubmodules.filter(s => s.module_id === modId);
   subSelect.innerHTML = `<option value="">-- No subfolder (main module) --</option>` + subs.map(s => `<option value="${esc(s.id)}">${esc(s.title)}</option>`).join('');
   
-  // Recuerda la subcarpeta seleccionada
   if (currentSub && subs.some(s => s.id === currentSub)) subSelect.value = currentSub;
 }
 
@@ -1383,15 +1612,14 @@ async function saveLesson() {
   const btn = document.getElementById('btn-save-les'); btn.disabled = true; btn.textContent = 'Saving...';
 
   let payload = { module_id: moduleId, submodule_id: submodId || null, type, title, content: tempAudios };
+  
+  // Guardar siempre el contenido de texto (ahora aplica para task también)
+  payload.text_content = quillEditor.root.innerHTML;
 
   if (type === 'video') {
     payload.video_url = formatYouTubeUrl(document.getElementById('t-les-video-url').value.trim());
-    payload.text_content = quillEditor.root.innerHTML;
-  } else if (type === 'text') {
-    payload.text_content = quillEditor.root.innerHTML;
   } else if (type === 'embed') {
     payload.video_url = document.getElementById('t-les-embed-code').value.trim();
-    payload.text_content = quillEditor.root.innerHTML;
   } else if (type === 'task') {
     payload.task_type = document.getElementById('t-ex-type').value;
     if (payload.task_type === 'drag_drop') {
@@ -1441,9 +1669,12 @@ function editLesson(id) {
   document.getElementById('t-les-type').value = l.type;
   document.getElementById('t-les-title').value = l.title;
   toggleLessonFields();
-  if (l.type === 'video') { document.getElementById('t-les-video-url').value = l.video_url || ''; quillEditor.root.innerHTML = l.text_content || ''; }
-  if (l.type === 'text') { quillEditor.root.innerHTML = l.text_content || ''; }
-  if (l.type === 'embed') { document.getElementById('t-les-embed-code').value = l.video_url || ''; quillEditor.root.innerHTML = l.text_content || ''; }
+  
+  // Ahora TODOS cargan el texto
+  quillEditor.root.innerHTML = l.text_content || '';
+  
+  if (l.type === 'video') { document.getElementById('t-les-video-url').value = l.video_url || ''; }
+  if (l.type === 'embed') { document.getElementById('t-les-embed-code').value = l.video_url || ''; }
   if (l.type === 'task') {
     document.getElementById('t-ex-type').value = l.task_type || 'open_answer';
     questionRows = safeParseJSON(l.task_content);
@@ -1532,6 +1763,13 @@ function removeQOption(i, j) {
 }
 function buildQRow(type, q, i) {
   q = q || {};
+  
+  // Novedad: Protección de datos para Multiple Choice (evita que se borre el texto al escribir)
+  if (type === 'multiple_choice') {
+    if (!Array.isArray(q.options)) q.options = ['', ''];
+    if (typeof q.correctIndex !== 'number') q.correctIndex = 0;
+  }
+
   if (type === 'matching') return `<div class="q-row"><div class="q-row-label">Pair ${i+1}</div><button class="remove-q" onclick="removeQ(${i})">×</button><input type="text" placeholder="Word (left)" value="${esc(q.left||'')}" oninput="questionRows[${i}].left=this.value"/><input type="text" placeholder="Sound / meaning (right)" value="${esc(q.right||'')}" oninput="questionRows[${i}].right=this.value"/></div>`;
   if (type === 'fill_in_blank') return `<div class="q-row"><div class="q-row-label">Question ${i+1}</div><button class="remove-q" onclick="removeQ(${i})">×</button><textarea placeholder="Sentence with ___ for blank" oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt||'')}</textarea><input type="text" placeholder="Correct answer" value="${esc(q.answer||'')}" oninput="questionRows[${i}].answer=this.value"/><input type="text" placeholder="Hint (optional)" value="${esc(q.hint||'')}" oninput="questionRows[${i}].hint=this.value"/></div>`;
   if (type === 'dictation' || type === 'open_answer') {
@@ -1709,45 +1947,6 @@ function buildAllConsonantGrids() {
 }
 buildAllVowelGrids();
 buildAllConsonantGrids();
-
-function renderManageList() {
-  const list = document.getElementById('t-manage-list'); if (!list) return;
-  if (!dbModules.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div>'; return; }
-  
-  // Guardar el estado de los acordeones (qué carpetas estaban abiertas)
-  const openStates = {};
-  document.querySelectorAll('[id^="mod-children-"]').forEach(el => {
-    openStates[el.id] = el.style.display;
-  });
-
-  const iconMap = { video:'📺', text:'📄', task:'📝', embed:'🌐' };
-  list.innerHTML = dbModules.map(m => {
-    const subs = dbSubmodules.filter(s => s.module_id === m.id);
-    const orphans = dbLessons.filter(l => l.module_id === m.id && !l.submodule_id);
-    
-    const childId = `mod-children-${m.id}`;
-    const dState = openStates[childId] || 'none'; // Arranca oculto por defecto
-    
-    let html = `<div class="manage-item" style="background:var(--skool-hover);border-radius:var(--radius-sm);margin-bottom:4px;border:1px solid var(--border)">
-      <span class="manage-title" style="cursor:pointer;display:flex;align-items:center;gap:6px;flex:1" onclick="const e=document.getElementById('${childId}'); e.style.display = e.style.display === 'none' ? 'block' : 'none';">
-        📘 ${esc(m.title)} <span style="font-size:10px;background:var(--border);padding:2px 6px;border-radius:10px;color:var(--text-muted)">Show/Hide</span>
-      </span>
-      <div class="manage-actions"><button class="secondary-btn" onclick="moveModule('${m.id}',-1)">↑</button><button class="secondary-btn" onclick="moveModule('${m.id}',1)">↓</button><button class="secondary-btn" onclick="editModule('${m.id}')">Edit</button><button class="danger-btn" onclick="deleteModule('${m.id}')">Delete</button></div></div>
-      <div id="${childId}" style="display:${dState};margin-bottom:8px;padding-left:4px;">`;
-    
-    subs.forEach(sub => {
-      html += `<div class="manage-item" style="background:var(--bg);margin-left:1.5rem;border-left:2px solid var(--brand);margin-bottom:2px"><span class="manage-title">📁 ${esc(sub.title)}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveSubmodule('${sub.id}',-1)">↑</button><button class="secondary-btn" onclick="moveSubmodule('${sub.id}',1)">↓</button><button class="secondary-btn" onclick="editSubmodule('${sub.id}')">Edit</button><button class="danger-btn" onclick="deleteSubmodule('${sub.id}')">Delete</button></div></div>`;
-      dbLessons.filter(l => l.submodule_id === sub.id).forEach(l => {
-        html += `<div class="manage-item" style="padding-left:3rem"><span class="manage-title" style="color:var(--text-muted)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveLesson('${l.id}',-1)">↑</button><button class="secondary-btn" onclick="moveLesson('${l.id}',1)">↓</button><button class="secondary-btn" onclick="editLesson('${l.id}')">Edit</button><button class="danger-btn" onclick="deleteLesson('${l.id}')">Delete</button></div></div>`;
-      });
-    });
-    orphans.forEach(l => {
-      html += `<div class="manage-item" style="padding-left:1.5rem"><span class="manage-title" style="color:var(--text-muted)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveLesson('${l.id}',-1)">↑</button><button class="secondary-btn" onclick="moveLesson('${l.id}',1)">↓</button><button class="secondary-btn" onclick="editLesson('${l.id}')">Edit</button><button class="danger-btn" onclick="deleteLesson('${l.id}')">Delete</button></div></div>`;
-    });
-    html += `</div>`;
-    return html;
-  }).join('');
-}
 </script>
 </body>
 </html>
