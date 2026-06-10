@@ -419,8 +419,7 @@ footer strong{color:var(--brand)}
   <div class="logo">Accent<span>Up</span></div>
   <div class="nav-tabs">
     <button class="nav-tab active" data-page="home" id="nav-home">Home</button>
-    <button class="nav-tab" data-page="vowels">Vowels</button>
-    <button class="nav-tab" data-page="consonants">Consonants</button>
+    <button class="nav-tab" data-page="sounds">Sounds</button>
     <button class="nav-tab" data-page="classroom" id="nav-classroom">Classroom</button>
     <button class="nav-tab" data-page="community" id="nav-community">Community</button>
     <button class="nav-tab" data-page="streaks" id="nav-streaks-tab" style="display:none">🔥 Streaks</button>
@@ -567,22 +566,17 @@ footer strong{color:var(--brand)}
   </section>
 </div>
 
-<div class="page" id="page-vowels">
-  <div class="section-intro"><h2>Vowel sounds</h2><p>American English has 19 vowel sounds. Click any card to explore mouth position, spellings, and tips for Spanish speakers.</p></div>
-  <div id="vowel-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
-  <div class="sub-heading">Pure vowels</div><div class="sound-grid" id="pure-vowel-grid"></div>
-  <div class="sub-heading">Diphthongs</div><div class="sound-grid" id="diphthong-grid"></div>
-  <div class="sub-heading">R-colored vowels</div><div class="sound-grid" id="rcolored-grid"></div>
-</div>
-
-<div class="page" id="page-consonants">
-  <div class="section-intro"><h2>Consonant sounds</h2><p>American English has 24 consonant sounds. Every card includes all spelling patterns for that sound.</p></div>
-  <div id="consonant-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
-  <div class="sub-heading">Stops</div><div class="sound-grid" id="stops-grid"></div>
-  <div class="sub-heading">Fricatives</div><div class="sound-grid" id="fricatives-grid"></div>
-  <div class="sub-heading">Affricates</div><div class="sound-grid" id="affricates-grid"></div>
-  <div class="sub-heading">Nasals</div><div class="sound-grid" id="nasals-grid"></div>
-  <div class="sub-heading">Liquids & glides</div><div class="sound-grid" id="liquids-grid"></div>
+<div class="page" id="page-sounds">
+  <div class="section-intro"><h2>Sounds of American English</h2><p>Explore the 19 vowel sounds and 24 consonant sounds. Click any card to explore mouth position, spellings, and tips.</p></div>
+  <div id="sound-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
+  <div class="sub-heading" style="font-size:18px; color:var(--brand-dark)">Pure Vowels</div><div class="sound-grid" id="pure-vowel-grid"></div>
+  <div class="sub-heading" style="font-size:18px; color:var(--brand-dark)">Diphthongs</div><div class="sound-grid" id="diphthong-grid"></div>
+  <div class="sub-heading" style="font-size:18px; color:var(--brand-dark)">R-Colored Vowels</div><div class="sound-grid" id="rcolored-grid"></div>
+  <div class="sub-heading" style="font-size:18px; color:var(--brand-dark)">Stops</div><div class="sound-grid" id="stops-grid"></div>
+  <div class="sub-heading" style="font-size:18px; color:var(--brand-dark)">Fricatives</div><div class="sound-grid" id="fricatives-grid"></div>
+  <div class="sub-heading" style="font-size:18px; color:var(--brand-dark)">Affricates</div><div class="sound-grid" id="affricates-grid"></div>
+  <div class="sub-heading" style="font-size:18px; color:var(--brand-dark)">Nasals</div><div class="sound-grid" id="nasals-grid"></div>
+  <div class="sub-heading" style="font-size:18px; color:var(--brand-dark)">Liquids &amp; Glides</div><div class="sound-grid" id="liquids-grid"></div>
 </div>
 
 <div class="page" id="page-auth">
@@ -712,7 +706,6 @@ footer strong{color:var(--brand)}
           <button class="t-tab-btn" onclick="switchTTab('sub',this)">📁 Subfolder</button>
           <button class="t-tab-btn" onclick="switchTTab('les',this)">📝 Lesson</button>
         </div>
-        <!-- TAB: Module -->
         <div class="t-tab-panel active" id="t-tab-mod">
           <h3 id="panel-title-mod" style="border:none;padding-bottom:0;margin-bottom:.9rem">📂 Create Module</h3>
           <input type="hidden" id="edit-mod-id" value=""/>
@@ -723,7 +716,6 @@ footer strong{color:var(--brand)}
           <div id="t-mod-emails-wrap" style="display:none; margin-bottom:12px;"><span class="field-label">Allowed emails (comma separated)</span><textarea id="t-mod-emails" placeholder="e.g. student1@gmail.com, student2@yahoo.com" style="min-height:60px;"></textarea></div>
           <div style="display:flex;gap:8px; margin-top:12px;"><button class="primary-btn" style="margin-top:0;" onclick="saveModule()">Save module</button><button class="secondary-btn" id="btn-cancel-mod" style="display:none;" onclick="cancelEditMod()">Cancel</button></div>
         </div>
-        <!-- TAB: Subfolder -->
         <div class="t-tab-panel" id="t-tab-sub">
           <h3 id="panel-title-sub" style="border:none;padding-bottom:0;margin-bottom:.9rem">📁 Create Subfolder</h3>
           <input type="hidden" id="edit-sub-id" value=""/>
@@ -733,7 +725,6 @@ footer strong{color:var(--brand)}
           </div>
           <div style="display:flex;gap:8px; margin-top:12px;"><button class="primary-btn" style="background:var(--brand-mid); margin-top:0;" onclick="saveSubmodule()">Save subfolder</button><button class="secondary-btn" id="btn-cancel-sub" style="display:none;" onclick="cancelEditSub()">Cancel</button></div>
         </div>
-        <!-- TAB: Lesson -->
         <div class="t-tab-panel" id="t-tab-les">
           <h3 id="panel-title-les" style="border:none;padding-bottom:0;margin-bottom:.9rem">📝 Add Lesson</h3>
           <input type="hidden" id="edit-les-id" value=""/>
@@ -765,7 +756,7 @@ footer strong{color:var(--brand)}
           <div style="margin-top:1.25rem;background:#F0FDF4;padding:14px;border-radius:var(--radius-sm);border:1px solid #BBF7D0">
             <p style="font-size:12px;font-weight:700;color:#166534;margin-bottom:4px">🎧 Lesson audio examples</p>
             <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Add clickable audios for practice words or examples.</p>
-            <div class="audio-add-row"><input type="text" id="t-audio-label" placeholder="Label (e.g. Word 1)" style="margin-bottom:0;flex:1"/><input type="file" id="t-audio-file" accept="audio/*" style="margin-bottom:0;width:auto;flex:1"/><button class="secondary-btn" onclick="addSharedAudio()">+ Add</button></div>
+            <div class="audio-add-row"><input type="text" id="t-audio-label" placeholder="Label (e.g. Word 1)" style="margin-bottom:0;flex:1"/><input type="file" id="t-audio-file" accept="audio/*" style="margin-bottom:0;width:auto;flex:1"/><button class="secondary-btn" id="btn-add-audio" onclick="addSharedAudio()">+ Add</button></div>
             <div id="t-shared-audios-render"></div>
           </div>
           <div style="margin-top:1.25rem;background:#FFF9F6;padding:14px;border-radius:var(--radius-sm);border:1px solid var(--accent)">
@@ -779,6 +770,7 @@ footer strong{color:var(--brand)}
     </div>
     <div>
       <div class="t-panel"><h3>🛠 Content manager</h3><div id="t-manage-list"><div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div></div></div>
+      <div class="t-panel"><h3>📊 Student Progress</h3><div id="t-student-progress-list"><div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">Loading...</div></div></div>
     </div>
   </div>
 </div>
@@ -795,13 +787,13 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser=null, isLoginMode=true;
 let dbModules=[], dbSubmodules=[], dbLessons=[], dbProgress=[];
-let dbPosts=[], dbComments=[], dbLikes=[], dbProfiles=[];
+let dbProfiles=[];
 let currentLesson=null, activeModuleId=null, currentViewedPostId=null;
 
 let studentAnswers={}; let matchState={}; let selectedDragChips={}; 
 let questionRows=[], tempAudios=[], isUploadingAudio=false;
 let quillEditor=null, communityQuill=null, editPostQuill=null;
-let activeVowel=null, activeConsonant=null, openQStates={}; 
+let activeSound=null, openQStates={}; 
 
 function safeParseJSON(d){if(Array.isArray(d))return d;if(typeof d==='string'){try{return JSON.parse(d)}catch(e){return[]}}return[]}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -809,12 +801,26 @@ function escapeJSArg(s){return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function timeAgo(d){const s=Math.floor((new Date()-new Date(d))/1000);if(s<60)return'Just now';if(s<3600)return Math.floor(s/60)+'m';if(s<86400)return Math.floor(s/3600)+'h';if(s<2592000)return Math.floor(s/86400)+'d';if(s<31536000)return Math.floor(s/2592000)+'mo';return Math.floor(s/31536000)+'y'}
 
+function parseYtTime(tStr) {
+  if(!tStr) return '';
+  let t = tStr.replace('s','');
+  if(t.includes('m')) { let p = t.split('m'); return ((parseInt(p[0])||0)*60 + (parseInt(p[1])||0)).toString(); }
+  return t;
+}
 function buildYtUrl(url) {
   if (!url || !url.trim()) return '';
-  let finalUrl = url.trim();
-  if (finalUrl.includes('youtu.be/')) { const id = finalUrl.split('youtu.be/')[1].split('?')[0].split('&')[0]; return `https://www.youtube.com/embed/${id}`; }
-  if (finalUrl.includes('youtube.com/watch')) { try { const id = new URL(finalUrl).searchParams.get('v'); return id ? `https://www.youtube.com/embed/${id}` : finalUrl; } catch(e) {} }
-  if (finalUrl.includes('youtube.com/embed/')) { try { const u = new URL(finalUrl); u.searchParams.delete('start'); u.searchParams.delete('end'); return u.toString(); } catch(e) {} }
+  let finalUrl = url.trim(); let videoId = ''; let startTime = '';
+  try { let u = new URL(finalUrl); if(u.searchParams.has('t')) startTime = parseYtTime(u.searchParams.get('t')); } catch(e){}
+  if (finalUrl.includes('youtu.be/')) {
+    const parts = finalUrl.split('youtu.be/')[1].split('?'); videoId = parts[0].split('&')[0];
+    if(parts[1] && parts[1].includes('t=')) { const match = parts[1].match(/t=([^&]+)/); if(match) startTime = parseYtTime(match[1]); }
+    finalUrl = `https://www.youtube.com/embed/${videoId}`;
+  } else if (finalUrl.includes('youtube.com/watch')) {
+    try { videoId = new URL(finalUrl).searchParams.get('v'); finalUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : finalUrl; } catch(e) {}
+  }
+  if (finalUrl.includes('youtube.com/embed/')) {
+    try { const u = new URL(finalUrl); u.searchParams.delete('start'); u.searchParams.delete('end'); if(startTime) u.searchParams.set('start', startTime); return u.toString(); } catch(e) { return finalUrl; }
+  }
   return finalUrl;
 }
 function parseYtDisplayUrl(url) {
@@ -825,8 +831,6 @@ function parseYtDisplayUrl(url) {
 
 document.addEventListener('DOMContentLoaded', () => {
   quillEditor = new Quill('#quill-editor-container', { theme: 'snow', placeholder: 'Write your lesson content here...', modules: { toolbar: [[{ header: [1,2,3,4,false] }],['bold','italic','strike','code','blockquote','code-block'],[{ list:'ordered' },{ list:'bullet' }],['link','image','video'],['clean']] } });
-  communityQuill = new Quill('#community-editor-container', { theme: 'snow', placeholder: 'Share something with the community...', modules: { toolbar: [['bold','italic','underline'],['link','image','video'],[ { list:'bullet' }]] } });
-  editPostQuill = new Quill('#edit-post-editor-container', { theme: 'snow', placeholder: 'Edit your post...', modules: { toolbar: [['bold','italic','underline'],['link','image','video'],[ { list:'bullet' }]] } });
   sb.auth.onAuthStateChange((_e, session) => { currentUser = session?.user || null; updateAuthUI(); if (currentUser) fetchData(); });
   renderQFields(); toggleLessonFields();
 });
@@ -842,7 +846,7 @@ function updateAuthUI() {
   } else {
     btn.textContent = 'Log in'; btn.classList.remove('logout-btn-nav'); btn.classList.add('auth-btn'); teacherTab.style.display = 'none'; profileTab.style.display = 'none';
     document.getElementById('nav-streaks-tab').style.display = 'none';
-    if (['page-classroom','page-teacher','page-community','page-profile','page-streaks'].includes(document.querySelector('.page.active')?.id)) goToPage('home');
+    if (['page-classroom','page-teacher','page-profile','page-streaks','page-sounds'].includes(document.querySelector('.page.active')?.id)) goToPage('home');
   }
 }
 
@@ -869,13 +873,13 @@ async function handleAuth() {
   }
 }
 
-document.querySelectorAll('.nav-tab[data-page]').forEach(tab => { tab.onclick = () => { const page = tab.dataset.page; if (['classroom','teacher','community','profile','streaks'].includes(page) && !currentUser) { goToPage('auth'); return; } goToPage(page); }; });
+document.querySelectorAll('.nav-tab[data-page]').forEach(tab => { tab.onclick = () => { const page = tab.dataset.page; if (['classroom','teacher','profile','streaks','sounds'].includes(page) && !currentUser) { goToPage('auth'); return; } goToPage(page); }; });
 
 function goToPage(pageId) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const tabBtn = document.querySelector(`.nav-tab[data-page="${pageId}"]`); if (tabBtn) tabBtn.classList.add('active');
   const pageEl = document.getElementById('page-' + pageId); if (pageEl) pageEl.classList.add('active');
-  if (pageId === 'classroom') renderClassroomGrid(); if (pageId === 'community') renderCommunityFeed(); if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); } if (pageId === 'streaks') renderStreaks();
+  if (pageId === 'classroom') renderClassroomGrid(); if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); } if (pageId === 'streaks') renderStreaks();
   if (pageId === 'profile') { const p = dbProfiles.find(x => x.id === currentUser?.id); if (p) document.getElementById('profile-username').value = p.username || ''; }
   window.scrollTo(0, 0);
 }
@@ -889,11 +893,8 @@ async function fetchData() {
     const rLes = await sb.from('lessons').select('*').order('order_index'); dbLessons = rLes?.data || []; 
     const rProg = await sb.from('student_progress').select('*').eq('user_id', currentUser.id); dbProgress = rProg?.data || [];
     renderClassroomGrid(); updateModuleSelect(); if(isTeacher) renderManageList();
-    const rPosts = await sb.from('posts').select('*').order('created_at', { ascending: false }); dbPosts = rPosts?.data || [];
-    const rComments = await sb.from('comments').select('*').order('created_at', { ascending: true }); dbComments = rComments?.data || [];
-    const rLikes = await sb.from('likes').select('*'); dbLikes = rLikes?.data || [];
     const rProfiles = await sb.from('user_profiles').select('*'); dbProfiles = rProfiles?.data || [];
-    if (document.getElementById('page-community').classList.contains('active')) renderCommunityFeed();
+    if (isTeacher) { const rAllProg = await sb.from('student_progress').select('*'); renderTeacherProgress(rAllProg?.data || []); }
     if (document.getElementById('page-streaks').classList.contains('active')) renderStreaks();
   } catch (error) { console.error("Error fetching data:", error); }
 }
@@ -909,36 +910,6 @@ async function saveProfile() {
   btn.disabled = false; btn.textContent = 'Save profile'; alert('Profile updated!');
 }
 
-function renderCommunityFeed() {
-  const list = document.getElementById('community-posts-list'); if (!list) return;
-  if (!dbPosts.length) { list.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-light);font-size:14px">No posts yet. Be the first to say hi! 👋</div>'; return; }
-  list.innerHTML = dbPosts.map(post => {
-    const pLikes = dbLikes.filter(l => l.post_id === post.id); const isLiked = pLikes.some(l => l.user_id === currentUser?.id); const cCount = dbComments.filter(c => c.post_id === post.id).length;
-    const isOwner = currentUser?.id === post.user_id || currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
-    const ownerBtns = isOwner ? `<button class="action-btn edit-post-btn" onclick="event.stopPropagation();openEditPostModal('${post.id}')">✏️ Edit</button><button class="action-btn delete-post-btn" onclick="event.stopPropagation();deletePost('${post.id}')">🗑 Delete</button>` : '';
-    return `<div class="post-card" onclick="openPost('${post.id}')"><div class="post-header"><div class="post-avatar">${renderAvatarHTML(post.user_id, post.user_email)}</div><div class="post-author">${getDisplayName(post.user_id, post.user_email)}</div><div class="post-date">${timeAgo(post.created_at)}</div></div><div class="post-title">${esc(post.title)}</div><div class="post-preview">${esc(post.content).replace(/<[^>]*>?/gm,'')}</div><div class="post-actions"><button class="action-btn ${isLiked?'liked':''}" onclick="event.stopPropagation();toggleLike('${post.id}')">${isLiked?'❤️':'🤍'} ${pLikes.length}</button><button class="action-btn">💬 ${cCount}</button>${ownerBtns}</div></div>`;
-  }).join('');
-}
-async function submitPost() { const title = document.getElementById('new-post-title').value.trim(); const content = communityQuill.root.innerHTML; if (!title || communityQuill.getText().trim() === '') { alert('Please add a title and some content.'); return; } await sb.from('posts').insert([{ user_id: currentUser.id, user_email: currentUser.email, title, content }]); document.getElementById('new-post-title').value = ''; communityQuill.root.innerHTML = ''; await fetchData(); }
-function openEditPostModal(postId) { const post = dbPosts.find(p => p.id === postId); if (!post) return; document.getElementById('edit-post-id').value = postId; document.getElementById('edit-post-title').value = post.title; editPostQuill.root.innerHTML = post.content; document.getElementById('edit-post-modal').classList.remove('hidden'); }
-function closeEditPostModal() { document.getElementById('edit-post-modal').classList.add('hidden'); }
-async function saveEditedPost() { const id = document.getElementById('edit-post-id').value; const title = document.getElementById('edit-post-title').value.trim(); const content = editPostQuill.root.innerHTML; if (!title || editPostQuill.getText().trim() === '') return; const btn = document.querySelector('#edit-post-modal .primary-btn'); btn.disabled = true; await sb.from('posts').update({ title, content }).eq('id', id); btn.disabled = false; closeEditPostModal(); await fetchData(); if (currentViewedPostId === id) renderPostDetail(); }
-async function deletePost(postId) { if (!confirm('Delete this post?')) return; const isTeacher = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase(); if (isTeacher) { await sb.from('posts').delete().eq('id', postId); } else { await sb.from('posts').delete().eq('id', postId).eq('user_id', currentUser.id); } await sb.from('comments').delete().eq('post_id', postId); await sb.from('likes').delete().eq('post_id', postId); if (currentViewedPostId === postId) backToCommunityFeed(); else await fetchData(); }
-function openPost(postId) { currentViewedPostId = postId; document.getElementById('community-feed-view').style.display = 'none'; document.getElementById('community-post-view').style.display = 'block'; renderPostDetail(); }
-function backToCommunityFeed() { currentViewedPostId = null; document.getElementById('community-feed-view').style.display = 'block'; document.getElementById('community-post-view').style.display = 'none'; renderCommunityFeed(); }
-function renderPostDetail() {
-  const post = dbPosts.find(p => p.id === currentViewedPostId); if (!post) { backToCommunityFeed(); return; }
-  const pLikes = dbLikes.filter(l => l.post_id === post.id); const isLiked = pLikes.some(l => l.user_id === currentUser?.id);
-  const isOwner = currentUser?.id === post.user_id || currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
-  document.getElementById('single-post-render').innerHTML = `<div style="background:var(--surface);border:1px solid var(--skool-border);border-radius:var(--radius);padding:1.5rem"><div class="post-header"><div class="post-avatar">${renderAvatarHTML(post.user_id, post.user_email)}</div><div class="post-author">${getDisplayName(post.user_id, post.user_email)}</div><div class="post-date">${timeAgo(post.created_at)}</div></div><div class="post-title" style="font-size:20px">${esc(post.title)}</div><div class="post-full-body ql-editor" style="padding:0">${post.content}</div><div class="post-actions"><button class="action-btn ${isLiked?'liked':''}" onclick="toggleLike('${post.id}',true)">${isLiked?'❤️':'🤍'} ${pLikes.length} Likes</button>${isOwner ? `<button class="action-btn edit-post-btn" onclick="openEditPostModal('${post.id}')">✏️ Edit</button><button class="action-btn delete-post-btn" onclick="deletePost('${post.id}')">🗑 Delete</button>` : ''}</div></div>`;
-  const pComments = dbComments.filter(c => c.post_id === post.id); const cList = document.getElementById('comments-list');
-  if (!pComments.length) { cList.innerHTML = '<div style="color:var(--text-light);font-size:13px">No comments yet.</div>'; return; }
-  cList.innerHTML = pComments.map(c => `<div class="comment-item"><div class="post-avatar" style="width:30px;height:30px;font-size:12px">${renderAvatarHTML(c.user_id, c.user_email)}</div><div class="comment-bubble"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px"><div class="comment-author">${getDisplayName(c.user_id, c.user_email)}</div><div style="display:flex;align-items:center;gap:8px"><span class="post-date">${timeAgo(c.created_at)}</span>${(currentUser?.id === c.user_id || currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase()) ? `<button class="action-btn delete-post-btn" style="font-size:11px" onclick="deleteComment('${c.id}')">🗑</button>` : ''}</div></div><div class="comment-text">${esc(c.content)}</div></div></div>`).join('');
-}
-async function submitComment() { if (!currentViewedPostId) return; const input = document.getElementById('new-comment-input'); const text = input.value.trim(); if (!text) return; input.disabled = true; await sb.from('comments').insert([{ post_id: currentViewedPostId, user_id: currentUser.id, user_email: currentUser.email, content: text }]); input.disabled = false; input.value = ''; await fetchData(); renderPostDetail(); }
-async function deleteComment(commentId) { if (!confirm('Delete?')) return; if (currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase()) await sb.from('comments').delete().eq('id', commentId); else await sb.from('comments').delete().eq('id', commentId).eq('user_id', currentUser.id); await fetchData(); renderPostDetail(); }
-async function toggleLike(postId, inDetail = false) { const existing = dbLikes.find(l => l.post_id === postId && l.user_id === currentUser.id); if (existing) await sb.from('likes').delete().eq('id', existing.id); else await sb.from('likes').insert([{ post_id: postId, user_id: currentUser.id }]); await fetchData(); if (inDetail) renderPostDetail(); else renderCommunityFeed(); }
-
 function renderClassroomGrid() {
   const grid = document.getElementById('classroom-modules-grid'); if (!grid) return;
   if (!currentUser) { grid.innerHTML = '<div style="color:var(--text-light);font-size:14px;grid-column:1/-1;text-align:center;padding:3rem 0">Log in to access the classroom.</div>'; return; }
@@ -953,7 +924,7 @@ function backToClassroomGrid() { document.getElementById('classroom-grid-view').
 function renderSidebar(moduleId) {
   const sidebar = document.getElementById('sidebar-render'); const subs = dbSubmodules.filter(s => s.module_id === moduleId); const iconMap = { video:'📺', text:'📄', task:'📝', embed:'🌐' }; let html = '';
   subs.forEach(sub => {
-    const subLessons = dbLessons.filter(l => l.submodule_id === sub.id); if (!subLessons.length) return;
+    const subLessons = dbLessons.filter(l => l.module_id === moduleId && l.submodule_id === sub.id); if (!subLessons.length) return;
     const doneCount = subLessons.filter(l => dbProgress.some(p => p.lesson_id === l.id)).length; const pct = Math.round(doneCount / subLessons.length * 100);
     html += `<div class="c-subfolder-group"><div class="c-subfolder-header"><span>${esc(sub.title)}</span><span class="c-subfolder-prog ${pct===100?'done':''}">${pct}%</span></div>`;
     subLessons.forEach(l => { const isDone = dbProgress.some(p => p.lesson_id === l.id); html += `<div class="c-item" id="item-${l.id}" onclick="showLesson('${l.id}')"><div style="display:flex;align-items:center;gap:8px;overflow:hidden"><span>${iconMap[l.type]||'📄'}</span><span class="c-item-title">${esc(l.title)}</span></div>${isDone?'<span>✅</span>':'<span style="font-size:10px">⚪</span>'}</div>`; });
@@ -1053,7 +1024,6 @@ async function submitExercise() {
 
   content.forEach((q, i) => {
     let qType = q.type || currentLesson.task_type;
-    
     if (qType === 'open_answer') {
       hasOpenAnswer = true; totalQ++; const el = document.getElementById('oa-' + i); if (el) { el.style.borderColor = 'var(--brand)'; el.disabled = true; studentAnswers[i] = el.value; }
       const revealEl = document.getElementById('reveal-' + i); if (revealEl) revealEl.classList.add('visible');
@@ -1087,7 +1057,7 @@ async function submitExercise() {
               if(el) { el.disabled = true; el.style.borderBottomColor = isOk ? 'var(--green)' : 'var(--red)'; el.style.background = isOk ? 'var(--green-light)' : 'var(--red-light)'; el.style.color = isOk ? 'var(--green-dark)' : 'var(--red-dark)'; }
           }); results.push({ prompt: q.prompt.replace(/\[.*?\]/g, '___'), answer: matches.join(', '), given: givenArr.join(', '), ok: allCorrect });
       } else {
-          totalQ++; let correctAns = q.answer || ''; let given = document.getElementById('fitb-'+i)?.value.trim() || ''; studentAnswers[i] = given; let ok = given.toLowerCase() === correctAns.toLowerCase().trim();
+          totalQ++; let correctAns = q.answer || ''; let given = document.getElementById('fitb-'+i)?.value.trim() || ''; studentAnswers[i] = given; let ok = String(given).toLowerCase().trim() === String(correctAns).toLowerCase().trim();
           if (ok) correct++; const el = document.getElementById('fitb-'+i); if(el){ el.classList.add(ok?'correct':'wrong'); el.disabled = true; } results.push({ prompt: q.prompt, answer: correctAns, given, ok });
       }
     }
@@ -1139,7 +1109,7 @@ async function deleteSubmodule(id) { if (!confirm('Delete this subfolder? Lesson
 async function moveSubmodule(id, dir) { const sub = dbSubmodules.find(s => s.id === id); if (!sub) return; const siblings = dbSubmodules.filter(s => s.module_id === sub.module_id); const idx = siblings.findIndex(s => s.id === id); const t = siblings[idx + dir]; if (!t) return; await sb.from('submodules').update({ order_index: t.order_index }).eq('id', id); await sb.from('submodules').update({ order_index: sub.order_index }).eq('id', t.id); fetchData(); }
 
 function toggleLessonFields() { const type = document.getElementById('t-les-type').value; document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none'; document.getElementById('fields-text').style.display = 'block'; document.getElementById('fields-embed').style.display = type === 'embed' ? 'block' : 'none'; document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none'; }
-function updateModuleSelect() { const modSelect = document.getElementById('t-les-module'); const subParentSelect = document.getElementById('t-sub-parent'); const currentMod = modSelect.value; const currentParent = subParentSelect.value; const mHtml = dbModules.map(m => `<option value="${esc(m.id)}">${esc(m.title)}</option>`).join(''); modSelect.innerHTML = mHtml; subParentSelect.innerHTML = mHtml; if (currentMod && dbModules.some(m => m.id === currentMod)) modSelect.value = currentMod; if (currentParent && dbModules.some(m => m.id === currentParent)) subParentSelect.value = currentParent; updateSubfolderSelect(); }
+UX_MODULE_SELECT: function updateModuleSelect() { const modSelect = document.getElementById('t-les-module'); const subParentSelect = document.getElementById('t-sub-parent'); const currentMod = modSelect.value; const currentParent = subParentSelect.value; const mHtml = dbModules.map(m => `<option value="${esc(m.id)}">${esc(m.title)}</option>`).join(''); modSelect.innerHTML = mHtml; subParentSelect.innerHTML = mHtml; if (currentMod && dbModules.some(m => m.id === currentMod)) modSelect.value = currentMod; if (currentParent && dbModules.some(m => m.id === currentParent)) subParentSelect.value = currentParent; updateSubfolderSelect(); }
 function updateSubfolderSelect() { const modId = document.getElementById('t-les-module').value; const subSelect = document.getElementById('t-les-submodule'); const currentSub = subSelect.value; const subs = dbSubmodules.filter(s => s.module_id === modId); subSelect.innerHTML = `<option value="">-- No subfolder (main module) --</option>` + subs.map(s => `<option value="${esc(s.id)}">${esc(s.title)}</option>`).join(''); if (currentSub && subs.some(s => s.id === currentSub)) subSelect.value = currentSub; }
 
 async function saveLesson() {
@@ -1185,7 +1155,7 @@ async function addSharedAudio() {
   const file = document.getElementById('t-audio-file').files[0]; 
   if (!label || !file) { alert('Add a label and choose an audio file.'); return; } 
   isUploadingAudio = true; 
-  const btn = document.querySelector('button[onclick="addSharedAudio()"]');
+  const btn = document.querySelector('button[onclick="addSharedAudio()"]') || document.getElementById('btn-add-audio');
   if (btn) { btn.disabled = true; btn.textContent = 'Uploading...'; }
   try {
     const fn = `aud_${Date.now()}_${Math.floor(Math.random()*1000)}.${file.name.split('.').pop()}`; 
@@ -1199,19 +1169,15 @@ async function addSharedAudio() {
     alert('Upload error: ' + err.message);
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = '+ Add'; }
-    isUploadingAudio = false; 
+    isUploadingAudio = false;
   }
 }
-  } catch(err) {
-    alert('Upload error: ' + err.message);
-  } finally {
-    btn.disabled = false; btn.textContent = '+ Add'; isUploadingAudio = false;
-  }
-}
+function renderTempAudios() { document.getElementById('t-shared-audios-render').innerHTML = tempAudios.map((a,i) => `<div class="audio-saved-item"><span>🔊 ${esc(a.label)}</span><button class="danger-btn" style="padding:2px 8px;font-size:10px" onclick="tempAudios.splice(${i},1);renderTempAudios()">Remove</button></div>`).join(''); }
 
 /* ── QUESTION BUILDER ── */
 function toggleQCard(i, event) { if(event) { event.stopPropagation(); } openQStates[i] = !openQStates[i]; renderQFields(); }
 function updateQVideoUrl(i, val) { if (questionRows[i]) { questionRows[i].video_url = buildYtUrl(val); } }
+
 async function uploadQAudio(event, i) {
   const file = event.target.files[0]; if (!file) return; 
   isUploadingAudio = true;
@@ -1231,10 +1197,13 @@ async function uploadQAudio(event, i) {
     isUploadingAudio = false;
   }
 }
+
+async function uploadQVideo(event, i) { const file = event.target.files[0]; if (!file) return; isUploadingAudio = true; const btn = event.target; const originalOpacity = btn.style.opacity; btn.style.opacity = '0.5'; const fn = `qv_${Date.now()}.${file.name.split('.').pop()}`; const { error } = await sb.storage.from('audios').upload(fn, file); isUploadingAudio = false; btn.style.opacity = originalOpacity; if (error) { alert('Upload error: ' + error.message); return; } if (questionRows[i]) questionRows[i].video_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl; const urlInput = document.getElementById(`q-vid-url-${i}`); if (urlInput) urlInput.value = ''; renderQFields(); }
+
 function renderQFields() { const wrap = document.getElementById('q-builder'); if (!wrap) return; wrap.innerHTML = questionRows.map((q, i) => buildQRow(q.type || 'multiple_choice', q, i)).join(''); }
 
 function updateDndCats(i, val) { if (questionRows[i]) { questionRows[i].categories = val.split(',').map(s=>s.trim()).filter(Boolean); renderQFields(); } }
-function addDndItem(i) { if (questionRows[i]) { questionRows[i].items.push({ word:'', category: questionRows[i].categories[0]||'' }); renderQFields(); } }
+function addDndItem(i) { if (questionRows[i]) { q = questionRows[i]; if (!q.items) q.items = []; q.items.push({ word:'', category: q.categories[0]||'' }); renderQFields(); } }
 function removeDndItem(i, idx) { if (questionRows[i]) { questionRows[i].items.splice(idx,1); renderQFields(); } }
 function addMatchPair(i) { if (questionRows[i]) { if(!questionRows[i].pairs) questionRows[i].pairs=[]; questionRows[i].pairs.push({left:'', right:''}); renderQFields(); } }
 function removeMatchPair(i, pIdx) { if (questionRows[i] && questionRows[i].pairs) { questionRows[i].pairs.splice(pIdx, 1); renderQFields(); } }
@@ -1294,7 +1263,8 @@ function buildQRow(qType, q, i) {
   }
   
   let parts = { url: q.video_url && !q.video_url.includes('supabase.co') ? parseYtDisplayUrl(q.video_url) : '' };
-let mediaHtml = `<div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)"><span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this question (optional)</span><div style="margin-bottom:12px"><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">🎧 Audio (Upload MP3)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})" style="margin-bottom:4px; padding:6px; font-size:12px;"/><div id="q-audio-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.audio_url?`✅ Audio saved <br><audio controls src="${esc(q.audio_url)}" style="height:30px; margin-top:5px;"></audio>`:''}</div></div><div><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">📺 Video (YouTube Link OR Upload MP4)</span><div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap"><input type="url" id="q-vid-url-${i}" placeholder="YouTube URL..." value="${parts.url ? esc(parts.url) : ''}" oninput="updateQVideoUrl(${i}, this.value)" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/><span style="font-size:11px;color:var(--text-muted);font-weight:700">OR</span><input type="file" accept="video/*" onchange="uploadQVideo(event,${i})" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/></div><div id="q-video-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.video_url?'✅ Video saved':''}</div></div></div>`;  html += mediaHtml + `</div></div>`; return html;
+  let mediaHtml = `<div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)"><span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this question (optional)</span><div style="margin-bottom:12px"><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">🎧 Audio (Upload MP3)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})" style="margin-bottom:4px; padding:6px; font-size:12px;"/><div id="q-audio-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.audio_url?`✅ Audio saved <br><audio controls src="${esc(q.audio_url)}" style="height:30px; margin-top:5px;"></audio>`:''}</div></div><div><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">📺 Video (YouTube Link OR Upload MP4)</span><div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap"><input type="url" id="q-vid-url-${i}" placeholder="YouTube URL..." value="${parts.url ? esc(parts.url) : ''}" oninput="updateQVideoUrl(${i}, this.value)" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/><span style="font-size:11px;color:var(--text-muted);font-weight:700">OR</span><input type="file" accept="video/*" onchange="uploadQVideo(event,${i})" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px"/></div><div id="q-video-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.video_url?'✅ Video saved':''}</div></div></div>`;
+  html += mediaHtml + `</div></div>`; return html;
 }
 
 function addQuestion(type) {
@@ -1335,7 +1305,7 @@ function renderManageList() {
   const delS = 'background:none;border:1px solid #ffb3b3;border-radius:4px;padding:2px 7px;font-size:11px;cursor:pointer;color:#e05252';
 
   let html = '';
-  dbModules.forEach((m, mi) => {
+  dbModules.forEach((m) => {
     const mLessons  = dbLessons.filter(l => l.module_id === m.id);
     const mSubs     = dbSubmodules.filter(s => s.module_id === m.id);
     const privBadge = m.is_private ? ' <span style="font-size:10px;background:var(--brand);color:#fff;padding:1px 6px;border-radius:99px">Private</span>' : '';
@@ -1357,7 +1327,6 @@ function renderManageList() {
       </div>
       <div class="acc-body" id="${bodyId}">`;
 
-    // Subfolders
     mSubs.forEach(s => {
       const subLessons = mLessons.filter(l => l.submodule_id === s.id);
       const sBodyId = `acc-sub-body-${s.id}`;
@@ -1385,10 +1354,9 @@ function renderManageList() {
             <button style="${delS}" onclick="deleteLesson('${esc(l.id)}')">🗑</button>
           </div></div>`;
       });
-      html += `</div></div>`; // close acc-body + subfolder div
+      html += `</div></div>`;
     });
 
-    // Orphan lessons
     const orphans = mLessons.filter(l => !l.submodule_id);
     orphans.forEach(l => {
       html += `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:5px 12px 5px 20px;border-top:1px dashed var(--border);background:var(--surface)">
@@ -1405,7 +1373,7 @@ function renderManageList() {
       html += `<div style="padding:8px 20px;font-size:12px;color:var(--text-muted);border-top:1px solid var(--border)">No lessons yet.</div>`;
     }
 
-    html += `</div></div>`; // close acc-body + module wrapper
+    html += `</div></div>`;
   });
 
   list.innerHTML = html;
@@ -1415,14 +1383,12 @@ function renderManageList() {
    STREAKS
 ══════════════════════════════════════════ */
 function calcStreak(dates) {
-  // dates: array of 'YYYY-MM-DD' strings (UTC)
   if (!dates.length) return { current: 0, best: 0, activeDays: 0 };
   const unique = [...new Set(dates)].sort();
   const today = new Date(); today.setHours(0,0,0,0);
   const todayStr = today.toISOString().slice(0,10);
   const yest = new Date(today); yest.setDate(yest.getDate()-1);
   const yesterdayStr = yest.toISOString().slice(0,10);
-  // current streak
   let current = 0;
   const lastDay = unique[unique.length-1];
   if (lastDay === todayStr || lastDay === yesterdayStr) {
@@ -1432,7 +1398,6 @@ function calcStreak(dates) {
       else if (unique[i] < check) break;
     }
   }
-  // best streak
   let best = 1, run = 1;
   for (let i = 1; i < unique.length; i++) {
     const prev = new Date(unique[i-1]); prev.setDate(prev.getDate()+1);
@@ -1449,7 +1414,6 @@ async function renderStreaks() {
   document.getElementById('streaks-teacher-view').style.display = isTeacher ? 'block' : 'none';
 
   if (isTeacher) {
-    // Teacher sees all students
     const rAllProg = await sb.from('student_progress').select('user_id,lesson_id,created_at');
     const allProg  = rAllProg?.data || [];
     const students = dbProfiles.filter(p => p.id !== currentUser.id);
@@ -1473,7 +1437,6 @@ async function renderStreaks() {
     return;
   }
 
-  // Student view
   const dates = dbProgress.map(p => p.created_at ? p.created_at.slice(0,10) : null).filter(Boolean);
   const { current, best, activeDays } = calcStreak(dates);
   document.getElementById('streak-current-num').textContent = current;
@@ -1481,7 +1444,6 @@ async function renderStreaks() {
   document.getElementById('streak-total-num').textContent   = dbProgress.length;
   document.getElementById('streak-days-num').textContent    = activeDays;
 
-  // 90-day calendar
   const doneSet = new Set(dates);
   const grid    = document.getElementById('streak-cal-grid');
   const today   = new Date(); today.setHours(0,0,0,0);
@@ -1503,6 +1465,86 @@ function renderTeacherProgress(allProgress) {
   const students = dbProfiles.filter(p => p.id !== currentUser.id);
   if (!students.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No students registered yet.</div>'; return; }
   list.innerHTML = students.map(s => { const done = allProgress.filter(p => p.user_id === s.id).length; return `<div class="student-prog-row"><div style="display:flex;align-items:center;gap:10px;"><div class="post-avatar" style="width:30px;height:30px;font-size:12px">${renderAvatarHTML(s.id, s.username || 'Student')}</div><div class="student-prog-name">${esc(s.username || 'Unnamed Student')}</div></div><div class="student-prog-stats"><span style="font-weight:700;color:var(--brand)">${done}</span> lessons completed</div></div>`; }).join('');
+}
+
+/* ══════════════════════════════════════════
+   PHONETIC SOUNDS DICTIONARY (MINIFIED)
+══════════════════════════════════════════ */
+const vowels={pure:[{ipa:"/iː/",mw:"[ee]",name:"Long E",keyword:"he",type:"vowel",words:["he","see","feel","team","people","key","ski","machine","belief"],spellings:["e — he, me","ee — see, feel","ea — team, read","ie — belief","ey — key","i — ski, machine"],tip:"Similar to Spanish /i/ but held slightly longer. Tense the tongue high and spread the lips slightly."},{ipa:"/ɪ/",mw:"[ih]",name:"Short I",keyword:"hit",type:"vowel",words:["hit","sit","win","big","quick","busy","women","build","gym"],spellings:["i — hit, sit","y — gym, symbol","ui — build","u — busy","o — women"],tip:"Not the Spanish /i/. The lips are relaxed — not spread. Much shorter and laxer."},{ipa:"/ɛ/",mw:"[eh]",name:"Short E",keyword:"head",type:"vowel",words:["head","bed","said","friend","many","any","weather","says"],spellings:["e — bed","ea — head, weather","ai — said","ie — friend","a — many, any"],tip:"Close to Spanish /e/ but a little lower and more open."},{ipa:"/æ/",mw:"[a]",name:"Short A",keyword:"cap",type:"vowel",words:["cap","cat","man","bad","apple","laugh","plaid","half"],spellings:["a — cap, cat","au — laugh","ai — plaid"],tip:"Doesn't exist in Spanish. Open the mouth wide, push the tongue forward and low. Tense and bright."},{ipa:"/ɑ/",mw:"[ah]",name:"Open A",keyword:"cop",type:"vowel",words:["cop","hot","father","calm","palm","spa","watch","want"],spellings:["o — cop, hot","a — father, calm","al — palm","wa — watch, want"],tip:"Wide-open, relaxed /a/ pushed back in the throat. The mouth is fully open."},{ipa:"/ə/ or /ʌ/",mw:"[uh]",name:"Schwa",keyword:"cup",type:"vowel",words:["cup","fun","done","love","about","sofa","button","pencil"],spellings:["u — cup, fun","o — love, done","a — about (unstressed)","o — sofa (unstressed)"],tip:"The most common sound in English! Every unstressed syllable tends to become /ə/."},{ipa:"/uː/",mw:"[u]",name:"Long OO",keyword:"who",type:"vowel",words:["who","food","moon","true","blue","school","through","suit"],spellings:["oo — food, moon","ue — true, blue","ew — chew, brew","ou — through","ui — suit"],tip:"Similar to Spanish /u/ but sometimes starts with a /j/ glide. Lips tightly rounded."},{ipa:"/ʊ/",mw:"[uu]",name:"Short OO",keyword:"took",type:"vowel",words:["took","book","foot","good","could","would","pull","put"],spellings:["oo — book, foot","ou — could, would","u — pull, put","o — wolf"],tip:"A short, relaxed version of /uː/. Practice the difference: 'food' vs 'foot'."},{ipa:"/ɔː/",mw:"[aw]",name:"AW sound",keyword:"law",type:"vowel",words:["law","call","also","thought","caught","ball","walk","water"],spellings:["aw — law, saw","al — call, ball, walk","au — caught, water","ou — thought","o — also"],tip:"A mid-back rounded vowel. Lips are loosely rounded."}],diphthongs:[{ipa:"/eɪ/",mw:"[ei]",name:"Long A",keyword:"hey",type:"diphthong",words:["hey","day","made","great","they","vein","weigh","eight"],spellings:["ay — day, say","a_e — made, late","ey — they, hey","ei — vein, eight","ai — rain"],tip:"Must glide upward — the mouth closes as you say it. Not a flat Spanish /e/."},{ipa:"/oʊ/",mw:"[ou]",name:"Long O",keyword:"home",type:"diphthong",words:["home","go","know","phone","road","though","toe","boat"],spellings:["o — go, so","o_e — home, phone","ow — know, show","oa — road, boat","ou — though"],tip:"Starts in the center and glides toward a rounded /ʊ/ at the end."},{ipa:"/aɪ/",mw:"[ai]",name:"Long I",keyword:"hi",type:"diphthong",words:["hi","my","time","high","fly","night","buy","pie","guide"],spellings:["i_e — time, bike","y — my, fly","igh — night, high","uy — buy","ie — pie"],tip:"Starts with a wide open /ɑ/ and glides up toward /ɪ/."},{ipa:"/aʊ/",mw:"[au]",name:"OW sound",keyword:"how",type:"diphthong",words:["how","now","loud","down","about","crowd","out","mouth"],spellings:["ow — how, now, crowd","ou — loud, out, about, mouth"],tip:"Starts open and the lips round at the end toward /ʊ/."},{ipa:"/ɔɪ/",mw:"[oi]",name:"OY sound",keyword:"boy",type:"diphthong",words:["boy","voice","coin","toy","oil","noise","royal","joint"],spellings:["oy — boy, toy, royal","oi — coin, oil, voice, noise"],tip:"Starts with rounded lips /ɔ/ and glides up toward /ɪ/."}],rcolored:[{ipa:"/ɝ/",mw:"[er]",name:"Stressed ER",keyword:"her",type:"rcolored",words:["her","bird","word","nurse","earth","first","hurt","work"],spellings:["er — her, fern","ir — bird, first","ur — nurse, hurt","or — word, work","ear — earth, learn"],tip:"The tongue curls back while the vowel is produced. No equivalent in Spanish."},{ipa:"/ɚ/",mw:"[er]",name:"Unstressed ER",keyword:"bigger",type:"rcolored",words:["bigger","butter","doctor","teacher","mother","color","dollar"],spellings:["er — bigger, mother","or — doctor, color","ar — dollar, popular"],tip:"The unstressed /ɝ/. Very common in '-er', '-or', '-ar' endings."},{ipa:"/ɑr/",mw:"[ar]",name:"AR sound",keyword:"far",type:"rcolored",words:["far","car","heart","park","start","guard"],spellings:["ar — far, car, park","ear — heart","ua — guard"],tip:"Wide-open /ɑ/ followed by the American R curl."},{ipa:"/ɛr/",mw:"[er]",name:"AIR sound",keyword:"fare",type:"rcolored",words:["fare","care","air","there","where","wear","bear","their"],spellings:["are — fare, care","air — air, fair","ere — there, where","ear — wear, bear"],tip:"A mid-front /ɛ/ that transitions into the American R."},{ipa:"/ɪr/",mw:"[eer]",name:"EAR sound",keyword:"here",type:"rcolored",words:["here","ear","fear","deer","beer","cheer","year"],spellings:["ere — here","ear — ear, fear","eer — deer, beer, cheer"],tip:"Starts with the high /iː/ position then curls into the R."},{ipa:"/ɔr/",mw:"[or]",name:"OR sound",keyword:"or",type:"rcolored",words:["or","for","more","door","four","floor","war","born"],spellings:["or — or, for, born","ore — more, store","oor — door, floor","our — four, court","ar — war"],tip:"A rounded /ɔ/ that flows into the American R."}]};
+const consonants={stops:[{ipa:"/p/",mw:"[p]",name:"P sound",keyword:"pen",words:["pen","top","happy","apple","camp"],spellings:["p — pen, top","pp — happy, apple"],tip:"Aspirated at the start of stressed syllables — you feel a puff of air."},{ipa:"/b/",mw:"[b]",name:"B sound",keyword:"big",words:["big","cab","able","baby","job","ebb"],spellings:["b — big, cab","bb — ebb"],tip:"No aspiration. Always keep it a full stop with both lips."},{ipa:"/t/",mw:"[t]",name:"T sound",keyword:"top",words:["top","cat","water","butter","action","nature","question"],spellings:["t — top, cat","tt — butter","ti — action (=/ʃ/)","tu — nature (=/tʃ/)"],tip:"Between vowels, American /t/ becomes a quick flap — like a fast /d/."},{ipa:"/d/",mw:"[d]",name:"D sound",keyword:"dog",words:["dog","ride","made","middle","add","loved","could"],spellings:["d — dog, ride","dd — middle, add","ed — loved (past tense)"],tip:"Between vowels it can sound like a flap. Focus on voicing."},{ipa:"/k/",mw:"[k]",name:"K sound",keyword:"cat",words:["cat","kite","queen","school","fix","account","antique","choir"],spellings:["c — cat","k — kite","ck — back","qu — queen (=/kw/)","x — fix (=/ks/)","ch — choir"],tip:"Spelled many ways: c, k, ck, ch, x."},{ipa:"/g/",mw:"[g]",name:"G sound",keyword:"go",words:["go","big","egg","ghost","guest","exact"],spellings:["g — go, big","gg — egg","gh — ghost","gu — guest","x — exact (=/gz/)"],tip:"'Gh' is silent in many words but sounds like /g/ in 'ghost'."}],fricatives:[{ipa:"/f/",mw:"[f]",name:"F sound",keyword:"fan",words:["fan","off","phone","cough","laugh"],spellings:["f — fan, feel","ff — off","ph — phone","gh — cough, laugh"],tip:"'Ph' always makes this sound. 'Gh' at the end also makes /f/."},{ipa:"/v/",mw:"[v]",name:"V sound",keyword:"van",words:["van","have","love","of","vivid","river"],spellings:["v — van, vivid","f — of (=/v/)"],tip:"Spanish doesn't have a true /v/. Top teeth must press on the lower lip and vibrate."},{ipa:"/θ/",mw:"[th]",name:"TH voiceless",keyword:"think",words:["think","bath","three","tooth","through","author"],spellings:["th — think, bath, three, author"],tip:"Tongue tip between teeth, blow air — no voice. Don't substitute /t/, /s/, or /f/."},{ipa:"/ð/",mw:"[th]",name:"TH voiced",keyword:"the",words:["the","this","mother","breathe","father"],spellings:["th — th, this, mother, breathe"],tip:"Same position as voiceless TH but with voicing. Spanish speakers often use /d/."},{ipa:"/s/",mw:"[s]",name:"S sound",keyword:"see",words:["see","miss","city","psychology","scene","science"],spellings:["s — see","ss — miss","c — city (before e/i)","sc — scene","ps — psychology"],tip:"'c' before e/i/y makes /s/. 'Ps' at the start — the P is silent."},{ipa:"/z/",mw:"[z]",name:"Z sound",keyword:"zoo",words:["zoo","fizz","rose","dogs","his","scissors","xylophone"],spellings:["z — zoo","zz — fizz","s — rose, dogs (voiced)","ss — scissors","x — xylophone"],tip:"Most plurals spelled '-s' are actually /z/ ('dogs', 'runs', 'plays')."},{ipa:"/ʃ/",mw:"[sh]",name:"SH sound",keyword:"she",words:["she","ship","nation","special","sure","machine","chef","ocean"],spellings:["sh — she, ship","ti — nation","ci — special","su — sure","ch — chef","ce — ocean"],tip:"Hides in 'ti' (nation), 'ci' (special), 'ch' (chef)."},{ipa:"/ʒ/",mw:"[zh]",name:"ZH sound",keyword:"measure",words:["measure","vision","usual","beige","genre"],spellings:["si — vision","su — measure, usual","ge — beige","g — genre"],tip:"The voiced /ʃ/. The 's' in 'vision'."},{ipa:"/h/",mw:"[h]",name:"H sound",keyword:"hat",words:["hat","ahead","who","hello","whole"],spellings:["h — hat, hello","wh — who, whole (=/h/)"],tip:"A gentle breath — much softer than the Spanish /x/ (as in 'Juan')."}],affricates:[{ipa:"/tʃ/",mw:"[ch]",name:"CH sound",keyword:"chin",words:["chin","watch","teacher","nature","question","cello"],spellings:["ch — chin","tch — watch","tu — nature","ti — question","c — cello"],tip:"Starts like /t/ and releases as /ʃ/."},{ipa:"/dʒ/",mw:"[j]",name:"J sound",keyword:"job",words:["job","judge","gym","age","bridge","soldier"],spellings:["j — job","g — gym, age (before e/i/y)","dge — judge, bridge","di — soldier"],tip:"'G' before e, i, y often makes /dʒ/. 'Dge' always makes /dʒ/."}],nasals:[{ipa:"/m/",mw:"[m]",name:"M sound",keyword:"man",words:["man","him","summer","dumb","climb"],spellings:["m — man","mm — summer","mb — dumb, climb (silent b)"],tip:"Watch for silent letters: 'climb' (b silent)."},{ipa:"/n/",mw:"[n]",name:"N sound",keyword:"no",words:["no","sun","know","knife","gnat","inn"],spellings:["n — no, sun","kn — know (silent k)","gn — gnat (silent g)","nn — inn"],tip:"'Kn' at the start — the K is always silent."},{ipa:"/ŋ/",mw:"[ng]",name:"NG sound",keyword:"sing",words:["sing","thing","think","long","ring","bank"],spellings:["ng — sing, ring","n — think, bank (before /k/)"],tip:"One sound — back of tongue to soft palate."}],liquids:[{ipa:"/r/",mw:"[r]",name:"American R",keyword:"red",words:["red","car","bird","world","river","write","wrap"],spellings:["r — red, river","rr — sorry","wr — write (silent w)","rh — rhyme (silent h)"],tip:"The tongue curls back without touching anything. Unlike Spanish trilled /r/."},{ipa:"/l/",mw:"[l]",name:"L sound",keyword:"like",words:["like","call","feel","hello","people","walk","half","calm"],spellings:["l — like, feel","ll — call, hello","le — people","lk — walk (silent l)","lf — half (silent l)"],tip:"Light L (start of syllable) vs dark L (end — almost a vowel). Many silent L words."},{ipa:"/j/",mw:"[y]",name:"Y glide",keyword:"yes",words:["yes","you","year","use","cute","few","onion"],spellings:["y — yes, year","u — use, cute (=/juː/)","ew — few (=/juː/)","i — onion (=/j/)"],tip:"'U' in 'use' and 'cute' starts with this /j/ glide."},{ipa:"/w/",mw:"[w]",name:"W sound",keyword:"we",words:["we","world","quick","away","always","one","once"],spellings:["w — we, world","wh — where, when","qu — quick (=/kw/)","o — one (=/w/)"],tip:"Start with lips tightly rounded like /uː/, then move quickly into the next vowel."}]};
+
+const USE_REAL_AUDIO = false;
+function playWord(word) {
+  if (USE_REAL_AUDIO) { const a = new Audio('audio/' + word.toLowerCase() + '.mp3'); a.play().catch(() => speakWord(word)); }
+  else speakWord(word);
+}
+function speakWord(word) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(word); u.lang = 'en-US'; u.rate = 0.85;
+  window.speechSynthesis.speak(u);
+}
+
+function bc(t){return t==="vowel"?"badge-vowel":t==="diphthong"?"badge-diphthong":t==="rcolored"?"badge-rcolored":"badge-consonant";}
+function bl(t){return t==="rcolored"?"r-colored":t;}
+
+/* ── MEDIA SEGURO AUDIOS ── */
+async function uploadQAudio(event, i) {
+  const file = event.target.files[0]; if (!file) return; 
+  isUploadingAudio = true;
+  const el = document.getElementById('q-audio-' + i);
+  if (el) el.textContent = '⏳ Uploading...';
+  try {
+    const fn = `qa_${Date.now()}_${Math.floor(Math.random()*1000)}.${file.name.split('.').pop()}`;
+    const { error } = await sb.storage.from('audios').upload(fn, file, { upsert: false });
+    if (error) throw error;
+    if (questionRows[i]) questionRows[i].audio_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
+    if (el) el.textContent = '✅ Audio saved';
+    renderQFields(); 
+  } catch (err) {
+    alert('Audio upload error: ' + err.message);
+    if (el) el.textContent = '❌ Error';
+  } finally {
+    isUploadingAudio = false;
+  }
+}
+
+/* ── SOUNDS ENGINE (COMBINED) ── */
+function buildAllSoundsGrids() {
+  const ga = () => activeSound;
+  const sa = (v, s, isCon) => { activeSound = v; renderDetail('sound-detail', s, isCon); buildAllSoundsGrids(); };
+  const build = (cid, list, isCon) => { const c = document.getElementById(cid); if (!c) return; c.innerHTML = ''; list.forEach(s => c.appendChild(renderCard(s, ga()===s.ipa, () => sa(s.ipa, s, isCon)))); };
+  build('pure-vowel-grid', vowels.pure, false); build('diphthong-grid', vowels.diphthongs, false); build('rcolored-grid', vowels.rcolored, false);
+  build('stops-grid', consonants.stops, true); build('fricatives-grid', consonants.fricatives, true); build('affricates-grid', consonants.affricates, true); build('nasals-grid', consonants.nasals, true); build('liquids-grid', consonants.liquids, true);
+}
+
+</script>
+<script>
+/* YouTube URL Parser with timestamps */
+function buildYtUrl(url) {
+  if (!url || !url.trim()) return '';
+  let finalUrl = url.trim(); let videoId = ''; let startTime = '';
+  try { 
+      let u = new URL(finalUrl); 
+      if(u.searchParams.has('t')) {
+          let tStr = u.searchParams.get('t').replace('s','');
+          if(tStr.includes('m')) { 
+              let p = tStr.split('m'); 
+              startTime = ((parseInt(p[0])||0)*60 + (parseInt(p[1])||0)).toString(); 
+          } else { startTime = tStr; }
+      }
+  } catch(e){}
+  if (finalUrl.includes('youtu.be/')) {
+    const parts = finalUrl.split('youtu.be/')[1].split('?'); videoId = parts[0].split('&')[0];
+    if(parts[1] && parts[1].includes('t=')) { const match = parts[1].match(/t=([^&]+)/); if(match) startTime = parseYtTime(match[1]); }
+    finalUrl = `https://www.youtube.com/embed/${videoId}`;
+  } else if (finalUrl.includes('youtube.com/watch')) {
+    try { videoId = new URL(finalUrl).searchParams.get('v'); finalUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : finalUrl; } catch(e) {}
+  }
+  if (finalUrl.includes('youtube.com/embed/')) {
+    try { const u = new URL(finalUrl); u.searchParams.delete('start'); u.searchParams.delete('end'); if(startTime) u.searchParams.set('start', startTime); return u.toString(); } catch(e) { return finalUrl; }
+  }
+  return finalUrl;
 }
 </script>
 </body>
