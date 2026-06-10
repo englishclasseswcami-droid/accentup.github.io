@@ -1194,6 +1194,92 @@ function addQuestion(type) {
   questionRows.push(newQ); Object.keys(openQStates).forEach(k => openQStates[k] = false); openQStates[questionRows.length - 1] = true; renderQFields();
 }
 
+function renderManageList() {
+  const list = document.getElementById('t-manage-list');
+  if (!list) return;
+  if (!dbModules.length) {
+    list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div>';
+    return;
+  }
+  const iconMap = { video:'📺', text:'📄', task:'📝', embed:'🌐' };
+  const btnStyle = 'background:none;border:1px solid var(--border);border-radius:4px;padding:2px 7px;font-size:11px;cursor:pointer;color:var(--text-muted)';
+  const dangerStyle = 'background:none;border:1px solid #ffb3b3;border-radius:4px;padding:2px 7px;font-size:11px;cursor:pointer;color:#e05252';
+
+  let html = '';
+  dbModules.forEach(m => {
+    const mLessons = dbLessons.filter(l => l.module_id === m.id);
+    const mSubs    = dbSubmodules.filter(s => s.module_id === m.id);
+    const privBadge = m.is_private ? ' <span style="font-size:10px;background:var(--brand);color:#fff;padding:1px 6px;border-radius:99px;vertical-align:middle">Private</span>' : '';
+
+    html += `
+    <div style="border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:10px;overflow:hidden">
+      <!-- Module header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 12px;background:var(--skool-hover);flex-wrap:wrap">
+        <span style="font-weight:700;font-size:13px;color:var(--text)">📂 ${esc(m.title)}${privBadge}</span>
+        <div style="display:flex;gap:5px;flex-wrap:wrap">
+          <button style="${btnStyle}" onclick="moveModule('${esc(m.id)}',-1)">▲</button>
+          <button style="${btnStyle}" onclick="moveModule('${esc(m.id)}',1)">▼</button>
+          <button style="${btnStyle}" onclick="editModule('${esc(m.id)}')">✏️ Edit</button>
+          <button style="${dangerStyle}" onclick="deleteModule('${esc(m.id)}')">🗑 Delete</button>
+        </div>
+      </div>`;
+
+    // Subfolders and their lessons
+    mSubs.forEach(s => {
+      const subLessons = mLessons.filter(l => l.submodule_id === s.id);
+      html += `
+      <div style="padding:6px 12px 6px 24px;border-top:1px solid var(--border);background:var(--surface)">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+          <span style="font-size:12px;font-weight:600;color:var(--text-muted)">📁 ${esc(s.title)}</span>
+          <div style="display:flex;gap:5px;flex-wrap:wrap">
+            <button style="${btnStyle}" onclick="moveSubmodule('${esc(s.id)}',-1)">▲</button>
+            <button style="${btnStyle}" onclick="moveSubmodule('${esc(s.id)}',1)">▼</button>
+            <button style="${btnStyle}" onclick="editSubmodule('${esc(s.id)}')">✏️ Edit</button>
+            <button style="${dangerStyle}" onclick="deleteSubmodule('${esc(s.id)}')">🗑 Delete</button>
+          </div>
+        </div>`;
+      subLessons.forEach(l => {
+        html += `
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:4px 0 4px 14px;border-top:1px dashed var(--border)">
+          <span style="font-size:12px;color:var(--text)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span>
+          <div style="display:flex;gap:5px;flex-wrap:wrap">
+            <button style="${btnStyle}" onclick="moveLesson('${esc(l.id)}',-1)">▲</button>
+            <button style="${btnStyle}" onclick="moveLesson('${esc(l.id)}',1)">▼</button>
+            <button style="${btnStyle}" onclick="editLesson('${esc(l.id)}')">✏️ Edit</button>
+            <button style="${dangerStyle}" onclick="deleteLesson('${esc(l.id)}')">🗑 Delete</button>
+          </div>
+        </div>`;
+      });
+      html += '</div>'; // end subfolder
+    });
+
+    // Orphan lessons (no submodule)
+    const orphans = mLessons.filter(l => !l.submodule_id);
+    if (orphans.length) {
+      orphans.forEach(l => {
+        html += `
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:6px 12px 6px 24px;border-top:1px dashed var(--border);background:var(--surface)">
+          <span style="font-size:12px;color:var(--text)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span>
+          <div style="display:flex;gap:5px;flex-wrap:wrap">
+            <button style="${btnStyle}" onclick="moveLesson('${esc(l.id)}',-1)">▲</button>
+            <button style="${btnStyle}" onclick="moveLesson('${esc(l.id)}',1)">▼</button>
+            <button style="${btnStyle}" onclick="editLesson('${esc(l.id)}')">✏️ Edit</button>
+            <button style="${dangerStyle}" onclick="deleteLesson('${esc(l.id)}')">🗑 Delete</button>
+          </div>
+        </div>`;
+      });
+    }
+
+    if (!mSubs.length && !mLessons.length) {
+      html += `<div style="padding:8px 24px;font-size:12px;color:var(--text-muted);border-top:1px solid var(--border)">No lessons yet.</div>`;
+    }
+
+    html += '</div>'; // end module card
+  });
+
+  list.innerHTML = html;
+}
+
 function renderTeacherProgress(allProgress) {
   const list = document.getElementById('t-student-progress-list'); if (!list) return;
   if (!dbProfiles.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No students registered yet.</div>'; return; }
