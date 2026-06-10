@@ -53,7 +53,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .lp-page { padding: 0 !important; max-width: 100% !important; }
 .lp-container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
 
-/* Hero */
 .lp-hero { background: var(--brand-dark); color: #fff; padding: 6rem 0 5rem; position: relative; overflow: hidden; }
 .lp-hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
 @media(max-width: 860px) { .lp-hero-inner { grid-template-columns: 1fr; text-align: center; } }
@@ -68,7 +67,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .lp-hero-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 24px; transform: rotate(3deg); border: 4px solid var(--accent); box-shadow: 0 20px 50px rgba(0,0,0,0.4); transition: transform 0.3s ease; }
 .lp-hero-img:hover { transform: rotate(0deg); }
 
-/* Sections */
 .lp-section { padding: 6rem 0; }
 .lp-section.cream { background: var(--accent-light); }
 .lp-section.blue { background: var(--brand); color: #fff; }
@@ -77,21 +75,18 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .lp-p { font-size: 17px; color: var(--text-muted); line-height: 1.7; text-align: center; max-width: 800px; margin: 0 auto 3rem; }
 .blue .lp-p { color: rgba(255,255,255,0.85); }
 
-/* Speech Bubbles */
 .lp-quotes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 4rem; }
 .lp-speech-bubble { background: var(--surface); padding: 1.75rem; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,0.04); position: relative; border: 1px solid var(--border); }
 .lp-speech-bubble::after { content: ''; position: absolute; bottom: -10px; left: 30px; border-width: 10px 10px 0; border-style: solid; border-color: var(--surface) transparent transparent transparent; display: block; width: 0; }
 .lp-speech-bubble::before { content: ''; position: absolute; bottom: -12px; left: 29px; border-width: 11px 11px 0; border-style: solid; border-color: var(--border) transparent transparent transparent; display: block; width: 0; z-index: -1; }
 .lp-speech-bubble p { font-size: 16px; font-weight: 600; color: var(--brand-dark); font-style: italic; line-height: 1.5; }
 
-/* The Bridge */
 .lp-bridge { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; background: var(--surface); border: 2px solid var(--brand); border-radius: var(--radius); padding: 3rem; max-width: 1000px; margin: 0 auto; box-shadow: 0 20px 40px rgba(33, 80, 227, 0.08); text-align: left; }
 @media(max-width: 768px) { .lp-bridge { grid-template-columns: 1fr; text-align: center; padding: 2rem; } }
 .lp-bridge-text p { font-size: 17px; color: var(--text); line-height: 1.6; margin-bottom: 1rem; }
 .lp-bridge-text strong { color: var(--brand-dark); font-weight: 900; font-size: 19px;}
 .lp-bridge-img img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: var(--radius-sm); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
 
-/* Unique Mechanism */
 .lp-mech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
 .lp-mech-card { background: var(--surface); border-radius: var(--radius); padding: 2.5rem 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border-top: 4px solid var(--brand); transition: transform 0.2s; }
 .lp-mech-card:hover { transform: translateY(-5px); }
@@ -99,7 +94,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .lp-mech-card h3 { font-size: 20px; font-weight: 900; color: var(--brand-dark); margin-bottom: 12px; letter-spacing: -0.5px; }
 .lp-mech-card p { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
 
-/* Us Vs Them */
 .lp-compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
 @media(max-width: 768px) { .lp-compare-grid { grid-template-columns: 1fr; } }
 .lp-compare-col { background: var(--surface); border-radius: var(--radius); padding: 2rem; }
@@ -112,7 +106,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .lp-compare-col.bad .lp-compare-item { color: var(--text-muted); }
 .lp-compare-col.good .lp-compare-item { color: rgba(255,255,255,0.9); }
 
-/* Offer & Pricing */
 .lp-offer-list { list-style: none; margin-bottom: 2rem; max-width: 800px; margin: 0 auto 3rem; text-align: left; }
 .lp-offer-list li { font-size: 16px; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 12px; line-height: 1.5; background: rgba(255,255,255,0.05); padding: 1rem 1.5rem; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.1); }
 .lp-offer-list li::before { content: '✅'; flex-shrink: 0; }
@@ -134,14 +127,12 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .lp-pricing-features p::before { content: '✓'; color: var(--green); }
 .lp-pricing-card .lp-cta-btn { width: 100%; padding: 14px; font-size: 15px; }
 
-/* Mentor */
 .lp-mentor { display: flex; gap: 4rem; align-items: center; max-width: 900px; margin: 0 auto; }
 @media(max-width: 768px){ .lp-mentor { flex-direction: column; text-align: center; gap: 2rem; } }
 .lp-mentor-img { width: 300px; height: 300px; border-radius: 50%; background: var(--brand-light); flex-shrink: 0; border: 6px solid var(--accent); object-fit: cover; box-shadow: 0 10px 30px rgba(7, 33, 107, 0.1); }
 .lp-mentor-text h3 { font-size: 28px; font-weight: 900; color: var(--brand-dark); margin-bottom: 1.25rem; letter-spacing: -0.5px; }
 .lp-mentor-text p { font-size: 16px; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem; }
 
-/* FAQ Accordion */
 .lp-faq { max-width: 760px; margin: 0 auto; }
 .lp-faq details { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 1rem; overflow: hidden; }
 .lp-faq summary { padding: 1.5rem; font-size: 17px; font-weight: 800; color: var(--brand-dark); cursor: pointer; list-style: none; position: relative; padding-right: 3rem; }
@@ -150,7 +141,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .lp-faq details[open] summary::after { content: '−'; }
 .lp-faq details p { padding: 0 1.5rem 1.5rem; font-size: 15px; color: var(--text-muted); line-height: 1.6; }
 
-/* SOUND GRID */
+/* ════════ PLATFORM STYLES ════════ */
 .sound-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:2rem}
 .sound-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:1rem .9rem .9rem;cursor:pointer;transition:border-color .15s,transform .1s;text-align:center}
 .sound-card:hover{border-color:var(--brand);transform:translateY(-2px)}
@@ -242,7 +233,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .resource-link:hover{background:var(--brand-light);border-color:var(--brand)}
 .lesson-complete-wrap{margin-top:2.5rem;border-top:1px solid var(--skool-border);padding-top:1.5rem;text-align:right}
 
-/* EXERCISE PLAYER & DRAG AND DROP */
+/* EXERCISE PLAYER */
 .ex-question-block{background:var(--bg);border:1px solid var(--skool-border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem}
 .ex-q-num{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-light);margin-bottom:6px}
 .ex-q-text{font-size:15px;font-weight:600;color:var(--text);margin-bottom:1rem;line-height:1.5}
@@ -357,7 +348,7 @@ select,textarea,input[type=text],input[type=password],input[type=email],input[ty
 select:focus,textarea:focus,input:focus{border-color:var(--brand);background:#fff}
 textarea{resize:vertical;min-height:70px}
 
-/* NUEVAS TARJETAS COLAPSABLES PARA PREGUNTAS (UX MEJORADA) */
+/* UX TARJETAS COLAPSABLES (PREGUNTAS) */
 .q-card { background: var(--surface); border-radius: var(--radius-sm); border: 1px solid var(--skool-border); margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); overflow: hidden; }
 .q-card-header { padding: 12px 16px; background: var(--bg); display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-bottom: 1px solid transparent; transition: background 0.2s; }
 .q-card-header:hover { background: var(--brand-light); }
@@ -506,25 +497,37 @@ footer strong{color:var(--brand)}
   <section class="lp-section cream">
     <div class="lp-container">
       <h2 class="lp-h2">Why AccentUp works where other courses fail</h2>
-      
-      <div class="lp-compare-grid">
-        <div class="lp-compare-col bad">
-          <div class="lp-compare-header">Traditional English Learning ❌</div>
-          <div class="lp-compare-item"><span>•</span> Focuses on information and rules, assuming that understanding automatically leads to speaking.</div>
-          <div class="lp-compare-item"><span>•</span> Prioritizes reading and writing instead of intentional speaking practice.</div>
-          <div class="lp-compare-item"><span>•</span> Treats mistakes as something to be avoided at all costs.</div>
-          <div class="lp-compare-item"><span>•</span> Ignores confidence, fear, and mindset, assuming confidence will come naturally with fluency.</div>
-          <div class="lp-compare-item"><span>•</span> Creates reliance on constant feedback and always needing "the next course" to improve.</div>
-        </div>
-        
-        <div class="lp-compare-col good">
-          <div class="lp-compare-header">AccentUp: Hear It. Own It. Say It. ✅</div>
-          <div class="lp-compare-item"><span>✓</span> Focuses on practical spoken English and trains speaking as a physical skill.</div>
-          <div class="lp-compare-item"><span>✓</span> Prioritizes pronunciation, rhythm, intonation, and real-life communication.</div>
-          <div class="lp-compare-item"><span>✓</span> Treats mistakes as a natural and necessary part of the learning process.</div>
-          <div class="lp-compare-item"><span>✓</span> Builds confidence and a growth mindset as skills you intentionally develop to unlock fluency.</div>
-          <div class="lp-compare-item"><span>✓</span> Teaches you how to recognize your own patterns, change them, and take full ownership of your progress.</div>
-        </div>
+      <div class="lp-table-wrap">
+        <table class="lp-table">
+          <thead>
+            <tr>
+              <th class="trad">Traditional English Learning ❌</th>
+              <th class="accent">AccentUp: Hear It. Own It. Say It. ✅</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="trad-col">Focuses on information and rules, assuming that understanding automatically leads to speaking.</td>
+              <td class="accent-col">Focuses on practical spoken English and trains speaking as a physical skill.</td>
+            </tr>
+            <tr>
+              <td class="trad-col">Prioritizes reading and writing instead of intentional speaking practice.</td>
+              <td class="accent-col">Prioritizes pronunciation, rhythm, intonation, and real-life communication.</td>
+            </tr>
+            <tr>
+              <td class="trad-col">Treats mistakes as something to be avoided at all costs.</td>
+              <td class="accent-col">Treats mistakes as a natural and necessary part of the learning process.</td>
+            </tr>
+            <tr>
+              <td class="trad-col">Ignores confidence, fear, and mindset, assuming confidence will come naturally with fluency.</td>
+              <td class="accent-col">Builds confidence and a growth mindset as skills you intentionally develop to unlock fluency.</td>
+            </tr>
+            <tr>
+              <td class="trad-col">Creates reliance on constant feedback and always needing "the next course" to improve.</td>
+              <td class="accent-col">Teaches you how to recognize your own patterns, change them, and take full ownership of your progress.</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
@@ -604,7 +607,6 @@ footer strong{color:var(--brand)}
           <summary>How do I secure my spot?</summary>
           <p>Because this is a personalized 1-on-1 experience, I only work with a small number of students at a time to ensure the highest quality of feedback. Click the button below to reach out to me directly on WhatsApp so we can see if you are a good fit for the program!</p>
         </details>
-        
         <div style="text-align:center; margin-top:3rem;">
           <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn" style="font-size:18px; padding:18px 40px;">👉 Let's talk on WhatsApp and unlock your voice</a>
         </div>
@@ -897,7 +899,7 @@ let studentAnswers = {}, matchState = { leftSel: null, pairs: {} }, selectedDrag
 let questionRows = [], tempAudios = [], isUploadingAudio = false;
 let quillEditor = null, communityQuill = null, editPostQuill = null;
 let activeVowel = null, activeConsonant = null;
-let openQStates = {}; // Estado global para saber qué tarjeta de pregunta está abierta
+let openQStates = {}; 
 
 /* ── UTILS ── */
 function safeParseJSON(data) {
@@ -1038,10 +1040,6 @@ function goToPage(pageId) {
   
   const pageEl = document.getElementById('page-' + pageId);
   if (pageEl) pageEl.classList.add('active');
-  
-  const hiddenHero = ['home','classroom','teacher','auth','community','profile'];
-  const hero = document.getElementById('hero-banner');
-  if (hero) hero.style.display = hiddenHero.includes(pageId) ? 'none' : 'block';
   
   if (pageId === 'classroom') renderClassroomGrid();
   if (pageId === 'community') renderCommunityFeed();
@@ -1448,7 +1446,20 @@ function renderPlayerQuestions(isDone = false) {
     const q = content[0] || { prompt:'', categories:[], items:[] };
     const words = shuffle([...(q.items||[])]);
     const cats = q.categories || [];
-    wrap.innerHTML = `<div class="ex-question-block"><div class="ex-q-text">${esc(q.prompt)}</div><div class="dnd-instruction">☝️ Tap a word, then tap a box below to sort it.</div><div class="dnd-bank" id="dnd-bank" onclick="dndZoneClick(this)">${words.map((w,i)=>`<div class="dnd-chip" id="dnd-chip-${i}" onclick="event.stopPropagation();dndChipClick(this)">${esc(w.word)}</div>`).join('')}</div><div class="dnd-cols">${cats.map(c=>`<div class="dnd-col" onclick="dndZoneClick(this)" data-cat="${escapeJSArg(c)}"><div class="dnd-col-header">${esc(c)}</div><div class="dnd-col-body"></div></div>`).join('')}</div></div>`;
+    
+    const qAudio = q.audio_url ? `<audio controls src="${esc(q.audio_url)}" style="width:100%;height:36px;margin-bottom:10px;border-radius:20px"></audio>` : '';
+    let qVideo = '';
+    if (q.video_url) {
+      const formattedUrl = formatYouTubeUrl(q.video_url);
+      if (formattedUrl.includes('youtube.com/embed/')) {
+        qVideo = `<div class="video-container" style="margin-bottom:12px; border-radius:8px; overflow:hidden;"><iframe src="${esc(formattedUrl)}" allowfullscreen></iframe></div>`;
+      } else {
+        qVideo = `<video controls src="${esc(q.video_url)}" style="width:100%;border-radius:var(--radius-sm);margin-bottom:12px;background:#000;max-height:400px"></video>`;
+      }
+    }
+    const qMedia = qVideo + qAudio;
+
+    wrap.innerHTML = `<div class="ex-question-block">${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><div class="dnd-instruction">☝️ Tap a word, then tap a box below to sort it.</div><div class="dnd-bank" id="dnd-bank" onclick="dndZoneClick(this)">${words.map((w,i)=>`<div class="dnd-chip" id="dnd-chip-${i}" onclick="event.stopPropagation();dndChipClick(this)">${esc(w.word)}</div>`).join('')}</div><div class="dnd-cols">${cats.map(c=>`<div class="dnd-col" onclick="dndZoneClick(this)" data-cat="${escapeJSArg(c)}"><div class="dnd-col-header">${esc(c)}</div><div class="dnd-col-body"></div></div>`).join('')}</div></div>`;
     return;
   }
   if (currentLesson.task_type === 'matching') {
@@ -1459,19 +1470,30 @@ function renderPlayerQuestions(isDone = false) {
   }
   wrap.innerHTML = content.map((q, i) => {
     const qAudio = q.audio_url ? `<audio controls src="${esc(q.audio_url)}" style="width:100%;height:36px;margin-bottom:10px;border-radius:20px"></audio>` : '';
+    let qVideo = '';
+    if (q.video_url) {
+      const formattedUrl = formatYouTubeUrl(q.video_url);
+      if (formattedUrl.includes('youtube.com/embed/')) {
+        qVideo = `<div class="video-container" style="margin-bottom:12px; border-radius:8px; overflow:hidden;"><iframe src="${esc(formattedUrl)}" allowfullscreen></iframe></div>`;
+      } else {
+        qVideo = `<video controls src="${esc(q.video_url)}" style="width:100%;border-radius:var(--radius-sm);margin-bottom:12px;background:#000;max-height:400px"></video>`;
+      }
+    }
+    const qMedia = qVideo + qAudio;
+
     let given = prevAnswers[i] || ''; 
     let disabledAttr = isDone ? 'disabled' : '';
 
-    if (currentLesson.task_type === 'fill_in_blank') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${esc(q.prompt)}</div><input class="fitb-input" id="fitb-${i}" type="text" placeholder="Your answer…" value="${esc(given)}" autocomplete="off" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}/></div>`;
-    if (currentLesson.task_type === 'dictation') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="dict-${i}" placeholder="Write what you hear…" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(given)}</textarea></div>`;
+    if (currentLesson.task_type === 'fill_in_blank') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><input class="fitb-input" id="fitb-${i}" type="text" placeholder="Your answer…" value="${esc(given)}" autocomplete="off" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}/></div>`;
+    if (currentLesson.task_type === 'dictation') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="dict-${i}" placeholder="Write what you hear…" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(given)}</textarea></div>`;
     if (currentLesson.task_type === 'open_answer') {
       const revealHtml = q.answer ? `<div class="open-answer-reveal ${isDone?'visible':''}" id="reveal-${i}"><strong>Expected answer / keywords:</strong> ${esc(q.answer)}</div>` : '';
-      return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="oa-${i}" placeholder="Type your answer here..." oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(given)}</textarea>${revealHtml}</div>`;
+      return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="oa-${i}" placeholder="Type your answer here..." oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(given)}</textarea>${revealHtml}</div>`;
     }
     const rawOpts = Array.isArray(q.options) ? q.options : [];
     const opts = rawOpts.filter(o => o && String(o).trim() !== '');
     const shuffled = shuffle([...opts]);
-    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qAudio}<div class="ex-q-text">${esc(q.prompt)}</div><div class="options-grid">${shuffled.map((o,j)=>{
+    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><div class="options-grid">${shuffled.map((o,j)=>{
       const isSelected = given === o ? 'selected' : '';
       return `<button class="opt-btn ${isSelected}" id="opt-${i}-${j}" onclick="selectOpt(${i},${j},'${escapeJSArg(o)}',${shuffled.length})" ${disabledAttr}>${esc(o)}</button>`;
     }).join('')}</div></div>`;
@@ -1671,7 +1693,7 @@ async function moveSubmodule(id, dir) {
 function toggleLessonFields() {
   const type = document.getElementById('t-les-type').value;
   document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none';
-  document.getElementById('fields-text').style.display = 'block'; // Siempre visible
+  document.getElementById('fields-text').style.display = 'block';
   document.getElementById('fields-embed').style.display = type === 'embed' ? 'block' : 'none';
   document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none';
 }
@@ -1702,7 +1724,7 @@ function updateSubfolderSelect() {
 }
 
 async function saveLesson() {
-  if (isUploadingAudio) { alert('Wait for audio uploads to finish.'); return; }
+  if (isUploadingAudio) { alert('Wait for media uploads to finish.'); return; }
   const editId = document.getElementById('edit-les-id').value;
   const moduleId = document.getElementById('t-les-module').value;
   const submodId = document.getElementById('t-les-submodule').value;
@@ -1729,7 +1751,15 @@ async function saveLesson() {
         const w = row.querySelector('.dnd-w').value.trim(); const c = row.querySelector('.dnd-c').value;
         if (w && c) dndItems.push({ word: w, category: c });
       });
-      payload.task_content = [{ prompt: document.getElementById('dnd-prompt').value, categories: cats, items: dndItems }];
+      // Mantenemos la lógica pero agregamos soporte para los videos que se actualizaron por updateQVideoUrl o uploadQVideo
+      let currentDragDrop = questionRows[0] || {};
+      payload.task_content = [{ 
+          prompt: document.getElementById('dnd-prompt').value, 
+          categories: cats, 
+          items: dndItems,
+          audio_url: currentDragDrop.audio_url || '',
+          video_url: currentDragDrop.video_url || ''
+      }];
     } else {
       payload.task_content = questionRows;
     }
@@ -1776,7 +1806,6 @@ function editLesson(id) {
   if (l.type === 'task') {
     document.getElementById('t-ex-type').value = l.task_type || 'open_answer';
     questionRows = safeParseJSON(l.task_content);
-    // Expandir la primera pregunta al editar para mejor UX
     openQStates = {}; if(questionRows.length > 0) openQStates[0] = true;
     renderQFields();
   }
@@ -1829,11 +1858,41 @@ function renderTempAudios() {
   ).join('');
 }
 
-/* ── QUESTION BUILDER (COLLAPSIBLE CARDS) ── */
+/* ── QUESTION BUILDER (COLLAPSIBLE CARDS WITH MEDIA) ── */
 function toggleQCard(i, event) {
   if(event) { event.stopPropagation(); }
   openQStates[i] = !openQStates[i];
   renderQFields();
+}
+
+function updateQVideoUrl(i, val) {
+  if (questionRows[i]) {
+    questionRows[i].video_url = val;
+    const el = document.getElementById('q-video-' + i);
+    if (el) el.textContent = val ? '✅ Video linked' : '';
+  }
+}
+
+async function uploadQVideo(event, i) {
+  const file = event.target.files[0]; if (!file) return; 
+  isUploadingAudio = true; 
+  const btn = event.target;
+  const originalOpacity = btn.style.opacity;
+  btn.style.opacity = '0.5';
+  
+  const fn = `qv_${Date.now()}.${file.name.split('.').pop()}`;
+  const { error } = await sb.storage.from('audios').upload(fn, file); 
+  isUploadingAudio = false;
+  btn.style.opacity = originalOpacity;
+  
+  if (error) { alert('Upload error: ' + error.message); return; }
+  if (questionRows[i]) questionRows[i].video_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
+  
+  const el = document.getElementById('q-video-' + i); 
+  if (el) el.textContent = '✅ Video uploaded';
+  
+  const urlInput = document.getElementById(`q-vid-url-${i}`);
+  if (urlInput) urlInput.value = '';
 }
 
 function renderQFields() {
@@ -1841,11 +1900,10 @@ function renderQFields() {
   const wrap = document.getElementById('q-builder'); if (!wrap) return;
   
   if (type === 'drag_drop') {
-    if (!questionRows.length || !questionRows[0]?.categories) questionRows = [{ prompt:'', categories:[], items:[] }];
+    if (!questionRows.length || !questionRows[0]?.categories) questionRows = [{ prompt:'', categories:[], items:[], audio_url:'', video_url:'' }];
     const q = questionRows[0];
     const catsStr = (q.categories || []).join(', ');
     
-    // Drag & Drop as a Card
     let html = `<div class="q-card">
       <div class="q-card-header open">
         <span class="q-card-title">Drag & Drop Setup</span>
@@ -1866,8 +1924,32 @@ function renderQFields() {
       html += `</select><button class="q-card-delete" style="background:var(--bg); border-radius:4px; padding:0 8px;" onclick="removeDndItem(${idx})">×</button></div>`;
     });
     
-    html += `</div><button class="add-q-btn" style="padding:6px;font-size:12px;margin-top:8px" onclick="addDndItem()">+ Add word to sort</button>
-      </div></div>`;
+    html += `</div><button class="add-q-btn" style="padding:6px;font-size:12px;margin-top:8px" onclick="addDndItem()">+ Add word to sort</button>`;
+    
+    // Novedad: Bloque de Media también para el Drag and Drop
+    html += `
+      <div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)">
+        <span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this exercise (optional)</span>
+        
+        <div style="margin-bottom:12px">
+          <span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">🎧 Audio (Upload MP3)</span>
+          <input type="file" accept="audio/*" onchange="uploadQAudio(event,0)" style="margin-bottom:4px; padding:6px; font-size:12px;"/>
+          <div id="q-audio-0" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.audio_url?'✅ Audio saved':''}</div>
+        </div>
+
+        <div>
+          <span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">📺 Video (YouTube Link OR Upload MP4)</span>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap">
+              <input type="url" id="q-vid-url-0" placeholder="Paste YouTube URL here..." value="${q.video_url && !q.video_url.includes('supabase.co') ? esc(q.video_url) : ''}" oninput="updateQVideoUrl(0, this.value)" style="margin:0;flex:1;min-width:200px; padding:6px; font-size:12px;"/>
+              <span style="font-size:11px;color:var(--text-muted);font-weight:700">OR</span>
+              <input type="file" accept="video/*" onchange="uploadQVideo(event,0)" style="margin:0;flex:1;min-width:200px; padding:6px; font-size:12px;"/>
+          </div>
+          <div id="q-video-0" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.video_url?'✅ Video saved':''}</div>
+        </div>
+      </div>
+    `;
+
+    html += `</div></div>`;
     wrap.innerHTML = html; 
     return;
   }
@@ -1897,7 +1979,7 @@ function buildQRow(type, q, i) {
     if (typeof q.correctIndex !== 'number') q.correctIndex = 0;
   }
   
-  const isOpen = openQStates[i] !== false; // Abierto por defecto
+  const isOpen = openQStates[i] !== false; 
   const dState = isOpen ? 'open' : '';
   const toggleText = isOpen ? 'Hide' : 'Edit';
   const summary = (type === 'matching') ? (q.left ? esc(q.left) + '...' : '(Empty)') : (q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)');
@@ -1931,13 +2013,9 @@ function buildQRow(type, q, i) {
     html += `<span class="field-label" style="margin-top:0">Instruction for student</span>
       <textarea placeholder="Write the instruction or question here..." oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt||'')}</textarea>
       <span class="field-label">${label}</span>
-      <textarea placeholder="e.g. /ɪ/ — the vowel is short and relaxed" oninput="questionRows[${i}].answer=this.value">${esc(q.answer||'')}</textarea>
-      <span class="field-label">Audio for this question (optional)</span>
-      <input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/>
-      <div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted)">${q.audio_url?'✅ Audio saved':''}</div>`;
+      <textarea placeholder="e.g. /ɪ/ — the vowel is short and relaxed" oninput="questionRows[${i}].answer=this.value">${esc(q.answer||'')}</textarea>`;
   } 
   else {
-    // Multiple Choice
     const opts = q.options || ['', ''];
     const correctIndex = q.correctIndex !== undefined ? q.correctIndex : 0;
     
@@ -1955,23 +2033,45 @@ function buildQRow(type, q, i) {
       </div>`;
     });
     
-    html += `<button class="secondary-btn" style="font-size:11px;padding:6px 10px;margin-bottom:8px" onclick="addQOption(${i})">+ Add option</button>
-      <div style="margin-top:10px">
-        <span class="field-label">Audio for this question (optional)</span>
-        <input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})"/>
-        <div id="q-audio-${i}" style="font-size:11px;color:var(--text-muted)">${q.audio_url?'✅ Audio saved':''}</div>
-      </div>`;
+    html += `<button class="secondary-btn" style="font-size:11px;padding:6px 10px;margin-bottom:8px" onclick="addQOption(${i})">+ Add option</button>`;
   }
   
-  html += `</div></div>`; // Close card-body and card
+  if (type !== 'matching') {
+    let mediaHtml = `
+      <div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)">
+        <span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this question (optional)</span>
+        
+        <div style="margin-bottom:12px">
+          <span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">🎧 Audio (Upload MP3)</span>
+          <input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})" style="margin-bottom:4px; padding:6px; font-size:12px;"/>
+          <div id="q-audio-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.audio_url?'✅ Audio saved':''}</div>
+        </div>
+
+        <div>
+          <span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">📺 Video (YouTube Link OR Upload MP4)</span>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap">
+              <input type="url" id="q-vid-url-${i}" placeholder="Paste YouTube URL here..." value="${q.video_url && !q.video_url.includes('supabase.co') ? esc(q.video_url) : ''}" oninput="updateQVideoUrl(${i}, this.value)" style="margin:0;flex:1;min-width:200px; padding:6px; font-size:12px;"/>
+              <span style="font-size:11px;color:var(--text-muted);font-weight:700">OR</span>
+              <input type="file" accept="video/*" onchange="uploadQVideo(event,${i})" style="margin:0;flex:1;min-width:200px; padding:6px; font-size:12px;"/>
+          </div>
+          <div id="q-video-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.video_url?'✅ Video saved':''}</div>
+        </div>
+      </div>
+    `;
+    html += mediaHtml;
+  }
+  
+  html += `</div></div>`;
   return html;
 }
 
 function addQuestion() {
   const type = document.getElementById('t-ex-type').value; if (type === 'drag_drop') return;
-  const newQ = type === 'matching' ? { left:'', right:'' } : type === 'fill_in_blank' ? { prompt:'', answer:'', hint:'' } : (type === 'dictation' || type === 'open_answer') ? { prompt:'', answer:'', audio_url:'' } : { prompt:'', options:['',''], correctIndex:0, answer:'', audio_url:'' };
+  const newQ = type === 'matching' ? { left:'', right:'' } : 
+               type === 'fill_in_blank' ? { prompt:'', answer:'', hint:'', audio_url:'', video_url:'' } : 
+               (type === 'dictation' || type === 'open_answer') ? { prompt:'', answer:'', audio_url:'', video_url:'' } : 
+               { prompt:'', options:['',''], correctIndex:0, answer:'', audio_url:'', video_url:'' };
   questionRows.push(newQ); 
-  // Al crear una nueva, la abrimos por defecto y cerramos las demás para mayor limpieza
   Object.keys(openQStates).forEach(k => openQStates[k] = false);
   openQStates[questionRows.length - 1] = true;
   renderQFields();
