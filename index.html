@@ -879,7 +879,7 @@ function goToPage(pageId) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const tabBtn = document.querySelector(`.nav-tab[data-page="${pageId}"]`); if (tabBtn) tabBtn.classList.add('active');
   const pageEl = document.getElementById('page-' + pageId); if (pageEl) pageEl.classList.add('active');
-  if (pageId === 'classroom') renderClassroomGrid(); if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); } if (pageId === 'streaks') renderStreaks();
+  if (pageId === 'classroom') renderClassroomGrid(); if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); } if (pageId === 'streaks') renderStreaks(); if (pageId === 'sounds') buildAllSoundsGrids();
   if (pageId === 'profile') { const p = dbProfiles.find(x => x.id === currentUser?.id); if (p) document.getElementById('profile-username').value = p.username || ''; }
   window.scrollTo(0, 0);
 }
@@ -956,7 +956,7 @@ function showLesson(lessonId) {
   } else if (currentLesson.type === 'task') {
     studentAnswers = {}; matchState = {}; selectedDragChips = {}; document.getElementById('view-exercise').style.display = 'block'; document.getElementById('player-title').textContent = currentLesson.title;
     const taskTextEl = document.getElementById('cv-task-text'); if (taskTextEl) { taskTextEl.innerHTML = currentLesson.text_content || ''; taskTextEl.style.display = (currentLesson.text_content && currentLesson.text_content !== '<p><br></p>') ? 'block' : 'none'; }
-    document.getElementById('submit-btn').disabled = false; document.getElementById('submit-btn').style.display = 'inline-block'; document.getElementById('retry-btn').style.display = 'none'; document.getElementById('score-area').innerHTML = '';
+    document.getElementById('submit-btn').disabled = isDone; document.getElementById('submit-btn').style.display = isDone ? 'none' : 'inline-block'; document.getElementById('retry-btn').style.display = isDone ? 'inline-block' : 'none'; document.getElementById('score-area').innerHTML = ''; document.getElementById('score-area').innerHTML = '';
     renderAudios('cv-task-audios', audios); renderPlayerQuestions(isDone); renderResources('cv-task-resources', resources);
     if (isDone) { const prev = dbProgress.find(p => p.lesson_id === lessonId); if (prev) showScore(prev.score, prev.total_questions, [], true); }
   }
@@ -1005,12 +1005,12 @@ function renderPlayerQuestions(isDone = false) {
     
     const opts = (Array.isArray(q.options) ? q.options : []).filter(o => o && String(o).trim() !== ''); const shuffled = shuffle([...opts]);
     let givenArr = Array.isArray(prevAnswers[i]) ? prevAnswers[i] : [prevAnswers[i]];
-    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><div class="options-grid">${shuffled.map((o,j)=>{ return `<button class="opt-btn ${givenArr.includes(o) ? 'selected' : ''}" id="opt-${i}-${j}" onclick="toggleOpt(${i},${j},'${escapeJSArg(o)}')" ${disabledAttr}>${esc(o)}</button>`; }).join('')}</div></div>`;
-  }).join('');
+    let isMulti = q.correctIndices && q.correctIndices.length > 1;
+    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><div class="options-grid">${shuffled.map((o,j)=>{ return `<button class="opt-btn ${givenArr.includes(o) ? 'selected' : ''}" id="opt-${i}-${j}" onclick="toggleOpt(${i},${j},'${escapeJSArg(o)}', ${isMulti}, ${shuffled.length})" ${disabledAttr}>${esc(o)}</button>`; }).join('')}</div></div>`;
 }
 
 function updateMultiBlank(i, pIdx, val, total) { if (!Array.isArray(studentAnswers[i])) studentAnswers[i] = new Array(total).fill(''); studentAnswers[i][pIdx] = val; }
-function toggleOpt(qi, oi, val) { if(!Array.isArray(studentAnswers[qi])) studentAnswers[qi] = []; const idx = studentAnswers[qi].indexOf(val); const btn = document.getElementById(`opt-${qi}-${oi}`); if(idx > -1) { studentAnswers[qi].splice(idx, 1); btn.classList.remove('selected'); } else { studentAnswers[qi].push(val); btn.classList.add('selected'); } }
+function toggleOpt(qi, oi, val, isMulti, totalOpts) { if (!isMulti) { studentAnswers[qi] = [val]; for (let j = 0; j < totalOpts; j++) { const b = document.getElementById(`opt-${qi}-${j}`); if (b) b.classList.remove('selected'); } const btn = document.getElementById(`opt-${qi}-${oi}`); if (btn) btn.classList.add('selected'); } else { if(!Array.isArray(studentAnswers[qi])) studentAnswers[qi] = []; const idx = studentAnswers[qi].indexOf(val); const btn = document.getElementById(`opt-${qi}-${oi}`); if(idx > -1) { studentAnswers[qi].splice(idx, 1); if(btn) btn.classList.remove('selected'); } else { studentAnswers[qi].push(val); if(btn) btn.classList.add('selected'); } } }
 function dndChipClick(chipEl, i) { document.querySelectorAll(`#player-questions .dnd-chip[id^="dnd-chip-${i}-"]`).forEach(c => c.classList.remove('selected')); document.querySelectorAll(`#player-questions .dnd-bank[id="dnd-bank-${i}"], #player-questions .dnd-col[onclick="dndZoneClick(this, ${i})"]`).forEach(c => c.classList.add('active-drop')); selectedDragChips[i] = chipEl; chipEl.classList.add('selected'); }
 function dndZoneClick(zoneEl, i) { if (!selectedDragChips[i]) return; const body = zoneEl.classList.contains('dnd-bank') ? zoneEl : zoneEl.querySelector('.dnd-col-body'); if (body) { body.appendChild(selectedDragChips[i]); selectedDragChips[i].classList.remove('selected'); selectedDragChips[i] = null; document.querySelectorAll(`#player-questions .dnd-col, #player-questions .dnd-bank`).forEach(c => c.classList.remove('active-drop')); } }
 function dndInlineSelect(chipEl, i) { document.querySelectorAll(`#player-questions .dnd-chip[id^="dnd-chip-inline-${i}-"]`).forEach(c => c.classList.remove('selected')); document.querySelectorAll(`#player-questions .dnd-inline-dropzone[id^="dnd-drop-${i}-"], #player-questions .dnd-bank[id="dnd-bank-inline-${i}"]`).forEach(c => c.classList.add('active-drop')); selectedDragChips[i] = chipEl; chipEl.classList.add('selected'); }
