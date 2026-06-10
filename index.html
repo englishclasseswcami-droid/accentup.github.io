@@ -190,7 +190,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .c-main{flex:1;background:var(--surface);border:1px solid var(--skool-border);border-radius:var(--radius);padding:1.75rem;min-height:500px;width:100%;overflow:hidden}
 .c-empty-state{text-align:center;color:var(--text-light);padding:4rem 1rem;font-size:14px}
 .lesson-title-main{font-size:22px;font-weight:800;color:var(--text);margin-bottom:1.25rem}
-.video-container{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;background:#000;border-radius:var(--radius);margin-bottom:1.5rem}
+.video-container{position:relative;width:100%;max-width:560px;padding-bottom:min(56.25%,315px);height:0;overflow:hidden;background:#000;border-radius:var(--radius);margin-bottom:1.5rem}
 .video-container iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:var(--radius)}
 .text-content-main{font-size:15px;line-height:1.8;color:var(--text)}
 .text-content-main a{color:var(--brand);text-decoration:underline}
@@ -746,7 +746,7 @@ footer strong{color:var(--brand)}
             <div style="flex:2"><span class="field-label" style="margin-top:0">Lesson title</span><input type="text" id="t-les-title" placeholder="e.g. Lesson 1 — Short I vs Long E" style="margin-bottom:0"/></div>
           </div>
           <hr style="border:0;border-top:1px solid var(--skool-border);margin:1.25rem 0"/>
-          <div id="fields-video"><span class="field-label">YouTube URL</span><div style="display:flex; gap:8px;"><input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..." style="flex:2; margin-bottom:0;"/><input type="number" id="t-les-vid-start" placeholder="Start (sec)" style="flex:1; margin-bottom:0;" title="Start time in seconds"/><input type="number" id="t-les-vid-end" placeholder="End (sec)" style="flex:1; margin-bottom:0;" title="End time in seconds"/></div></div>
+          <div id="fields-video"><span class="field-label">YouTube URL</span><input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..." style="margin-bottom:0;"/></div>
           <div id="fields-text" style="display:none"><span class="field-label" style="margin-top:12px;">Content (text, instructions, notes)</span><div id="quill-editor-container"></div></div>
           <div id="fields-embed" style="display:none"><span class="field-label">Embed code (iframe)</span><textarea id="t-les-embed-code" placeholder="Paste your iframe code here..." style="font-family:monospace;min-height:100px"></textarea></div>
           <div id="fields-task" style="display:none">
@@ -809,20 +809,18 @@ function escapeJSArg(s){return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function timeAgo(d){const s=Math.floor((new Date()-new Date(d))/1000);if(s<60)return'Just now';if(s<3600)return Math.floor(s/60)+'m';if(s<86400)return Math.floor(s/3600)+'h';if(s<2592000)return Math.floor(s/86400)+'d';if(s<31536000)return Math.floor(s/2592000)+'mo';return Math.floor(s/31536000)+'y'}
 
-function buildYtUrl(url, start, end) {
+function buildYtUrl(url) {
   if (!url || !url.trim()) return '';
   let finalUrl = url.trim();
-  let videoId = '';
-  if (finalUrl.includes('youtube.com/embed/')) { videoId = finalUrl.split('youtube.com/embed/')[1].split('?')[0]; } 
-  else if (finalUrl.includes('youtu.be/')) { videoId = finalUrl.split('youtu.be/')[1].split('?')[0].split('&')[0]; finalUrl = `https://www.youtube.com/embed/${videoId}`; } 
-  else if (finalUrl.includes('youtube.com/watch')) { try { videoId = new URL(finalUrl).searchParams.get('v'); finalUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : finalUrl; } catch(e) {} }
-  if (finalUrl.includes('youtube.com/embed/')) { try { const u = new URL(finalUrl); if(start) u.searchParams.set('start', start); if(end) u.searchParams.set('end', end); return u.toString(); } catch(e) { return finalUrl; } }
+  if (finalUrl.includes('youtu.be/')) { const id = finalUrl.split('youtu.be/')[1].split('?')[0].split('&')[0]; return `https://www.youtube.com/embed/${id}`; }
+  if (finalUrl.includes('youtube.com/watch')) { try { const id = new URL(finalUrl).searchParams.get('v'); return id ? `https://www.youtube.com/embed/${id}` : finalUrl; } catch(e) {} }
+  if (finalUrl.includes('youtube.com/embed/')) { try { const u = new URL(finalUrl); u.searchParams.delete('start'); u.searchParams.delete('end'); return u.toString(); } catch(e) {} }
   return finalUrl;
 }
-function parseYtUrlParts(url) {
-   if (!url || !url.includes('youtube.com/embed/')) return { url: url || '', start:'', end:'' };
-   try { const u = new URL(url); const start = u.searchParams.get('start') || ''; const end = u.searchParams.get('end') || ''; u.searchParams.delete('start'); u.searchParams.delete('end'); return { url: u.toString(), start, end }; } 
-   catch(e) { return { url: url || '', start:'', end:'' }; }
+function parseYtDisplayUrl(url) {
+  if (!url) return '';
+  try { if (url.includes('youtube.com/embed/')) { const id = url.split('youtube.com/embed/')[1].split('?')[0]; return `https://www.youtube.com/watch?v=${id}`; } } catch(e) {}
+  return url;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1148,7 +1146,7 @@ async function saveLesson() {
   const btn = document.getElementById('btn-save-les'); btn.disabled = true; btn.textContent = 'Saving...';
 
   let payload = { module_id: moduleId, submodule_id: submodId || null, type, title, content: tempAudios, text_content: quillEditor.root.innerHTML };
-  if (type === 'video') { let url = document.getElementById('t-les-video-url').value.trim(); let start = document.getElementById('t-les-vid-start').value; let end = document.getElementById('t-les-vid-end').value; payload.video_url = buildYtUrl(url, start, end); } 
+  if (type === 'video') { payload.video_url = buildYtUrl(document.getElementById('t-les-video-url').value.trim()); } 
   else if (type === 'embed') { payload.video_url = document.getElementById('t-les-embed-code').value.trim(); } 
   else if (type === 'task') { payload.task_type = 'mixed'; payload.task_content = questionRows; }
 
@@ -1164,7 +1162,7 @@ async function saveLesson() {
 function editLesson(id) {
   const l = dbLessons.find(x => x.id === id); if (!l) return;
   document.getElementById('edit-les-id').value = l.id; document.getElementById('t-les-module').value = l.module_id; updateSubfolderSelect(); document.getElementById('t-les-submodule').value = l.submodule_id || ''; document.getElementById('t-les-type').value = l.type; document.getElementById('t-les-title').value = l.title; toggleLessonFields(); quillEditor.root.innerHTML = l.text_content || '';
-  if (l.type === 'video') { let parts = parseYtUrlParts(l.video_url); document.getElementById('t-les-video-url').value = parts.url; document.getElementById('t-les-vid-start').value = parts.start; document.getElementById('t-les-vid-end').value = parts.end; }
+  if (l.type === 'video') { document.getElementById('t-les-video-url').value = parseYtDisplayUrl(l.video_url); }
   if (l.type === 'embed') { document.getElementById('t-les-embed-code').value = l.video_url || ''; }
   if (l.type === 'task') {
     let raw = safeParseJSON(l.task_content);
@@ -1174,7 +1172,7 @@ function editLesson(id) {
   }
   tempAudios = safeParseJSON(l.content); renderTempAudios(); const resArr = safeParseJSON(l.resources); document.getElementById('t-les-resources-current').textContent = resArr.length ? `${resArr.length} file(s) already attached` : ''; document.getElementById('panel-title-les').textContent = '✏️ Edit lesson'; document.getElementById('btn-cancel-les').style.display = 'inline-block'; window.scrollTo(0, 0);
 }
-function cancelEditLes() { document.getElementById('edit-les-id').value = ''; document.getElementById('t-les-title').value = ''; document.getElementById('t-les-video-url').value = ''; document.getElementById('t-les-vid-start').value = ''; document.getElementById('t-les-vid-end').value = ''; document.getElementById('t-les-embed-code').value = ''; document.getElementById('t-les-resources').value = ''; document.getElementById('t-les-resources-current').textContent = ''; quillEditor.root.innerHTML = ''; questionRows = []; tempAudios = []; openQStates = {}; renderQFields(); renderTempAudios(); document.getElementById('panel-title-les').textContent = '📝 Add Lesson'; document.getElementById('btn-cancel-les').style.display = 'none'; }
+function cancelEditLes() { document.getElementById('edit-les-id').value = ''; document.getElementById('t-les-title').value = ''; document.getElementById('t-les-video-url').value = ''; document.getElementById('t-les-embed-code').value = ''; document.getElementById('t-les-resources').value = ''; document.getElementById('t-les-resources-current').textContent = ''; quillEditor.root.innerHTML = ''; questionRows = []; tempAudios = []; openQStates = {}; renderQFields(); renderTempAudios(); document.getElementById('panel-title-les').textContent = '📝 Add Lesson'; document.getElementById('btn-cancel-les').style.display = 'none'; }
 async function deleteLesson(id) { if (!confirm('Delete this lesson?')) return; await sb.from('lessons').delete().eq('id', id); fetchData(); }
 async function moveLesson(id, dir) { const les = dbLessons.find(l => l.id === id); if (!les) return; const siblings = dbLessons.filter(l => l.module_id === les.module_id && l.submodule_id === les.submodule_id); const idx = siblings.findIndex(l => l.id === id); const t = siblings[idx + dir]; if (!t) return; await sb.from('lessons').update({ order_index: t.order_index }).eq('id', id); await sb.from('lessons').update({ order_index: les.order_index }).eq('id', t.id); fetchData(); }
 
@@ -1184,7 +1182,7 @@ function renderTempAudios() { document.getElementById('t-shared-audios-render').
 
 /* ── QUESTION BUILDER ── */
 function toggleQCard(i, event) { if(event) { event.stopPropagation(); } openQStates[i] = !openQStates[i]; renderQFields(); }
-function updateQVideoUrl(i, val) { if (questionRows[i]) { let start = document.getElementById(`q-vid-start-${i}`)?.value || ''; let end = document.getElementById(`q-vid-end-${i}`)?.value || ''; questionRows[i].video_url = buildYtUrl(val, start, end); } }
+function updateQVideoUrl(i, val) { if (questionRows[i]) { questionRows[i].video_url = buildYtUrl(val); } }
 async function uploadQVideo(event, i) { const file = event.target.files[0]; if (!file) return; isUploadingAudio = true; const btn = event.target; const originalOpacity = btn.style.opacity; btn.style.opacity = '0.5'; const fn = `qv_${Date.now()}.${file.name.split('.').pop()}`; const { error } = await sb.storage.from('audios').upload(fn, file); isUploadingAudio = false; btn.style.opacity = originalOpacity; if (error) { alert('Upload error: ' + error.message); return; } if (questionRows[i]) questionRows[i].video_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl; const urlInput = document.getElementById(`q-vid-url-${i}`); if (urlInput) urlInput.value = ''; renderQFields(); }
 
 function renderQFields() { const wrap = document.getElementById('q-builder'); if (!wrap) return; wrap.innerHTML = questionRows.map((q, i) => buildQRow(q.type || 'multiple_choice', q, i)).join(''); }
@@ -1249,8 +1247,8 @@ function buildQRow(qType, q, i) {
     html += `<button class="secondary-btn" style="font-size:11px;padding:6px 10px;margin-bottom:8px" onclick="addQOption(${i})">+ Add option</button>`;
   }
   
-  let parts = parseYtUrlParts(q.video_url || '');
-  let mediaHtml = `<div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)"><span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this question (optional)</span><div style="margin-bottom:12px"><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">🎧 Audio (Upload MP3)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})" style="margin-bottom:4px; padding:6px; font-size:12px;"/><div id="q-audio-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.audio_url?'✅ Audio saved':''}</div></div><div><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">📺 Video (YouTube Link OR Upload MP4)</span><div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap"><input type="url" id="q-vid-url-${i}" placeholder="YouTube URL..." value="${parts.url && !parts.url.includes('supabase.co') ? esc(parts.url) : ''}" oninput="updateQVideoUrl(${i}, this.value)" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/><input type="number" id="q-vid-start-${i}" placeholder="Start (sec)" value="${parts.start}" oninput="updateQVideoUrl(${i}, document.getElementById('q-vid-url-${i}').value)" style="margin:0;flex:1;min-width:80px; padding:6px; font-size:12px;"/><input type="number" id="q-vid-end-${i}" placeholder="End (sec)" value="${parts.end}" oninput="updateQVideoUrl(${i}, document.getElementById('q-vid-url-${i}').value)" style="margin:0;flex:1;min-width:80px; padding:6px; font-size:12px;"/><span style="font-size:11px;color:var(--text-muted);font-weight:700">OR</span><input type="file" accept="video/*" onchange="uploadQVideo(event,${i})" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/></div><div id="q-video-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.video_url?'✅ Video saved':''}</div></div></div>`;
+  let parts = { url: q.video_url && !q.video_url.includes('supabase.co') ? parseYtDisplayUrl(q.video_url) : '' };
+  let mediaHtml = `<div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)"><span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this question (optional)</span><div style="margin-bottom:12px"><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">🎧 Audio (Upload MP3)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})" style="margin-bottom:4px; padding:6px; font-size:12px;"/><div id="q-audio-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.audio_url?'✅ Audio saved':''}</div></div><div><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">📺 Video (YouTube Link OR Upload MP4)</span><div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap"><input type="url" id="q-vid-url-${i}" placeholder="YouTube URL..." value="${parts.url ? esc(parts.url) : ''}" oninput="updateQVideoUrl(${i}, this.value)" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/><span style="font-size:11px;color:var(--text-muted);font-weight:700">OR</span><input type="file" accept="video/*" onchange="uploadQVideo(event,${i})" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/></div><div id="q-video-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.video_url?'✅ Video saved':''}</div></div></div>`;
   html += mediaHtml + `</div></div>`; return html;
 }
 
