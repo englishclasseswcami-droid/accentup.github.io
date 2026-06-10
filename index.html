@@ -42,7 +42,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .nav-tab.logout-btn-nav:hover{background:var(--red);color:#fff}
 .page{display:none;padding:2rem 1.5rem;max-width:960px;margin:0 auto}
 .page.active{display:block}
-.page-full{max-width:1200px}
+.page-full{max-width:1300px} /* Ampliado para mejor UX */
 .section-intro{margin-bottom:1.75rem}
 .section-intro h2{font-size:20px;font-weight:800;color:var(--brand-dark);margin-bottom:5px}
 .section-intro p{font-size:13px;color:var(--text-muted);line-height:1.6}
@@ -326,9 +326,9 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .teacher-header{margin-bottom:1.5rem}
 .teacher-header h2{font-size:20px;font-weight:800;color:var(--brand-dark);margin-bottom:4px}
 .teacher-header p{font-size:13px;color:var(--text-muted)}
-.teacher-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
-@media(max-width:720px){.teacher-layout{grid-template-columns:1fr}}
-.t-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.25rem}
+.teacher-layout{display:grid;grid-template-columns:1.6fr 1fr;gap:2rem; align-items: start;}
+@media(max-width:900px){.teacher-layout{grid-template-columns:1fr}}
+.t-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.25rem; box-shadow:0 4px 12px rgba(0,0,0,0.02)}
 .t-panel h3{font-size:14px;font-weight:700;color:var(--text);margin-bottom:.9rem;padding-bottom:10px;border-bottom:1px solid var(--border)}
 .field-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-light);margin-bottom:5px;margin-top:.9rem;display:block}
 .field-label:first-of-type{margin-top:0}
@@ -713,6 +713,7 @@ footer strong{color:var(--brand)}
         <div id="view-exercise" style="display:none">
           <h2 id="player-title" class="lesson-title-main"></h2>
           <div id="cv-task-text" class="text-content-main ql-editor" style="border:none;padding:0;margin-bottom:1.5rem;display:none"></div>
+          <audio id="player-audio" controls style="display:none;width:100%;margin-bottom:1.25rem;border-radius:30px"></audio>
           <div id="cv-task-audios" class="lesson-audios-box" style="display:none"></div>
           <div id="player-questions"></div>
           <div class="player-footer">
@@ -727,7 +728,7 @@ footer strong{color:var(--brand)}
   </div>
 </div>
 
-<div class="page" id="page-teacher">
+<div class="page page-full" id="page-teacher">
   <div class="teacher-header">
     <h2>Teacher Dashboard</h2>
     <p>Organize your content, control access, and view student progress.</p>
@@ -901,8 +902,8 @@ let currentLesson = null, activeModuleId = null, currentViewedPostId = null;
 
 /* UX STATE */
 let studentAnswers = {}; 
-let matchState = {}; /* { [qIndex]: { leftSel: null, pairs: {} } } */
-let selectedDragChips = {}; /* { [qIndex]: chipEl } */
+let matchState = {}; 
+let selectedDragChips = {}; 
 
 let questionRows = [], tempAudios = [], isUploadingAudio = false;
 let quillEditor = null, communityQuill = null, editPostQuill = null;
@@ -981,7 +982,7 @@ function updateAuthUI() {
     btn.textContent = 'Log out'; btn.classList.add('logout-btn-nav'); btn.classList.remove('auth-btn');
     profileTab.style.display = 'inline-block';
     
-    const isTeacher = currentUser.email.toLowerCase() === TEACHER_EMAIL.toLowerCase();
+    const isTeacher = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
     if (isTeacher) teacherTab.style.display = 'inline-block';
     
     if (document.getElementById('page-auth').classList.contains('active')) goToPage('classroom');
@@ -1065,30 +1066,36 @@ function goToPage(pageId) {
 async function fetchData() {
   if (!currentUser) return;
   try {
-    const isTeacher = currentUser.email.toLowerCase() === TEACHER_EMAIL.toLowerCase();
+    const isTeacher = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
+    const userEmail = currentUser?.email?.toLowerCase() || '';
 
-    const [rMod, rSub, rLes, rProg, rPosts, rComments, rLikes, rProfiles, rAllProg] = await Promise.all([
-      sb.from('modules').select('*').order('order_index'),
-      sb.from('submodules').select('*').order('order_index'),
-      sb.from('lessons').select('*').order('order_index'),
-      sb.from('student_progress').select('*').eq('user_id', currentUser.id),
-      sb.from('posts').select('*').order('created_at', { ascending: false }),
-      sb.from('comments').select('*').order('created_at', { ascending: true }),
-      sb.from('likes').select('*'),
-      sb.from('user_profiles').select('*'),
-      isTeacher ? sb.from('student_progress').select('*') : Promise.resolve({data:[]})
-    ]);
+    const pMod = sb.from('modules').select('*').order('order_index');
+    const pSub = sb.from('submodules').select('*').order('order_index');
+    const pLes = sb.from('lessons').select('*').order('order_index');
+    const pProg = sb.from('student_progress').select('*').eq('user_id', currentUser.id);
+    const pPosts = sb.from('posts').select('*').order('created_at', { ascending: false });
+    const pComments = sb.from('comments').select('*').order('created_at', { ascending: true });
+    const pLikes = sb.from('likes').select('*');
+    const pProfiles = sb.from('user_profiles').select('*');
+    const pAllProg = isTeacher ? sb.from('student_progress').select('*') : Promise.resolve({data:[]});
+
+    const [rMod, rSub, rLes, rProg, rPosts, rComments, rLikes, rProfiles, rAllProg] = await Promise.all([pMod, pSub, pLes, pProg, pPosts, pComments, pLikes, pProfiles, pAllProg]);
     
     const allModules = rMod.data || [];
-    dbModules = allModules.filter(m => isTeacher || !m.is_private || (m.allowed_emails && m.allowed_emails.toLowerCase().includes(currentUser.email.toLowerCase())));
+    dbModules = allModules.filter(m => isTeacher || !m.is_private || (m.allowed_emails && m.allowed_emails.toLowerCase().includes(userEmail)));
     
-    dbSubmodules = rSub.data || []; dbLessons = rLes.data || []; dbProgress = rProg.data || [];
-    dbPosts = rPosts.data || []; dbComments = rComments.data || []; dbLikes = rLikes.data || []; dbProfiles = rProfiles.data || [];
+    dbSubmodules = rSub?.data || []; 
+    dbLessons = rLes?.data || []; 
+    dbProgress = rProg?.data || [];
+    dbPosts = rPosts?.data || []; 
+    dbComments = rComments?.data || []; 
+    dbLikes = rLikes?.data || []; 
+    dbProfiles = rProfiles?.data || [];
     
     renderClassroomGrid(); 
     updateModuleSelect(); 
     renderManageList();
-    if (isTeacher) renderTeacherProgress(rAllProg.data || []);
+    if (isTeacher) renderTeacherProgress(rAllProg?.data || []);
     if (document.getElementById('page-community').classList.contains('active')) renderCommunityFeed();
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -1135,7 +1142,7 @@ function renderCommunityFeed() {
     const pLikes = dbLikes.filter(l => l.post_id === post.id);
     const isLiked = pLikes.some(l => l.user_id === currentUser?.id);
     const cCount = dbComments.filter(c => c.post_id === post.id).length;
-    const isOwner = currentUser?.id === post.user_id || currentUser?.email.toLowerCase() === TEACHER_EMAIL.toLowerCase();
+    const isOwner = currentUser?.id === post.user_id || currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
     const ownerBtns = isOwner ? `<button class="action-btn edit-post-btn" onclick="event.stopPropagation();openEditPostModal('${post.id}')">✏️ Edit</button><button class="action-btn delete-post-btn" onclick="event.stopPropagation();deletePost('${post.id}')">🗑 Delete</button>` : '';
     return `<div class="post-card" onclick="openPost('${post.id}')">
       <div class="post-header">
@@ -1187,7 +1194,7 @@ async function saveEditedPost() {
 }
 async function deletePost(postId) {
   if (!confirm('Delete this post?')) return;
-  const isTeacher = currentUser.email.toLowerCase() === TEACHER_EMAIL.toLowerCase();
+  const isTeacher = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
   
   if (isTeacher) {
     await sb.from('posts').delete().eq('id', postId);
@@ -1216,7 +1223,7 @@ function renderPostDetail() {
   const post = dbPosts.find(p => p.id === currentViewedPostId); if (!post) { backToCommunityFeed(); return; }
   const pLikes = dbLikes.filter(l => l.post_id === post.id);
   const isLiked = pLikes.some(l => l.user_id === currentUser?.id);
-  const isOwner = currentUser?.id === post.user_id || currentUser?.email.toLowerCase() === TEACHER_EMAIL.toLowerCase();
+  const isOwner = currentUser?.id === post.user_id || currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
   const ownerBtns = isOwner ? `<button class="action-btn edit-post-btn" onclick="openEditPostModal('${post.id}')">✏️ Edit</button><button class="action-btn delete-post-btn" onclick="deletePost('${post.id}')">🗑 Delete</button>` : '';
   document.getElementById('single-post-render').innerHTML = `
     <div style="background:var(--surface);border:1px solid var(--skool-border);border-radius:var(--radius);padding:1.5rem">
@@ -1232,7 +1239,7 @@ function renderPostDetail() {
   const cList = document.getElementById('comments-list');
   if (!pComments.length) { cList.innerHTML = '<div style="color:var(--text-light);font-size:13px">No comments yet.</div>'; return; }
   cList.innerHTML = pComments.map(c => {
-    const isCommentOwner = currentUser?.id === c.user_id || currentUser?.email.toLowerCase() === TEACHER_EMAIL.toLowerCase();
+    const isCommentOwner = currentUser?.id === c.user_id || currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
     return `<div class="comment-item">
       <div class="post-avatar" style="width:30px;height:30px;font-size:12px">${renderAvatarHTML(c.user_id, c.user_email)}</div>
       <div class="comment-bubble">
@@ -1260,7 +1267,7 @@ async function submitComment() {
 }
 async function deleteComment(commentId) {
   if (!confirm('Delete this comment?')) return;
-  const isTeacher = currentUser.email.toLowerCase() === TEACHER_EMAIL.toLowerCase();
+  const isTeacher = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
   if (isTeacher) {
     await sb.from('comments').delete().eq('id', commentId);
   } else {
@@ -1833,8 +1840,6 @@ function editLesson(id) {
   if (l.type === 'embed') { document.getElementById('t-les-embed-code').value = l.video_url || ''; }
   if (l.type === 'task') {
     let raw = safeParseJSON(l.task_content);
-    
-    // Normalizacion automatica de viejas lecciones a arquitectura MIXED
     if (l.task_type && l.task_type !== 'mixed') {
        if (l.task_type === 'matching') {
            questionRows = [{ type: 'matching', pairs: raw }];
@@ -2027,7 +2032,6 @@ function buildQRow(qType, q, i) {
       <span class="field-label" style="margin-top:10px">Hint (optional)</span>
       <input type="text" placeholder="e.g. Simple present tense" value="${esc(q.hint||'')}" oninput="questionRows[${i}].hint=this.value"/>`;
       
-      // Backward compatibility for old questions without brackets
       if (!hasBrackets && q.answer) {
          html += `<span class="field-label" style="color:var(--red)">Legacy format detected: Please update this question to use brackets [answer] inside the text above.</span>
          <input type="text" placeholder="Correct answer" value="${esc(q.answer||'')}" oninput="questionRows[${i}].answer=this.value"/>`;
@@ -2060,30 +2064,28 @@ function buildQRow(qType, q, i) {
     html += `<button class="secondary-btn" style="font-size:11px;padding:6px 10px;margin-bottom:8px" onclick="addQOption(${i})">+ Add option</button>`;
   }
   
-  if (qType !== 'matching') {
-    let mediaHtml = `
-      <div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)">
-        <span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this question (optional)</span>
-        
-        <div style="margin-bottom:12px">
-          <span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">🎧 Audio (Upload MP3)</span>
-          <input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})" style="margin-bottom:4px; padding:6px; font-size:12px;"/>
-          <div id="q-audio-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.audio_url?'✅ Audio saved':''}</div>
-        </div>
-
-        <div>
-          <span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">📺 Video (YouTube Link OR Upload MP4)</span>
-          <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap">
-              <input type="url" id="q-vid-url-${i}" placeholder="Paste YouTube URL here..." value="${q.video_url && !q.video_url.includes('supabase.co') ? esc(q.video_url) : ''}" oninput="updateQVideoUrl(${i}, this.value)" style="margin:0;flex:1;min-width:200px; padding:6px; font-size:12px;"/>
-              <span style="font-size:11px;color:var(--text-muted);font-weight:700">OR</span>
-              <input type="file" accept="video/*" onchange="uploadQVideo(event,${i})" style="margin:0;flex:1;min-width:200px; padding:6px; font-size:12px;"/>
-          </div>
-          <div id="q-video-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.video_url?'✅ Video saved':''}</div>
-        </div>
+  let mediaHtml = `
+    <div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)">
+      <span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this question (optional)</span>
+      
+      <div style="margin-bottom:12px">
+        <span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">🎧 Audio (Upload MP3)</span>
+        <input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})" style="margin-bottom:4px; padding:6px; font-size:12px;"/>
+        <div id="q-audio-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.audio_url?'✅ Audio saved':''}</div>
       </div>
-    `;
-    html += mediaHtml;
-  }
+
+      <div>
+        <span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">📺 Video (YouTube Link OR Upload MP4)</span>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap">
+            <input type="url" id="q-vid-url-${i}" placeholder="Paste YouTube URL here..." value="${q.video_url && !q.video_url.includes('supabase.co') ? esc(q.video_url) : ''}" oninput="updateQVideoUrl(${i}, this.value)" style="margin:0;flex:1;min-width:200px; padding:6px; font-size:12px;"/>
+            <span style="font-size:11px;color:var(--text-muted);font-weight:700">OR</span>
+            <input type="file" accept="video/*" onchange="uploadQVideo(event,${i})" style="margin:0;flex:1;min-width:200px; padding:6px; font-size:12px;"/>
+        </div>
+        <div id="q-video-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.video_url?'✅ Video saved':''}</div>
+      </div>
+    </div>
+  `;
+  html += mediaHtml;
   
   html += `</div></div>`;
   return html;
