@@ -13,14 +13,12 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* PALETA ACCENTUP */
   --brand-dark: #07216b;
   --brand: #2150e3;
   --brand-mid: #1639a8;
   --brand-light: #EEEDFE;
   --accent: #cafc05;
   --accent-light: #fffbca;
-  
   --bg:#F7F7FB;--surface:#FFFFFF;
   --text:#14141F;--text-muted:#6B6B80;--text-light:#A0A0B5;
   --border:rgba(0,0,0,0.08);--radius:16px;--radius-sm:8px;
@@ -49,7 +47,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .section-intro h2{font-size:20px;font-weight:800;color:var(--brand-dark);margin-bottom:5px}
 .section-intro p{font-size:13px;color:var(--text-muted);line-height:1.6}
 
-/* ════════ RE-DESIGNED LANDING PAGE STYLES ════════ */
+/* ════════ LANDING PAGE STYLES ════════ */
 .lp-page { padding: 0 !important; max-width: 100% !important; }
 .lp-container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
 .lp-hero { background: var(--brand-dark); color: #fff; padding: 6rem 0 5rem; position: relative; overflow: hidden; }
@@ -223,7 +221,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .resource-link:hover{background:var(--brand-light);border-color:var(--brand)}
 .lesson-complete-wrap{margin-top:2.5rem;border-top:1px solid var(--skool-border);padding-top:1.5rem;text-align:right}
 
-/* EXERCISE PLAYER & DRAG AND DROP */
+/* EXERCISE PLAYER & MIXED TYPES */
 .ex-question-block{background:var(--bg);border:1px solid var(--skool-border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem}
 .ex-q-num{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-light);margin-bottom:6px}
 .ex-q-text{font-size:15px;font-weight:600;color:var(--text);margin-bottom:1rem;line-height:1.5}
@@ -236,8 +234,8 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .opt-btn.wrong{border-color:var(--red);background:var(--red-light);color:var(--red-dark)}
 .fitb-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:15px;color:var(--text);outline:none;font-family:'Inter',sans-serif}
 .fitb-input:focus{border-color:var(--brand)}
-.fitb-input.correct{border-color:var(--green);background:var(--green-light)}
-.fitb-input.wrong{border-color:var(--red);background:var(--red-light)}
+.fitb-input.correct{border-color:var(--green);background:var(--green-light); color:var(--green-dark)}
+.fitb-input.wrong{border-color:var(--red);background:var(--red-light); color:var(--red-dark)}
 .dictation-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:'Inter',sans-serif;color:var(--text);outline:none;min-height:80px;resize:vertical}
 .dictation-input:focus{border-color:var(--brand)}
 .open-answer-reveal{margin-top:1rem;padding:1rem;background:var(--brand-light);border-radius:var(--radius-sm);border-left:3px solid var(--brand);font-size:14px;color:#26215C;line-height:1.6;display:none}
@@ -343,7 +341,7 @@ textarea{resize:vertical;min-height:70px}
 .q-card-header { padding: 12px 16px; background: var(--bg); display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-bottom: 1px solid transparent; transition: background 0.2s; }
 .q-card-header:hover { background: var(--brand-light); }
 .q-card-header.open { border-bottom-color: var(--skool-border); }
-.q-card-title { font-size: 13px; font-weight: 700; color: var(--brand-dark); }
+.q-card-title { font-size: 13px; font-weight: 700; color: var(--brand-dark); text-transform:uppercase; letter-spacing:0.05em}
 .q-card-summary { font-size: 12px; color: var(--text-muted); margin-left: 10px; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; display: inline-block; vertical-align: middle; }
 .q-card-actions { display: flex; gap: 8px; align-items: center; }
 .q-card-body { padding: 16px; display: none; }
@@ -353,8 +351,6 @@ textarea{resize:vertical;min-height:70px}
 .q-card-delete { font-size: 16px; color: var(--text-light); background: none; border: none; cursor: pointer; line-height: 1; padding: 0 4px; }
 .q-card-delete:hover { color: var(--red); }
 
-.add-q-btn{width:100%;padding:10px;border:1.5px dashed var(--brand-mid);border-radius:var(--radius-sm);background:var(--brand-light);font-size:13px;font-weight:700;color:var(--brand);cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s}
-.add-q-btn:hover{background:var(--brand);color:#fff;border-style:solid;}
 .primary-btn{width:100%;padding:10px;border-radius:var(--radius-sm);background:var(--brand);color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;margin-top:.9rem;transition:background .15s;font-family:'Inter',sans-serif}
 .primary-btn:hover{background:var(--brand-dark)}
 .primary-btn:disabled{opacity:.6;cursor:not-allowed}
@@ -717,7 +713,6 @@ footer strong{color:var(--brand)}
         <div id="view-exercise" style="display:none">
           <h2 id="player-title" class="lesson-title-main"></h2>
           <div id="cv-task-text" class="text-content-main ql-editor" style="border:none;padding:0;margin-bottom:1.5rem;display:none"></div>
-          <audio id="player-audio" controls style="display:none;width:100%;margin-bottom:1.25rem;border-radius:30px"></audio>
           <div id="cv-task-audios" class="lesson-audios-box" style="display:none"></div>
           <div id="player-questions"></div>
           <div class="player-footer">
@@ -826,28 +821,29 @@ footer strong{color:var(--brand)}
           <span class="field-label">YouTube URL</span>
           <input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..."/>
         </div>
+        
         <div id="fields-text" style="display:none">
           <span class="field-label">Content (text, instructions, notes)</span>
           <div id="quill-editor-container"></div>
         </div>
+        
         <div id="fields-embed" style="display:none">
           <span class="field-label">Embed code (iframe)</span>
           <textarea id="t-les-embed-code" placeholder="Paste your iframe code here..." style="font-family:monospace;min-height:100px"></textarea>
         </div>
+        
         <div id="fields-task" style="display:none">
-          <span class="field-label">Exercise type</span>
-          <select id="t-ex-type" onchange="renderQFields()">
-            <option value="drag_drop">Drag and Drop (Categorize)</option>
-            <option value="open_answer">Open Answer</option>
-            <option value="multiple_choice">Multiple choice</option>
-            <option value="fill_in_blank">Fill in the blank</option>
-            <option value="matching">Matching</option>
-            <option value="dictation">Dictation / Transcription</option>
-          </select>
-          
           <span class="field-label" style="margin-top: 1.5rem; margin-bottom: 8px;">Questions / Items</span>
           <div id="q-builder"></div>
-          <button class="add-q-btn" onclick="addQuestion()">+ Add item</button>
+          
+          <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top: 1rem;">
+            <button class="secondary-btn" onclick="addQuestion('multiple_choice')">+ Multiple Choice</button>
+            <button class="secondary-btn" onclick="addQuestion('fill_in_blank')">+ Fill in Blanks</button>
+            <button class="secondary-btn" onclick="addQuestion('matching')">+ Matching</button>
+            <button class="secondary-btn" onclick="addQuestion('open_answer')">+ Open Answer</button>
+            <button class="secondary-btn" onclick="addQuestion('dictation')">+ Dictation</button>
+            <button class="secondary-btn" onclick="addQuestion('drag_drop')">+ Drag & Drop</button>
+          </div>
         </div>
 
         <div style="margin-top:1.25rem;background:#F0FDF4;padding:14px;border-radius:var(--radius-sm);border:1px solid #BBF7D0">
@@ -865,9 +861,9 @@ footer strong{color:var(--brand)}
           <input type="file" id="t-les-resources" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" multiple/>
           <div id="t-les-resources-current" style="font-size:11px;color:var(--text-muted);margin-top:-4px"></div>
         </div>
-        <div style="display:flex;gap:8px">
-          <button class="primary-btn" onclick="saveLesson()" id="btn-save-les">Save lesson</button>
-          <button class="secondary-btn" id="btn-cancel-les" style="display:none;margin-top:.9rem" onclick="cancelEditLes()">Cancel</button>
+        <div style="display:flex;gap:8px;margin-top:1rem;">
+          <button class="primary-btn" onclick="saveLesson()" id="btn-save-les" style="margin-top:0">Save lesson</button>
+          <button class="secondary-btn" id="btn-cancel-les" style="display:none;margin-top:0" onclick="cancelEditLes()">Cancel</button>
         </div>
       </div>
     </div>
@@ -902,7 +898,12 @@ let currentUser = null, isLoginMode = true;
 let dbModules = [], dbSubmodules = [], dbLessons = [], dbProgress = [];
 let dbPosts = [], dbComments = [], dbLikes = [], dbProfiles = [];
 let currentLesson = null, activeModuleId = null, currentViewedPostId = null;
-let studentAnswers = {}, matchState = { leftSel: null, pairs: {} }, selectedDragChip = null;
+
+/* UX STATE */
+let studentAnswers = {}; 
+let matchState = {}; /* { [qIndex]: { leftSel: null, pairs: {} } } */
+let selectedDragChips = {}; /* { [qIndex]: chipEl } */
+
 let questionRows = [], tempAudios = [], isUploadingAudio = false;
 let quillEditor = null, communityQuill = null, editPostQuill = null;
 let activeVowel = null, activeConsonant = null;
@@ -1047,10 +1048,6 @@ function goToPage(pageId) {
   
   const pageEl = document.getElementById('page-' + pageId);
   if (pageEl) pageEl.classList.add('active');
-  
-  const hiddenHero = ['home','classroom','teacher','auth','community','profile'];
-  const hero = document.getElementById('hero-banner');
-  if (hero) hero.style.display = hiddenHero.includes(pageId) ? 'none' : 'block';
   
   if (pageId === 'classroom') renderClassroomGrid();
   if (pageId === 'community') renderCommunityFeed();
@@ -1414,7 +1411,7 @@ function showLesson(lessonId) {
     updateCompleteButton('btn-complete-embed', isDone);
   }
   else if (currentLesson.type === 'task') {
-    studentAnswers = {}; matchState = { leftSel: null, pairs: {} }; selectedDragChip = null;
+    studentAnswers = {}; matchState = {}; selectedDragChips = {};
     document.getElementById('view-exercise').style.display = 'block';
     document.getElementById('player-title').textContent = currentLesson.title;
     
@@ -1423,9 +1420,6 @@ function showLesson(lessonId) {
       taskTextEl.innerHTML = currentLesson.text_content || '';
       taskTextEl.style.display = (currentLesson.text_content && currentLesson.text_content !== '<p><br></p>') ? 'block' : 'none';
     }
-
-    const audioEl = document.getElementById('player-audio');
-    if (currentLesson.audio_url) { audioEl.src = currentLesson.audio_url; audioEl.style.display = 'block'; } else audioEl.style.display = 'none';
     
     document.getElementById('submit-btn').disabled = false; document.getElementById('submit-btn').style.display = 'inline-block';
     document.getElementById('retry-btn').style.display = 'none'; document.getElementById('score-area').innerHTML = '';
@@ -1437,8 +1431,7 @@ function showLesson(lessonId) {
     if (isDone) {
       const prev = dbProgress.find(p => p.lesson_id === lessonId);
       if (prev) {
-        if (currentLesson.task_type === 'open_answer') showOpenAnswerCompleted();
-        else showScore(prev.score, prev.total_questions, [], true);
+        showScore(prev.score, prev.total_questions, [], true);
       }
     }
   }
@@ -1453,10 +1446,8 @@ function renderPlayerQuestions(isDone = false) {
   const prev = isDone ? dbProgress.find(p => p.lesson_id === currentLesson.id) : null;
   const prevAnswers = prev?.answers || {}; 
 
-  if (currentLesson.task_type === 'drag_drop') {
-    const q = content[0] || { prompt:'', categories:[], items:[] };
-    const words = shuffle([...(q.items||[])]);
-    const cats = q.categories || [];
+  wrap.innerHTML = content.map((q, i) => {
+    let qType = q.type || currentLesson.task_type;
     
     const qAudio = q.audio_url ? `<audio controls src="${esc(q.audio_url)}" style="width:100%;height:36px;margin-bottom:10px;border-radius:20px"></audio>` : '';
     let qVideo = '';
@@ -1469,38 +1460,51 @@ function renderPlayerQuestions(isDone = false) {
       }
     }
     const qMedia = qVideo + qAudio;
-
-    wrap.innerHTML = `<div class="ex-question-block">${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><div class="dnd-instruction">☝️ Tap a word, then tap a box below to sort it.</div><div class="dnd-bank" id="dnd-bank" onclick="dndZoneClick(this)">${words.map((w,i)=>`<div class="dnd-chip" id="dnd-chip-${i}" onclick="event.stopPropagation();dndChipClick(this)">${esc(w.word)}</div>`).join('')}</div><div class="dnd-cols">${cats.map(c=>`<div class="dnd-col" onclick="dndZoneClick(this)" data-cat="${escapeJSArg(c)}"><div class="dnd-col-header">${esc(c)}</div><div class="dnd-col-body"></div></div>`).join('')}</div></div>`;
-    return;
-  }
-  if (currentLesson.task_type === 'matching') {
-    const lefts = content.map(q => q.left);
-    const rights = shuffle([...content.map(q => q.right)]);
-    wrap.innerHTML = `<div class="ex-question-block"><div class="matching-cols"><div><div class="match-col-label">Words</div>${lefts.map((l,i)=>`<div class="match-chip" id="ml-${i}" onclick="matchLeft(${i},'${escapeJSArg(l)}')">${esc(l)}</div>`).join('')}</div><div><div class="match-col-label">Sounds / meanings</div>${rights.map((r,i)=>`<div class="match-chip" id="mr-${i}" onclick="matchRight(${i},'${escapeJSArg(r)}')">${esc(r)}</div>`).join('')}</div></div></div>`;
-    return;
-  }
-  wrap.innerHTML = content.map((q, i) => {
-    const qAudio = q.audio_url ? `<audio controls src="${esc(q.audio_url)}" style="width:100%;height:36px;margin-bottom:10px;border-radius:20px"></audio>` : '';
-    let qVideo = '';
-    if (q.video_url) {
-      const formattedUrl = formatYouTubeUrl(q.video_url);
-      if (formattedUrl.includes('youtube.com/embed/')) {
-        qVideo = `<div class="video-container" style="margin-bottom:12px; border-radius:8px; overflow:hidden;"><iframe src="${esc(formattedUrl)}" allowfullscreen></iframe></div>`;
-      } else {
-        qVideo = `<video controls src="${esc(q.video_url)}" style="width:100%;border-radius:var(--radius-sm);margin-bottom:12px;background:#000;max-height:400px"></video>`;
-      }
-    }
-    const qMedia = qVideo + qAudio;
-
-    let given = prevAnswers[i] || ''; 
     let disabledAttr = isDone ? 'disabled' : '';
 
-    if (currentLesson.task_type === 'fill_in_blank') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><input class="fitb-input" id="fitb-${i}" type="text" placeholder="Your answer…" value="${esc(given)}" autocomplete="off" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}/></div>`;
-    if (currentLesson.task_type === 'dictation') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="dict-${i}" placeholder="Write what you hear…" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(given)}</textarea></div>`;
-    if (currentLesson.task_type === 'open_answer') {
+    if (qType === 'drag_drop') {
+      const words = shuffle([...(q.items||[])]);
+      const cats = q.categories || [];
+      return `<div class="ex-question-block">${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><div class="dnd-instruction">☝️ Tap a word, then tap a box below to sort it.</div><div class="dnd-bank" id="dnd-bank-${i}" onclick="dndZoneClick(this, ${i})">${words.map((w,wIdx)=>`<div class="dnd-chip" id="dnd-chip-${i}-${wIdx}" onclick="event.stopPropagation();dndChipClick(this, ${i})">${esc(w.word)}</div>`).join('')}</div><div class="dnd-cols">${cats.map(c=>`<div class="dnd-col" onclick="dndZoneClick(this, ${i})" data-cat="${escapeJSArg(c)}"><div class="dnd-col-header">${esc(c)}</div><div class="dnd-col-body"></div></div>`).join('')}</div></div>`;
+    }
+    
+    if (qType === 'matching') {
+      const pairs = q.pairs || (q.left ? [q] : []);
+      const lefts = pairs.map(p => p.left);
+      const rights = shuffle([...pairs.map(p => p.right)]);
+      matchState[i] = { leftSel: null, pairs: {} };
+      return `<div class="ex-question-block">${qMedia}<div class="ex-q-text">Match the correct pairs</div><div class="matching-cols"><div><div class="match-col-label">Words</div>${lefts.map((l,lIdx)=>`<div class="match-chip" id="ml-${i}-${lIdx}" onclick="matchLeft(${i}, ${lIdx}, '${escapeJSArg(l)}')">${esc(l)}</div>`).join('')}</div><div><div class="match-col-label">Sounds / meanings</div>${rights.map((r,rIdx)=>`<div class="match-chip" id="mr-${i}-${rIdx}" onclick="matchRight(${i}, ${rIdx}, '${escapeJSArg(r)}')">${esc(r)}</div>`).join('')}</div></div></div>`;
+    }
+    
+    if (qType === 'fill_in_blank') {
+      const hasBrackets = (q.prompt || '').includes('[') && (q.prompt || '').includes(']');
+      if (hasBrackets) {
+         let html = `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text" style="line-height:2.5">`;
+         let parts = q.prompt.split(/\[.*?\]/g);
+         let matches = [...q.prompt.matchAll(/\[(.*?)\]/g)];
+         let givenArr = prevAnswers[i] || [];
+         parts.forEach((part, pIdx) => {
+            html += esc(part);
+            if (pIdx < matches.length) {
+                let given = (Array.isArray(givenArr) ? givenArr[pIdx] : givenArr) || '';
+                html += `<input class="fitb-input inline-input" id="fitb-${i}-${pIdx}" type="text" value="${esc(given)}" autocomplete="off" oninput="updateMultiBlank(${i}, ${pIdx}, this.value, ${matches.length})" ${disabledAttr} style="display:inline-block; width:120px; padding:6px; margin:0 4px; border-bottom:2px solid var(--brand); border-top:none; border-left:none; border-right:none; border-radius:0; background:var(--brand-light); text-align:center" />`;
+            }
+         });
+         html += `</div></div>`;
+         return html;
+      } else {
+        let given = prevAnswers[i] || ''; 
+        return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><input class="fitb-input" id="fitb-${i}" type="text" placeholder="Your answer…" value="${esc(given)}" autocomplete="off" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}/></div>`;
+      }
+    }
+    
+    let given = prevAnswers[i] || ''; 
+    if (qType === 'dictation') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="dict-${i}" placeholder="Write what you hear…" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(given)}</textarea></div>`;
+    if (qType === 'open_answer') {
       const revealHtml = q.answer ? `<div class="open-answer-reveal ${isDone?'visible':''}" id="reveal-${i}"><strong>Expected answer / keywords:</strong> ${esc(q.answer)}</div>` : '';
       return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="oa-${i}" placeholder="Type your answer here..." oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(given)}</textarea>${revealHtml}</div>`;
     }
+    
     const rawOpts = Array.isArray(q.options) ? q.options : [];
     const opts = rawOpts.filter(o => o && String(o).trim() !== '');
     const shuffled = shuffle([...opts]);
@@ -1511,91 +1515,126 @@ function renderPlayerQuestions(isDone = false) {
   }).join('');
 }
 
-function dndChipClick(chipEl) {
-  document.querySelectorAll('.dnd-chip').forEach(c => c.classList.remove('selected'));
-  document.querySelectorAll('.dnd-col,.dnd-bank').forEach(c => c.classList.add('active-drop'));
-  selectedDragChip = chipEl; chipEl.classList.add('selected');
+function updateMultiBlank(i, pIdx, val, total) {
+   if (!Array.isArray(studentAnswers[i])) studentAnswers[i] = new Array(total).fill('');
+   studentAnswers[i][pIdx] = val;
 }
-function dndZoneClick(zoneEl) {
-  if (!selectedDragChip) return;
+
+function dndChipClick(chipEl, i) {
+  document.querySelectorAll(`#player-questions .dnd-chip[id^="dnd-chip-${i}-"]`).forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll(`#player-questions .dnd-bank[id="dnd-bank-${i}"], #player-questions .dnd-col[onclick="dndZoneClick(this, ${i})"]`).forEach(c => c.classList.add('active-drop'));
+  selectedDragChips[i] = chipEl; 
+  chipEl.classList.add('selected');
+}
+function dndZoneClick(zoneEl, i) {
+  if (!selectedDragChips[i]) return;
   const body = zoneEl.classList.contains('dnd-bank') ? zoneEl : zoneEl.querySelector('.dnd-col-body');
-  if (body) { body.appendChild(selectedDragChip); selectedDragChip.classList.remove('selected'); selectedDragChip = null; document.querySelectorAll('.dnd-col,.dnd-bank').forEach(c => c.classList.remove('active-drop')); }
+  if (body) { 
+      body.appendChild(selectedDragChips[i]); 
+      selectedDragChips[i].classList.remove('selected'); 
+      selectedDragChips[i] = null; 
+      document.querySelectorAll(`#player-questions .dnd-col, #player-questions .dnd-bank`).forEach(c => c.classList.remove('active-drop')); 
+  }
 }
 function selectOpt(qi, oi, val, numOpts) {
   for (let j = 0; j < numOpts; j++) { const b = document.getElementById(`opt-${qi}-${j}`); if (b) b.classList.remove('selected'); }
   document.getElementById(`opt-${qi}-${oi}`)?.classList.add('selected');
   studentAnswers[qi] = val;
 }
-function matchLeft(i, val) {
-  if (matchState.pairs[i] !== undefined) return;
-  document.querySelectorAll(".match-chip[id^='ml-']").forEach(el => { if (!el.classList.contains('matched')) el.classList.remove('selected'); });
-  matchState.leftSel = { i, val }; document.getElementById('ml-'+i)?.classList.add('selected');
+function matchLeft(i, lIdx, val) {
+  if (matchState[i].pairs[lIdx] !== undefined) return;
+  document.querySelectorAll(`.match-chip[id^='ml-${i}-']`).forEach(el => { if (!el.classList.contains('matched')) el.classList.remove('selected'); });
+  matchState[i].leftSel = { lIdx, val }; document.getElementById(`ml-${i}-${lIdx}`)?.classList.add('selected');
 }
-function matchRight(i, val) {
-  if (!matchState.leftSel) return;
-  const li = matchState.leftSel.i; if (matchState.pairs[li] !== undefined) return;
-  matchState.pairs[li] = val; studentAnswers[li] = val;
-  document.getElementById('ml-'+li)?.classList.remove('selected'); document.getElementById('ml-'+li)?.classList.add('matched');
-  document.getElementById('mr-'+i)?.classList.add('matched'); matchState.leftSel = null;
+function matchRight(i, rIdx, val) {
+  if (!matchState[i].leftSel) return;
+  const lIdx = matchState[i].leftSel.lIdx; if (matchState[i].pairs[lIdx] !== undefined) return;
+  matchState[i].pairs[lIdx] = val; 
+  if(!studentAnswers[i]) studentAnswers[i] = [];
+  studentAnswers[i][lIdx] = val;
+  document.getElementById(`ml-${i}-${lIdx}`)?.classList.remove('selected'); document.getElementById(`ml-${i}-${lIdx}`)?.classList.add('matched');
+  document.getElementById(`mr-${i}-${rIdx}`)?.classList.add('matched'); matchState[i].leftSel = null;
 }
 
 async function submitExercise() {
   const content = safeParseJSON(currentLesson.task_content);
-  let correct = 0, totalQ = content.length;
+  let correct = 0, totalQ = 0;
   const results = [];
+  let hasOpenAnswer = false;
 
-  if (currentLesson.task_type === 'open_answer') {
-    content.forEach((q, i) => {
+  content.forEach((q, i) => {
+    let qType = q.type || currentLesson.task_type;
+    
+    if (qType === 'open_answer') {
+      hasOpenAnswer = true;
+      totalQ++;
       const el = document.getElementById('oa-' + i);
       if (el) { el.style.borderColor = 'var(--brand)'; el.disabled = true; studentAnswers[i] = el.value; }
       const revealEl = document.getElementById('reveal-' + i);
       if (revealEl) revealEl.classList.add('visible');
-    });
-    showOpenAnswerCompleted();
-    document.getElementById('submit-btn').disabled = true; document.getElementById('submit-btn').style.display = 'none';
-    document.getElementById('retry-btn').style.display = 'inline-block';
-    if (currentUser && currentLesson) {
-      await sb.from('student_progress').upsert({ user_id: currentUser.id, lesson_id: currentLesson.id, score: 1, total_questions: 1, answers: studentAnswers }, { onConflict: 'user_id,lesson_id' });
-      await fetchData(); if (activeModuleId) renderSidebar(activeModuleId);
     }
-    return;
-  }
-
-  if (currentLesson.task_type === 'drag_drop') {
-    const q = content[0]; totalQ = q.items.length;
-    document.querySelectorAll('.dnd-chip').forEach(chip => {
-      const word = chip.textContent.trim();
-      const expectedCat = q.items.find(x => x.word === word)?.category;
-      const parentCol = chip.closest('.dnd-col');
-      const actualCat = parentCol ? parentCol.dataset.cat : null;
-      chip.onclick = null;
-      if (actualCat === expectedCat) { correct++; chip.classList.add('correct'); } else chip.classList.add('wrong');
-      results.push({ prompt: word, answer: expectedCat || '?', given: actualCat || 'Unassigned', ok: actualCat === expectedCat });
-    });
-    document.querySelectorAll('.dnd-col,.dnd-bank').forEach(c => c.onclick = null);
-  }
-  else if (currentLesson.task_type === 'matching') {
-    content.forEach((q, i) => {
-      const given = studentAnswers[i]; const ok = given === q.right; if (ok) correct++;
-      const ml = document.getElementById('ml-'+i); if (!ok && ml) ml.classList.add('wrong-match');
-      results.push({ prompt: q.left, answer: q.right, given: given || '', ok });
-    });
-  }
-  else {
-    content.forEach((q, i) => {
+    else if (qType === 'drag_drop') {
+      totalQ += q.items.length;
+      document.querySelectorAll(`[id^="dnd-chip-${i}-"]`).forEach(chip => {
+        const word = chip.textContent.trim();
+        const expectedCat = q.items.find(x => x.word === word)?.category;
+        const parentCol = chip.closest('.dnd-col');
+        const actualCat = parentCol ? parentCol.dataset.cat : null;
+        chip.onclick = null;
+        let ok = actualCat === expectedCat;
+        if (ok) { correct++; chip.classList.add('correct'); } else chip.classList.add('wrong');
+        results.push({ prompt: word, answer: expectedCat || '?', given: actualCat || 'Unassigned', ok });
+      });
+    }
+    else if (qType === 'matching') {
+      const pairs = q.pairs || (q.left ? [q] : []);
+      totalQ += pairs.length;
+      pairs.forEach((p, pIdx) => {
+          let given = (studentAnswers[i] && studentAnswers[i][pIdx]) || '';
+          let ok = given === p.right;
+          if(ok) correct++;
+          const ml = document.getElementById(`ml-${i}-${pIdx}`); if (!ok && ml) ml.classList.add('wrong-match');
+          results.push({ prompt: p.left, answer: p.right, given: given, ok });
+      });
+    }
+    else if (qType === 'fill_in_blank') {
+      const hasBrackets = (q.prompt || '').includes('[') && (q.prompt || '').includes(']');
+      if (hasBrackets) {
+          let matches = [...q.prompt.matchAll(/\[(.*?)\]/g)].map(m => m[1]);
+          totalQ += matches.length; 
+          let allCorrect = true;
+          let givenArr = Array.isArray(studentAnswers[i]) ? studentAnswers[i] : [];
+          matches.forEach((ans, pIdx) => {
+              let el = document.getElementById(`fitb-${i}-${pIdx}`);
+              let given = el ? el.value.trim() : (givenArr[pIdx] || '');
+              let isOk = given.toLowerCase() === ans.toLowerCase().trim();
+              if (isOk) { correct++; } else { allCorrect = false; }
+              if(el) { el.disabled = true; el.style.borderBottomColor = isOk ? 'var(--green)' : 'var(--red)'; el.style.background = isOk ? 'var(--green-light)' : 'var(--red-light)'; el.style.color = isOk ? 'var(--green-dark)' : 'var(--red-dark)'; }
+          });
+          results.push({ prompt: q.prompt.replace(/\[.*?\]/g, '___'), answer: matches.join(', '), given: givenArr.join(', '), ok: allCorrect });
+      } else {
+          totalQ++;
+          let correctAns = q.answer || '';
+          let given = document.getElementById('fitb-'+i)?.value.trim() || '';
+          studentAnswers[i] = given; 
+          let ok = given.toLowerCase() === correctAns.toLowerCase().trim();
+          if (ok) correct++;
+          const el = document.getElementById('fitb-'+i); if(el){ el.classList.add(ok?'correct':'wrong'); el.disabled = true; }
+          results.push({ prompt: q.prompt, answer: correctAns, given, ok });
+      }
+    }
+    else {
+      totalQ++;
       const correctAns = q.answer || (Array.isArray(q.options) && q.options[q.correctIndex ?? 0]) || '';
       let given = '';
-      if (currentLesson.task_type === 'fill_in_blank') given = document.getElementById('fitb-'+i)?.value.trim() || '';
-      else if (currentLesson.task_type === 'dictation') given = document.getElementById('dict-'+i)?.value.trim() || '';
+      if (qType === 'dictation') given = document.getElementById('dict-'+i)?.value.trim() || '';
       else given = studentAnswers[i] || '';
       
       studentAnswers[i] = given; 
-      
-      const ok = String(given).toLowerCase().trim() === String(correctAns).toLowerCase().trim();
+      let ok = String(given).toLowerCase().trim() === String(correctAns).toLowerCase().trim();
       if (ok) correct++;
       
-      if (currentLesson.task_type === 'fill_in_blank') { const el = document.getElementById('fitb-'+i); if(el){ el.classList.add(ok?'correct':'wrong'); el.disabled = true; } }
-      else if (currentLesson.task_type !== 'dictation') {
+      if (qType !== 'dictation') {
         document.querySelectorAll(`[id^="opt-${i}-"]`).forEach(b => {
           b.disabled = true;
           if (b.textContent.trim() === String(correctAns).trim()) b.classList.add('correct');
@@ -1603,12 +1642,18 @@ async function submitExercise() {
         });
       }
       results.push({ prompt: q.prompt, answer: correctAns, given, ok });
-    });
-  }
+    }
+  });
 
-  showScore(correct, totalQ, results, false);
   document.getElementById('submit-btn').disabled = true; document.getElementById('submit-btn').style.display = 'none';
   document.getElementById('retry-btn').style.display = 'inline-block';
+  
+  if(hasOpenAnswer && results.length === 0) {
+      showOpenAnswerCompleted();
+  } else {
+      showScore(correct, totalQ, results, false);
+  }
+
   if (currentUser && currentLesson) {
     await sb.from('student_progress').upsert({ user_id: currentUser.id, lesson_id: currentLesson.id, score: correct, total_questions: totalQ, answers: studentAnswers }, { onConflict: 'user_id,lesson_id' });
     await fetchData(); if (activeModuleId) renderSidebar(activeModuleId);
@@ -1753,26 +1798,8 @@ async function saveLesson() {
   } else if (type === 'embed') {
     payload.video_url = document.getElementById('t-les-embed-code').value.trim();
   } else if (type === 'task') {
-    payload.task_type = document.getElementById('t-ex-type').value;
-    if (payload.task_type === 'drag_drop') {
-      const catsStr = document.getElementById('dnd-cats-input').value;
-      const cats = catsStr.split(',').map(s => s.trim()).filter(Boolean);
-      const dndItems = [];
-      document.querySelectorAll('.dnd-item-row').forEach(row => {
-        const w = row.querySelector('.dnd-w').value.trim(); const c = row.querySelector('.dnd-c').value;
-        if (w && c) dndItems.push({ word: w, category: c });
-      });
-      let currentDragDrop = questionRows[0] || {};
-      payload.task_content = [{ 
-          prompt: document.getElementById('dnd-prompt').value, 
-          categories: cats, 
-          items: dndItems,
-          audio_url: currentDragDrop.audio_url || '',
-          video_url: currentDragDrop.video_url || ''
-      }];
-    } else {
-      payload.task_content = questionRows;
-    }
+    payload.task_type = 'mixed';
+    payload.task_content = questionRows;
   }
 
   const resFiles = document.getElementById('t-les-resources').files;
@@ -1805,8 +1832,23 @@ function editLesson(id) {
   if (l.type === 'video') { document.getElementById('t-les-video-url').value = l.video_url || ''; }
   if (l.type === 'embed') { document.getElementById('t-les-embed-code').value = l.video_url || ''; }
   if (l.type === 'task') {
-    document.getElementById('t-ex-type').value = l.task_type || 'open_answer';
-    questionRows = safeParseJSON(l.task_content);
+    let raw = safeParseJSON(l.task_content);
+    
+    // Normalizacion automatica de viejas lecciones a arquitectura MIXED
+    if (l.task_type && l.task_type !== 'mixed') {
+       if (l.task_type === 'matching') {
+           questionRows = [{ type: 'matching', pairs: raw }];
+       } else if (l.task_type === 'drag_drop') {
+           if(raw[0]) raw[0].type = 'drag_drop';
+           questionRows = raw;
+       } else {
+           raw.forEach(r => r.type = l.task_type);
+           questionRows = raw;
+       }
+    } else {
+       questionRows = raw;
+    }
+    
     openQStates = {}; if(questionRows.length > 0) openQStates[0] = true;
     renderQFields();
   }
@@ -1858,7 +1900,7 @@ function renderTempAudios() {
   ).join('');
 }
 
-/* ── QUESTION BUILDER (COLLAPSIBLE CARDS WITH MEDIA) ── */
+/* ── QUESTION BUILDER (MIXED ARCHITECTURE) ── */
 function toggleQCard(i, event) {
   if(event) { event.stopPropagation(); }
   openQStates[i] = !openQStates[i];
@@ -1888,73 +1930,21 @@ async function uploadQVideo(event, i) {
   
   const urlInput = document.getElementById(`q-vid-url-${i}`);
   if (urlInput) urlInput.value = '';
-  renderQFields(); // Refresh to show checkmark
+  renderQFields(); 
 }
 
 function renderQFields() {
-  const type = document.getElementById('t-ex-type').value;
   const wrap = document.getElementById('q-builder'); if (!wrap) return;
-  
-  if (type === 'drag_drop') {
-    if (!questionRows.length || !questionRows[0]?.categories) questionRows = [{ prompt:'', categories:[], items:[], audio_url:'', video_url:'' }];
-    const q = questionRows[0];
-    const catsStr = (q.categories || []).join(', ');
-    
-    let html = `<div class="q-card">
-      <div class="q-card-header open">
-        <span class="q-card-title">Drag & Drop Setup</span>
-      </div>
-      <div class="q-card-body open">
-        <span class="field-label" style="margin-top:0">Instruction text</span>
-        <input type="text" id="dnd-prompt" placeholder="e.g. Sort the past tense sounds" value="${esc(q.prompt)}" oninput="questionRows[0].prompt=this.value"/>
-        <span class="field-label">Categories (comma-separated)</span>
-        <input type="text" id="dnd-cats-input" placeholder="e.g. /t/, /d/, /id/" value="${esc(catsStr)}" onchange="updateDndCats(this.value)"/>
-        <span class="field-label">Words to sort</span>
-        <div id="dnd-items-wrap">`;
-        
-    (q.items || []).forEach((item, idx) => {
-      html += `<div class="dnd-item-row" style="display:flex;gap:8px;margin-bottom:8px">
-        <input type="text" class="dnd-w" placeholder="Word" value="${esc(item.word)}" oninput="questionRows[0].items[${idx}].word=this.value" style="flex:2;margin:0"/>
-        <select class="dnd-c" style="flex:1;margin:0" onchange="questionRows[0].items[${idx}].category=this.value">`;
-      (q.categories || []).forEach(c => { html += `<option value="${esc(c)}" ${item.category===c?'selected':''}>${esc(c)}</option>`; });
-      html += `</select><button class="q-card-delete" style="background:var(--bg); border-radius:4px; padding:0 8px;" onclick="removeDndItem(${idx})">×</button></div>`;
-    });
-    
-    html += `</div><button class="add-q-btn" style="padding:6px;font-size:12px;margin-top:8px" onclick="addDndItem()">+ Add word to sort</button>`;
-    
-    html += `
-      <div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)">
-        <span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this exercise (optional)</span>
-        
-        <div style="margin-bottom:12px">
-          <span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">🎧 Audio (Upload MP3)</span>
-          <input type="file" accept="audio/*" onchange="uploadQAudio(event,0)" style="margin-bottom:4px; padding:6px; font-size:12px;"/>
-          <div id="q-audio-0" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.audio_url?'✅ Audio saved':''}</div>
-        </div>
-
-        <div>
-          <span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">📺 Video (YouTube Link OR Upload MP4)</span>
-          <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap">
-              <input type="url" id="q-vid-url-0" placeholder="Paste YouTube URL here..." value="${q.video_url && !q.video_url.includes('supabase.co') ? esc(q.video_url) : ''}" oninput="updateQVideoUrl(0, this.value)" style="margin:0;flex:1;min-width:200px; padding:6px; font-size:12px;"/>
-              <span style="font-size:11px;color:var(--text-muted);font-weight:700">OR</span>
-              <input type="file" accept="video/*" onchange="uploadQVideo(event,0)" style="margin:0;flex:1;min-width:200px; padding:6px; font-size:12px;"/>
-          </div>
-          <div id="q-video-0" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.video_url?'✅ Video saved':''}</div>
-        </div>
-      </div>
-    `;
-
-    html += `</div></div>`;
-    wrap.innerHTML = html; 
-    return;
-  }
-  
-  wrap.innerHTML = questionRows.map((q, i) => buildQRow(type, q, i)).join('');
+  wrap.innerHTML = questionRows.map((q, i) => buildQRow(q.type || 'multiple_choice', q, i)).join('');
 }
 
-function updateDndCats(val) { if (questionRows[0]) { questionRows[0].categories = val.split(',').map(s=>s.trim()).filter(Boolean); renderQFields(); } }
-function addDndItem() { if (questionRows[0]) { questionRows[0].items.push({ word:'', category: questionRows[0].categories[0]||'' }); renderQFields(); } }
-function removeDndItem(i) { if (questionRows[0]) { questionRows[0].items.splice(i,1); renderQFields(); } }
+function updateDndCats(i, val) { if (questionRows[i]) { questionRows[i].categories = val.split(',').map(s=>s.trim()).filter(Boolean); renderQFields(); } }
+function addDndItem(i) { if (questionRows[i]) { questionRows[i].items.push({ word:'', category: questionRows[i].categories[0]||'' }); renderQFields(); } }
+function removeDndItem(i, idx) { if (questionRows[i]) { questionRows[i].items.splice(idx,1); renderQFields(); } }
+
+function addMatchPair(i) { if (questionRows[i]) { if(!questionRows[i].pairs) questionRows[i].pairs=[]; questionRows[i].pairs.push({left:'', right:''}); renderQFields(); } }
+function removeMatchPair(i, pIdx) { if (questionRows[i] && questionRows[i].pairs) { questionRows[i].pairs.splice(pIdx, 1); renderQFields(); } }
+
 function removeQ(i) { questionRows.splice(i,1); renderQFields(); }
 function updateQOption(i, j, v) { if (questionRows[i]) { questionRows[i].options[j] = v; if (questionRows[i].correctIndex === j) questionRows[i].answer = v; } }
 function addQOption(i) { if (questionRows[i]) { questionRows[i].options.push(''); renderQFields(); } }
@@ -1966,10 +1956,10 @@ function removeQOption(i, j) {
   questionRows[i].answer = questionRows[i].options[questionRows[i].correctIndex]; renderQFields();
 }
 
-function buildQRow(type, q, i) {
+function buildQRow(qType, q, i) {
   q = q || {};
   
-  if (type === 'multiple_choice') {
+  if (qType === 'multiple_choice') {
     if (!Array.isArray(q.options)) q.options = ['', ''];
     if (typeof q.correctIndex !== 'number') q.correctIndex = 0;
   }
@@ -1977,11 +1967,20 @@ function buildQRow(type, q, i) {
   const isOpen = openQStates[i] !== false; 
   const dState = isOpen ? 'open' : '';
   const toggleText = isOpen ? 'Hide' : 'Edit';
-  const summary = (type === 'matching') ? (q.left ? esc(q.left) + '...' : '(Empty)') : (q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)');
+  
+  let typeLabel = '';
+  let summary = '';
+  
+  if (qType === 'matching') { typeLabel = 'Matching'; summary = (q.pairs && q.pairs[0] && q.pairs[0].left) ? esc(q.pairs[0].left) + '...' : '(Empty)'; }
+  else if (qType === 'drag_drop') { typeLabel = 'Drag & Drop'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
+  else if (qType === 'fill_in_blank') { typeLabel = 'Fill in Blank'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
+  else if (qType === 'open_answer') { typeLabel = 'Open Answer'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
+  else if (qType === 'dictation') { typeLabel = 'Dictation'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
+  else { typeLabel = 'Multiple Choice'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
 
   let html = `<div class="q-card">
     <div class="q-card-header ${dState}" onclick="toggleQCard(${i})">
-      <div><span class="q-card-title">Question ${i+1}</span> <span class="q-card-summary">${summary}</span></div>
+      <div><span class="q-card-title">${typeLabel}</span> <span class="q-card-summary">${summary}</span></div>
       <div class="q-card-actions">
         <button class="q-card-toggle" onclick="toggleQCard(${i}, event)">${toggleText}</button>
         <button class="q-card-delete" onclick="event.stopPropagation(); removeQ(${i})" title="Delete item">×</button>
@@ -1989,22 +1988,53 @@ function buildQRow(type, q, i) {
     </div>
     <div class="q-card-body ${dState}">`;
 
-  if (type === 'matching') {
-    html += `<span class="field-label" style="margin-top:0">Word (Left side)</span>
-      <input type="text" placeholder="e.g. Pronunciation" value="${esc(q.left||'')}" oninput="questionRows[${i}].left=this.value"/>
-      <span class="field-label">Match / Meaning (Right side)</span>
-      <input type="text" placeholder="e.g. The way in which a word is spoken" value="${esc(q.right||'')}" oninput="questionRows[${i}].right=this.value"/>`;
+  if (qType === 'drag_drop') {
+      const catsStr = (q.categories || []).join(', ');
+      html += `<span class="field-label" style="margin-top:0">Instruction text</span>
+        <input type="text" placeholder="e.g. Sort the past tense sounds" value="${esc(q.prompt||'')}" oninput="questionRows[${i}].prompt=this.value"/>
+        <span class="field-label">Categories (comma-separated)</span>
+        <input type="text" placeholder="e.g. /t/, /d/, /id/" value="${esc(catsStr)}" onchange="updateDndCats(${i}, this.value)"/>
+        <span class="field-label">Words to sort</span>
+        <div id="dnd-items-wrap-${i}">`;
+          
+      (q.items || []).forEach((item, idx) => {
+        html += `<div style="display:flex;gap:8px;margin-bottom:8px">
+          <input type="text" placeholder="Word" value="${esc(item.word)}" oninput="questionRows[${i}].items[${idx}].word=this.value" style="flex:2;margin:0"/>
+          <select style="flex:1;margin:0" onchange="questionRows[${i}].items[${idx}].category=this.value">`;
+        (q.categories || []).forEach(c => { html += `<option value="${esc(c)}" ${item.category===c?'selected':''}>${esc(c)}</option>`; });
+        html += `</select><button class="q-card-delete" style="background:var(--bg); border-radius:4px; padding:0 8px;" onclick="removeDndItem(${i}, ${idx})">×</button></div>`;
+      });
+      html += `</div><button class="secondary-btn" style="padding:6px;font-size:12px;margin-top:8px" onclick="addDndItem(${i})">+ Add word</button>`;
+  }
+  else if (qType === 'matching') {
+    html += `<span class="field-label" style="margin-top:0">Matching Pairs</span>
+      <div id="match-pairs-${i}">`;
+    (q.pairs || [{left:'', right:''}]).forEach((pair, pIdx) => {
+        html += `<div style="display:flex;gap:8px;margin-bottom:8px">
+        <input type="text" placeholder="Word (Left side)" value="${esc(pair.left)}" oninput="questionRows[${i}].pairs[${pIdx}].left=this.value" style="flex:1;margin:0"/>
+        <input type="text" placeholder="Match (Right side)" value="${esc(pair.right)}" oninput="questionRows[${i}].pairs[${pIdx}].right=this.value" style="flex:1;margin:0"/>
+        <button class="q-card-delete" onclick="removeMatchPair(${i}, ${pIdx})" style="background:var(--bg); border-radius:4px; padding:0 8px;">×</button></div>`;
+    });
+    html += `</div><button class="secondary-btn" style="padding:6px;font-size:12px;margin-top:8px" onclick="addMatchPair(${i})">+ Add pair</button>`;
   } 
-  else if (type === 'fill_in_blank') {
-    html += `<span class="field-label" style="margin-top:0">Sentence (Use ___ for blank)</span>
-      <textarea placeholder="e.g. She went ___ the store." oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt||'')}</textarea>
-      <span class="field-label">Correct answer</span>
-      <input type="text" placeholder="e.g. to" value="${esc(q.answer||'')}" oninput="questionRows[${i}].answer=this.value"/>
-      <span class="field-label">Hint (optional)</span>
-      <input type="text" placeholder="e.g. preposition of direction" value="${esc(q.hint||'')}" oninput="questionRows[${i}].hint=this.value"/>`;
+  else if (qType === 'fill_in_blank') {
+    const hasBrackets = (q.prompt || '').includes('[') && (q.prompt || '').includes(']');
+    html += `<span class="field-label" style="margin-top:0">Text/Sentence (Use brackets [ ] for the correct answers)</span>
+      <textarea placeholder="e.g. She [works] (work) at the hospital every Sunday and [has] (have) free days." oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt||'')}</textarea>
+      <span class="field-label" style="color:var(--text-muted); font-weight:normal; text-transform:none">
+        The blanks will be created automatically where you put the brackets.
+      </span>
+      <span class="field-label" style="margin-top:10px">Hint (optional)</span>
+      <input type="text" placeholder="e.g. Simple present tense" value="${esc(q.hint||'')}" oninput="questionRows[${i}].hint=this.value"/>`;
+      
+      // Backward compatibility for old questions without brackets
+      if (!hasBrackets && q.answer) {
+         html += `<span class="field-label" style="color:var(--red)">Legacy format detected: Please update this question to use brackets [answer] inside the text above.</span>
+         <input type="text" placeholder="Correct answer" value="${esc(q.answer||'')}" oninput="questionRows[${i}].answer=this.value"/>`;
+      }
   } 
-  else if (type === 'dictation' || type === 'open_answer') {
-    const label = type === 'open_answer' ? 'Expected answer / keywords (shown to student after submitting)' : 'Expected answer (for correction)';
+  else if (qType === 'dictation' || qType === 'open_answer') {
+    const label = qType === 'open_answer' ? 'Expected answer / keywords (shown to student after submitting)' : 'Expected answer (for correction)';
     html += `<span class="field-label" style="margin-top:0">Instruction for student</span>
       <textarea placeholder="Write the instruction or question here..." oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt||'')}</textarea>
       <span class="field-label">${label}</span>
@@ -2027,11 +2057,10 @@ function buildQRow(type, q, i) {
         <button class="q-card-delete" onclick="removeQOption(${i},${j})">×</button>
       </div>`;
     });
-    
     html += `<button class="secondary-btn" style="font-size:11px;padding:6px 10px;margin-bottom:8px" onclick="addQOption(${i})">+ Add option</button>`;
   }
   
-  if (type !== 'matching') {
+  if (qType !== 'matching') {
     let mediaHtml = `
       <div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)">
         <span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this question (optional)</span>
@@ -2060,64 +2089,18 @@ function buildQRow(type, q, i) {
   return html;
 }
 
-function addQuestion() {
-  const type = document.getElementById('t-ex-type').value; if (type === 'drag_drop') return;
-  const newQ = type === 'matching' ? { left:'', right:'' } : 
-               type === 'fill_in_blank' ? { prompt:'', answer:'', hint:'', audio_url:'', video_url:'' } : 
-               (type === 'dictation' || type === 'open_answer') ? { prompt:'', answer:'', audio_url:'', video_url:'' } : 
-               { prompt:'', options:['',''], correctIndex:0, answer:'', audio_url:'', video_url:'' };
+function addQuestion(type) {
+  let newQ;
+  if (type === 'drag_drop') newQ = { type: 'drag_drop', prompt: '', categories: [], items: [], audio_url: '', video_url: '' };
+  else if (type === 'matching') newQ = { type: 'matching', pairs: [{left:'', right:''}] };
+  else if (type === 'fill_in_blank') newQ = { type: 'fill_in_blank', prompt: '', answer: '', hint: '', audio_url: '', video_url: '' };
+  else if (type === 'dictation' || type === 'open_answer') newQ = { type: type, prompt: '', answer: '', audio_url: '', video_url: '' };
+  else newQ = { type: 'multiple_choice', prompt: '', options: ['', ''], correctIndex: 0, answer: '', audio_url: '', video_url: '' };
+  
   questionRows.push(newQ); 
   Object.keys(openQStates).forEach(k => openQStates[k] = false);
   openQStates[questionRows.length - 1] = true;
   renderQFields();
-}
-
-async function uploadQAudio(event, i) {
-  const file = event.target.files[0]; if (!file) return; isUploadingAudio = true;
-  const fn = `qa_${Date.now()}.${file.name.split('.').pop()}`;
-  const { error } = await sb.storage.from('audios').upload(fn, file); isUploadingAudio = false;
-  if (error) { alert('Upload error: ' + error.message); return; }
-  if (questionRows[i]) questionRows[i].audio_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
-  const el = document.getElementById('q-audio-' + i); if (el) el.textContent = '✅ Audio uploaded';
-}
-
-/* ── MANAGE LIST ── */
-function renderManageList() {
-  const list = document.getElementById('t-manage-list'); if (!list) return;
-  if (!dbModules.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div>'; return; }
-  
-  const openStates = {};
-  document.querySelectorAll('[id^="mod-children-"]').forEach(el => {
-    openStates[el.id] = el.style.display;
-  });
-
-  const iconMap = { video:'📺', text:'📄', task:'📝', embed:'🌐' };
-  list.innerHTML = dbModules.map(m => {
-    const subs = dbSubmodules.filter(s => s.module_id === m.id);
-    const orphans = dbLessons.filter(l => l.module_id === m.id && !l.submodule_id);
-    
-    const childId = `mod-children-${m.id}`;
-    const dState = openStates[childId] || 'none'; 
-    
-    let html = `<div class="manage-item" style="background:var(--skool-hover);border-radius:var(--radius-sm);margin-bottom:4px;border:1px solid var(--border)">
-      <span class="manage-title" style="cursor:pointer;display:flex;align-items:center;gap:6px;flex:1" onclick="const e=document.getElementById('${childId}'); e.style.display = e.style.display === 'none' ? 'block' : 'none';">
-        📘 ${esc(m.title)} <span style="font-size:10px;background:var(--border);padding:2px 6px;border-radius:10px;color:var(--text-muted)">Show/Hide</span>
-      </span>
-      <div class="manage-actions"><button class="secondary-btn" onclick="moveModule('${m.id}',-1)">↑</button><button class="secondary-btn" onclick="moveModule('${m.id}',1)">↓</button><button class="secondary-btn" onclick="editModule('${m.id}')">Edit</button><button class="danger-btn" onclick="deleteModule('${m.id}')">Delete</button></div></div>
-      <div id="${childId}" style="display:${dState};margin-bottom:8px;padding-left:4px;">`;
-    
-    subs.forEach(sub => {
-      html += `<div class="manage-item" style="background:var(--bg);margin-left:1.5rem;border-left:2px solid var(--brand);margin-bottom:2px"><span class="manage-title">📁 ${esc(sub.title)}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveSubmodule('${sub.id}',-1)">↑</button><button class="secondary-btn" onclick="moveSubmodule('${sub.id}',1)">↓</button><button class="secondary-btn" onclick="editSubmodule('${sub.id}')">Edit</button><button class="danger-btn" onclick="deleteSubmodule('${sub.id}')">Delete</button></div></div>`;
-      dbLessons.filter(l => l.submodule_id === sub.id).forEach(l => {
-        html += `<div class="manage-item" style="padding-left:3rem"><span class="manage-title" style="color:var(--text-muted)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveLesson('${l.id}',-1)">↑</button><button class="secondary-btn" onclick="moveLesson('${l.id}',1)">↓</button><button class="secondary-btn" onclick="editLesson('${l.id}')">Edit</button><button class="danger-btn" onclick="deleteLesson('${l.id}')">Delete</button></div></div>`;
-      });
-    });
-    orphans.forEach(l => {
-      html += `<div class="manage-item" style="padding-left:1.5rem"><span class="manage-title" style="color:var(--text-muted)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span><div class="manage-actions"><button class="secondary-btn" onclick="moveLesson('${l.id}',-1)">↑</button><button class="secondary-btn" onclick="moveLesson('${l.id}',1)">↓</button><button class="secondary-btn" onclick="editLesson('${l.id}')">Edit</button><button class="danger-btn" onclick="deleteLesson('${l.id}')">Delete</button></div></div>`;
-    });
-    html += `</div>`;
-    return html;
-  }).join('');
 }
 
 /* ── STUDENT PROGRESS PANEL ── */
