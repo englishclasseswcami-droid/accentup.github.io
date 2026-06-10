@@ -52,7 +52,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 /* ════════ RE-DESIGNED LANDING PAGE STYLES ════════ */
 .lp-page { padding: 0 !important; max-width: 100% !important; }
 .lp-container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
-
 .lp-hero { background: var(--brand-dark); color: #fff; padding: 6rem 0 5rem; position: relative; overflow: hidden; }
 .lp-hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
 @media(max-width: 860px) { .lp-hero-inner { grid-template-columns: 1fr; text-align: center; } }
@@ -66,7 +65,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .lp-hero-visual { position: relative; }
 .lp-hero-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 24px; transform: rotate(3deg); border: 4px solid var(--accent); box-shadow: 0 20px 50px rgba(0,0,0,0.4); transition: transform 0.3s ease; }
 .lp-hero-img:hover { transform: rotate(0deg); }
-
 .lp-section { padding: 6rem 0; }
 .lp-section.cream { background: var(--accent-light); }
 .lp-section.blue { background: var(--brand); color: #fff; }
@@ -74,26 +72,22 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .blue .lp-h2 { color: #fff; }
 .lp-p { font-size: 17px; color: var(--text-muted); line-height: 1.7; text-align: center; max-width: 800px; margin: 0 auto 3rem; }
 .blue .lp-p { color: rgba(255,255,255,0.85); }
-
 .lp-quotes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 4rem; }
 .lp-speech-bubble { background: var(--surface); padding: 1.75rem; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,0.04); position: relative; border: 1px solid var(--border); }
 .lp-speech-bubble::after { content: ''; position: absolute; bottom: -10px; left: 30px; border-width: 10px 10px 0; border-style: solid; border-color: var(--surface) transparent transparent transparent; display: block; width: 0; }
 .lp-speech-bubble::before { content: ''; position: absolute; bottom: -12px; left: 29px; border-width: 11px 11px 0; border-style: solid; border-color: var(--border) transparent transparent transparent; display: block; width: 0; z-index: -1; }
 .lp-speech-bubble p { font-size: 16px; font-weight: 600; color: var(--brand-dark); font-style: italic; line-height: 1.5; }
-
 .lp-bridge { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; background: var(--surface); border: 2px solid var(--brand); border-radius: var(--radius); padding: 3rem; max-width: 1000px; margin: 0 auto; box-shadow: 0 20px 40px rgba(33, 80, 227, 0.08); text-align: left; }
 @media(max-width: 768px) { .lp-bridge { grid-template-columns: 1fr; text-align: center; padding: 2rem; } }
 .lp-bridge-text p { font-size: 17px; color: var(--text); line-height: 1.6; margin-bottom: 1rem; }
 .lp-bridge-text strong { color: var(--brand-dark); font-weight: 900; font-size: 19px;}
 .lp-bridge-img img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: var(--radius-sm); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-
 .lp-mech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
 .lp-mech-card { background: var(--surface); border-radius: var(--radius); padding: 2.5rem 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border-top: 4px solid var(--brand); transition: transform 0.2s; }
 .lp-mech-card:hover { transform: translateY(-5px); }
 .lp-mech-step { display: inline-block; background: var(--brand-light); color: var(--brand); font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 20px; margin-bottom: 1rem; letter-spacing: 0.05em; }
 .lp-mech-card h3 { font-size: 20px; font-weight: 900; color: var(--brand-dark); margin-bottom: 12px; letter-spacing: -0.5px; }
 .lp-mech-card p { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
-
 .lp-compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
 @media(max-width: 768px) { .lp-compare-grid { grid-template-columns: 1fr; } }
 .lp-compare-col { background: var(--surface); border-radius: var(--radius); padding: 2rem; }
@@ -105,12 +99,10 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .lp-compare-item span { flex-shrink: 0; font-size: 16px; }
 .lp-compare-col.bad .lp-compare-item { color: var(--text-muted); }
 .lp-compare-col.good .lp-compare-item { color: rgba(255,255,255,0.9); }
-
 .lp-offer-list { list-style: none; margin-bottom: 2rem; max-width: 800px; margin: 0 auto 3rem; text-align: left; }
 .lp-offer-list li { font-size: 16px; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 12px; line-height: 1.5; background: rgba(255,255,255,0.05); padding: 1rem 1.5rem; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.1); }
 .lp-offer-list li::before { content: '✅'; flex-shrink: 0; }
 .lp-offer-list strong { color: var(--accent); }
-
 .lp-pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 900px; margin: 0 auto; }
 @media(max-width: 768px) { .lp-pricing-grid { grid-template-columns: 1fr; } }
 .lp-pricing-card { background: var(--surface); border-radius: var(--radius); padding: 2.5rem; text-align: center; color: var(--text); border: 1px solid var(--border); display: flex; flex-direction: column; }
@@ -126,13 +118,11 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .lp-pricing-features p.bonus { color: var(--brand); font-weight: 700; }
 .lp-pricing-features p::before { content: '✓'; color: var(--green); }
 .lp-pricing-card .lp-cta-btn { width: 100%; padding: 14px; font-size: 15px; }
-
 .lp-mentor { display: flex; gap: 4rem; align-items: center; max-width: 900px; margin: 0 auto; }
 @media(max-width: 768px){ .lp-mentor { flex-direction: column; text-align: center; gap: 2rem; } }
 .lp-mentor-img { width: 300px; height: 300px; border-radius: 50%; background: var(--brand-light); flex-shrink: 0; border: 6px solid var(--accent); object-fit: cover; box-shadow: 0 10px 30px rgba(7, 33, 107, 0.1); }
 .lp-mentor-text h3 { font-size: 28px; font-weight: 900; color: var(--brand-dark); margin-bottom: 1.25rem; letter-spacing: -0.5px; }
 .lp-mentor-text p { font-size: 16px; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem; }
-
 .lp-faq { max-width: 760px; margin: 0 auto; }
 .lp-faq details { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 1rem; overflow: hidden; }
 .lp-faq summary { padding: 1.5rem; font-size: 17px; font-weight: 800; color: var(--brand-dark); cursor: pointer; list-style: none; position: relative; padding-right: 3rem; }
@@ -233,7 +223,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .resource-link:hover{background:var(--brand-light);border-color:var(--brand)}
 .lesson-complete-wrap{margin-top:2.5rem;border-top:1px solid var(--skool-border);padding-top:1.5rem;text-align:right}
 
-/* EXERCISE PLAYER */
+/* EXERCISE PLAYER & DRAG AND DROP */
 .ex-question-block{background:var(--bg);border:1px solid var(--skool-border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem}
 .ex-q-num{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-light);margin-bottom:6px}
 .ex-q-text{font-size:15px;font-weight:600;color:var(--text);margin-bottom:1rem;line-height:1.5}
@@ -534,40 +524,30 @@ footer strong{color:var(--brand)}
 
   <section class="lp-section blue">
     <div class="lp-container">
-      <h2 class="lp-h2">The AccentUp 6-Month Mentorship</h2>
-      <p class="lp-p">A personalized, 1-on-1 coaching program designed to permanently transform the way you speak English.</p>
+      <h2 class="lp-h2" style="margin-bottom:0.5rem">The AccentUp 6-Month Mentorship</h2>
+      <p class="lp-p" style="color:var(--accent-light);">A personalized, 1-on-1 coaching program designed to permanently transform the way you speak English.</p>
       
-      <ul class="lp-offer-list">
-        <li><strong>Live 60-Minute 1-on-1 Sessions:</strong> Highly focused, private coaching sessions with instant, actionable feedback. No generic lessons—we work directly on your oral roadblocks.</li>
-        <li><strong>The AccentUp Interactive Platform:</strong> 24/7 access to our custom-built platform featuring step-by-step explainer videos, phonetic charts, and extra interactive practice.</li>
-      </ul>
-      
-      <div class="lp-pricing-grid">
-        <div class="lp-pricing-card">
-          <div class="lp-pricing-title">Payment Plan</div>
-          <div class="lp-pricing-price">$200,000<span style="font-size:16px"> ARS</span></div>
-          <div class="lp-pricing-sub">3 monthly payments</div>
-          <div class="lp-pricing-features">
-            <p>Full 6-Month Mentorship</p>
-            <p>AccentUp Platform Access</p>
-            <p>Personalized Weekly Routine</p>
-            <p>The Private Community</p>
-          </div>
-          <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn" style="background:var(--brand-dark); color:#fff; box-shadow:none;">Apply on WhatsApp</a>
-        </div>
+      <div class="lp-offer-box">
+        <h3>💎 The Core Program Includes:</h3>
+        <ul class="lp-offer-list">
+          <li><strong>Live 60-Minute 1-on-1 Sessions:</strong> Highly focused, private coaching sessions with instant, actionable feedback. No generic lessons—we work directly on your oral roadblocks.</li>
+          <li><strong>The AccentUp Interactive Platform:</strong> 24/7 access to our custom-built platform featuring step-by-step explainer videos, phonetic charts, and extra interactive practice.</li>
+        </ul>
         
-        <div class="lp-pricing-card best">
-          <div class="lp-pricing-badge">BEST VALUE 🔥</div>
-          <div class="lp-pricing-title">Pay in Full</div>
-          <div class="lp-pricing-price">$530,000<span style="font-size:16px"> ARS</span></div>
-          <div class="lp-pricing-sub">One-time payment</div>
-          <div class="lp-pricing-features">
-            <p><strong>Everything in Payment Plan, plus:</strong></p>
-            <p class="bonus">🎁 Extended Platform Access (3 extra months)</p>
-            <p class="bonus">🎁 "Boost Your Practice" Masterclass</p>
-            <p class="bonus">🎁 "Pronunciation Weekly Requests"</p>
-          </div>
-          <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn">👉 Secure your spot now</a>
+        <h3 style="margin-top:2.5rem;">🎁 Exclusive Bonuses:</h3>
+        <ul class="lp-offer-list">
+          <li><strong>Personalized Weekly Routine:</strong> You get a customized training plan to keep improving your pronunciation on your own time.</li>
+          <li><strong>"Pronunciation Weekly Requests":</strong> A weekly video series addressing the exact words, sounds, or phrases you requested.</li>
+          <li><strong>The Private Community:</strong> Access to our exclusive member network to share wins, exchange resources, and practice together.</li>
+          <li><strong>Extended Platform Access:</strong> Get an extra 3 months of full access to the platform to review and solidify your progress after the program ends.</li>
+          <li><strong>"Boost Your Practice" Masterclass:</strong> A special video training on how to optimize your study time.</li>
+        </ul>
+        
+        <div class="lp-price-box">
+          <p style="font-size:14px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;">Your Investment in Your Career</p>
+          <div class="lp-price">$530,000 ARS</div>
+          <p style="font-size:13px; opacity:0.8; margin-bottom:1.5rem;">(or 3 monthly payments of $200,000 ARS)</p>
+          <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn">👉 Secure your spot on WhatsApp</a>
         </div>
       </div>
     </div>
@@ -578,7 +558,7 @@ footer strong{color:var(--brand)}
       <div class="lp-mentor">
         <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop" alt="Camila Mentor" class="lp-mentor-img" />
         <div class="lp-mentor-text">
-          <h2 class="lp-h2" style="text-align:left;">Hi, I’m Camila. And I know exactly what’s holding your English back.</h2>
+          <h2 class="lp-h2" style="text-align:left; margin-bottom:10px;">Hi, I’m Camila. And I know exactly what’s holding your English back.</h2>
           <p>For years, I’ve watched incredibly talented, intelligent professional women shrink in meeting rooms or avoid speaking up because they felt insecure about their English pronunciation.</p>
           <p>They had the vocabulary. They knew the grammar. But the traditional education system completely ignored the most important part of communication: <strong>the physical skill of speaking with authority.</strong></p>
           <p>I created AccentUp because I was tired of seeing brilliant women hit a language ceiling in their careers. My mission is to give you the exact framework, tools, and feedback you need to stop overthinking every word and start speaking with the confidence and clarity your professional talent deserves.</p>
@@ -762,59 +742,89 @@ footer strong{color:var(--brand)}
       <div class="t-panel">
         <h3 id="panel-title-mod">📂 1. Create Module</h3>
         <input type="hidden" id="edit-mod-id" value=""/>
-        <span class="field-label">Module name</span>
-        <input type="text" id="t-mod-title" placeholder="e.g. Pronunciation Basics"/>
         
-        <span class="field-label">Access Control</span>
-        <label style="font-size:13px;display:flex;align-items:center;gap:6px;margin-bottom:8px">
-           <input type="checkbox" id="t-mod-private" onchange="document.getElementById('t-mod-emails-wrap').style.display = this.checked ? 'block' : 'none'" style="width:auto;margin:0"/>
-           Make module private (invite-only)
-        </label>
+        <div style="display:flex; gap:12px; margin-bottom:8px">
+          <div style="flex:1">
+            <span class="field-label" style="margin-top:0">Module name</span>
+            <input type="text" id="t-mod-title" placeholder="e.g. Pronunciation Basics" style="margin-bottom:0"/>
+          </div>
+          <div style="flex:1">
+            <span class="field-label" style="margin-top:0">Access Control</span>
+            <label style="font-size:13px;display:flex;align-items:center;gap:6px;height:35px;margin:0">
+               <input type="checkbox" id="t-mod-private" onchange="document.getElementById('t-mod-emails-wrap').style.display = this.checked ? 'block' : 'none'" style="width:auto;margin:0"/>
+               Make module private
+            </label>
+          </div>
+        </div>
+        
         <div id="t-mod-emails-wrap" style="display:none; margin-bottom:12px;">
            <span class="field-label">Allowed emails (comma separated)</span>
            <textarea id="t-mod-emails" placeholder="e.g. student1@gmail.com, student2@yahoo.com" style="min-height:60px;"></textarea>
         </div>
 
-        <div style="display:flex;gap:8px">
-          <button class="primary-btn" onclick="saveModule()">Save module</button>
-          <button class="secondary-btn" id="btn-cancel-mod" style="display:none;margin-top:.9rem" onclick="cancelEditMod()">Cancel</button>
+        <div style="display:flex;gap:8px; margin-top:12px;">
+          <button class="primary-btn" style="margin-top:0;" onclick="saveModule()">Save module</button>
+          <button class="secondary-btn" id="btn-cancel-mod" style="display:none;" onclick="cancelEditMod()">Cancel</button>
         </div>
       </div>
 
       <div class="t-panel">
         <h3 id="panel-title-sub">📁 2. Create Subfolder</h3>
         <input type="hidden" id="edit-sub-id" value=""/>
-        <span class="field-label">Inside module</span>
-        <select id="t-sub-parent"></select>
-        <span class="field-label">Subfolder name</span>
-        <input type="text" id="t-sub-title" placeholder="e.g. 1. The American R"/>
-        <div style="display:flex;gap:8px">
-          <button class="primary-btn" style="background:var(--brand-mid)" onclick="saveSubmodule()">Save subfolder</button>
-          <button class="secondary-btn" id="btn-cancel-sub" style="display:none;margin-top:.9rem" onclick="cancelEditSub()">Cancel</button>
+        
+        <div style="display:flex; gap:12px; margin-bottom:8px">
+          <div style="flex:1">
+            <span class="field-label" style="margin-top:0">Inside module</span>
+            <select id="t-sub-parent" style="margin-bottom:0"></select>
+          </div>
+          <div style="flex:1">
+            <span class="field-label" style="margin-top:0">Subfolder name</span>
+            <input type="text" id="t-sub-title" placeholder="e.g. 1. The American R" style="margin-bottom:0"/>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px; margin-top:12px;">
+          <button class="primary-btn" style="background:var(--brand-mid); margin-top:0;" onclick="saveSubmodule()">Save subfolder</button>
+          <button class="secondary-btn" id="btn-cancel-sub" style="display:none;" onclick="cancelEditSub()">Cancel</button>
         </div>
       </div>
 
       <div class="t-panel">
         <h3 id="panel-title-les">📝 3. Add Lesson</h3>
         <input type="hidden" id="edit-les-id" value=""/>
-        <span class="field-label">Module</span>
-        <select id="t-les-module" onchange="updateSubfolderSelect()"></select>
-        <span class="field-label">Subfolder (optional)</span>
-        <select id="t-les-submodule"></select>
-        <span class="field-label">Lesson type</span>
-        <select id="t-les-type" onchange="toggleLessonFields()">
-          <option value="video">📺 Video</option>
-          <option value="text">📄 Reading material</option>
-          <option value="task">📝 Interactive exercise</option>
-          <option value="embed">🌐 Embed (Educaplay, Quizlet…)</option>
-        </select>
-        <span class="field-label">Lesson title</span>
-        <input type="text" id="t-les-title" placeholder="e.g. Lesson 1 — Short I vs Long E"/>
+        
+        <div style="display:flex; gap:12px; margin-bottom:12px">
+          <div style="flex:1">
+            <span class="field-label" style="margin-top:0">Module</span>
+            <select id="t-les-module" onchange="updateSubfolderSelect()" style="margin-bottom:0"></select>
+          </div>
+          <div style="flex:1">
+            <span class="field-label" style="margin-top:0">Subfolder (optional)</span>
+            <select id="t-les-submodule" style="margin-bottom:0"></select>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:12px; margin-bottom:12px">
+          <div style="flex:1">
+            <span class="field-label" style="margin-top:0">Lesson type</span>
+            <select id="t-les-type" onchange="toggleLessonFields()" style="margin-bottom:0">
+              <option value="video">📺 Video</option>
+              <option value="text">📄 Reading material</option>
+              <option value="task">📝 Interactive exercise</option>
+              <option value="embed">🌐 Embed</option>
+            </select>
+          </div>
+          <div style="flex:2">
+            <span class="field-label" style="margin-top:0">Lesson title</span>
+            <input type="text" id="t-les-title" placeholder="e.g. Lesson 1 — Short I vs Long E" style="margin-bottom:0"/>
+          </div>
+        </div>
+
         <hr style="border:0;border-top:1px solid var(--skool-border);margin:1.25rem 0"/>
         
         <div id="fields-video">
           <span class="field-label">YouTube URL</span>
-          <input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..."/>
+          <input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..."/>
         </div>
         <div id="fields-text" style="display:none">
           <span class="field-label">Content (text, instructions, notes)</span>
@@ -834,9 +844,6 @@ footer strong{color:var(--brand)}
             <option value="matching">Matching</option>
             <option value="dictation">Dictation / Transcription</option>
           </select>
-          <span class="field-label">General audio for exercise (optional)</span>
-          <input type="file" id="t-ex-audio" accept="audio/*"/>
-          <div id="t-ex-audio-current" style="font-size:11px;color:var(--text-muted);margin-top:-4px;margin-bottom:8px"></div>
           
           <span class="field-label" style="margin-top: 1.5rem; margin-bottom: 8px;">Questions / Items</span>
           <div id="q-builder"></div>
@@ -1040,6 +1047,10 @@ function goToPage(pageId) {
   
   const pageEl = document.getElementById('page-' + pageId);
   if (pageEl) pageEl.classList.add('active');
+  
+  const hiddenHero = ['home','classroom','teacher','auth','community','profile'];
+  const hero = document.getElementById('hero-banner');
+  if (hero) hero.style.display = hiddenHero.includes(pageId) ? 'none' : 'block';
   
   if (pageId === 'classroom') renderClassroomGrid();
   if (pageId === 'community') renderCommunityFeed();
@@ -1751,7 +1762,6 @@ async function saveLesson() {
         const w = row.querySelector('.dnd-w').value.trim(); const c = row.querySelector('.dnd-c').value;
         if (w && c) dndItems.push({ word: w, category: c });
       });
-      // Mantenemos la lógica pero agregamos soporte para los videos que se actualizaron por updateQVideoUrl o uploadQVideo
       let currentDragDrop = questionRows[0] || {};
       payload.task_content = [{ 
           prompt: document.getElementById('dnd-prompt').value, 
@@ -1762,15 +1772,6 @@ async function saveLesson() {
       }];
     } else {
       payload.task_content = questionRows;
-    }
-    const audioFile = document.getElementById('t-ex-audio').files[0];
-    if (audioFile) {
-      const fn = `ex_${Date.now()}.${audioFile.name.split('.').pop()}`;
-      await sb.storage.from('audios').upload(fn, audioFile);
-      payload.audio_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
-    } else if (editId) {
-      const existing = dbLessons.find(l => l.id === editId);
-      payload.audio_url = existing ? existing.audio_url : null;
     }
   }
 
@@ -1812,7 +1813,6 @@ function editLesson(id) {
   tempAudios = safeParseJSON(l.content); renderTempAudios();
   const resArr = safeParseJSON(l.resources);
   document.getElementById('t-les-resources-current').textContent = resArr.length ? `${resArr.length} file(s) already attached` : '';
-  document.getElementById('t-ex-audio-current').textContent = l.audio_url ? 'Audio already saved' : '';
   document.getElementById('panel-title-les').textContent = '✏️ Edit lesson';
   document.getElementById('btn-cancel-les').style.display = 'inline-block';
   window.scrollTo(0, 0);
@@ -1820,8 +1820,8 @@ function editLesson(id) {
 function cancelEditLes() {
   document.getElementById('edit-les-id').value = ''; document.getElementById('t-les-title').value = '';
   document.getElementById('t-les-video-url').value = ''; document.getElementById('t-les-embed-code').value = '';
-  document.getElementById('t-ex-audio').value = ''; document.getElementById('t-les-resources').value = '';
-  document.getElementById('t-les-resources-current').textContent = ''; document.getElementById('t-ex-audio-current').textContent = '';
+  document.getElementById('t-les-resources').value = '';
+  document.getElementById('t-les-resources-current').textContent = ''; 
   quillEditor.root.innerHTML = ''; questionRows = []; tempAudios = []; openQStates = {};
   renderQFields(); renderTempAudios();
   document.getElementById('panel-title-les').textContent = '📝 3. Add Lesson';
@@ -1868,8 +1868,6 @@ function toggleQCard(i, event) {
 function updateQVideoUrl(i, val) {
   if (questionRows[i]) {
     questionRows[i].video_url = val;
-    const el = document.getElementById('q-video-' + i);
-    if (el) el.textContent = val ? '✅ Video linked' : '';
   }
 }
 
@@ -1888,11 +1886,9 @@ async function uploadQVideo(event, i) {
   if (error) { alert('Upload error: ' + error.message); return; }
   if (questionRows[i]) questionRows[i].video_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
   
-  const el = document.getElementById('q-video-' + i); 
-  if (el) el.textContent = '✅ Video uploaded';
-  
   const urlInput = document.getElementById(`q-vid-url-${i}`);
   if (urlInput) urlInput.value = '';
+  renderQFields(); // Refresh to show checkmark
 }
 
 function renderQFields() {
@@ -1926,7 +1922,6 @@ function renderQFields() {
     
     html += `</div><button class="add-q-btn" style="padding:6px;font-size:12px;margin-top:8px" onclick="addDndItem()">+ Add word to sort</button>`;
     
-    // Novedad: Bloque de Media también para el Drag and Drop
     html += `
       <div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)">
         <span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this exercise (optional)</span>
