@@ -12,20 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --brand-dark: #07216b;
-  --brand: #2150e3;
-  --brand-mid: #1639a8;
-  --brand-light: #EEEDFE;
-  --accent: #cafc05;
-  --accent-light: #fffbca;
-  --bg:#F7F7FB;--surface:#FFFFFF;
-  --text:#14141F;--text-muted:#6B6B80;--text-light:#A0A0B5;
-  --border:rgba(0,0,0,0.08);--radius:16px;--radius-sm:8px;
-  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;
-  --red:#D85A30;--red-light:#FAECE7;--red-dark:#4A1B0C;
-  --skool-border:#E5E7EB;--skool-hover:#F3F4F6;
-}
+:root{--brand-dark:#07216b;--brand:#2150e3;--brand-mid:#1639a8;--brand-light:#EEEDFE;--accent:#cafc05;--accent-light:#fffbca;--bg:#F7F7FB;--surface:#FFFFFF;--text:#14141F;--text-muted:#6B6B80;--text-light:#A0A0B5;--border:rgba(0,0,0,0.08);--radius:16px;--radius-sm:8px;--green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--red:#D85A30;--red-light:#FAECE7;--red-dark:#4A1B0C;--skool-border:#E5E7EB;--skool-hover:#F3F4F6;}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;gap:.75rem;flex-wrap:wrap}
 .logo{font-size:22px;font-weight:900;color:var(--brand-dark);letter-spacing:-1px;white-space:nowrap}
@@ -42,12 +29,12 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .nav-tab.logout-btn-nav:hover{background:var(--red);color:#fff}
 .page{display:none;padding:2rem 1.5rem;max-width:960px;margin:0 auto}
 .page.active{display:block}
-.page-full{max-width:1300px} 
+.page-full{max-width:1300px}
 .section-intro{margin-bottom:1.75rem}
 .section-intro h2{font-size:20px;font-weight:800;color:var(--brand-dark);margin-bottom:5px}
 .section-intro p{font-size:13px;color:var(--text-muted);line-height:1.6}
 
-/* ════════ LANDING PAGE STYLES ════════ */
+/* LANDING PAGE STYLES */
 .lp-page { padding: 0 !important; max-width: 100% !important; }
 .lp-container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
 .lp-hero { background: var(--brand-dark); color: #fff; padding: 6rem 0 5rem; position: relative; overflow: hidden; }
@@ -129,7 +116,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .lp-faq details[open] summary::after { content: '−'; }
 .lp-faq details p { padding: 0 1.5rem 1.5rem; font-size: 15px; color: var(--text-muted); line-height: 1.6; }
 
-/* ════════ PLATFORM STYLES ════════ */
+/* PLATFORM STYLES */
 .sound-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:2rem}
 .sound-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:1rem .9rem .9rem;cursor:pointer;transition:border-color .15s,transform .1s;text-align:center}
 .sound-card:hover{border-color:var(--brand);transform:translateY(-2px)}
@@ -221,75 +208,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .resource-link:hover{background:var(--brand-light);border-color:var(--brand)}
 .lesson-complete-wrap{margin-top:2.5rem;border-top:1px solid var(--skool-border);padding-top:1.5rem;text-align:right}
 
-/* EXERCISE PLAYER & MIXED TYPES */
-.ex-question-block{background:var(--bg);border:1px solid var(--skool-border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem}
-.ex-q-num{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-light);margin-bottom:6px}
-.ex-q-text{font-size:15px;font-weight:600;color:var(--text);margin-bottom:1rem;line-height:1.5}
-.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-@media(max-width:440px){.options-grid{grid-template-columns:1fr}}
-.opt-btn{padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);font-size:14px;font-weight:500;color:var(--text);cursor:pointer;transition:all .15s;text-align:left;font-family:'Inter',sans-serif}
-.opt-btn:hover:not(:disabled){border-color:var(--brand);color:var(--brand);background:var(--brand-light)}
-.opt-btn.selected{border-color:var(--brand);background:var(--brand-light);color:var(--brand);font-weight:700}
-.opt-btn.correct{border-color:var(--green);background:var(--green-light);color:var(--green-dark)}
-.opt-btn.wrong{border-color:var(--red);background:var(--red-light);color:var(--red-dark)}
-.fitb-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:15px;color:var(--text);outline:none;font-family:'Inter',sans-serif}
-.fitb-input:focus{border-color:var(--brand)}
-.fitb-input.correct{border-color:var(--green);background:var(--green-light); color:var(--green-dark)}
-.fitb-input.wrong{border-color:var(--red);background:var(--red-light); color:var(--red-dark)}
-.dictation-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:'Inter',sans-serif;color:var(--text);outline:none;min-height:80px;resize:vertical}
-.dictation-input:focus{border-color:var(--brand)}
-.open-answer-reveal{margin-top:1rem;padding:1rem;background:var(--brand-light);border-radius:var(--radius-sm);border-left:3px solid var(--brand);font-size:14px;color:#26215C;line-height:1.6;display:none}
-.open-answer-reveal.visible{display:block}
-.player-footer{display:flex;align-items:center;gap:10px;margin-top:1.5rem;flex-wrap:wrap}
-.submit-btn{padding:10px 24px;border-radius:var(--radius-sm);background:var(--brand);color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s}
-.submit-btn:hover{background:var(--brand-dark)}
-.submit-btn:disabled{opacity:.5;cursor:not-allowed}
-.retry-btn{padding:9px 18px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:transparent;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s}
-.retry-btn:hover{border-color:var(--brand);color:var(--brand)}
-.score-panel{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-top:2rem}
-.score-top{display:flex;align-items:center;gap:16px;margin-bottom:1.25rem;flex-wrap:wrap}
-.score-circle{width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;font-weight:800;flex-shrink:0}
-.score-circle.great{background:var(--green-light);color:var(--green)}
-.score-circle.ok{background:#FAEEDA;color:#633806}
-.score-circle.low{background:var(--red-light);color:var(--red)}
-.score-circle.open{background:var(--brand-light);color:var(--brand)}
-.score-circle .pct{font-size:20px;line-height:1}
-.score-circle .frac{font-size:11px;opacity:.8}
-.score-msg{font-size:17px;font-weight:800;color:var(--text)}
-.score-msg .sub{font-size:13px;color:var(--text-muted);font-weight:400;margin-top:3px}
-.score-details{border-top:1px solid var(--skool-border);padding-top:1rem;margin-top:.5rem}
-.score-row{font-size:13px;padding:6px 0;border-bottom:1px solid var(--skool-border);line-height:1.5}
-.score-row:last-child{border-bottom:none}
-.score-row.c{color:var(--green-dark)}
-.score-row.w{color:var(--red-dark)}
-.score-row.oa{color:var(--brand-mid)}
-.score-row .ans{color:var(--text-muted);font-size:12px}
-
-.dnd-instruction{font-size:12px;color:var(--brand);margin-bottom:12px;font-weight:600;display:flex;align-items:center;gap:6px}
-.dnd-bank{display:flex;flex-wrap:wrap;gap:8px;padding:15px;background:var(--surface);border:2px dashed var(--border);border-radius:var(--radius-sm);min-height:70px;margin-bottom:1.5rem;transition:background .2s}
-.dnd-bank.active-drop{background:var(--brand-light);border-color:var(--brand)}
-.dnd-chip{padding:8px 14px;background:var(--surface);border:1.5px solid var(--skool-border);border-radius:20px;font-size:14px;font-weight:600;cursor:pointer;user-select:none;transition:all 0.2s}
-.dnd-chip:active{cursor:grabbing;transform:scale(0.95)}
-.dnd-chip.selected{border-color:var(--brand);background:var(--brand-light);color:var(--brand);box-shadow:0 0 0 2px var(--brand)}
-.dnd-chip.correct{border-color:var(--green);background:var(--green-light);color:var(--green-dark);cursor:default}
-.dnd-chip.wrong{border-color:var(--red);background:var(--red-light);color:var(--red-dark)}
-.dnd-cols{display:flex;gap:10px;overflow-x:auto;padding-bottom:10px}
-.dnd-col{flex:1;min-width:140px;background:var(--surface);border-radius:var(--radius-sm);border:1.5px solid var(--border);display:flex;flex-direction:column;cursor:pointer;transition:all 0.2s}
-.dnd-col:hover{border-color:var(--brand);box-shadow:0 4px 12px rgba(45,42,232,0.05)}
-.dnd-col.active-drop{border-color:var(--brand);background:var(--brand-light)}
-.dnd-col-header{padding:12px 10px;font-weight:800;text-align:center;border-bottom:1.5px solid var(--border);background:var(--bg);border-radius:var(--radius-sm) var(--radius-sm) 0 0;color:var(--text)}
-.dnd-col-body{padding:10px;flex:1;min-height:120px;display:flex;flex-direction:column;gap:8px;align-items:center}
-.dnd-inline-dropzone { display: inline-block; min-width: 80px; height: 32px; border-bottom: 2px solid var(--brand); background: var(--skool-hover); vertical-align: bottom; margin: 0 4px; text-align: center; cursor: pointer; transition: all 0.2s; }
-.dnd-inline-dropzone.active-drop { background: var(--brand-light); border-color: var(--brand); }
-.dnd-inline-dropzone .dnd-chip { margin: 0; padding: 4px 10px; font-size: 13px; transform: translateY(-4px); }
-
-.matching-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.match-col-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-light);margin-bottom:8px}
-.match-chip{padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;background:var(--surface);margin-bottom:8px}
-.match-chip.selected{border-color:var(--brand);background:var(--brand-light);color:var(--brand)}
-.match-chip.matched{border-color:var(--green);background:var(--green-light);color:var(--green-dark);cursor:default}
-.match-chip.wrong-match{border-color:var(--red);background:var(--red-light);color:var(--red-dark)}
-
 /* COMMUNITY */
 .community-container{max-width:760px;margin:0 auto}
 .write-post-box{background:var(--surface);border:1px solid var(--skool-border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.5rem;box-shadow:0 2px 4px rgba(0,0,0,.02)}
@@ -367,7 +285,6 @@ textarea{resize:vertical;min-height:70px}
 .ql-toolbar{border-radius:var(--radius-sm) var(--radius-sm) 0 0!important;background:var(--bg);border-color:var(--border)!important}
 .ql-container{border-color:var(--border)!important}
 .ql-editor img{max-width:100%;border-radius:var(--radius-sm)}
-
 .manage-item{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid var(--skool-border);gap:10px}
 .manage-item:last-child{border-bottom:none}
 .manage-title{font-size:13px;font-weight:600;color:var(--text)}
@@ -375,13 +292,76 @@ textarea{resize:vertical;min-height:70px}
 .audio-add-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
 .audio-add-row input{margin-bottom:0}
 .audio-saved-item{display:flex;justify-content:space-between;align-items:center;background:var(--surface);border:1px solid var(--skool-border);border-radius:var(--radius-sm);padding:6px 10px;margin-bottom:6px;font-size:12px;font-weight:600;color:var(--text)}
-
 footer{text-align:center;padding:2rem;font-size:12px;color:var(--text-light);border-top:1px solid var(--border);margin-top:3rem}
 footer strong{color:var(--brand)}
 .student-prog-row{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid var(--skool-border)}
 .student-prog-row:last-child{border-bottom:none}
 .student-prog-name{font-size:14px;font-weight:600;color:var(--text)}
 .student-prog-stats{font-size:12px;color:var(--text-muted)}
+
+/* EXERCISE PLAYER & MIXED TYPES */
+.ex-question-block{background:var(--bg);border:1px solid var(--skool-border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem}
+.ex-q-num{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-light);margin-bottom:6px}
+.ex-q-text{font-size:15px;font-weight:600;color:var(--text);margin-bottom:1rem;line-height:1.5}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:440px){.options-grid{grid-template-columns:1fr}}
+.opt-btn{padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);font-size:14px;font-weight:500;color:var(--text);cursor:pointer;transition:all .15s;text-align:left;font-family:'Inter',sans-serif}
+.opt-btn:hover:not(:disabled){border-color:var(--brand);color:var(--brand);background:var(--brand-light)}
+.opt-btn.selected{border-color:var(--brand);background:var(--brand-light);color:var(--brand);font-weight:700}
+.opt-btn.correct{border-color:var(--green);background:var(--green-light);color:var(--green-dark)}
+.opt-btn.wrong{border-color:var(--red);background:var(--red-light);color:var(--red-dark)}
+.fitb-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:15px;color:var(--text);outline:none;font-family:'Inter',sans-serif}
+.fitb-input:focus{border-color:var(--brand)}
+.fitb-input.correct{border-color:var(--green);background:var(--green-light); color:var(--green-dark)}
+.fitb-input.wrong{border-color:var(--red);background:var(--red-light); color:var(--red-dark)}
+.dictation-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:'Inter',sans-serif;color:var(--text);outline:none;min-height:80px;resize:vertical}
+.dictation-input:focus{border-color:var(--brand)}
+.open-answer-reveal{margin-top:1rem;padding:1rem;background:var(--brand-light);border-radius:var(--radius-sm);border-left:3px solid var(--brand);font-size:14px;color:#26215C;line-height:1.6;display:none}
+.open-answer-reveal.visible{display:block}
+.player-footer{display:flex;align-items:center;gap:10px;margin-top:1.5rem;flex-wrap:wrap}
+.score-panel{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-top:2rem}
+.score-top{display:flex;align-items:center;gap:16px;margin-bottom:1.25rem;flex-wrap:wrap}
+.score-circle{width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;font-weight:800;flex-shrink:0}
+.score-circle.great{background:var(--green-light);color:var(--green)}
+.score-circle.ok{background:#FAEEDA;color:#633806}
+.score-circle.low{background:var(--red-light);color:var(--red)}
+.score-circle.open{background:var(--brand-light);color:var(--brand)}
+.score-circle .pct{font-size:20px;line-height:1}
+.score-circle .frac{font-size:11px;opacity:.8}
+.score-msg{font-size:17px;font-weight:800;color:var(--text)}
+.score-msg .sub{font-size:13px;color:var(--text-muted);font-weight:400;margin-top:3px}
+.score-details{border-top:1px solid var(--skool-border);padding-top:1rem;margin-top:.5rem}
+.score-row{font-size:13px;padding:6px 0;border-bottom:1px solid var(--skool-border);line-height:1.5}
+.score-row:last-child{border-bottom:none}
+.score-row.c{color:var(--green-dark)}
+.score-row.w{color:var(--red-dark)}
+.score-row.oa{color:var(--brand-mid)}
+.score-row .ans{color:var(--text-muted);font-size:12px}
+
+.dnd-instruction{font-size:12px;color:var(--brand);margin-bottom:12px;font-weight:600;display:flex;align-items:center;gap:6px}
+.dnd-bank{display:flex;flex-wrap:wrap;gap:8px;padding:15px;background:var(--surface);border:2px dashed var(--border);border-radius:var(--radius-sm);min-height:70px;margin-bottom:1.5rem;transition:background .2s}
+.dnd-bank.active-drop{background:var(--brand-light);border-color:var(--brand)}
+.dnd-chip{padding:8px 14px;background:var(--surface);border:1.5px solid var(--skool-border);border-radius:20px;font-size:14px;font-weight:600;cursor:pointer;user-select:none;transition:all 0.2s}
+.dnd-chip:active{cursor:grabbing;transform:scale(0.95)}
+.dnd-chip.selected{border-color:var(--brand);background:var(--brand-light);color:var(--brand);box-shadow:0 0 0 2px var(--brand)}
+.dnd-chip.correct{border-color:var(--green);background:var(--green-light);color:var(--green-dark);cursor:default}
+.dnd-chip.wrong{border-color:var(--red);background:var(--red-light);color:var(--red-dark)}
+.dnd-cols{display:flex;gap:10px;overflow-x:auto;padding-bottom:10px}
+.dnd-col{flex:1;min-width:140px;background:var(--surface);border-radius:var(--radius-sm);border:1.5px solid var(--border);display:flex;flex-direction:column;cursor:pointer;transition:all 0.2s}
+.dnd-col:hover{border-color:var(--brand);box-shadow:0 4px 12px rgba(45,42,232,0.05)}
+.dnd-col.active-drop{border-color:var(--brand);background:var(--brand-light)}
+.dnd-col-header{padding:12px 10px;font-weight:800;text-align:center;border-bottom:1.5px solid var(--border);background:var(--bg);border-radius:var(--radius-sm) var(--radius-sm) 0 0;color:var(--text)}
+.dnd-col-body{padding:10px;flex:1;min-height:120px;display:flex;flex-direction:column;gap:8px;align-items:center}
+.dnd-inline-dropzone { display: inline-block; min-width: 80px; height: 32px; border-bottom: 2px solid var(--brand); background: var(--skool-hover); vertical-align: bottom; margin: 0 4px; text-align: center; cursor: pointer; transition: all 0.2s; }
+.dnd-inline-dropzone.active-drop { background: var(--brand-light); border-color: var(--brand); }
+.dnd-inline-dropzone .dnd-chip { margin: 0; padding: 4px 10px; font-size: 13px; transform: translateY(-4px); }
+
+.matching-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.match-col-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-light);margin-bottom:8px}
+.match-chip{padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;background:var(--surface);margin-bottom:8px}
+.match-chip.selected{border-color:var(--brand);background:var(--brand-light);color:var(--brand)}
+.match-chip.matched{border-color:var(--green);background:var(--green-light);color:var(--green-dark);cursor:default}
+.match-chip.wrong-match{border-color:var(--red);background:var(--red-light);color:var(--red-dark)}
 </style>
 </head>
 <body>
@@ -433,7 +413,6 @@ footer strong{color:var(--brand)}
     <div class="lp-container">
       <h2 class="lp-h2">Your resume says "Advanced English", but everyday reality feels completely different...</h2>
       <p class="lp-p">If you are here, it’s probably because these thoughts cross your mind more often than you'd like to admit:</p>
-      
       <div class="lp-quotes-grid">
         <div class="lp-speech-bubble"><p>“I hate when someone says ‘What?’ and I have to repeat myself.”</p></div>
         <div class="lp-speech-bubble"><p>“I sound angry even when I’m not.”</p></div>
@@ -442,16 +421,13 @@ footer strong{color:var(--brand)}
         <div class="lp-speech-bubble"><p>“I’ve been learning English for years, and I still get stuck."</p></div>
         <div class="lp-speech-bubble"><p>“I know the answer, but I usually keep it to myself.”</p></div>
       </div>
-      
       <div class="lp-bridge">
         <div class="lp-bridge-text">
           <p>You stay quieter than you’d like in meetings or social situations. You feel like the most interesting part of you is missing. Over time, this starts to affect more than your English. You feel less confident. Less present.</p>
           <p>The truth is, conventional English courses focus heavily on theory. Rules. Word lists. Spelling.</p>
           <p><strong>But speaking isn't theory. Speaking is physical.</strong></p>
         </div>
-        <div class="lp-bridge-img">
-           <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?q=80&w=800&auto=format&fit=crop" alt="Professional woman looking thoughtful" />
-        </div>
+        <div class="lp-bridge-img"><img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?q=80&w=800&auto=format&fit=crop" alt="Professional woman looking thoughtful" /></div>
       </div>
     </div>
   </section>
@@ -460,23 +436,19 @@ footer strong{color:var(--brand)}
     <div class="lp-container">
       <h2 class="lp-h2">Forget traditional English courses. Speaking is a physical skill.</h2>
       <p class="lp-p">AccentUp is designed around a unique 3-step framework that shifts you from just "knowing" English to actually owning it.</p>
-      
       <div class="lp-mech-grid">
         <div class="lp-mech-card">
-          <div class="lp-mech-icon">🧏</div>
-          <span class="lp-mech-step">STEP 1</span>
+          <div class="lp-mech-icon">🧏</div><span class="lp-mech-step">STEP 1</span>
           <h3>HEAR IT</h3>
           <p>Decode the real language. Before you can say a sound, you need to truly hear it. We analyze the English language through its sound system using materials you actually enjoy—your favorite series, movies, TED Talks, or songs.</p>
         </div>
         <div class="lp-mech-card">
-          <div class="lp-mech-icon">🌐</div>
-          <span class="lp-mech-step">STEP 2</span>
+          <div class="lp-mech-icon">🌐</div><span class="lp-mech-step">STEP 2</span>
           <h3>OWN IT</h3>
           <p>Intentional practice. This is where the physical training happens. We practice real-world pronunciation by diving deep into connected speech, linking, and natural intonation through intensive shadowing techniques.</p>
         </div>
         <div class="lp-mech-card">
-          <div class="lp-mech-icon">👄</div>
-          <span class="lp-mech-step">STEP 3</span>
+          <div class="lp-mech-icon">👄</div><span class="lp-mech-step">STEP 3</span>
           <h3>SAY IT</h3>
           <p>Automate your speech. We simulate your real professional life: practicing upcoming presentations, simulating high-stakes meetings, and role-playing interviews. Speak under pressure without getting stuck.</p>
         </div>
@@ -489,33 +461,13 @@ footer strong{color:var(--brand)}
       <h2 class="lp-h2">Why AccentUp works where other courses fail</h2>
       <div class="lp-table-wrap">
         <table class="lp-table">
-          <thead>
-            <tr>
-              <th class="trad">Traditional English Learning ❌</th>
-              <th class="accent">AccentUp: Hear It. Own It. Say It. ✅</th>
-            </tr>
-          </thead>
+          <thead><tr><th class="trad">Traditional English Learning ❌</th><th class="accent">AccentUp: Hear It. Own It. Say It. ✅</th></tr></thead>
           <tbody>
-            <tr>
-              <td class="trad-col">Focuses on information and rules, assuming that understanding automatically leads to speaking.</td>
-              <td class="accent-col">Focuses on practical spoken English and trains speaking as a physical skill.</td>
-            </tr>
-            <tr>
-              <td class="trad-col">Prioritizes reading and writing instead of intentional speaking practice.</td>
-              <td class="accent-col">Prioritizes pronunciation, rhythm, intonation, and real-life communication.</td>
-            </tr>
-            <tr>
-              <td class="trad-col">Treats mistakes as something to be avoided at all costs.</td>
-              <td class="accent-col">Treats mistakes as a natural and necessary part of the learning process.</td>
-            </tr>
-            <tr>
-              <td class="trad-col">Ignores confidence, fear, and mindset, assuming confidence will come naturally with fluency.</td>
-              <td class="accent-col">Builds confidence and a growth mindset as skills you intentionally develop to unlock fluency.</td>
-            </tr>
-            <tr>
-              <td class="trad-col">Creates reliance on constant feedback and always needing "the next course" to improve.</td>
-              <td class="accent-col">Teaches you how to recognize your own patterns, change them, and take full ownership of your progress.</td>
-            </tr>
+            <tr><td class="trad-col">Focuses on information and rules, assuming that understanding automatically leads to speaking.</td><td class="accent-col">Focuses on practical spoken English and trains speaking as a physical skill.</td></tr>
+            <tr><td class="trad-col">Prioritizes reading and writing instead of intentional speaking practice.</td><td class="accent-col">Prioritizes pronunciation, rhythm, intonation, and real-life communication.</td></tr>
+            <tr><td class="trad-col">Treats mistakes as something to be avoided at all costs.</td><td class="accent-col">Treats mistakes as a natural and necessary part of the learning process.</td></tr>
+            <tr><td class="trad-col">Ignores confidence, fear, and mindset, assuming confidence will come naturally with fluency.</td><td class="accent-col">Builds confidence and a growth mindset as skills you intentionally develop to unlock fluency.</td></tr>
+            <tr><td class="trad-col">Creates reliance on constant feedback and always needing "the next course" to improve.</td><td class="accent-col">Teaches you how to recognize your own patterns, change them, and take full ownership of your progress.</td></tr>
           </tbody>
         </table>
       </div>
@@ -526,14 +478,12 @@ footer strong{color:var(--brand)}
     <div class="lp-container">
       <h2 class="lp-h2" style="margin-bottom:0.5rem">The AccentUp 6-Month Mentorship</h2>
       <p class="lp-p" style="color:var(--accent-light);">A personalized, 1-on-1 coaching program designed to permanently transform the way you speak English.</p>
-      
       <div class="lp-offer-box">
         <h3>💎 The Core Program Includes:</h3>
         <ul class="lp-offer-list">
           <li><strong>Live 60-Minute 1-on-1 Sessions:</strong> Highly focused, private coaching sessions with instant, actionable feedback. No generic lessons—we work directly on your oral roadblocks.</li>
           <li><strong>The AccentUp Interactive Platform:</strong> 24/7 access to our custom-built platform featuring step-by-step explainer videos, phonetic charts, and extra interactive practice.</li>
         </ul>
-        
         <h3 style="margin-top:2.5rem;">🎁 Exclusive Bonuses:</h3>
         <ul class="lp-offer-list">
           <li><strong>Personalized Weekly Routine:</strong> You get a customized training plan to keep improving your pronunciation on your own time.</li>
@@ -542,7 +492,6 @@ footer strong{color:var(--brand)}
           <li><strong>Extended Platform Access:</strong> Get an extra 3 months of full access to the platform to review and solidify your progress after the program ends.</li>
           <li><strong>"Boost Your Practice" Masterclass:</strong> A special video training on how to optimize your study time.</li>
         </ul>
-        
         <div class="lp-price-box">
           <p style="font-size:14px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;">Your Investment in Your Career</p>
           <div class="lp-price">$530,000 ARS</div>
@@ -571,25 +520,11 @@ footer strong{color:var(--brand)}
     <div class="lp-container">
       <h2 class="lp-h2">Frequently Asked Questions</h2>
       <div class="lp-faq">
-        <details>
-          <summary>Is this program right for beginners?</summary>
-          <p>No. AccentUp is exclusively designed for professionals who already have an intermediate or advanced understanding of English grammar and vocabulary, but struggle with oral fluency, pronunciation, and confidence.</p>
-        </details>
-        <details>
-          <summary>I have a very busy schedule. How much time do I need to invest?</summary>
-          <p>The program is built for busy professionals. Alongside our highly focused 60-minute weekly live session, you will get a personalized routine using our 24/7 interactive platform. You don't need hours a day—you just need consistent, intentional practice (even 15 minutes a day makes a huge difference).</p>
-        </details>
-        <details>
-          <summary>Is this a group class or 1-on-1?</summary>
-          <p>This is a highly personalized, 1-on-1 mentorship. I work directly with you, using your own real-world materials (like your upcoming presentations or meetings) to tackle your specific blind spots.</p>
-        </details>
-        <details>
-          <summary>How do I secure my spot?</summary>
-          <p>Because this is a personalized 1-on-1 experience, I only work with a small number of students at a time to ensure the highest quality of feedback. Click the button below to reach out to me directly on WhatsApp so we can see if you are a good fit for the program!</p>
-        </details>
-        <div style="text-align:center; margin-top:3rem;">
-          <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn" style="font-size:18px; padding:18px 40px;">👉 Let's talk on WhatsApp and unlock your voice</a>
-        </div>
+        <details><summary>Is this program right for beginners?</summary><p>No. AccentUp is exclusively designed for professionals who already have an intermediate or advanced understanding of English grammar and vocabulary, but struggle with oral fluency, pronunciation, and confidence.</p></details>
+        <details><summary>I have a very busy schedule. How much time do I need to invest?</summary><p>The program is built for busy professionals. Alongside our highly focused 60-minute weekly live session, you will get a personalized routine using our 24/7 interactive platform. You don't need hours a day—you just need consistent, intentional practice (even 15 minutes a day makes a huge difference).</p></details>
+        <details><summary>Is this a group class or 1-on-1?</summary><p>This is a highly personalized, 1-on-1 mentorship. I work directly with you, using your own real-world materials (like your upcoming presentations or meetings) to tackle your specific blind spots.</p></details>
+        <details><summary>How do I secure my spot?</summary><p>Because this is a personalized 1-on-1 experience, I only work with a small number of students at a time to ensure the highest quality of feedback. Click the button below to reach out to me directly on WhatsApp so we can see if you are a good fit for the program!</p></details>
+        <div style="text-align:center; margin-top:3rem;"><a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn" style="font-size:18px; padding:18px 40px;">👉 Let's talk on WhatsApp and unlock your voice</a></div>
       </div>
     </div>
   </section>
@@ -643,16 +578,11 @@ footer strong{color:var(--brand)}
 <div class="page page-full" id="page-community">
   <div class="community-container">
     <div id="community-feed-view">
-      <div class="section-intro" style="text-align:center">
-        <h2>Community</h2>
-        <p>Ask questions, share your progress, and help others.</p>
-      </div>
+      <div class="section-intro" style="text-align:center"><h2>Community</h2><p>Ask questions, share your progress, and help others.</p></div>
       <div class="write-post-box">
         <input type="text" id="new-post-title" class="gate-input" placeholder="Title of your post" style="margin-bottom:8px"/>
         <div id="community-editor-container"></div>
-        <div style="text-align:right;margin-top:8px">
-          <button class="primary-btn" style="width:auto;padding:6px 16px" onclick="submitPost()">Post</button>
-        </div>
+        <div style="text-align:right;margin-top:8px"><button class="primary-btn" style="width:auto;padding:6px 16px" onclick="submitPost()">Post</button></div>
       </div>
       <div id="community-posts-list"><div style="text-align:center;padding:3rem;color:var(--text-light);font-size:14px">Loading posts...</div></div>
     </div>
@@ -674,9 +604,7 @@ footer strong{color:var(--brand)}
 <div class="page page-full" id="page-classroom">
   <div id="classroom-grid-view">
     <div class="section-intro"><h2>Classroom</h2><p>Select a folder to see its lessons and activities.</p></div>
-    <div class="course-grid" id="classroom-modules-grid">
-      <div style="color:var(--text-light);font-size:14px;grid-column:1/-1;text-align:center;padding:3rem 0">Loading...</div>
-    </div>
+    <div class="course-grid" id="classroom-modules-grid"><div style="color:var(--text-light);font-size:14px;grid-column:1/-1;text-align:center;padding:3rem 0">Loading...</div></div>
   </div>
   <div id="classroom-player-view" style="display:none">
     <button onclick="backToClassroomGrid()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-weight:600;font-family:'Inter',sans-serif;font-size:13px;margin-bottom:1.5rem;display:flex;align-items:center;gap:6px">← Back to Classroom</button>
@@ -686,43 +614,23 @@ footer strong{color:var(--brand)}
         <div class="c-nav-list" id="sidebar-render"></div>
       </aside>
       <main class="c-main">
-        <div id="view-welcome" class="c-empty-state">
-          <div style="font-size:40px;margin-bottom:12px">👋</div>
-          <h2 style="color:var(--text);font-weight:800;margin-bottom:8px;font-size:18px">Welcome!</h2>
-          <p>Select a lesson from the menu on the left to get started.</p>
-        </div>
+        <div id="view-welcome" class="c-empty-state"><div style="font-size:40px;margin-bottom:12px">👋</div><h2 style="color:var(--text);font-weight:800;margin-bottom:8px;font-size:18px">Welcome!</h2><p>Select a lesson from the menu on the left to get started.</p></div>
         <div id="view-video" style="display:none">
-          <h2 id="cv-video-title" class="lesson-title-main"></h2>
-          <div id="cv-video-audios" class="lesson-audios-box" style="display:none"></div>
-          <div id="cv-video-player" class="video-container"></div>
-          <div id="cv-video-text" class="text-content-main ql-editor" style="border:none;padding:0;margin-top:1.5rem"></div>
-          <div id="cv-video-resources" class="resources-panel" style="display:none"></div>
-          <div class="lesson-complete-wrap"><button class="submit-btn" id="btn-complete-video" onclick="markCurrentLessonComplete()">Mark as complete</button></div>
+          <h2 id="cv-video-title" class="lesson-title-main"></h2><div id="cv-video-audios" class="lesson-audios-box" style="display:none"></div><div id="cv-video-player" class="video-container"></div><div id="cv-video-text" class="text-content-main ql-editor" style="border:none;padding:0;margin-top:1.5rem"></div><div id="cv-video-resources" class="resources-panel" style="display:none"></div><div class="lesson-complete-wrap"><button class="submit-btn" id="btn-complete-video" onclick="markCurrentLessonComplete()">Mark as complete</button></div>
         </div>
         <div id="view-text" style="display:none">
-          <h2 id="cv-text-title" class="lesson-title-main"></h2>
-          <div id="cv-text-audios" class="lesson-audios-box" style="display:none"></div>
-          <div id="cv-text-content" class="text-content-main ql-editor" style="border:none;padding:0"></div>
-          <div id="cv-text-resources" class="resources-panel" style="display:none"></div>
-          <div class="lesson-complete-wrap"><button class="submit-btn" id="btn-complete-text" onclick="markCurrentLessonComplete()">Mark as complete</button></div>
+          <h2 id="cv-text-title" class="lesson-title-main"></h2><div id="cv-text-audios" class="lesson-audios-box" style="display:none"></div><div id="cv-text-content" class="text-content-main ql-editor" style="border:none;padding:0"></div><div id="cv-text-resources" class="resources-panel" style="display:none"></div><div class="lesson-complete-wrap"><button class="submit-btn" id="btn-complete-text" onclick="markCurrentLessonComplete()">Mark as complete</button></div>
         </div>
         <div id="view-embed" style="display:none">
-          <h2 id="cv-embed-title" class="lesson-title-main"></h2>
-          <div id="cv-embed-audios" class="lesson-audios-box" style="display:none"></div>
-          <div id="cv-embed-text" class="text-content-main ql-editor" style="border:none;padding:0;margin-bottom:1.5rem"></div>
-          <div id="cv-embed-container" style="width:100%;border-radius:var(--radius);overflow:hidden;margin-bottom:1.5rem"></div>
-          <div id="cv-embed-resources" class="resources-panel" style="display:none"></div>
-          <div class="lesson-complete-wrap"><button class="submit-btn" id="btn-complete-embed" onclick="markCurrentLessonComplete()">Mark as complete</button></div>
+          <h2 id="cv-embed-title" class="lesson-title-main"></h2><div id="cv-embed-audios" class="lesson-audios-box" style="display:none"></div><div id="cv-embed-text" class="text-content-main ql-editor" style="border:none;padding:0;margin-bottom:1.5rem"></div><div id="cv-embed-container" style="width:100%;border-radius:var(--radius);overflow:hidden;margin-bottom:1.5rem"></div><div id="cv-embed-resources" class="resources-panel" style="display:none"></div><div class="lesson-complete-wrap"><button class="submit-btn" id="btn-complete-embed" onclick="markCurrentLessonComplete()">Mark as complete</button></div>
         </div>
         <div id="view-exercise" style="display:none">
           <h2 id="player-title" class="lesson-title-main"></h2>
           <div id="cv-task-text" class="text-content-main ql-editor" style="border:none;padding:0;margin-bottom:1.5rem;display:none"></div>
+          <audio id="player-audio" controls style="display:none;width:100%;margin-bottom:1.25rem;border-radius:30px"></audio>
           <div id="cv-task-audios" class="lesson-audios-box" style="display:none"></div>
           <div id="player-questions"></div>
-          <div class="player-footer">
-            <button class="submit-btn" id="submit-btn" onclick="submitExercise()">Check my answers</button>
-            <button class="retry-btn" id="retry-btn" style="display:none" onclick="retryExercise()">Try again</button>
-          </div>
+          <div class="player-footer"><button class="submit-btn" id="submit-btn" onclick="submitExercise()">Check my answers</button><button class="retry-btn" id="retry-btn" style="display:none" onclick="retryExercise()">Try again</button></div>
           <div id="score-area"></div>
           <div id="cv-task-resources" class="resources-panel" style="display:none"></div>
         </div>
@@ -732,137 +640,63 @@ footer strong{color:var(--brand)}
 </div>
 
 <div class="page page-full" id="page-teacher">
-  <div class="teacher-header">
-    <h2>Teacher Dashboard</h2>
-    <p>Organize your content, control access, and view student progress.</p>
-  </div>
+  <div class="teacher-header"><h2>Teacher Dashboard</h2><p>Organize your content, control access, and view student progress.</p></div>
   <div class="teacher-layout">
     <div>
       <div class="t-panel">
         <h3 id="panel-title-mod">📂 1. Create Module</h3>
         <input type="hidden" id="edit-mod-id" value=""/>
-        
         <div style="display:flex; gap:12px; margin-bottom:8px">
-          <div style="flex:1">
-            <span class="field-label" style="margin-top:0">Module name</span>
-            <input type="text" id="t-mod-title" placeholder="e.g. Pronunciation Basics" style="margin-bottom:0"/>
-          </div>
-          <div style="flex:1">
-            <span class="field-label" style="margin-top:0">Access Control</span>
-            <label style="font-size:13px;display:flex;align-items:center;gap:6px;height:35px;margin:0">
-               <input type="checkbox" id="t-mod-private" onchange="document.getElementById('t-mod-emails-wrap').style.display = this.checked ? 'block' : 'none'" style="width:auto;margin:0"/>
-               Make module private
-            </label>
-          </div>
+          <div style="flex:1"><span class="field-label" style="margin-top:0">Module name</span><input type="text" id="t-mod-title" placeholder="e.g. Pronunciation Basics" style="margin-bottom:0"/></div>
+          <div style="flex:1"><span class="field-label" style="margin-top:0">Access Control</span><label style="font-size:13px;display:flex;align-items:center;gap:6px;height:35px;margin:0"><input type="checkbox" id="t-mod-private" onchange="document.getElementById('t-mod-emails-wrap').style.display = this.checked ? 'block' : 'none'" style="width:auto;margin:0"/> Make module private</label></div>
         </div>
-        
-        <div id="t-mod-emails-wrap" style="display:none; margin-bottom:12px;">
-           <span class="field-label">Allowed emails (comma separated)</span>
-           <textarea id="t-mod-emails" placeholder="e.g. student1@gmail.com, student2@yahoo.com" style="min-height:60px;"></textarea>
-        </div>
-
-        <div style="display:flex;gap:8px; margin-top:12px;">
-          <button class="primary-btn" style="margin-top:0;" onclick="saveModule()">Save module</button>
-          <button class="secondary-btn" id="btn-cancel-mod" style="display:none;" onclick="cancelEditMod()">Cancel</button>
-        </div>
+        <div id="t-mod-emails-wrap" style="display:none; margin-bottom:12px;"><span class="field-label">Allowed emails (comma separated)</span><textarea id="t-mod-emails" placeholder="e.g. student1@gmail.com, student2@yahoo.com" style="min-height:60px;"></textarea></div>
+        <div style="display:flex;gap:8px; margin-top:12px;"><button class="primary-btn" style="margin-top:0;" onclick="saveModule()">Save module</button><button class="secondary-btn" id="btn-cancel-mod" style="display:none;" onclick="cancelEditMod()">Cancel</button></div>
       </div>
-
       <div class="t-panel">
         <h3 id="panel-title-sub">📁 2. Create Subfolder</h3>
         <input type="hidden" id="edit-sub-id" value=""/>
-        
         <div style="display:flex; gap:12px; margin-bottom:8px">
-          <div style="flex:1">
-            <span class="field-label" style="margin-top:0">Inside module</span>
-            <select id="t-sub-parent" style="margin-bottom:0"></select>
-          </div>
-          <div style="flex:1">
-            <span class="field-label" style="margin-top:0">Subfolder name</span>
-            <input type="text" id="t-sub-title" placeholder="e.g. 1. The American R" style="margin-bottom:0"/>
-          </div>
+          <div style="flex:1"><span class="field-label" style="margin-top:0">Inside module</span><select id="t-sub-parent" style="margin-bottom:0"></select></div>
+          <div style="flex:1"><span class="field-label" style="margin-top:0">Subfolder name</span><input type="text" id="t-sub-title" placeholder="e.g. 1. The American R" style="margin-bottom:0"/></div>
         </div>
-
-        <div style="display:flex;gap:8px; margin-top:12px;">
-          <button class="primary-btn" style="background:var(--brand-mid); margin-top:0;" onclick="saveSubmodule()">Save subfolder</button>
-          <button class="secondary-btn" id="btn-cancel-sub" style="display:none;" onclick="cancelEditSub()">Cancel</button>
-        </div>
+        <div style="display:flex;gap:8px; margin-top:12px;"><button class="primary-btn" style="background:var(--brand-mid); margin-top:0;" onclick="saveSubmodule()">Save subfolder</button><button class="secondary-btn" id="btn-cancel-sub" style="display:none;" onclick="cancelEditSub()">Cancel</button></div>
       </div>
-
       <div class="t-panel">
         <h3 id="panel-title-les">📝 3. Add Lesson</h3>
         <input type="hidden" id="edit-les-id" value=""/>
-        
         <div style="display:flex; gap:12px; margin-bottom:12px">
-          <div style="flex:1">
-            <span class="field-label" style="margin-top:0">Module</span>
-            <select id="t-les-module" onchange="updateSubfolderSelect()" style="margin-bottom:0"></select>
-          </div>
-          <div style="flex:1">
-            <span class="field-label" style="margin-top:0">Subfolder (optional)</span>
-            <select id="t-les-submodule" style="margin-bottom:0"></select>
-          </div>
+          <div style="flex:1"><span class="field-label" style="margin-top:0">Module</span><select id="t-les-module" onchange="updateSubfolderSelect()" style="margin-bottom:0"></select></div>
+          <div style="flex:1"><span class="field-label" style="margin-top:0">Subfolder (optional)</span><select id="t-les-submodule" style="margin-bottom:0"></select></div>
         </div>
-
         <div style="display:flex; gap:12px; margin-bottom:12px">
-          <div style="flex:1">
-            <span class="field-label" style="margin-top:0">Lesson type</span>
-            <select id="t-les-type" onchange="toggleLessonFields()" style="margin-bottom:0">
-              <option value="video">📺 Video</option>
-              <option value="text">📄 Reading material</option>
-              <option value="task">📝 Interactive exercise</option>
-              <option value="embed">🌐 Embed</option>
-            </select>
-          </div>
-          <div style="flex:2">
-            <span class="field-label" style="margin-top:0">Lesson title</span>
-            <input type="text" id="t-les-title" placeholder="e.g. Lesson 1 — Short I vs Long E" style="margin-bottom:0"/>
-          </div>
+          <div style="flex:1"><span class="field-label" style="margin-top:0">Lesson type</span><select id="t-les-type" onchange="toggleLessonFields()" style="margin-bottom:0"><option value="video">📺 Video</option><option value="text">📄 Reading material</option><option value="task">📝 Interactive exercise</option><option value="embed">🌐 Embed</option></select></div>
+          <div style="flex:2"><span class="field-label" style="margin-top:0">Lesson title</span><input type="text" id="t-les-title" placeholder="e.g. Lesson 1 — Short I vs Long E" style="margin-bottom:0"/></div>
         </div>
-
         <hr style="border:0;border-top:1px solid var(--skool-border);margin:1.25rem 0"/>
         
-        <div id="fields-video">
-          <span class="field-label">YouTube URL</span>
-          <div style="display:flex; gap:8px;">
-            <input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..." style="flex:2; margin-bottom:0;"/>
-            <input type="number" id="t-les-vid-start" placeholder="Start (sec)" style="flex:1; margin-bottom:0;" title="Start time in seconds"/>
-            <input type="number" id="t-les-vid-end" placeholder="End (sec)" style="flex:1; margin-bottom:0;" title="End time in seconds"/>
-          </div>
-        </div>
-        
-        <div id="fields-text" style="display:none">
-          <span class="field-label" style="margin-top:12px;">Content (text, instructions, notes)</span>
-          <div id="quill-editor-container"></div>
-        </div>
-        
-        <div id="fields-embed" style="display:none">
-          <span class="field-label">Embed code (iframe)</span>
-          <textarea id="t-les-embed-code" placeholder="Paste your iframe code here..." style="font-family:monospace;min-height:100px"></textarea>
-        </div>
+        <div id="fields-video"><span class="field-label">YouTube URL</span><div style="display:flex; gap:8px;"><input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..." style="flex:2; margin-bottom:0;"/><input type="number" id="t-les-vid-start" placeholder="Start (sec)" style="flex:1; margin-bottom:0;" title="Start time in seconds"/><input type="number" id="t-les-vid-end" placeholder="End (sec)" style="flex:1; margin-bottom:0;" title="End time in seconds"/></div></div>
+        <div id="fields-text" style="display:none"><span class="field-label" style="margin-top:12px;">Content (text, instructions, notes)</span><div id="quill-editor-container"></div></div>
+        <div id="fields-embed" style="display:none"><span class="field-label">Embed code (iframe)</span><textarea id="t-les-embed-code" placeholder="Paste your iframe code here..." style="font-family:monospace;min-height:100px"></textarea></div>
         
         <div id="fields-task" style="display:none">
           <span class="field-label" style="margin-top: 1.5rem; margin-bottom: 8px;">Questions / Items</span>
           <div id="q-builder"></div>
-          
           <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top: 1rem;">
             <button class="secondary-btn" onclick="addQuestion('multiple_choice')">+ Multiple Choice</button>
             <button class="secondary-btn" onclick="addQuestion('fill_in_blank')">+ Fill in Blanks</button>
             <button class="secondary-btn" onclick="addQuestion('matching')">+ Matching</button>
             <button class="secondary-btn" onclick="addQuestion('open_answer')">+ Open Answer</button>
             <button class="secondary-btn" onclick="addQuestion('dictation')">+ Dictation</button>
-            <button class="secondary-btn" onclick="addQuestion('drag_drop_text')">+ Drag & Drop (Into text)</button>
-            <button class="secondary-btn" onclick="addQuestion('drag_drop')">+ Drag & Drop (Categorize)</button>
+            <button class="secondary-btn" onclick="addQuestion('drag_drop_text')">+ Drag & Drop (Text)</button>
+            <button class="secondary-btn" onclick="addQuestion('drag_drop')">+ Drag & Drop (Categories)</button>
           </div>
         </div>
 
         <div style="margin-top:1.25rem;background:#F0FDF4;padding:14px;border-radius:var(--radius-sm);border:1px solid #BBF7D0">
           <p style="font-size:12px;font-weight:700;color:#166534;margin-bottom:4px">🎧 Lesson audio examples</p>
           <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Add clickable audios for practice words or examples.</p>
-          <div class="audio-add-row">
-            <input type="text" id="t-audio-label" placeholder="Label (e.g. Word 1)" style="margin-bottom:0;flex:1"/>
-            <input type="file" id="t-audio-file" accept="audio/*" style="margin-bottom:0;width:auto;flex:1"/>
-            <button class="secondary-btn" onclick="addSharedAudio()">+ Add</button>
-          </div>
+          <div class="audio-add-row"><input type="text" id="t-audio-label" placeholder="Label (e.g. Word 1)" style="margin-bottom:0;flex:1"/><input type="file" id="t-audio-file" accept="audio/*" style="margin-bottom:0;width:auto;flex:1"/><button class="secondary-btn" onclick="addSharedAudio()">+ Add</button></div>
           <div id="t-shared-audios-render"></div>
         </div>
         <div style="margin-top:1.25rem;background:#FFF9F6;padding:14px;border-radius:var(--radius-sm);border:1px solid var(--accent)">
@@ -870,21 +704,12 @@ footer strong{color:var(--brand)}
           <input type="file" id="t-les-resources" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" multiple/>
           <div id="t-les-resources-current" style="font-size:11px;color:var(--text-muted);margin-top:-4px"></div>
         </div>
-        <div style="display:flex;gap:8px;margin-top:1rem;">
-          <button class="primary-btn" onclick="saveLesson()" id="btn-save-les" style="margin-top:0">Save lesson</button>
-          <button class="secondary-btn" id="btn-cancel-les" style="display:none;margin-top:0" onclick="cancelEditLes()">Cancel</button>
-        </div>
+        <div style="display:flex;gap:8px;margin-top:1rem;"><button class="primary-btn" onclick="saveLesson()" id="btn-save-les" style="margin-top:0">Save lesson</button><button class="secondary-btn" id="btn-cancel-les" style="display:none;margin-top:0" onclick="cancelEditLes()">Cancel</button></div>
       </div>
     </div>
     <div>
-      <div class="t-panel">
-        <h3>🛠 Content manager</h3>
-        <div id="t-manage-list"><div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div></div>
-      </div>
-      <div class="t-panel">
-        <h3>📊 Student Progress</h3>
-        <div id="t-student-progress-list"><div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">Loading...</div></div>
-      </div>
+      <div class="t-panel"><h3>🛠 Content manager</h3><div id="t-manage-list"><div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div></div></div>
+      <div class="t-panel"><h3>📊 Student Progress</h3><div id="t-student-progress-list"><div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">Loading...</div></div></div>
     </div>
   </div>
 </div>
@@ -892,9 +717,6 @@ footer strong{color:var(--brand)}
 <footer>Built with <strong>AccentUp</strong> · American English pronunciation for Spanish speakers</footer>
 
 <script>
-/* ══════════════════════════════════════════
-   CONFIG
-══════════════════════════════════════════ */
 const TEACHER_EMAIL = 'englishclasseswcami@gmail.com';
 const STUDENT_ACCESS_CODE = 'ACCENTUP-7774392';
 const SUPABASE_URL = 'https://flfyifdaitfnxncoxzxe.supabase.co';
@@ -902,129 +724,56 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-/* STATE */
-let currentUser = null, isLoginMode = true;
-let dbModules = [], dbSubmodules = [], dbLessons = [], dbProgress = [];
-let dbPosts = [], dbComments = [], dbLikes = [], dbProfiles = [];
-let currentLesson = null, activeModuleId = null, currentViewedPostId = null;
+let currentUser=null, isLoginMode=true;
+let dbModules=[], dbSubmodules=[], dbLessons=[], dbProgress=[];
+let dbPosts=[], dbComments=[], dbLikes=[], dbProfiles=[];
+let currentLesson=null, activeModuleId=null, currentViewedPostId=null;
 
-/* UX STATE */
-let studentAnswers = {}; 
-let matchState = {}; 
-let selectedDragChips = {}; 
+let studentAnswers={}; let matchState={}; let selectedDragChips={}; 
+let questionRows=[], tempAudios=[], isUploadingAudio=false;
+let quillEditor=null, communityQuill=null, editPostQuill=null;
+let activeVowel=null, activeConsonant=null, openQStates={}; 
 
-let questionRows = [], tempAudios = [], isUploadingAudio = false;
-let quillEditor = null, communityQuill = null, editPostQuill = null;
-let activeVowel = null, activeConsonant = null;
-let openQStates = {}; 
+function safeParseJSON(d){if(Array.isArray(d))return d;if(typeof d==='string'){try{return JSON.parse(d)}catch(e){return[]}}return[]}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function escapeJSArg(s){return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;').replace(/\n/g,'\\n').replace(/\r/g,'\\r')}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function timeAgo(d){const s=Math.floor((new Date()-new Date(d))/1000);if(s<60)return'Just now';if(s<3600)return Math.floor(s/60)+'m';if(s<86400)return Math.floor(s/3600)+'h';if(s<2592000)return Math.floor(s/86400)+'d';if(s<31536000)return Math.floor(s/2592000)+'mo';return Math.floor(s/31536000)+'y'}
 
-/* ── UTILS ── */
-function safeParseJSON(data) {
-  if (Array.isArray(data)) return data;
-  if (typeof data === 'string') { try { return JSON.parse(data); } catch(e) { return []; } }
-  return [];
-}
-function esc(s) {
-  return String(s || '').replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-function escapeJSArg(str) {
-  return String(str || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;').replace(/\n/g,'\\n').replace(/\r/g,'\\r');
-}
-function shuffle(arr) { for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
-function timeAgo(d) {
-  const s = Math.floor((new Date() - new Date(d)) / 1000);
-  if (s < 60) return 'Just now';
-  if (s < 3600) return Math.floor(s/60) + 'm';
-  if (s < 86400) return Math.floor(s/3600) + 'h';
-  if (s < 2592000) return Math.floor(s/86400) + 'd';
-  if (s < 31536000) return Math.floor(s/2592000) + 'mo';
-  return Math.floor(s/31536000) + 'y';
-}
 function buildYtUrl(url, start, end) {
   if (!url || !url.trim()) return '';
   let finalUrl = url.trim();
   let videoId = '';
-  
-  if (finalUrl.includes('youtube.com/embed/')) {
-     videoId = finalUrl.split('youtube.com/embed/')[1].split('?')[0];
-  } else if (finalUrl.includes('youtu.be/')) {
-     videoId = finalUrl.split('youtu.be/')[1].split('?')[0].split('&')[0];
-     finalUrl = `https://www.youtube.com/embed/${videoId}`;
-  } else if (finalUrl.includes('youtube.com/watch')) {
-     try { videoId = new URL(finalUrl).searchParams.get('v'); finalUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : finalUrl; } catch(e) {}
-  }
-  
-  if (finalUrl.includes('youtube.com/embed/')) {
-     try {
-         const u = new URL(finalUrl);
-         if(start) u.searchParams.set('start', start);
-         if(end) u.searchParams.set('end', end);
-         return u.toString();
-     } catch(e) { return finalUrl; }
-  }
+  if (finalUrl.includes('youtube.com/embed/')) { videoId = finalUrl.split('youtube.com/embed/')[1].split('?')[0]; } 
+  else if (finalUrl.includes('youtu.be/')) { videoId = finalUrl.split('youtu.be/')[1].split('?')[0].split('&')[0]; finalUrl = `https://www.youtube.com/embed/${videoId}`; } 
+  else if (finalUrl.includes('youtube.com/watch')) { try { videoId = new URL(finalUrl).searchParams.get('v'); finalUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : finalUrl; } catch(e) {} }
+  if (finalUrl.includes('youtube.com/embed/')) { try { const u = new URL(finalUrl); if(start) u.searchParams.set('start', start); if(end) u.searchParams.set('end', end); return u.toString(); } catch(e) { return finalUrl; } }
   return finalUrl;
 }
-
 function parseYtUrlParts(url) {
-   if (!url || !url.includes('youtube.com/embed/')) return { url, start:'', end:'' };
-   try {
-     const u = new URL(url);
-     const start = u.searchParams.get('start') || '';
-     const end = u.searchParams.get('end') || '';
-     u.searchParams.delete('start');
-     u.searchParams.delete('end');
-     return { url: u.toString(), start, end };
-   } catch(e) { return { url, start:'', end:'' }; }
+   if (!url || !url.includes('youtube.com/embed/')) return { url: url || '', start:'', end:'' };
+   try { const u = new URL(url); const start = u.searchParams.get('start') || ''; const end = u.searchParams.get('end') || ''; u.searchParams.delete('start'); u.searchParams.delete('end'); return { url: u.toString(), start, end }; } 
+   catch(e) { return { url: url || '', start:'', end:'' }; }
 }
 
-/* ══════════════════════════════════════════
-   INIT
-══════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
-  quillEditor = new Quill('#quill-editor-container', {
-    theme: 'snow', placeholder: 'Write your lesson content here...',
-    modules: { toolbar: [[{ header: [1,2,3,4,false] }],['bold','italic','strike','code','blockquote','code-block'],[{ list:'ordered' },{ list:'bullet' }],['link','image','video'],['clean']] }
-  });
-  communityQuill = new Quill('#community-editor-container', {
-    theme: 'snow', placeholder: 'Share something with the community...',
-    modules: { toolbar: [['bold','italic','underline'],['link','image','video'],[ { list:'bullet' }]] }
-  });
-  editPostQuill = new Quill('#edit-post-editor-container', {
-    theme: 'snow', placeholder: 'Edit your post...',
-    modules: { toolbar: [['bold','italic','underline'],['link','image','video'],[ { list:'bullet' }]] }
-  });
-  
-  sb.auth.onAuthStateChange((_e, session) => {
-    currentUser = session?.user || null;
-    updateAuthUI();
-    if (currentUser) fetchData();
-  });
-  renderQFields();
-  toggleLessonFields();
+  quillEditor = new Quill('#quill-editor-container', { theme: 'snow', placeholder: 'Write your lesson content here...', modules: { toolbar: [[{ header: [1,2,3,4,false] }],['bold','italic','strike','code','blockquote','code-block'],[{ list:'ordered' },{ list:'bullet' }],['link','image','video'],['clean']] } });
+  communityQuill = new Quill('#community-editor-container', { theme: 'snow', placeholder: 'Share something with the community...', modules: { toolbar: [['bold','italic','underline'],['link','image','video'],[ { list:'bullet' }]] } });
+  editPostQuill = new Quill('#edit-post-editor-container', { theme: 'snow', placeholder: 'Edit your post...', modules: { toolbar: [['bold','italic','underline'],['link','image','video'],[ { list:'bullet' }]] } });
+  sb.auth.onAuthStateChange((_e, session) => { currentUser = session?.user || null; updateAuthUI(); if (currentUser) fetchData(); });
+  renderQFields(); toggleLessonFields();
 });
 
-/* ══════════════════════════════════════════
-   AUTH
-══════════════════════════════════════════ */
 function handleNavAuth() { currentUser ? sb.auth.signOut() : goToPage('auth'); }
-
 function updateAuthUI() {
-  const btn = document.getElementById('nav-auth-btn');
-  const teacherTab = document.getElementById('nav-teacher-tab');
-  const profileTab = document.getElementById('nav-profile-tab');
+  const btn = document.getElementById('nav-auth-btn'); const teacherTab = document.getElementById('nav-teacher-tab'); const profileTab = document.getElementById('nav-profile-tab');
   if (currentUser) {
-    btn.textContent = 'Log out'; btn.classList.add('logout-btn-nav'); btn.classList.remove('auth-btn');
-    profileTab.style.display = 'inline-block';
-    
-    const isTeacher = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
-    if (isTeacher) teacherTab.style.display = 'inline-block';
-    
+    btn.textContent = 'Log out'; btn.classList.add('logout-btn-nav'); btn.classList.remove('auth-btn'); profileTab.style.display = 'inline-block';
+    if (currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase()) teacherTab.style.display = 'inline-block';
     if (document.getElementById('page-auth').classList.contains('active')) goToPage('classroom');
   } else {
-    btn.textContent = 'Log in'; btn.classList.remove('logout-btn-nav'); btn.classList.add('auth-btn');
-    teacherTab.style.display = 'none'; profileTab.style.display = 'none';
-    const ap = document.querySelector('.page.active')?.id;
-    if (['page-classroom','page-teacher','page-community','page-profile'].includes(ap)) goToPage('home');
+    btn.textContent = 'Log in'; btn.classList.remove('logout-btn-nav'); btn.classList.add('auth-btn'); teacherTab.style.display = 'none'; profileTab.style.display = 'none';
+    if (['page-classroom','page-teacher','page-community','page-profile'].includes(document.querySelector('.page.active')?.id)) goToPage('home');
   }
 }
 
@@ -1039,1105 +788,353 @@ function toggleAuthMode() {
 }
 
 async function handleAuth() {
-  const email = document.getElementById('auth-email').value.trim();
-  const pw = document.getElementById('auth-pw').value;
-  const code = document.getElementById('auth-code').value.trim();
+  const email = document.getElementById('auth-email').value.trim(); const pw = document.getElementById('auth-pw').value; const code = document.getElementById('auth-code').value.trim();
   const errEl = document.getElementById('auth-error'); errEl.style.display = 'none';
   if (!isLoginMode && code !== STUDENT_ACCESS_CODE) { errEl.textContent = 'Incorrect invitation code.'; errEl.style.display = 'block'; return; }
   const btn = document.getElementById('auth-submit-btn'); btn.disabled = true; btn.textContent = 'Loading...';
-  const res = isLoginMode
-    ? await sb.auth.signInWithPassword({ email, password: pw })
-    : await sb.auth.signUp({ email, password: pw });
-    
-  if (res.error) { 
-    errEl.textContent = res.error.message; errEl.style.display = 'block'; 
-    btn.disabled = false; btn.textContent = isLoginMode ? 'Log in' : 'Create account';
-  } else {
-    if (!isLoginMode || res.data?.user) {
-       const checkProf = await sb.from('user_profiles').select('id').eq('id', res.data.user.id).single();
-       if (!checkProf.data) {
-         await sb.from('user_profiles').insert([{ id: res.data.user.id, username: email.split('@')[0] }]);
-       }
-    }
+  const res = isLoginMode ? await sb.auth.signInWithPassword({ email, password: pw }) : await sb.auth.signUp({ email, password: pw });
+  if (res.error) { errEl.textContent = res.error.message; errEl.style.display = 'block'; btn.disabled = false; btn.textContent = isLoginMode ? 'Log in' : 'Create account'; } 
+  else {
+    if (!isLoginMode || res.data?.user) { const checkProf = await sb.from('user_profiles').select('id').eq('id', res.data.user.id).single(); if (!checkProf.data) await sb.from('user_profiles').insert([{ id: res.data.user.id, username: email.split('@')[0] }]); }
     btn.disabled = false; btn.textContent = isLoginMode ? 'Log in' : 'Create account';
   }
 }
 
-/* ══════════════════════════════════════════
-   NAV
-══════════════════════════════════════════ */
-document.querySelectorAll('.nav-tab[data-page]').forEach(tab => {
-  tab.onclick = () => {
-    const page = tab.dataset.page;
-    if (['classroom','teacher','community','profile'].includes(page) && !currentUser) { goToPage('auth'); return; }
-    goToPage(page);
-  };
-});
+document.querySelectorAll('.nav-tab[data-page]').forEach(tab => { tab.onclick = () => { const page = tab.dataset.page; if (['classroom','teacher','community','profile'].includes(page) && !currentUser) { goToPage('auth'); return; } goToPage(page); }; });
 
 function goToPage(pageId) {
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  
-  const tabBtn = document.querySelector(`.nav-tab[data-page="${pageId}"]`);
-  if (tabBtn) tabBtn.classList.add('active');
-  
-  const pageEl = document.getElementById('page-' + pageId);
-  if (pageEl) pageEl.classList.add('active');
-  
-  if (pageId === 'classroom') renderClassroomGrid();
-  if (pageId === 'community') renderCommunityFeed();
-  if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); }
-  if (pageId === 'profile') {
-    const p = dbProfiles.find(x => x.id === currentUser?.id);
-    if (p) document.getElementById('profile-username').value = p.username || '';
-  }
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const tabBtn = document.querySelector(`.nav-tab[data-page="${pageId}"]`); if (tabBtn) tabBtn.classList.add('active');
+  const pageEl = document.getElementById('page-' + pageId); if (pageEl) pageEl.classList.add('active');
+  if (pageId === 'classroom') renderClassroomGrid(); if (pageId === 'community') renderCommunityFeed(); if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); }
+  if (pageId === 'profile') { const p = dbProfiles.find(x => x.id === currentUser?.id); if (p) document.getElementById('profile-username').value = p.username || ''; }
   window.scrollTo(0, 0);
 }
 
-/* ══════════════════════════════════════════
-   DATA (FETCH SEGURO)
-══════════════════════════════════════════ */
 async function fetchData() {
   if (!currentUser) return;
   try {
-    const userEmail = currentUser?.email?.toLowerCase() || '';
-    const isTeacher = userEmail === TEACHER_EMAIL.toLowerCase();
-
-    // Carga secuencial ultra-segura para evitar bugs de Promise.all
-    const rMod = await sb.from('modules').select('*').order('order_index');
-    const rSub = await sb.from('submodules').select('*').order('order_index');
-    const rLes = await sb.from('lessons').select('*').order('order_index');
-    const rProg = await sb.from('student_progress').select('*').eq('user_id', currentUser.id);
-    const rPosts = await sb.from('posts').select('*').order('created_at', { ascending: false });
-    const rComments = await sb.from('comments').select('*').order('created_at', { ascending: true });
-    const rLikes = await sb.from('likes').select('*');
-    const rProfiles = await sb.from('user_profiles').select('*');
-    const rAllProg = isTeacher ? await sb.from('student_progress').select('*') : { data: [] };
-
-    const allModules = rMod.data || [];
-    dbModules = allModules.filter(m => isTeacher || !m.is_private || (m.allowed_emails && m.allowed_emails.toLowerCase().includes(userEmail)));
-    
-    dbSubmodules = rSub.data || []; 
-    dbLessons = rLes.data || []; 
-    dbProgress = rProg.data || [];
-    dbPosts = rPosts.data || []; 
-    dbComments = rComments.data || []; 
-    dbLikes = rLikes.data || []; 
-    dbProfiles = rProfiles.data || [];
-    
-    renderClassroomGrid(); 
-    updateModuleSelect(); 
-    renderManageList();
-    if (isTeacher) renderTeacherProgress(rAllProg.data || []);
+    const userEmail = currentUser?.email?.toLowerCase() || ''; const isTeacher = userEmail === TEACHER_EMAIL.toLowerCase();
+    const rMod = await sb.from('modules').select('*').order('order_index'); dbModules = (rMod?.data || []).filter(m => isTeacher || !m.is_private || (m.allowed_emails && m.allowed_emails.toLowerCase().includes(userEmail)));
+    const rSub = await sb.from('submodules').select('*').order('order_index'); dbSubmodules = rSub?.data || []; 
+    const rLes = await sb.from('lessons').select('*').order('order_index'); dbLessons = rLes?.data || []; 
+    const rProg = await sb.from('student_progress').select('*').eq('user_id', currentUser.id); dbProgress = rProg?.data || [];
+    renderClassroomGrid(); updateModuleSelect(); if(isTeacher) renderManageList();
+    const rPosts = await sb.from('posts').select('*').order('created_at', { ascending: false }); dbPosts = rPosts?.data || [];
+    const rComments = await sb.from('comments').select('*').order('created_at', { ascending: true }); dbComments = rComments?.data || [];
+    const rLikes = await sb.from('likes').select('*'); dbLikes = rLikes?.data || [];
+    const rProfiles = await sb.from('user_profiles').select('*'); dbProfiles = rProfiles?.data || [];
+    if (isTeacher) { const rAllProg = await sb.from('student_progress').select('*'); renderTeacherProgress(rAllProg?.data || []); }
     if (document.getElementById('page-community').classList.contains('active')) renderCommunityFeed();
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
+  } catch (error) { console.error("Error fetching data:", error); }
 }
 
-/* ══════════════════════════════════════════
-   PROFILES
-══════════════════════════════════════════ */
-function renderAvatarHTML(userId, email) {
-  const p = dbProfiles.find(x => x.id === userId);
-  if (p?.avatar_url) return `<img src="${p.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`;
-  return esc((email || '?').split('@')[0].charAt(0).toUpperCase());
-}
-function getDisplayName(userId, email) {
-  const p = dbProfiles.find(x => x.id === userId);
-  return p?.username ? esc(p.username) : esc((email || '?').split('@')[0]);
-}
+function renderAvatarHTML(userId, email) { const p = dbProfiles.find(x => x.id === userId); if (p?.avatar_url) return `<img src="${p.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`; return esc((email || '?').split('@')[0].charAt(0).toUpperCase()); }
+function getDisplayName(userId, email) { const p = dbProfiles.find(x => x.id === userId); return p?.username ? esc(p.username) : esc((email || '?').split('@')[0]); }
 async function saveProfile() {
-  const username = document.getElementById('profile-username').value.trim();
-  if (!username) { alert('Please choose a username.'); return; }
+  const username = document.getElementById('profile-username').value.trim(); if (!username) { alert('Please choose a username.'); return; }
   const btn = document.getElementById('btn-save-profile'); btn.disabled = true; btn.textContent = 'Saving...';
-  let avatarUrl = dbProfiles.find(p => p.id === currentUser.id)?.avatar_url || null;
-  const file = document.getElementById('profile-avatar').files[0];
-  if (file) {
-    const fn = `av_${currentUser.id}_${Date.now()}`;
-    const { error } = await sb.storage.from('avatars').upload(fn, file, { upsert: true });
-    if (!error) avatarUrl = sb.storage.from('avatars').getPublicUrl(fn).data.publicUrl;
-    else alert('Could not upload image. Make sure the "avatars" bucket exists in Supabase.');
-  }
-  await sb.from('user_profiles').upsert({ id: currentUser.id, username, avatar_url: avatarUrl });
-  await fetchData();
-  btn.disabled = false; btn.textContent = 'Save profile';
-  alert('Profile updated!');
+  let avatarUrl = dbProfiles.find(p => p.id === currentUser.id)?.avatar_url || null; const file = document.getElementById('profile-avatar').files[0];
+  if (file) { const fn = `av_${currentUser.id}_${Date.now()}`; const { error } = await sb.storage.from('avatars').upload(fn, file, { upsert: true }); if (!error) avatarUrl = sb.storage.from('avatars').getPublicUrl(fn).data.publicUrl; else alert('Error uploading image.'); }
+  await sb.from('user_profiles').upsert({ id: currentUser.id, username, avatar_url: avatarUrl }); await fetchData();
+  btn.disabled = false; btn.textContent = 'Save profile'; alert('Profile updated!');
 }
 
-/* ══════════════════════════════════════════
-   COMMUNITY
-══════════════════════════════════════════ */
 function renderCommunityFeed() {
   const list = document.getElementById('community-posts-list'); if (!list) return;
   if (!dbPosts.length) { list.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-light);font-size:14px">No posts yet. Be the first to say hi! 👋</div>'; return; }
   list.innerHTML = dbPosts.map(post => {
-    const pLikes = dbLikes.filter(l => l.post_id === post.id);
-    const isLiked = pLikes.some(l => l.user_id === currentUser?.id);
-    const cCount = dbComments.filter(c => c.post_id === post.id).length;
+    const pLikes = dbLikes.filter(l => l.post_id === post.id); const isLiked = pLikes.some(l => l.user_id === currentUser?.id); const cCount = dbComments.filter(c => c.post_id === post.id).length;
     const isOwner = currentUser?.id === post.user_id || currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
     const ownerBtns = isOwner ? `<button class="action-btn edit-post-btn" onclick="event.stopPropagation();openEditPostModal('${post.id}')">✏️ Edit</button><button class="action-btn delete-post-btn" onclick="event.stopPropagation();deletePost('${post.id}')">🗑 Delete</button>` : '';
-    return `<div class="post-card" onclick="openPost('${post.id}')">
-      <div class="post-header">
-        <div class="post-avatar">${renderAvatarHTML(post.user_id, post.user_email)}</div>
-        <div class="post-author">${getDisplayName(post.user_id, post.user_email)}</div>
-        <div class="post-date">${timeAgo(post.created_at)}</div>
-      </div>
-      <div class="post-title">${esc(post.title)}</div>
-      <div class="post-preview">${esc(post.content).replace(/<[^>]*>?/gm,'')}</div>
-      <div class="post-actions">
-        <button class="action-btn ${isLiked?'liked':''}" onclick="event.stopPropagation();toggleLike('${post.id}')">${isLiked?'❤️':'🤍'} ${pLikes.length}</button>
-        <button class="action-btn">💬 ${cCount}</button>
-        ${ownerBtns}
-      </div>
-    </div>`;
+    return `<div class="post-card" onclick="openPost('${post.id}')"><div class="post-header"><div class="post-avatar">${renderAvatarHTML(post.user_id, post.user_email)}</div><div class="post-author">${getDisplayName(post.user_id, post.user_email)}</div><div class="post-date">${timeAgo(post.created_at)}</div></div><div class="post-title">${esc(post.title)}</div><div class="post-preview">${esc(post.content).replace(/<[^>]*>?/gm,'')}</div><div class="post-actions"><button class="action-btn ${isLiked?'liked':''}" onclick="event.stopPropagation();toggleLike('${post.id}')">${isLiked?'❤️':'🤍'} ${pLikes.length}</button><button class="action-btn">💬 ${cCount}</button>${ownerBtns}</div></div>`;
   }).join('');
 }
-
-async function submitPost() {
-  const title = document.getElementById('new-post-title').value.trim();
-  const content = communityQuill.root.innerHTML;
-  if (!title || communityQuill.getText().trim() === '') { alert('Please add a title and some content.'); return; }
-  const { error } = await sb.from('posts').insert([{ user_id: currentUser.id, user_email: currentUser.email, title, content }]);
-  if (error) { alert('Error: ' + error.message); return; }
-  document.getElementById('new-post-title').value = ''; communityQuill.root.innerHTML = '';
-  await fetchData();
-}
-
-function openEditPostModal(postId) {
-  const post = dbPosts.find(p => p.id === postId); if (!post) return;
-  document.getElementById('edit-post-id').value = postId;
-  document.getElementById('edit-post-title').value = post.title;
-  editPostQuill.root.innerHTML = post.content;
-  document.getElementById('edit-post-modal').classList.remove('hidden');
-}
+async function submitPost() { const title = document.getElementById('new-post-title').value.trim(); const content = communityQuill.root.innerHTML; if (!title || communityQuill.getText().trim() === '') { alert('Please add a title and some content.'); return; } await sb.from('posts').insert([{ user_id: currentUser.id, user_email: currentUser.email, title, content }]); document.getElementById('new-post-title').value = ''; communityQuill.root.innerHTML = ''; await fetchData(); }
+function openEditPostModal(postId) { const post = dbPosts.find(p => p.id === postId); if (!post) return; document.getElementById('edit-post-id').value = postId; document.getElementById('edit-post-title').value = post.title; editPostQuill.root.innerHTML = post.content; document.getElementById('edit-post-modal').classList.remove('hidden'); }
 function closeEditPostModal() { document.getElementById('edit-post-modal').classList.add('hidden'); }
-async function saveEditedPost() {
-  const id = document.getElementById('edit-post-id').value;
-  const title = document.getElementById('edit-post-title').value.trim();
-  const content = editPostQuill.root.innerHTML;
-  if (!title || editPostQuill.getText().trim() === '') { alert('Please fill in both fields.'); return; }
-  const btn = document.querySelector('#edit-post-modal .primary-btn');
-  btn.disabled = true; btn.textContent = 'Saving...';
-  const { error } = await sb.from('posts').update({ title, content }).eq('id', id);
-  btn.disabled = false; btn.textContent = 'Save changes';
-  if (error) { alert('Error: ' + error.message); return; }
-  closeEditPostModal(); await fetchData();
-  if (currentViewedPostId === id) renderPostDetail();
-}
-async function deletePost(postId) {
-  if (!confirm('Delete this post?')) return;
-  const isTeacher = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
-  
-  if (isTeacher) {
-    await sb.from('posts').delete().eq('id', postId);
-  } else {
-    await sb.from('posts').delete().eq('id', postId).eq('user_id', currentUser.id);
-  }
-  await sb.from('comments').delete().eq('post_id', postId);
-  await sb.from('likes').delete().eq('post_id', postId);
-  
-  if (currentViewedPostId === postId) backToCommunityFeed(); else await fetchData();
-}
-
-function openPost(postId) {
-  currentViewedPostId = postId;
-  document.getElementById('community-feed-view').style.display = 'none';
-  document.getElementById('community-post-view').style.display = 'block';
-  renderPostDetail();
-}
-function backToCommunityFeed() {
-  currentViewedPostId = null;
-  document.getElementById('community-feed-view').style.display = 'block';
-  document.getElementById('community-post-view').style.display = 'none';
-  renderCommunityFeed();
-}
+async function saveEditedPost() { const id = document.getElementById('edit-post-id').value; const title = document.getElementById('edit-post-title').value.trim(); const content = editPostQuill.root.innerHTML; if (!title || editPostQuill.getText().trim() === '') return; const btn = document.querySelector('#edit-post-modal .primary-btn'); btn.disabled = true; await sb.from('posts').update({ title, content }).eq('id', id); btn.disabled = false; closeEditPostModal(); await fetchData(); if (currentViewedPostId === id) renderPostDetail(); }
+async function deletePost(postId) { if (!confirm('Delete this post?')) return; const isTeacher = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase(); if (isTeacher) { await sb.from('posts').delete().eq('id', postId); } else { await sb.from('posts').delete().eq('id', postId).eq('user_id', currentUser.id); } await sb.from('comments').delete().eq('post_id', postId); await sb.from('likes').delete().eq('post_id', postId); if (currentViewedPostId === postId) backToCommunityFeed(); else await fetchData(); }
+function openPost(postId) { currentViewedPostId = postId; document.getElementById('community-feed-view').style.display = 'none'; document.getElementById('community-post-view').style.display = 'block'; renderPostDetail(); }
+function backToCommunityFeed() { currentViewedPostId = null; document.getElementById('community-feed-view').style.display = 'block'; document.getElementById('community-post-view').style.display = 'none'; renderCommunityFeed(); }
 function renderPostDetail() {
   const post = dbPosts.find(p => p.id === currentViewedPostId); if (!post) { backToCommunityFeed(); return; }
-  const pLikes = dbLikes.filter(l => l.post_id === post.id);
-  const isLiked = pLikes.some(l => l.user_id === currentUser?.id);
+  const pLikes = dbLikes.filter(l => l.post_id === post.id); const isLiked = pLikes.some(l => l.user_id === currentUser?.id);
   const isOwner = currentUser?.id === post.user_id || currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
-  const ownerBtns = isOwner ? `<button class="action-btn edit-post-btn" onclick="openEditPostModal('${post.id}')">✏️ Edit</button><button class="action-btn delete-post-btn" onclick="deletePost('${post.id}')">🗑 Delete</button>` : '';
-  document.getElementById('single-post-render').innerHTML = `
-    <div style="background:var(--surface);border:1px solid var(--skool-border);border-radius:var(--radius);padding:1.5rem">
-      <div class="post-header"><div class="post-avatar">${renderAvatarHTML(post.user_id, post.user_email)}</div><div class="post-author">${getDisplayName(post.user_id, post.user_email)}</div><div class="post-date">${timeAgo(post.created_at)}</div></div>
-      <div class="post-title" style="font-size:20px">${esc(post.title)}</div>
-      <div class="post-full-body ql-editor" style="padding:0">${post.content}</div>
-      <div class="post-actions">
-        <button class="action-btn ${isLiked?'liked':''}" onclick="toggleLike('${post.id}',true)">${isLiked?'❤️':'🤍'} ${pLikes.length} Likes</button>
-        ${ownerBtns}
-      </div>
-    </div>`;
-  const pComments = dbComments.filter(c => c.post_id === post.id);
-  const cList = document.getElementById('comments-list');
+  document.getElementById('single-post-render').innerHTML = `<div style="background:var(--surface);border:1px solid var(--skool-border);border-radius:var(--radius);padding:1.5rem"><div class="post-header"><div class="post-avatar">${renderAvatarHTML(post.user_id, post.user_email)}</div><div class="post-author">${getDisplayName(post.user_id, post.user_email)}</div><div class="post-date">${timeAgo(post.created_at)}</div></div><div class="post-title" style="font-size:20px">${esc(post.title)}</div><div class="post-full-body ql-editor" style="padding:0">${post.content}</div><div class="post-actions"><button class="action-btn ${isLiked?'liked':''}" onclick="toggleLike('${post.id}',true)">${isLiked?'❤️':'🤍'} ${pLikes.length} Likes</button>${isOwner ? `<button class="action-btn edit-post-btn" onclick="openEditPostModal('${post.id}')">✏️ Edit</button><button class="action-btn delete-post-btn" onclick="deletePost('${post.id}')">🗑 Delete</button>` : ''}</div></div>`;
+  const pComments = dbComments.filter(c => c.post_id === post.id); const cList = document.getElementById('comments-list');
   if (!pComments.length) { cList.innerHTML = '<div style="color:var(--text-light);font-size:13px">No comments yet.</div>'; return; }
-  cList.innerHTML = pComments.map(c => {
-    const isCommentOwner = currentUser?.id === c.user_id || currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
-    return `<div class="comment-item">
-      <div class="post-avatar" style="width:30px;height:30px;font-size:12px">${renderAvatarHTML(c.user_id, c.user_email)}</div>
-      <div class="comment-bubble">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
-          <div class="comment-author">${getDisplayName(c.user_id, c.user_email)}</div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <span class="post-date">${timeAgo(c.created_at)}</span>
-            ${isCommentOwner ? `<button class="action-btn delete-post-btn" style="font-size:11px" onclick="deleteComment('${c.id}')">🗑</button>` : ''}
-          </div>
-        </div>
-        <div class="comment-text">${esc(c.content)}</div>
-      </div>
-    </div>`;
-  }).join('');
+  cList.innerHTML = pComments.map(c => `<div class="comment-item"><div class="post-avatar" style="width:30px;height:30px;font-size:12px">${renderAvatarHTML(c.user_id, c.user_email)}</div><div class="comment-bubble"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px"><div class="comment-author">${getDisplayName(c.user_id, c.user_email)}</div><div style="display:flex;align-items:center;gap:8px"><span class="post-date">${timeAgo(c.created_at)}</span>${(currentUser?.id === c.user_id || currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase()) ? `<button class="action-btn delete-post-btn" style="font-size:11px" onclick="deleteComment('${c.id}')">🗑</button>` : ''}</div></div><div class="comment-text">${esc(c.content)}</div></div></div>`).join('');
 }
-async function submitComment() {
-  if (!currentViewedPostId) return;
-  const input = document.getElementById('new-comment-input');
-  const text = input.value.trim(); if (!text) return;
-  input.value = 'Sending...'; input.disabled = true;
-  const { error } = await sb.from('comments').insert([{ post_id: currentViewedPostId, user_id: currentUser.id, user_email: currentUser.email, content: text }]);
-  input.disabled = false; input.value = '';
-  if (error) { alert('Error: ' + error.message); return; }
-  await fetchData(); renderPostDetail();
-}
-async function deleteComment(commentId) {
-  if (!confirm('Delete this comment?')) return;
-  const isTeacher = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
-  if (isTeacher) {
-    await sb.from('comments').delete().eq('id', commentId);
-  } else {
-    await sb.from('comments').delete().eq('id', commentId).eq('user_id', currentUser.id);
-  }
-  await fetchData(); renderPostDetail();
-}
-async function toggleLike(postId, inDetail = false) {
-  const existing = dbLikes.find(l => l.post_id === postId && l.user_id === currentUser.id);
-  if (existing) await sb.from('likes').delete().eq('id', existing.id);
-  else await sb.from('likes').insert([{ post_id: postId, user_id: currentUser.id }]);
-  await fetchData();
-  if (inDetail) renderPostDetail(); else renderCommunityFeed();
-}
+async function submitComment() { if (!currentViewedPostId) return; const input = document.getElementById('new-comment-input'); const text = input.value.trim(); if (!text) return; input.disabled = true; await sb.from('comments').insert([{ post_id: currentViewedPostId, user_id: currentUser.id, user_email: currentUser.email, content: text }]); input.disabled = false; input.value = ''; await fetchData(); renderPostDetail(); }
+async function deleteComment(commentId) { if (!confirm('Delete?')) return; if (currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase()) await sb.from('comments').delete().eq('id', commentId); else await sb.from('comments').delete().eq('id', commentId).eq('user_id', currentUser.id); await fetchData(); renderPostDetail(); }
+async function toggleLike(postId, inDetail = false) { const existing = dbLikes.find(l => l.post_id === postId && l.user_id === currentUser.id); if (existing) await sb.from('likes').delete().eq('id', existing.id); else await sb.from('likes').insert([{ post_id: postId, user_id: currentUser.id }]); await fetchData(); if (inDetail) renderPostDetail(); else renderCommunityFeed(); }
 
-/* ══════════════════════════════════════════
-   CLASSROOM
-══════════════════════════════════════════ */
 function renderClassroomGrid() {
   const grid = document.getElementById('classroom-modules-grid'); if (!grid) return;
-  if (!currentUser) { grid.innerHTML = '<div style="color:var(--text-light);font-size:14px;text-align:center;padding:3rem 0;grid-column:1/-1">Log in to access the classroom.</div>'; return; }
-  if (!dbModules.length) { grid.innerHTML = '<div style="color:var(--text-light);font-size:14px;text-align:center;padding:3rem 0;grid-column:1/-1">No content yet — your teacher will add modules soon!</div>'; return; }
+  if (!currentUser) { grid.innerHTML = '<div style="color:var(--text-light);font-size:14px;grid-column:1/-1;text-align:center;padding:3rem 0">Log in to access the classroom.</div>'; return; }
+  if (!dbModules.length) { grid.innerHTML = '<div style="color:var(--text-light);font-size:14px;grid-column:1/-1;text-align:center;padding:3rem 0">No content yet!</div>'; return; }
   grid.innerHTML = dbModules.map(m => {
-    const modLessons = dbLessons.filter(l => l.module_id === m.id);
-    const total = modLessons.length;
-    const done = modLessons.filter(l => dbProgress.some(p => p.lesson_id === l.id)).length;
-    const pct = total === 0 ? 0 : Math.round(done / total * 100);
-    const privateBadge = m.is_private ? `<span class="private-badge">Private</span>` : '';
-    return `<div class="course-card" onclick="openModule('${m.id}')">
-      ${privateBadge}
-      <div class="course-card-title">${esc(m.title)}</div>
-      <div class="course-card-desc">${total} lesson${total !== 1 ? 's' : ''}</div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <div style="flex:1;background:var(--skool-border);border-radius:10px;height:6px;overflow:hidden"><div style="background:var(--green);width:${pct}%;height:100%;border-radius:10px;transition:width .3s"></div></div>
-        <span style="font-size:11px;font-weight:700;color:var(--text-muted)">${pct}%</span>
-      </div>
-    </div>`;
+    const modLessons = dbLessons.filter(l => l.module_id === m.id); const total = modLessons.length; const done = modLessons.filter(l => dbProgress.some(p => p.lesson_id === l.id)).length; const pct = total === 0 ? 0 : Math.round(done / total * 100);
+    return `<div class="course-card" onclick="openModule('${m.id}')">${m.is_private ? `<span class="private-badge">Private</span>` : ''}<div class="course-card-title">${esc(m.title)}</div><div class="course-card-desc">${total} lesson${total !== 1 ? 's' : ''}</div><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;background:var(--skool-border);border-radius:10px;height:6px;overflow:hidden"><div style="background:var(--green);width:${pct}%;height:100%;border-radius:10px;transition:width .3s"></div></div><span style="font-size:11px;font-weight:700;color:var(--text-muted)">${pct}%</span></div></div>`;
   }).join('');
 }
-function openModule(moduleId) {
-  activeModuleId = moduleId;
-  document.getElementById('classroom-grid-view').style.display = 'none';
-  document.getElementById('classroom-player-view').style.display = 'block';
-  document.getElementById('sidebar-mod-title').textContent = dbModules.find(m => m.id === moduleId)?.title || '';
-  renderSidebar(moduleId); hideAllViews(); document.getElementById('view-welcome').style.display = 'block';
-}
-function backToClassroomGrid() {
-  document.getElementById('classroom-grid-view').style.display = 'block';
-  document.getElementById('classroom-player-view').style.display = 'none';
-  hideAllViews(); activeModuleId = null;
-}
+function openModule(moduleId) { activeModuleId = moduleId; document.getElementById('classroom-grid-view').style.display = 'none'; document.getElementById('classroom-player-view').style.display = 'block'; document.getElementById('sidebar-mod-title').textContent = dbModules.find(m => m.id === moduleId)?.title || ''; renderSidebar(moduleId); hideAllViews(); document.getElementById('view-welcome').style.display = 'block'; }
+function backToClassroomGrid() { document.getElementById('classroom-grid-view').style.display = 'block'; document.getElementById('classroom-player-view').style.display = 'none'; hideAllViews(); activeModuleId = null; }
 function renderSidebar(moduleId) {
-  const sidebar = document.getElementById('sidebar-render');
-  const subs = dbSubmodules.filter(s => s.module_id === moduleId);
-  const iconMap = { video:'📺', text:'📄', task:'📝', embed:'🌐' };
-  let html = '';
+  const sidebar = document.getElementById('sidebar-render'); const subs = dbSubmodules.filter(s => s.module_id === moduleId); const iconMap = { video:'📺', text:'📄', task:'📝', embed:'🌐' }; let html = '';
   subs.forEach(sub => {
-    const subLessons = dbLessons.filter(l => l.submodule_id === sub.id);
-    if (!subLessons.length) return;
-    const doneCount = subLessons.filter(l => dbProgress.some(p => p.lesson_id === l.id)).length;
-    const pct = Math.round(doneCount / subLessons.length * 100);
+    const subLessons = dbLessons.filter(l => l.submodule_id === sub.id); if (!subLessons.length) return;
+    const doneCount = subLessons.filter(l => dbProgress.some(p => p.lesson_id === l.id)).length; const pct = Math.round(doneCount / subLessons.length * 100);
     html += `<div class="c-subfolder-group"><div class="c-subfolder-header"><span>${esc(sub.title)}</span><span class="c-subfolder-prog ${pct===100?'done':''}">${pct}%</span></div>`;
-    subLessons.forEach(l => {
-      const isDone = dbProgress.some(p => p.lesson_id === l.id);
-      html += `<div class="c-item" id="item-${l.id}" onclick="showLesson('${l.id}')"><div style="display:flex;align-items:center;gap:8px;overflow:hidden"><span>${iconMap[l.type]||'📄'}</span><span class="c-item-title">${esc(l.title)}</span></div>${isDone?'<span>✅</span>':'<span style="font-size:10px">⚪</span>'}</div>`;
-    });
+    subLessons.forEach(l => { const isDone = dbProgress.some(p => p.lesson_id === l.id); html += `<div class="c-item" id="item-${l.id}" onclick="showLesson('${l.id}')"><div style="display:flex;align-items:center;gap:8px;overflow:hidden"><span>${iconMap[l.type]||'📄'}</span><span class="c-item-title">${esc(l.title)}</span></div>${isDone?'<span>✅</span>':'<span style="font-size:10px">⚪</span>'}</div>`; });
     html += '</div>';
   });
   const orphans = dbLessons.filter(l => l.module_id === moduleId && !l.submodule_id);
-  if (orphans.length) {
-    html += '<div class="c-subfolder-group">';
-    orphans.forEach(l => {
-      const isDone = dbProgress.some(p => p.lesson_id === l.id);
-      html += `<div class="c-item" id="item-${l.id}" onclick="showLesson('${l.id}')"><div style="display:flex;align-items:center;gap:8px;overflow:hidden"><span>${iconMap[l.type]||'📄'}</span><span class="c-item-title">${esc(l.title)}</span></div>${isDone?'<span>✅</span>':'<span style="font-size:10px">⚪</span>'}</div>`;
-    });
-    html += '</div>';
-  }
-  if (!html) html = '<div style="font-size:12px;color:var(--text-light);text-align:center;margin-top:1rem">Empty folder</div>';
-  sidebar.innerHTML = html;
+  if (orphans.length) { html += '<div class="c-subfolder-group">'; orphans.forEach(l => { const isDone = dbProgress.some(p => p.lesson_id === l.id); html += `<div class="c-item" id="item-${l.id}" onclick="showLesson('${l.id}')"><div style="display:flex;align-items:center;gap:8px;overflow:hidden"><span>${iconMap[l.type]||'📄'}</span><span class="c-item-title">${esc(l.title)}</span></div>${isDone?'<span>✅</span>':'<span style="font-size:10px">⚪</span>'}</div>`; }); html += '</div>'; }
+  sidebar.innerHTML = html || '<div style="font-size:12px;color:var(--text-light);text-align:center;margin-top:1rem">Empty folder</div>';
 }
-function setActiveSidebarItem(id) {
-  document.querySelectorAll('.c-item').forEach(el => el.classList.remove('active'));
-  document.getElementById(id)?.classList.add('active');
-}
-function hideAllViews() {
-  ['view-welcome','view-video','view-text','view-exercise','view-embed'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
-  const vp = document.getElementById('cv-video-player'); if (vp) vp.innerHTML = '';
-  const ep = document.getElementById('cv-embed-container'); if (ep) ep.innerHTML = '';
-}
-function renderAudios(panelId, list) {
-  const el = document.getElementById(panelId); if (!el) return;
-  const arr = safeParseJSON(list);
-  if (!arr.length) { el.style.display = 'none'; return; }
-  el.style.display = 'block';
-  el.innerHTML = arr.map(a => `<div class="lesson-audio-row"><span class="lesson-audio-label">🔊 ${esc(a.label)}</span><audio controls src="${esc(a.url)}"></audio></div>`).join('');
-}
-function renderResources(panelId, list) {
-  const el = document.getElementById(panelId); if (!el) return;
-  const arr = safeParseJSON(list);
-  if (!arr.length) { el.style.display = 'none'; return; }
-  el.style.display = 'block';
-  el.innerHTML = `<div class="resources-heading">Resources</div><div class="resources-list">${arr.map(r => `<a href="${esc(r.url)}" target="_blank" class="resource-link">📎 ${esc(r.name)}</a>`).join('')}</div>`;
-}
-function updateCompleteButton(btnId, isDone) {
-  const btn = document.getElementById(btnId); if (!btn) return;
-  btn.textContent = isDone ? 'Completed ✅' : 'Mark as complete';
-  btn.style.background = isDone ? 'var(--green)' : 'var(--brand)';
-  btn.disabled = isDone;
-}
-async function markCurrentLessonComplete() {
-  if (!currentUser || !currentLesson) return;
-  ['btn-complete-video','btn-complete-text','btn-complete-embed'].forEach(id => updateCompleteButton(id, true));
-  await sb.from('student_progress').upsert({ user_id: currentUser.id, lesson_id: currentLesson.id, score: 100, total_questions: 1 }, { onConflict: 'user_id,lesson_id' });
-  await fetchData(); if (activeModuleId) renderSidebar(activeModuleId);
-}
+function setActiveSidebarItem(id) { document.querySelectorAll('.c-item').forEach(el => el.classList.remove('active')); document.getElementById(id)?.classList.add('active'); }
+function hideAllViews() { ['view-welcome','view-video','view-text','view-exercise','view-embed'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; }); const vp = document.getElementById('cv-video-player'); if (vp) vp.innerHTML = ''; }
+function renderAudios(panelId, list) { const el = document.getElementById(panelId); if (!el) return; const arr = safeParseJSON(list); if (!arr.length) { el.style.display = 'none'; return; } el.style.display = 'block'; el.innerHTML = arr.map(a => `<div class="lesson-audio-row"><span class="lesson-audio-label">🔊 ${esc(a.label)}</span><audio controls src="${esc(a.url)}"></audio></div>`).join(''); }
+function renderResources(panelId, list) { const el = document.getElementById(panelId); if (!el) return; const arr = safeParseJSON(list); if (!arr.length) { el.style.display = 'none'; return; } el.style.display = 'block'; el.innerHTML = `<div class="resources-heading">Resources</div><div class="resources-list">${arr.map(r => `<a href="${esc(r.url)}" target="_blank" class="resource-link">📎 ${esc(r.name)}</a>`).join('')}</div>`; }
+function updateCompleteButton(btnId, isDone) { const btn = document.getElementById(btnId); if (!btn) return; btn.textContent = isDone ? 'Completed ✅' : 'Mark as complete'; btn.style.background = isDone ? 'var(--green)' : 'var(--brand)'; btn.disabled = isDone; }
+async function markCurrentLessonComplete() { if (!currentUser || !currentLesson) return; ['btn-complete-video','btn-complete-text','btn-complete-embed'].forEach(id => updateCompleteButton(id, true)); await sb.from('student_progress').upsert({ user_id: currentUser.id, lesson_id: currentLesson.id, score: 100, total_questions: 1 }, { onConflict: 'user_id,lesson_id' }); await fetchData(); if (activeModuleId) renderSidebar(activeModuleId); }
 
 function showLesson(lessonId) {
-  hideAllViews(); setActiveSidebarItem('item-' + lessonId);
-  currentLesson = dbLessons.find(l => l.id === lessonId); if (!currentLesson) return;
-  const audios = safeParseJSON(currentLesson.content);
-  const resources = safeParseJSON(currentLesson.resources);
-  const isDone = dbProgress.some(p => p.lesson_id === lessonId);
+  hideAllViews(); setActiveSidebarItem('item-' + lessonId); currentLesson = dbLessons.find(l => l.id === lessonId); if (!currentLesson) return;
+  const audios = safeParseJSON(currentLesson.content); const resources = safeParseJSON(currentLesson.resources); const isDone = dbProgress.some(p => p.lesson_id === lessonId);
 
   if (currentLesson.type === 'video') {
-    document.getElementById('view-video').style.display = 'block';
-    document.getElementById('cv-video-title').textContent = currentLesson.title;
-    
-    // YouTube time support is native because the URL already contains ?start=X&end=Y if saved that way
-    document.getElementById('cv-video-player').innerHTML = currentLesson.video_url
-      ? `<iframe src="${esc(currentLesson.video_url)}" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe>`
-      : '<div style="color:#fff;padding:2rem;text-align:center">No video URL saved.</div>';
-      
-    document.getElementById('cv-video-text').innerHTML = currentLesson.text_content || '';
-    renderAudios('cv-video-audios', audios); renderResources('cv-video-resources', resources);
-    updateCompleteButton('btn-complete-video', isDone);
-  }
-  else if (currentLesson.type === 'text') {
-    document.getElementById('view-text').style.display = 'block';
-    document.getElementById('cv-text-title').textContent = currentLesson.title;
-    document.getElementById('cv-text-content').innerHTML = currentLesson.text_content || '';
-    renderAudios('cv-text-audios', audios); renderResources('cv-text-resources', resources);
-    updateCompleteButton('btn-complete-text', isDone);
-  }
-  else if (currentLesson.type === 'embed') {
-    document.getElementById('view-embed').style.display = 'block';
-    document.getElementById('cv-embed-title').textContent = currentLesson.title;
-    document.getElementById('cv-embed-text').innerHTML = currentLesson.text_content || '';
-    document.getElementById('cv-embed-container').innerHTML = currentLesson.video_url || '';
-    renderAudios('cv-embed-audios', audios); renderResources('cv-embed-resources', resources);
-    updateCompleteButton('btn-complete-embed', isDone);
-  }
-  else if (currentLesson.type === 'task') {
-    studentAnswers = {}; matchState = {}; selectedDragChips = {};
-    document.getElementById('view-exercise').style.display = 'block';
-    document.getElementById('player-title').textContent = currentLesson.title;
-    
-    const taskTextEl = document.getElementById('cv-task-text');
-    if (taskTextEl) {
-      taskTextEl.innerHTML = currentLesson.text_content || '';
-      taskTextEl.style.display = (currentLesson.text_content && currentLesson.text_content !== '<p><br></p>') ? 'block' : 'none';
-    }
-    
-    document.getElementById('submit-btn').disabled = false; document.getElementById('submit-btn').style.display = 'inline-block';
-    document.getElementById('retry-btn').style.display = 'none'; document.getElementById('score-area').innerHTML = '';
-    
-    renderAudios('cv-task-audios', audios); 
-    renderPlayerQuestions(isDone); 
-    renderResources('cv-task-resources', resources);
-    
-    if (isDone) {
-      const prev = dbProgress.find(p => p.lesson_id === lessonId);
-      if (prev) {
-        showScore(prev.score, prev.total_questions, [], true);
-      }
-    }
+    document.getElementById('view-video').style.display = 'block'; document.getElementById('cv-video-title').textContent = currentLesson.title;
+    document.getElementById('cv-video-player').innerHTML = currentLesson.video_url ? `<iframe src="${esc(currentLesson.video_url)}" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe>` : '<div style="color:#fff;padding:2rem;text-align:center">No video</div>';
+    document.getElementById('cv-video-text').innerHTML = currentLesson.text_content || ''; renderAudios('cv-video-audios', audios); renderResources('cv-video-resources', resources); updateCompleteButton('btn-complete-video', isDone);
+  } else if (currentLesson.type === 'text') {
+    document.getElementById('view-text').style.display = 'block'; document.getElementById('cv-text-title').textContent = currentLesson.title; document.getElementById('cv-text-content').innerHTML = currentLesson.text_content || ''; renderAudios('cv-text-audios', audios); renderResources('cv-text-resources', resources); updateCompleteButton('btn-complete-text', isDone);
+  } else if (currentLesson.type === 'embed') {
+    document.getElementById('view-embed').style.display = 'block'; document.getElementById('cv-embed-title').textContent = currentLesson.title; document.getElementById('cv-embed-text').innerHTML = currentLesson.text_content || ''; document.getElementById('cv-embed-container').innerHTML = currentLesson.video_url || ''; renderAudios('cv-embed-audios', audios); renderResources('cv-embed-resources', resources); updateCompleteButton('btn-complete-embed', isDone);
+  } else if (currentLesson.type === 'task') {
+    studentAnswers = {}; matchState = {}; selectedDragChips = {}; document.getElementById('view-exercise').style.display = 'block'; document.getElementById('player-title').textContent = currentLesson.title;
+    const taskTextEl = document.getElementById('cv-task-text'); if (taskTextEl) { taskTextEl.innerHTML = currentLesson.text_content || ''; taskTextEl.style.display = (currentLesson.text_content && currentLesson.text_content !== '<p><br></p>') ? 'block' : 'none'; }
+    document.getElementById('submit-btn').disabled = false; document.getElementById('submit-btn').style.display = 'inline-block'; document.getElementById('retry-btn').style.display = 'none'; document.getElementById('score-area').innerHTML = '';
+    renderAudios('cv-task-audios', audios); renderPlayerQuestions(isDone); renderResources('cv-task-resources', resources);
+    if (isDone) { const prev = dbProgress.find(p => p.lesson_id === lessonId); if (prev) showScore(prev.score, prev.total_questions, [], true); }
   }
 }
 
-/* ══════════════════════════════════════════
-   EXERCISE PLAYER (MULTI-FORMATO)
-══════════════════════════════════════════ */
 function renderPlayerQuestions(isDone = false) {
-  const wrap = document.getElementById('player-questions');
-  const content = safeParseJSON(currentLesson.task_content);
-  const prev = isDone ? dbProgress.find(p => p.lesson_id === currentLesson.id) : null;
-  const prevAnswers = prev?.answers || {}; 
+  const wrap = document.getElementById('player-questions'); const content = safeParseJSON(currentLesson.task_content);
+  const prevAnswers = (isDone ? dbProgress.find(p => p.lesson_id === currentLesson.id)?.answers : {}) || {}; 
 
   wrap.innerHTML = content.map((q, i) => {
     let qType = q.type || currentLesson.task_type;
-    
     const qAudio = q.audio_url ? `<audio controls src="${esc(q.audio_url)}" style="width:100%;height:36px;margin-bottom:10px;border-radius:20px"></audio>` : '';
     let qVideo = '';
     if (q.video_url) {
-      // Usar la URL guardada (que ya tiene los tiempos si se configuraron)
-      if (q.video_url.includes('youtube.com/embed/')) {
-        qVideo = `<div class="video-container" style="margin-bottom:12px; border-radius:8px; overflow:hidden;"><iframe src="${esc(q.video_url)}" allowfullscreen></iframe></div>`;
-      } else {
-        qVideo = `<video controls src="${esc(q.video_url)}" style="width:100%;border-radius:var(--radius-sm);margin-bottom:12px;background:#000;max-height:400px"></video>`;
-      }
+      if (q.video_url.includes('youtube.com/embed/')) qVideo = `<div class="video-container" style="margin-bottom:12px; border-radius:8px; overflow:hidden;"><iframe src="${esc(q.video_url)}" allowfullscreen></iframe></div>`;
+      else qVideo = `<video controls src="${esc(q.video_url)}" style="width:100%;border-radius:var(--radius-sm);margin-bottom:12px;background:#000;max-height:400px"></video>`;
     }
-    const qMedia = qVideo + qAudio;
-    let disabledAttr = isDone ? 'disabled' : '';
+    const qMedia = qVideo + qAudio; let disabledAttr = isDone ? 'disabled' : '';
 
     if (qType === 'drag_drop') {
-      const words = shuffle([...(q.items||[])]);
-      const cats = q.categories || [];
+      const words = shuffle([...(q.items||[])]); const cats = q.categories || [];
       return `<div class="ex-question-block">${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><div class="dnd-instruction">☝️ Tap a word, then tap a box below to sort it.</div><div class="dnd-bank" id="dnd-bank-${i}" onclick="dndZoneClick(this, ${i})">${words.map((w,wIdx)=>`<div class="dnd-chip" id="dnd-chip-${i}-${wIdx}" onclick="event.stopPropagation();dndChipClick(this, ${i})">${esc(w.word)}</div>`).join('')}</div><div class="dnd-cols">${cats.map(c=>`<div class="dnd-col" onclick="dndZoneClick(this, ${i})" data-cat="${escapeJSArg(c)}"><div class="dnd-col-header">${esc(c)}</div><div class="dnd-col-body"></div></div>`).join('')}</div></div>`;
     }
-    
     if (qType === 'drag_drop_text') {
-      let parts = q.prompt.split(/\[.*?\]/g);
-      let matches = [...q.prompt.matchAll(/\[(.*?)\]/g)].map(m => m[1]);
-      let words = shuffle([...matches]); 
-      
-      let sentenceHtml = parts.map((part, pIdx) => {
-          let out = esc(part);
-          if (pIdx < matches.length) {
-             out += `<span class="dnd-inline-dropzone" id="dnd-drop-${i}-${pIdx}" onclick="dndInlineDrop(this, ${i}, ${pIdx})" data-expected="${esc(matches[pIdx])}"></span>`;
-          }
-          return out;
-      }).join('');
-      
+      let parts = (q.prompt || '').split(/\[.*?\]/g); let matches = [...(q.prompt || '').matchAll(/\[(.*?)\]/g)].map(m => m[1]); let words = shuffle([...matches]); 
+      let sentenceHtml = parts.map((part, pIdx) => { let out = esc(part); if (pIdx < matches.length) out += `<span class="dnd-inline-dropzone" id="dnd-drop-${i}-${pIdx}" onclick="dndInlineDrop(this, ${i}, ${pIdx})" data-expected="${esc(matches[pIdx])}"></span>`; return out; }).join('');
       let bankHtml = `<div class="dnd-bank" id="dnd-bank-inline-${i}" onclick="dndInlineReturn(this, ${i})">` + words.map((w, wIdx) => `<div class="dnd-chip" id="dnd-chip-inline-${i}-${wIdx}" onclick="event.stopPropagation(); dndInlineSelect(this, ${i})">${esc(w)}</div>`).join('') + `</div>`;
-      
       return `<div class="ex-question-block">${qMedia}<div class="dnd-instruction">☝️ Tap a word, then tap a blank line to fill it.</div><div class="ex-q-text dnd-text-wrap" style="line-height:2.5; font-size:16px">${sentenceHtml}</div>${bankHtml}</div>`;
     }
-    
     if (qType === 'matching') {
-      const pairs = q.pairs || (q.left ? [q] : []);
-      const lefts = pairs.map(p => p.left);
-      const rights = shuffle([...pairs.map(p => p.right)]);
-      matchState[i] = { leftSel: null, pairs: {} };
+      const pairs = q.pairs || (q.left ? [q] : []); const lefts = pairs.map(p => p.left); const rights = shuffle([...pairs.map(p => p.right)]); matchState[i] = { leftSel: null, pairs: {} };
       return `<div class="ex-question-block">${qMedia}<div class="ex-q-text">Match the correct pairs</div><div class="matching-cols"><div><div class="match-col-label">Words</div>${lefts.map((l,lIdx)=>`<div class="match-chip" id="ml-${i}-${lIdx}" onclick="matchLeft(${i}, ${lIdx}, '${escapeJSArg(l)}')">${esc(l)}</div>`).join('')}</div><div><div class="match-col-label">Sounds / meanings</div>${rights.map((r,rIdx)=>`<div class="match-chip" id="mr-${i}-${rIdx}" onclick="matchRight(${i}, ${rIdx}, '${escapeJSArg(r)}')">${esc(r)}</div>`).join('')}</div></div></div>`;
     }
-    
     if (qType === 'fill_in_blank') {
-      const hasBrackets = (q.prompt || '').includes('[') && (q.prompt || '').includes(']');
-      if (hasBrackets) {
+      if ((q.prompt || '').includes('[')) {
          let html = `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text" style="line-height:2.5">`;
-         let parts = q.prompt.split(/\[.*?\]/g);
-         let matches = [...q.prompt.matchAll(/\[(.*?)\]/g)];
-         let givenArr = prevAnswers[i] || [];
-         parts.forEach((part, pIdx) => {
-            html += esc(part);
-            if (pIdx < matches.length) {
-                let given = (Array.isArray(givenArr) ? givenArr[pIdx] : givenArr) || '';
-                html += `<input class="fitb-input inline-input" id="fitb-${i}-${pIdx}" type="text" value="${esc(given)}" autocomplete="off" oninput="updateMultiBlank(${i}, ${pIdx}, this.value, ${matches.length})" ${disabledAttr} style="display:inline-block; width:120px; padding:6px; margin:0 4px; border-bottom:2px solid var(--brand); border-top:none; border-left:none; border-right:none; border-radius:0; background:var(--brand-light); text-align:center" />`;
-            }
-         });
-         html += `</div></div>`;
-         return html;
+         let parts = q.prompt.split(/\[.*?\]/g); let matches = [...q.prompt.matchAll(/\[(.*?)\]/g)]; let givenArr = prevAnswers[i] || [];
+         parts.forEach((part, pIdx) => { html += esc(part); if (pIdx < matches.length) { html += `<input class="fitb-input inline-input" id="fitb-${i}-${pIdx}" type="text" value="${esc((Array.isArray(givenArr) ? givenArr[pIdx] : givenArr) || '')}" autocomplete="off" oninput="updateMultiBlank(${i}, ${pIdx}, this.value, ${matches.length})" ${disabledAttr} style="display:inline-block; width:120px; padding:6px; margin:0 4px; border-bottom:2px solid var(--brand); border-top:none; border-left:none; border-right:none; border-radius:0; background:var(--brand-light); text-align:center" />`; } });
+         return html + `</div></div>`;
       } else {
-        let given = prevAnswers[i] || ''; 
-        return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><input class="fitb-input" id="fitb-${i}" type="text" placeholder="Your answer…" value="${esc(given)}" autocomplete="off" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}/></div>`;
+        return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><input class="fitb-input" id="fitb-${i}" type="text" placeholder="Your answer…" value="${esc(prevAnswers[i] || '')}" autocomplete="off" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}/></div>`;
       }
     }
+    if (qType === 'dictation') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="dict-${i}" placeholder="Write what you hear…" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(prevAnswers[i] || '')}</textarea></div>`;
+    if (qType === 'open_answer') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="oa-${i}" placeholder="Type your answer here..." oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(prevAnswers[i] || '')}</textarea>${q.answer ? `<div class="open-answer-reveal ${isDone?'visible':''}" id="reveal-${i}"><strong>Expected answer:</strong> ${esc(q.answer)}</div>` : ''}</div>`;
     
-    let given = prevAnswers[i] || ''; 
-    if (qType === 'dictation') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="dict-${i}" placeholder="Write what you hear…" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(given)}</textarea></div>`;
-    if (qType === 'open_answer') {
-      const revealHtml = q.answer ? `<div class="open-answer-reveal ${isDone?'visible':''}" id="reveal-${i}"><strong>Expected answer / keywords:</strong> ${esc(q.answer)}</div>` : '';
-      return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="oa-${i}" placeholder="Type your answer here..." oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(given)}</textarea>${revealHtml}</div>`;
-    }
-    
-    const rawOpts = Array.isArray(q.options) ? q.options : [];
-    const opts = rawOpts.filter(o => o && String(o).trim() !== '');
-    const shuffled = shuffle([...opts]);
-    
+    const opts = (Array.isArray(q.options) ? q.options : []).filter(o => o && String(o).trim() !== ''); const shuffled = shuffle([...opts]);
     let givenArr = Array.isArray(prevAnswers[i]) ? prevAnswers[i] : [prevAnswers[i]];
-    
-    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><div class="options-grid">${shuffled.map((o,j)=>{
-      const isSelected = givenArr.includes(o) ? 'selected' : '';
-      return `<button class="opt-btn ${isSelected}" id="opt-${i}-${j}" onclick="toggleOpt(${i},${j},'${escapeJSArg(o)}')" ${disabledAttr}>${esc(o)}</button>`;
-    }).join('')}</div></div>`;
+    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><div class="options-grid">${shuffled.map((o,j)=>{ return `<button class="opt-btn ${givenArr.includes(o) ? 'selected' : ''}" id="opt-${i}-${j}" onclick="toggleOpt(${i},${j},'${escapeJSArg(o)}')" ${disabledAttr}>${esc(o)}</button>`; }).join('')}</div></div>`;
   }).join('');
 }
 
-function updateMultiBlank(i, pIdx, val, total) {
-   if (!Array.isArray(studentAnswers[i])) studentAnswers[i] = new Array(total).fill('');
-   studentAnswers[i][pIdx] = val;
-}
-
-// Logic for Multiple Choice (Multiple correct)
-function toggleOpt(qi, oi, val) {
-  if(!Array.isArray(studentAnswers[qi])) studentAnswers[qi] = [];
-  const idx = studentAnswers[qi].indexOf(val);
-  const btn = document.getElementById(`opt-${qi}-${oi}`);
-  if(idx > -1) {
-     studentAnswers[qi].splice(idx, 1);
-     btn.classList.remove('selected');
-  } else {
-     studentAnswers[qi].push(val);
-     btn.classList.add('selected');
-  }
-}
-
-// Logic for Drag and Drop Categorize
-function dndChipClick(chipEl, i) {
-  document.querySelectorAll(`#player-questions .dnd-chip[id^="dnd-chip-${i}-"]`).forEach(c => c.classList.remove('selected'));
-  document.querySelectorAll(`#player-questions .dnd-bank[id="dnd-bank-${i}"], #player-questions .dnd-col[onclick="dndZoneClick(this, ${i})"]`).forEach(c => c.classList.add('active-drop'));
-  selectedDragChips[i] = chipEl; 
-  chipEl.classList.add('selected');
-}
-function dndZoneClick(zoneEl, i) {
-  if (!selectedDragChips[i]) return;
-  const body = zoneEl.classList.contains('dnd-bank') ? zoneEl : zoneEl.querySelector('.dnd-col-body');
-  if (body) { 
-      body.appendChild(selectedDragChips[i]); 
-      selectedDragChips[i].classList.remove('selected'); 
-      selectedDragChips[i] = null; 
-      document.querySelectorAll(`#player-questions .dnd-col, #player-questions .dnd-bank`).forEach(c => c.classList.remove('active-drop')); 
-  }
-}
-
-// Logic for Drag and Drop Inline Text
-function dndInlineSelect(chipEl, i) {
-  document.querySelectorAll(`#player-questions .dnd-chip[id^="dnd-chip-inline-${i}-"]`).forEach(c => c.classList.remove('selected'));
-  document.querySelectorAll(`#player-questions .dnd-inline-dropzone[id^="dnd-drop-${i}-"], #player-questions .dnd-bank[id="dnd-bank-inline-${i}"]`).forEach(c => c.classList.add('active-drop'));
-  selectedDragChips[i] = chipEl;
-  chipEl.classList.add('selected');
-}
-function dndInlineDrop(zoneEl, i, pIdx) {
-  if (!selectedDragChips[i]) return;
-  if (zoneEl.children.length > 0) {
-      // Put existing chip back to bank
-      document.getElementById(`dnd-bank-inline-${i}`).appendChild(zoneEl.children[0]);
-  }
-  zoneEl.appendChild(selectedDragChips[i]);
-  selectedDragChips[i].classList.remove('selected');
-  selectedDragChips[i] = null;
-  document.querySelectorAll(`#player-questions .dnd-inline-dropzone, #player-questions .dnd-bank`).forEach(c => c.classList.remove('active-drop'));
-}
-function dndInlineReturn(zoneEl, i) {
-  if (!selectedDragChips[i]) return;
-  zoneEl.appendChild(selectedDragChips[i]);
-  selectedDragChips[i].classList.remove('selected');
-  selectedDragChips[i] = null;
-  document.querySelectorAll(`#player-questions .dnd-inline-dropzone, #player-questions .dnd-bank`).forEach(c => c.classList.remove('active-drop'));
-}
-
-
-function matchLeft(i, lIdx, val) {
-  if (matchState[i].pairs[lIdx] !== undefined) return;
-  document.querySelectorAll(`.match-chip[id^='ml-${i}-']`).forEach(el => { if (!el.classList.contains('matched')) el.classList.remove('selected'); });
-  matchState[i].leftSel = { lIdx, val }; document.getElementById(`ml-${i}-${lIdx}`)?.classList.add('selected');
-}
-function matchRight(i, rIdx, val) {
-  if (!matchState[i].leftSel) return;
-  const lIdx = matchState[i].leftSel.lIdx; if (matchState[i].pairs[lIdx] !== undefined) return;
-  matchState[i].pairs[lIdx] = val; 
-  if(!studentAnswers[i]) studentAnswers[i] = [];
-  studentAnswers[i][lIdx] = val;
-  document.getElementById(`ml-${i}-${lIdx}`)?.classList.remove('selected'); document.getElementById(`ml-${i}-${lIdx}`)?.classList.add('matched');
-  document.getElementById(`mr-${i}-${rIdx}`)?.classList.add('matched'); matchState[i].leftSel = null;
-}
+function updateMultiBlank(i, pIdx, val, total) { if (!Array.isArray(studentAnswers[i])) studentAnswers[i] = new Array(total).fill(''); studentAnswers[i][pIdx] = val; }
+function toggleOpt(qi, oi, val) { if(!Array.isArray(studentAnswers[qi])) studentAnswers[qi] = []; const idx = studentAnswers[qi].indexOf(val); const btn = document.getElementById(`opt-${qi}-${oi}`); if(idx > -1) { studentAnswers[qi].splice(idx, 1); btn.classList.remove('selected'); } else { studentAnswers[qi].push(val); btn.classList.add('selected'); } }
+function dndChipClick(chipEl, i) { document.querySelectorAll(`#player-questions .dnd-chip[id^="dnd-chip-${i}-"]`).forEach(c => c.classList.remove('selected')); document.querySelectorAll(`#player-questions .dnd-bank[id="dnd-bank-${i}"], #player-questions .dnd-col[onclick="dndZoneClick(this, ${i})"]`).forEach(c => c.classList.add('active-drop')); selectedDragChips[i] = chipEl; chipEl.classList.add('selected'); }
+function dndZoneClick(zoneEl, i) { if (!selectedDragChips[i]) return; const body = zoneEl.classList.contains('dnd-bank') ? zoneEl : zoneEl.querySelector('.dnd-col-body'); if (body) { body.appendChild(selectedDragChips[i]); selectedDragChips[i].classList.remove('selected'); selectedDragChips[i] = null; document.querySelectorAll(`#player-questions .dnd-col, #player-questions .dnd-bank`).forEach(c => c.classList.remove('active-drop')); } }
+function dndInlineSelect(chipEl, i) { document.querySelectorAll(`#player-questions .dnd-chip[id^="dnd-chip-inline-${i}-"]`).forEach(c => c.classList.remove('selected')); document.querySelectorAll(`#player-questions .dnd-inline-dropzone[id^="dnd-drop-${i}-"], #player-questions .dnd-bank[id="dnd-bank-inline-${i}"]`).forEach(c => c.classList.add('active-drop')); selectedDragChips[i] = chipEl; chipEl.classList.add('selected'); }
+function dndInlineDrop(zoneEl, i, pIdx) { if (!selectedDragChips[i]) return; if (zoneEl.children.length > 0) document.getElementById(`dnd-bank-inline-${i}`).appendChild(zoneEl.children[0]); zoneEl.appendChild(selectedDragChips[i]); selectedDragChips[i].classList.remove('selected'); selectedDragChips[i] = null; document.querySelectorAll(`#player-questions .dnd-inline-dropzone, #player-questions .dnd-bank`).forEach(c => c.classList.remove('active-drop')); }
+function dndInlineReturn(zoneEl, i) { if (!selectedDragChips[i]) return; zoneEl.appendChild(selectedDragChips[i]); selectedDragChips[i].classList.remove('selected'); selectedDragChips[i] = null; document.querySelectorAll(`#player-questions .dnd-inline-dropzone, #player-questions .dnd-bank`).forEach(c => c.classList.remove('active-drop')); }
+function matchLeft(i, lIdx, val) { if (matchState[i].pairs[lIdx] !== undefined) return; document.querySelectorAll(`.match-chip[id^='ml-${i}-']`).forEach(el => { if (!el.classList.contains('matched')) el.classList.remove('selected'); }); matchState[i].leftSel = { lIdx, val }; document.getElementById(`ml-${i}-${lIdx}`)?.classList.add('selected'); }
+function matchRight(i, rIdx, val) { if (!matchState[i].leftSel) return; const lIdx = matchState[i].leftSel.lIdx; if (matchState[i].pairs[lIdx] !== undefined) return; matchState[i].pairs[lIdx] = val; if(!studentAnswers[i]) studentAnswers[i] = []; studentAnswers[i][lIdx] = val; document.getElementById(`ml-${i}-${lIdx}`)?.classList.remove('selected'); document.getElementById(`ml-${i}-${lIdx}`)?.classList.add('matched'); document.getElementById(`mr-${i}-${rIdx}`)?.classList.add('matched'); matchState[i].leftSel = null; }
 
 async function submitExercise() {
-  const content = safeParseJSON(currentLesson.task_content);
-  let correct = 0, totalQ = 0;
-  const results = [];
-  let hasOpenAnswer = false;
+  const content = safeParseJSON(currentLesson.task_content); let correct = 0, totalQ = 0; const results = []; let hasOpenAnswer = false;
 
   content.forEach((q, i) => {
     let qType = q.type || currentLesson.task_type;
     
     if (qType === 'open_answer') {
-      hasOpenAnswer = true;
-      totalQ++;
-      const el = document.getElementById('oa-' + i);
-      if (el) { el.style.borderColor = 'var(--brand)'; el.disabled = true; studentAnswers[i] = el.value; }
-      const revealEl = document.getElementById('reveal-' + i);
-      if (revealEl) revealEl.classList.add('visible');
+      hasOpenAnswer = true; totalQ++; const el = document.getElementById('oa-' + i); if (el) { el.style.borderColor = 'var(--brand)'; el.disabled = true; studentAnswers[i] = el.value; }
+      const revealEl = document.getElementById('reveal-' + i); if (revealEl) revealEl.classList.add('visible');
     }
     else if (qType === 'drag_drop') {
       totalQ += q.items.length;
       document.querySelectorAll(`[id^="dnd-chip-${i}-"]`).forEach(chip => {
-        if (chip.id.includes('inline')) return; // ignore inline text chips here
-        const word = chip.textContent.trim();
-        const expectedCat = q.items.find(x => x.word === word)?.category;
-        const parentCol = chip.closest('.dnd-col');
-        const actualCat = parentCol ? parentCol.dataset.cat : null;
-        chip.onclick = null;
-        let ok = actualCat === expectedCat;
-        if (ok) { correct++; chip.classList.add('correct'); } else chip.classList.add('wrong');
+        if (chip.id.includes('inline')) return;
+        const word = chip.textContent.trim(); const expectedCat = q.items.find(x => x.word === word)?.category; const parentCol = chip.closest('.dnd-col'); const actualCat = parentCol ? parentCol.dataset.cat : null;
+        chip.onclick = null; let ok = actualCat === expectedCat; if (ok) { correct++; chip.classList.add('correct'); } else chip.classList.add('wrong');
         results.push({ prompt: word, answer: expectedCat || '?', given: actualCat || 'Unassigned', ok });
-      });
+      }); document.querySelectorAll('.dnd-col,.dnd-bank').forEach(c => c.onclick = null);
     }
     else if (qType === 'drag_drop_text') {
-      let matches = [...q.prompt.matchAll(/\[(.*?)\]/g)].map(m => m[1]);
-      totalQ += matches.length;
-      let allCorrect = true;
-      
+      let matches = [...q.prompt.matchAll(/\[(.*?)\]/g)].map(m => m[1]); totalQ += matches.length; let allCorrect = true;
       document.querySelectorAll(`#player-questions .dnd-inline-dropzone[id^="dnd-drop-${i}-"]`).forEach(dz => {
-          let expected = dz.dataset.expected;
-          let chip = dz.querySelector('.dnd-chip');
-          let given = chip ? chip.textContent.trim() : '';
-          let isOk = given === expected;
-          if (isOk) { correct++; } else { allCorrect = false; }
-          if (chip) {
-              chip.classList.add(isOk ? 'correct' : 'wrong');
-              chip.onclick = null;
-          }
-      });
-      document.getElementById(`dnd-bank-inline-${i}`).onclick = null;
-      results.push({ prompt: 'Fill in blanks text', answer: 'Check visually above', given: '', ok: allCorrect });
+          let expected = dz.dataset.expected; let chip = dz.querySelector('.dnd-chip'); let given = chip ? chip.textContent.trim() : ''; let isOk = given === expected;
+          if (isOk) { correct++; } else { allCorrect = false; } if (chip) { chip.classList.add(isOk ? 'correct' : 'wrong'); chip.onclick = null; }
+      }); document.getElementById(`dnd-bank-inline-${i}`).onclick = null; results.push({ prompt: 'Fill in blanks text', answer: 'Check visually above', given: '', ok: allCorrect });
     }
     else if (qType === 'matching') {
-      const pairs = q.pairs || (q.left ? [q] : []);
-      totalQ += pairs.length;
-      pairs.forEach((p, pIdx) => {
-          let given = (studentAnswers[i] && studentAnswers[i][pIdx]) || '';
-          let ok = given === p.right;
-          if(ok) correct++;
-          const ml = document.getElementById(`ml-${i}-${pIdx}`); if (!ok && ml) ml.classList.add('wrong-match');
-          results.push({ prompt: p.left, answer: p.right, given: given, ok });
-      });
+      const pairs = q.pairs || (q.left ? [q] : []); totalQ += pairs.length;
+      pairs.forEach((p, pIdx) => { let given = (studentAnswers[i] && studentAnswers[i][pIdx]) || ''; let ok = given === p.right; if(ok) correct++; const ml = document.getElementById(`ml-${i}-${pIdx}`); if (!ok && ml) ml.classList.add('wrong-match'); results.push({ prompt: p.left, answer: p.right, given: given, ok }); });
     }
     else if (qType === 'fill_in_blank') {
-      const hasBrackets = (q.prompt || '').includes('[') && (q.prompt || '').includes(']');
-      if (hasBrackets) {
-          let matches = [...q.prompt.matchAll(/\[(.*?)\]/g)].map(m => m[1]);
-          totalQ += matches.length; 
-          let allCorrect = true;
-          let givenArr = Array.isArray(studentAnswers[i]) ? studentAnswers[i] : [];
+      if ((q.prompt || '').includes('[')) {
+          let matches = [...q.prompt.matchAll(/\[(.*?)\]/g)].map(m => m[1]); totalQ += matches.length; let allCorrect = true; let givenArr = Array.isArray(studentAnswers[i]) ? studentAnswers[i] : [];
           matches.forEach((ans, pIdx) => {
-              let el = document.getElementById(`fitb-${i}-${pIdx}`);
-              let given = el ? el.value.trim() : (givenArr[pIdx] || '');
-              let isOk = given.toLowerCase() === ans.toLowerCase().trim();
+              let el = document.getElementById(`fitb-${i}-${pIdx}`); let given = el ? el.value.trim() : (givenArr[pIdx] || ''); let isOk = given.toLowerCase() === ans.toLowerCase().trim();
               if (isOk) { correct++; } else { allCorrect = false; }
               if(el) { el.disabled = true; el.style.borderBottomColor = isOk ? 'var(--green)' : 'var(--red)'; el.style.background = isOk ? 'var(--green-light)' : 'var(--red-light)'; el.style.color = isOk ? 'var(--green-dark)' : 'var(--red-dark)'; }
-          });
-          results.push({ prompt: q.prompt.replace(/\[.*?\]/g, '___'), answer: matches.join(', '), given: givenArr.join(', '), ok: allCorrect });
+          }); results.push({ prompt: q.prompt.replace(/\[.*?\]/g, '___'), answer: matches.join(', '), given: givenArr.join(', '), ok: allCorrect });
       } else {
-          totalQ++;
-          let correctAns = q.answer || '';
-          let given = document.getElementById('fitb-'+i)?.value.trim() || '';
-          studentAnswers[i] = given; 
-          let ok = given.toLowerCase() === correctAns.toLowerCase().trim();
-          if (ok) correct++;
-          const el = document.getElementById('fitb-'+i); if(el){ el.classList.add(ok?'correct':'wrong'); el.disabled = true; }
-          results.push({ prompt: q.prompt, answer: correctAns, given, ok });
+          totalQ++; let correctAns = q.answer || ''; let given = document.getElementById('fitb-'+i)?.value.trim() || ''; studentAnswers[i] = given; let ok = given.toLowerCase() === correctAns.toLowerCase().trim();
+          if (ok) correct++; const el = document.getElementById('fitb-'+i); if(el){ el.classList.add(ok?'correct':'wrong'); el.disabled = true; } results.push({ prompt: q.prompt, answer: correctAns, given, ok });
       }
     }
     else {
-      // Multiple Choice / Dictation
-      totalQ++;
-      let givenArr = Array.isArray(studentAnswers[i]) ? studentAnswers[i] : [studentAnswers[i] || ''];
-      
+      totalQ++; let givenArr = Array.isArray(studentAnswers[i]) ? studentAnswers[i] : [studentAnswers[i] || ''];
       if (qType === 'dictation') {
-         let given = document.getElementById('dict-'+i)?.value.trim() || '';
-         studentAnswers[i] = given;
-         let ok = String(given).toLowerCase().trim() === String(q.answer).toLowerCase().trim();
-         if(ok) correct++;
-         results.push({ prompt: q.prompt, answer: q.answer, given, ok });
+         let given = document.getElementById('dict-'+i)?.value.trim() || ''; studentAnswers[i] = given; let ok = String(given).toLowerCase().trim() === String(q.answer).toLowerCase().trim();
+         if(ok) correct++; results.push({ prompt: q.prompt, answer: q.answer, given, ok });
       } else {
-         // Multiple choice checkboxes evaluation
-         let correctAnsArray = q.correctIndices ? q.correctIndices.map(idx => q.options[idx]) : [q.options[q.correctIndex || 0]];
-         let isOk = false;
-         
-         // Strict check: they must have selected all correct ones and no wrong ones
-         if (givenArr.length === correctAnsArray.length && givenArr.every(val => correctAnsArray.includes(val))) {
-             isOk = true;
-             correct++;
-         }
-         
-         document.querySelectorAll(`[id^="opt-${i}-"]`).forEach((b, j) => {
-            b.disabled = true;
-            let optText = q.options[j];
-            if (correctAnsArray.includes(optText)) b.classList.add('correct');
-            else if (givenArr.includes(optText)) b.classList.add('wrong');
-         });
+         let correctAnsArray = q.correctIndices ? q.correctIndices.map(idx => q.options[idx]) : [q.options[q.correctIndex || 0]]; let isOk = false;
+         if (givenArr.length === correctAnsArray.length && givenArr.every(val => correctAnsArray.includes(val))) { isOk = true; correct++; }
+         document.querySelectorAll(`[id^="opt-${i}-"]`).forEach((b, j) => { b.disabled = true; let optText = q.options[j]; if (correctAnsArray.includes(optText)) b.classList.add('correct'); else if (givenArr.includes(optText)) b.classList.add('wrong'); });
          results.push({ prompt: q.prompt, answer: correctAnsArray.join(', '), given: givenArr.join(', '), ok: isOk });
       }
     }
   });
 
-  document.getElementById('submit-btn').disabled = true; document.getElementById('submit-btn').style.display = 'none';
-  document.getElementById('retry-btn').style.display = 'inline-block';
-  
-  if(hasOpenAnswer && results.length === 0) {
-      showOpenAnswerCompleted();
-  } else {
-      showScore(correct, totalQ, results, false);
-  }
-
-  if (currentUser && currentLesson) {
-    await sb.from('student_progress').upsert({ user_id: currentUser.id, lesson_id: currentLesson.id, score: correct, total_questions: totalQ, answers: studentAnswers }, { onConflict: 'user_id,lesson_id' });
-    await fetchData(); if (activeModuleId) renderSidebar(activeModuleId);
-  }
+  document.getElementById('submit-btn').disabled = true; document.getElementById('submit-btn').style.display = 'none'; document.getElementById('retry-btn').style.display = 'inline-block';
+  if(hasOpenAnswer && results.length === 0) showOpenAnswerCompleted(); else showScore(correct, totalQ, results, false);
+  if (currentUser && currentLesson) { await sb.from('student_progress').upsert({ user_id: currentUser.id, lesson_id: currentLesson.id, score: correct, total_questions: totalQ, answers: studentAnswers }, { onConflict: 'user_id,lesson_id' }); await fetchData(); if (activeModuleId) renderSidebar(activeModuleId); }
 }
 
 function retryExercise() { showLesson(currentLesson.id); }
 
-function showOpenAnswerCompleted() {
-  document.getElementById('score-area').innerHTML = `
-    <div class="score-panel"><div class="score-top">
-      <div class="score-circle open"><div class="pct">✓</div></div>
-      <div class="score-msg">Exercise submitted!<div class="sub">Review the expected answers above and self-assess your response.</div></div>
-    </div></div>`;
-  document.getElementById('score-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
+function showOpenAnswerCompleted() { document.getElementById('score-area').innerHTML = `<div class="score-panel"><div class="score-top"><div class="score-circle open"><div class="pct">✓</div></div><div class="score-msg">Exercise submitted!<div class="sub">Review the expected answers above.</div></div></div></div>`; document.getElementById('score-area').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
 function showScore(correct, total, results, readonly) {
-  const pct = total > 0 ? Math.round(correct / total * 100) : 0;
-  const cls = pct >= 80 ? 'great' : pct >= 50 ? 'ok' : 'low';
-  const msg = pct >= 80 ? '¡Great work! 🎉' : pct >= 50 ? 'Good effort — keep practicing!' : 'Review and try again.';
+  const pct = total > 0 ? Math.round(correct / total * 100) : 0; const cls = pct >= 80 ? 'great' : pct >= 50 ? 'ok' : 'low'; const msg = pct >= 80 ? '¡Great work! 🎉' : pct >= 50 ? 'Good effort — keep practicing!' : 'Review and try again.';
   const rows = results.map(r => `<div class="score-row ${r.ok?'c':'w'}">${r.ok?'✓':'✗'} <em>${esc(r.prompt)}</em> → <strong>${esc(r.answer)}</strong>${!r.ok&&r.given?`<span class="ans"> (your answer: ${esc(r.given)})</span>`:''}</div>`).join('');
-  document.getElementById('score-area').innerHTML = `
-    <div class="score-panel"><div class="score-top">
-      <div class="score-circle ${cls}"><div class="pct">${pct}%</div><div class="frac">${correct}/${total}</div></div>
-      <div class="score-msg">${readonly?'Previously completed':msg}<div class="sub">${correct} correct out of ${total}</div></div>
-    </div>${rows?`<div class="score-details">${rows}</div>`:''}</div>`;
+  document.getElementById('score-area').innerHTML = `<div class="score-panel"><div class="score-top"><div class="score-circle ${cls}"><div class="pct">${pct}%</div><div class="frac">${correct}/${total}</div></div><div class="score-msg">${readonly?'Previously completed':msg}<div class="sub">${correct} correct out of ${total}</div></div></div>${rows?`<div class="score-details">${rows}</div>`:''}</div>`;
   document.getElementById('score-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 /* ══════════════════════════════════════════
    TEACHER — MODULES / SUBMODULES / LESSONS
 ══════════════════════════════════════════ */
-async function saveModule() {
-  const title = document.getElementById('t-mod-title').value.trim();
-  const editId = document.getElementById('edit-mod-id').value;
-  const isPrivate = document.getElementById('t-mod-private').checked;
-  const allowedEmails = document.getElementById('t-mod-emails').value.trim();
-  
-  if (!title) { alert('Add a module name.'); return; }
-  const payload = editId ? { title, is_private: isPrivate, allowed_emails: allowedEmails } : { title, order_index: dbModules.length, is_private: isPrivate, allowed_emails: allowedEmails };
-  const res = editId ? await sb.from('modules').update(payload).eq('id', editId) : await sb.from('modules').insert([payload]);
-  if (res.error) { alert('Error: ' + res.error.message); return; }
-  await fetchData(); alert(editId ? 'Module updated!' : 'Module created!'); cancelEditMod();
-}
-function editModule(id) {
-  const m = dbModules.find(x => x.id === id); if (!m) return;
-  document.getElementById('t-mod-title').value = m.title; 
-  document.getElementById('edit-mod-id').value = m.id;
-  document.getElementById('t-mod-private').checked = m.is_private;
-  document.getElementById('t-mod-emails-wrap').style.display = m.is_private ? 'block' : 'none';
-  document.getElementById('t-mod-emails').value = m.allowed_emails || '';
-  
-  document.getElementById('panel-title-mod').textContent = '✏️ Edit module'; document.getElementById('btn-cancel-mod').style.display = 'inline-block'; window.scrollTo(0, 0);
-}
-function cancelEditMod() { 
-  document.getElementById('t-mod-title').value = ''; 
-  document.getElementById('edit-mod-id').value = ''; 
-  document.getElementById('t-mod-private').checked = false;
-  document.getElementById('t-mod-emails-wrap').style.display = 'none';
-  document.getElementById('t-mod-emails').value = '';
-  document.getElementById('panel-title-mod').textContent = '📂 1. Create Module'; 
-  document.getElementById('btn-cancel-mod').style.display = 'none'; 
-}
+async function saveModule() { const title = document.getElementById('t-mod-title').value.trim(); const editId = document.getElementById('edit-mod-id').value; const isPrivate = document.getElementById('t-mod-private').checked; const allowedEmails = document.getElementById('t-mod-emails').value.trim(); if (!title) { alert('Add a module name.'); return; } const payload = editId ? { title, is_private: isPrivate, allowed_emails: allowedEmails } : { title, order_index: dbModules.length, is_private: isPrivate, allowed_emails: allowedEmails }; const res = editId ? await sb.from('modules').update(payload).eq('id', editId) : await sb.from('modules').insert([payload]); if (res.error) { alert('Error: ' + res.error.message); return; } await fetchData(); alert(editId ? 'Module updated!' : 'Module created!'); cancelEditMod(); }
+function editModule(id) { const m = dbModules.find(x => x.id === id); if (!m) return; document.getElementById('t-mod-title').value = m.title; document.getElementById('edit-mod-id').value = m.id; document.getElementById('t-mod-private').checked = m.is_private; document.getElementById('t-mod-emails-wrap').style.display = m.is_private ? 'block' : 'none'; document.getElementById('t-mod-emails').value = m.allowed_emails || ''; document.getElementById('panel-title-mod').textContent = '✏️ Edit module'; document.getElementById('btn-cancel-mod').style.display = 'inline-block'; window.scrollTo(0, 0); }
+function cancelEditMod() { document.getElementById('t-mod-title').value = ''; document.getElementById('edit-mod-id').value = ''; document.getElementById('t-mod-private').checked = false; document.getElementById('t-mod-emails-wrap').style.display = 'none'; document.getElementById('t-mod-emails').value = ''; document.getElementById('panel-title-mod').textContent = '📂 1. Create Module'; document.getElementById('btn-cancel-mod').style.display = 'none'; }
 async function deleteModule(id) { if (!confirm('Delete this module and ALL its content?')) return; await sb.from('lessons').delete().eq('module_id', id); await sb.from('submodules').delete().eq('module_id', id); await sb.from('modules').delete().eq('id', id); fetchData(); }
 async function moveModule(id, dir) { const idx = dbModules.findIndex(m => m.id === id); const t = dbModules[idx + dir]; if (!t) return; await sb.from('modules').update({ order_index: t.order_index }).eq('id', id); await sb.from('modules').update({ order_index: dbModules[idx].order_index }).eq('id', t.id); fetchData(); }
 
-async function saveSubmodule() {
-  const title = document.getElementById('t-sub-title').value.trim();
-  const modId = document.getElementById('t-sub-parent').value;
-  const editId = document.getElementById('edit-sub-id').value;
-  if (!title || !modId) { alert('Select a module and add a name.'); return; }
-  const orderIdx = dbSubmodules.filter(s => s.module_id === modId).length;
-  const payload = editId ? { title, module_id: modId } : { title, module_id: modId, order_index: orderIdx };
-  const res = editId ? await sb.from('submodules').update(payload).eq('id', editId) : await sb.from('submodules').insert([payload]);
-  if (res.error) { alert('Error: ' + res.error.message); return; }
-  await fetchData(); alert(editId ? 'Subfolder updated!' : 'Subfolder created!'); cancelEditSub();
-}
-function editSubmodule(id) {
-  const s = dbSubmodules.find(x => x.id === id); if (!s) return;
-  document.getElementById('t-sub-title').value = s.title; document.getElementById('t-sub-parent').value = s.module_id; document.getElementById('edit-sub-id').value = s.id;
-  document.getElementById('panel-title-sub').textContent = '✏️ Edit subfolder'; document.getElementById('btn-cancel-sub').style.display = 'inline-block'; window.scrollTo(0, 0);
-}
+async function saveSubmodule() { const title = document.getElementById('t-sub-title').value.trim(); const modId = document.getElementById('t-sub-parent').value; const editId = document.getElementById('edit-sub-id').value; if (!title || !modId) { alert('Select a module and add a name.'); return; } const orderIdx = dbSubmodules.filter(s => s.module_id === modId).length; const payload = editId ? { title, module_id: modId } : { title, module_id: modId, order_index: orderIdx }; const res = editId ? await sb.from('submodules').update(payload).eq('id', editId) : await sb.from('submodules').insert([payload]); if (res.error) { alert('Error: ' + res.error.message); return; } await fetchData(); alert(editId ? 'Subfolder updated!' : 'Subfolder created!'); cancelEditSub(); }
+function editSubmodule(id) { const s = dbSubmodules.find(x => x.id === id); if (!s) return; document.getElementById('t-sub-title').value = s.title; document.getElementById('t-sub-parent').value = s.module_id; document.getElementById('edit-sub-id').value = s.id; document.getElementById('panel-title-sub').textContent = '✏️ Edit subfolder'; document.getElementById('btn-cancel-sub').style.display = 'inline-block'; window.scrollTo(0, 0); }
 function cancelEditSub() { document.getElementById('t-sub-title').value = ''; document.getElementById('edit-sub-id').value = ''; document.getElementById('panel-title-sub').textContent = '📁 2. Create Subfolder'; document.getElementById('btn-cancel-sub').style.display = 'none'; }
 async function deleteSubmodule(id) { if (!confirm('Delete this subfolder? Lessons inside will stay in the main module.')) return; await sb.from('submodules').delete().eq('id', id); fetchData(); }
-async function moveSubmodule(id, dir) {
-  const sub = dbSubmodules.find(s => s.id === id); if (!sub) return;
-  const siblings = dbSubmodules.filter(s => s.module_id === sub.module_id);
-  const idx = siblings.findIndex(s => s.id === id); const t = siblings[idx + dir]; if (!t) return;
-  await sb.from('submodules').update({ order_index: t.order_index }).eq('id', id); await sb.from('submodules').update({ order_index: sub.order_index }).eq('id', t.id); fetchData();
-}
+async function moveSubmodule(id, dir) { const sub = dbSubmodules.find(s => s.id === id); if (!sub) return; const siblings = dbSubmodules.filter(s => s.module_id === sub.module_id); const idx = siblings.findIndex(s => s.id === id); const t = siblings[idx + dir]; if (!t) return; await sb.from('submodules').update({ order_index: t.order_index }).eq('id', id); await sb.from('submodules').update({ order_index: sub.order_index }).eq('id', t.id); fetchData(); }
 
-function toggleLessonFields() {
-  const type = document.getElementById('t-les-type').value;
-  document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none';
-  document.getElementById('fields-text').style.display = 'block';
-  document.getElementById('fields-embed').style.display = type === 'embed' ? 'block' : 'none';
-  document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none';
-}
-function updateModuleSelect() {
-  const modSelect = document.getElementById('t-les-module');
-  const subParentSelect = document.getElementById('t-sub-parent');
-  const currentMod = modSelect.value;
-  const currentParent = subParentSelect.value;
-  
-  const mHtml = dbModules.map(m => `<option value="${esc(m.id)}">${esc(m.title)}</option>`).join('');
-  modSelect.innerHTML = mHtml;
-  subParentSelect.innerHTML = mHtml;
-  
-  if (currentMod && dbModules.some(m => m.id === currentMod)) modSelect.value = currentMod;
-  if (currentParent && dbModules.some(m => m.id === currentParent)) subParentSelect.value = currentParent;
-  
-  updateSubfolderSelect();
-}
-function updateSubfolderSelect() {
-  const modId = document.getElementById('t-les-module').value;
-  const subSelect = document.getElementById('t-les-submodule');
-  const currentSub = subSelect.value;
-  
-  const subs = dbSubmodules.filter(s => s.module_id === modId);
-  subSelect.innerHTML = `<option value="">-- No subfolder (main module) --</option>` + subs.map(s => `<option value="${esc(s.id)}">${esc(s.title)}</option>`).join('');
-  
-  if (currentSub && subs.some(s => s.id === currentSub)) subSelect.value = currentSub;
-}
+function toggleLessonFields() { const type = document.getElementById('t-les-type').value; document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none'; document.getElementById('fields-text').style.display = 'block'; document.getElementById('fields-embed').style.display = type === 'embed' ? 'block' : 'none'; document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none'; }
+function updateModuleSelect() { const modSelect = document.getElementById('t-les-module'); const subParentSelect = document.getElementById('t-sub-parent'); const currentMod = modSelect.value; const currentParent = subParentSelect.value; const mHtml = dbModules.map(m => `<option value="${esc(m.id)}">${esc(m.title)}</option>`).join(''); modSelect.innerHTML = mHtml; subParentSelect.innerHTML = mHtml; if (currentMod && dbModules.some(m => m.id === currentMod)) modSelect.value = currentMod; if (currentParent && dbModules.some(m => m.id === currentParent)) subParentSelect.value = currentParent; updateSubfolderSelect(); }
+function updateSubfolderSelect() { const modId = document.getElementById('t-les-module').value; const subSelect = document.getElementById('t-les-submodule'); const currentSub = subSelect.value; const subs = dbSubmodules.filter(s => s.module_id === modId); subSelect.innerHTML = `<option value="">-- No subfolder (main module) --</option>` + subs.map(s => `<option value="${esc(s.id)}">${esc(s.title)}</option>`).join(''); if (currentSub && subs.some(s => s.id === currentSub)) subSelect.value = currentSub; }
 
 async function saveLesson() {
   if (isUploadingAudio) { alert('Wait for media uploads to finish.'); return; }
-  const editId = document.getElementById('edit-les-id').value;
-  const moduleId = document.getElementById('t-les-module').value;
-  const submodId = document.getElementById('t-les-submodule').value;
-  const type = document.getElementById('t-les-type').value;
-  const title = document.getElementById('t-les-title').value.trim();
+  const editId = document.getElementById('edit-les-id').value; const moduleId = document.getElementById('t-les-module').value; const submodId = document.getElementById('t-les-submodule').value; const type = document.getElementById('t-les-type').value; const title = document.getElementById('t-les-title').value.trim();
   if (!moduleId || !title) { alert('Fill in module and title.'); return; }
   const btn = document.getElementById('btn-save-les'); btn.disabled = true; btn.textContent = 'Saving...';
 
-  let payload = { module_id: moduleId, submodule_id: submodId || null, type, title, content: tempAudios };
-  
-  payload.text_content = quillEditor.root.innerHTML;
+  let payload = { module_id: moduleId, submodule_id: submodId || null, type, title, content: tempAudios, text_content: quillEditor.root.innerHTML };
+  if (type === 'video') { let url = document.getElementById('t-les-video-url').value.trim(); let start = document.getElementById('t-les-vid-start').value; let end = document.getElementById('t-les-vid-end').value; payload.video_url = buildYtUrl(url, start, end); } 
+  else if (type === 'embed') { payload.video_url = document.getElementById('t-les-embed-code').value.trim(); } 
+  else if (type === 'task') { payload.task_type = 'mixed'; payload.task_content = questionRows; }
 
-  if (type === 'video') {
-    let url = document.getElementById('t-les-video-url').value.trim();
-    let start = document.getElementById('t-les-vid-start').value;
-    let end = document.getElementById('t-les-vid-end').value;
-    payload.video_url = buildYtUrl(url, start, end);
-  } else if (type === 'embed') {
-    payload.video_url = document.getElementById('t-les-embed-code').value.trim();
-  } else if (type === 'task') {
-    payload.task_type = 'mixed';
-    payload.task_content = questionRows;
-  }
-
-  const resFiles = document.getElementById('t-les-resources').files;
-  let resources = editId ? safeParseJSON(dbLessons.find(l => l.id === editId)?.resources) : [];
-  for (const f of resFiles) {
-    const fn = `res_${Date.now()}_${f.name.replace(/\s+/g,'_')}`;
-    const { error } = await sb.storage.from('audios').upload(fn, f);
-    if (!error) resources.push({ name: f.name, url: sb.storage.from('audios').getPublicUrl(fn).data.publicUrl });
-  }
-  payload.resources = resources;
-  if (!editId) payload.order_index = dbLessons.filter(l => l.module_id === moduleId && l.submodule_id === (submodId || null)).length;
+  const resFiles = document.getElementById('t-les-resources').files; let resources = editId ? safeParseJSON(dbLessons.find(l => l.id === editId)?.resources) : [];
+  for (const f of resFiles) { const fn = `res_${Date.now()}_${f.name.replace(/\s+/g,'_')}`; const { error } = await sb.storage.from('audios').upload(fn, f); if (!error) resources.push({ name: f.name, url: sb.storage.from('audios').getPublicUrl(fn).data.publicUrl }); }
+  payload.resources = resources; if (!editId) payload.order_index = dbLessons.filter(l => l.module_id === moduleId && l.submodule_id === (submodId || null)).length;
 
   const res = editId ? await sb.from('lessons').update(payload).eq('id', editId) : await sb.from('lessons').insert([payload]);
   btn.disabled = false; btn.textContent = 'Save lesson';
-  if (res.error) { alert('Error: ' + res.error.message); return; }
-  alert('Lesson saved!'); cancelEditLes(); await fetchData();
+  if (res.error) { alert('Error: ' + res.error.message); return; } alert('Lesson saved!'); cancelEditLes(); await fetchData();
 }
 
 function editLesson(id) {
   const l = dbLessons.find(x => x.id === id); if (!l) return;
-  document.getElementById('edit-les-id').value = l.id;
-  document.getElementById('t-les-module').value = l.module_id; updateSubfolderSelect();
-  document.getElementById('t-les-submodule').value = l.submodule_id || '';
-  document.getElementById('t-les-type').value = l.type;
-  document.getElementById('t-les-title').value = l.title;
-  toggleLessonFields();
-  
-  quillEditor.root.innerHTML = l.text_content || '';
-  
-  if (l.type === 'video') { 
-      let parts = parseYtUrlParts(l.video_url);
-      document.getElementById('t-les-video-url').value = parts.url; 
-      document.getElementById('t-les-vid-start').value = parts.start; 
-      document.getElementById('t-les-vid-end').value = parts.end; 
-  }
+  document.getElementById('edit-les-id').value = l.id; document.getElementById('t-les-module').value = l.module_id; updateSubfolderSelect(); document.getElementById('t-les-submodule').value = l.submodule_id || ''; document.getElementById('t-les-type').value = l.type; document.getElementById('t-les-title').value = l.title; toggleLessonFields(); quillEditor.root.innerHTML = l.text_content || '';
+  if (l.type === 'video') { let parts = parseYtUrlParts(l.video_url); document.getElementById('t-les-video-url').value = parts.url; document.getElementById('t-les-vid-start').value = parts.start; document.getElementById('t-les-vid-end').value = parts.end; }
   if (l.type === 'embed') { document.getElementById('t-les-embed-code').value = l.video_url || ''; }
   if (l.type === 'task') {
     let raw = safeParseJSON(l.task_content);
-    if (l.task_type && l.task_type !== 'mixed') {
-       if (l.task_type === 'matching') {
-           questionRows = [{ type: 'matching', pairs: raw }];
-       } else if (l.task_type === 'drag_drop') {
-           if(raw[0]) raw[0].type = 'drag_drop';
-           questionRows = raw;
-       } else {
-           raw.forEach(r => r.type = l.task_type);
-           questionRows = raw;
-       }
-    } else {
-       questionRows = raw;
-    }
-    
-    // Normalizar checkboxes de multiple choice viejos
-    questionRows.forEach(q => {
-        if(q.type === 'multiple_choice' && !q.correctIndices) {
-            q.correctIndices = typeof q.correctIndex === 'number' ? [q.correctIndex] : [0];
-        }
-    });
-
-    openQStates = {}; if(questionRows.length > 0) openQStates[0] = true;
-    renderQFields();
+    if (l.task_type && l.task_type !== 'mixed') { if (l.task_type === 'matching') { questionRows = [{ type: 'matching', pairs: raw }]; } else if (l.task_type === 'drag_drop') { if(raw[0]) raw[0].type = 'drag_drop'; questionRows = raw; } else { raw.forEach(r => r.type = l.task_type); questionRows = raw; } } else { questionRows = raw; }
+    questionRows.forEach(q => { if(q.type === 'multiple_choice' && !q.correctIndices) { q.correctIndices = typeof q.correctIndex === 'number' ? [q.correctIndex] : [0]; } });
+    openQStates = {}; if(questionRows.length > 0) openQStates[0] = true; renderQFields();
   }
-  tempAudios = safeParseJSON(l.content); renderTempAudios();
-  const resArr = safeParseJSON(l.resources);
-  document.getElementById('t-les-resources-current').textContent = resArr.length ? `${resArr.length} file(s) already attached` : '';
-  document.getElementById('panel-title-les').textContent = '✏️ Edit lesson';
-  document.getElementById('btn-cancel-les').style.display = 'inline-block';
-  window.scrollTo(0, 0);
+  tempAudios = safeParseJSON(l.content); renderTempAudios(); const resArr = safeParseJSON(l.resources); document.getElementById('t-les-resources-current').textContent = resArr.length ? `${resArr.length} file(s) already attached` : ''; document.getElementById('panel-title-les').textContent = '✏️ Edit lesson'; document.getElementById('btn-cancel-les').style.display = 'inline-block'; window.scrollTo(0, 0);
 }
-function cancelEditLes() {
-  document.getElementById('edit-les-id').value = ''; document.getElementById('t-les-title').value = '';
-  document.getElementById('t-les-video-url').value = ''; 
-  document.getElementById('t-les-vid-start').value = ''; document.getElementById('t-les-vid-end').value = '';
-  document.getElementById('t-les-embed-code').value = '';
-  document.getElementById('t-les-resources').value = '';
-  document.getElementById('t-les-resources-current').textContent = ''; 
-  quillEditor.root.innerHTML = ''; questionRows = []; tempAudios = []; openQStates = {};
-  renderQFields(); renderTempAudios();
-  document.getElementById('panel-title-les').textContent = '📝 3. Add Lesson';
-  document.getElementById('btn-cancel-les').style.display = 'none';
-}
+function cancelEditLes() { document.getElementById('edit-les-id').value = ''; document.getElementById('t-les-title').value = ''; document.getElementById('t-les-video-url').value = ''; document.getElementById('t-les-vid-start').value = ''; document.getElementById('t-les-vid-end').value = ''; document.getElementById('t-les-embed-code').value = ''; document.getElementById('t-les-resources').value = ''; document.getElementById('t-les-resources-current').textContent = ''; quillEditor.root.innerHTML = ''; questionRows = []; tempAudios = []; openQStates = {}; renderQFields(); renderTempAudios(); document.getElementById('panel-title-les').textContent = '📝 3. Add Lesson'; document.getElementById('btn-cancel-les').style.display = 'none'; }
 async function deleteLesson(id) { if (!confirm('Delete this lesson?')) return; await sb.from('lessons').delete().eq('id', id); fetchData(); }
-async function moveLesson(id, dir) {
-  const les = dbLessons.find(l => l.id === id); if (!les) return;
-  const siblings = dbLessons.filter(l => l.module_id === les.module_id && l.submodule_id === les.submodule_id);
-  const idx = siblings.findIndex(l => l.id === id); const t = siblings[idx + dir]; if (!t) return;
-  await sb.from('lessons').update({ order_index: t.order_index }).eq('id', id);
-  await sb.from('lessons').update({ order_index: les.order_index }).eq('id', t.id); fetchData();
-}
+async function moveLesson(id, dir) { const les = dbLessons.find(l => l.id === id); if (!les) return; const siblings = dbLessons.filter(l => l.module_id === les.module_id && l.submodule_id === les.submodule_id); const idx = siblings.findIndex(l => l.id === id); const t = siblings[idx + dir]; if (!t) return; await sb.from('lessons').update({ order_index: t.order_index }).eq('id', id); await sb.from('lessons').update({ order_index: les.order_index }).eq('id', t.id); fetchData(); }
 
 /* ── SHARED AUDIOS ── */
-async function addSharedAudio() {
-  const label = document.getElementById('t-audio-label').value.trim();
-  const file = document.getElementById('t-audio-file').files[0];
-  if (!label || !file) { alert('Add a label and choose an audio file.'); return; }
-  isUploadingAudio = true;
-  const btn = document.getElementById('btn-add-audio'); btn.disabled = true; btn.textContent = 'Uploading...';
-  const fn = `aud_${Date.now()}.${file.name.split('.').pop()}`;
-  const { error } = await sb.storage.from('audios').upload(fn, file);
-  btn.disabled = false; btn.textContent = '+ Add'; isUploadingAudio = false;
-  if (error) { alert('Upload error: ' + error.message); return; }
-  const url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
-  tempAudios.push({ label, url });
-  document.getElementById('t-audio-label').value = ''; document.getElementById('t-audio-file').value = '';
-  renderTempAudios();
-}
-function renderTempAudios() {
-  document.getElementById('t-shared-audios-render').innerHTML = tempAudios.map((a,i) =>
-    `<div class="audio-saved-item"><span>🔊 ${esc(a.label)}</span><button class="danger-btn" style="padding:2px 8px;font-size:10px" onclick="tempAudios.splice(${i},1);renderTempAudios()">Remove</button></div>`
-  ).join('');
-}
+async function addSharedAudio() { const label = document.getElementById('t-audio-label').value.trim(); const file = document.getElementById('t-audio-file').files[0]; if (!label || !file) { alert('Add a label and choose an audio file.'); return; } isUploadingAudio = true; const btn = document.getElementById('btn-add-audio'); btn.disabled = true; btn.textContent = 'Uploading...'; const fn = `aud_${Date.now()}.${file.name.split('.').pop()}`; const { error } = await sb.storage.from('audios').upload(fn, file); btn.disabled = false; btn.textContent = '+ Add'; isUploadingAudio = false; if (error) { alert('Upload error: ' + error.message); return; } const url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl; tempAudios.push({ label, url }); document.getElementById('t-audio-label').value = ''; document.getElementById('t-audio-file').value = ''; renderTempAudios(); }
+function renderTempAudios() { document.getElementById('t-shared-audios-render').innerHTML = tempAudios.map((a,i) => `<div class="audio-saved-item"><span>🔊 ${esc(a.label)}</span><button class="danger-btn" style="padding:2px 8px;font-size:10px" onclick="tempAudios.splice(${i},1);renderTempAudios()">Remove</button></div>`).join(''); }
 
-/* ── QUESTION BUILDER (MIXED ARCHITECTURE) ── */
-function toggleQCard(i, event) {
-  if(event) { event.stopPropagation(); }
-  openQStates[i] = !openQStates[i];
-  renderQFields();
-}
+/* ── QUESTION BUILDER ── */
+function toggleQCard(i, event) { if(event) { event.stopPropagation(); } openQStates[i] = !openQStates[i]; renderQFields(); }
+function updateQVideoUrl(i, val) { if (questionRows[i]) { let start = document.getElementById(`q-vid-start-${i}`)?.value || ''; let end = document.getElementById(`q-vid-end-${i}`)?.value || ''; questionRows[i].video_url = buildYtUrl(val, start, end); } }
+async function uploadQVideo(event, i) { const file = event.target.files[0]; if (!file) return; isUploadingAudio = true; const btn = event.target; const originalOpacity = btn.style.opacity; btn.style.opacity = '0.5'; const fn = `qv_${Date.now()}.${file.name.split('.').pop()}`; const { error } = await sb.storage.from('audios').upload(fn, file); isUploadingAudio = false; btn.style.opacity = originalOpacity; if (error) { alert('Upload error: ' + error.message); return; } if (questionRows[i]) questionRows[i].video_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl; const urlInput = document.getElementById(`q-vid-url-${i}`); if (urlInput) urlInput.value = ''; renderQFields(); }
 
-function updateQVideoUrl(i, val) {
-  if (questionRows[i]) {
-    let start = document.getElementById(`q-vid-start-${i}`)?.value || '';
-    let end = document.getElementById(`q-vid-end-${i}`)?.value || '';
-    questionRows[i].video_url = buildYtUrl(val, start, end);
-  }
-}
-
-async function uploadQVideo(event, i) {
-  const file = event.target.files[0]; if (!file) return; 
-  isUploadingAudio = true; 
-  const btn = event.target;
-  const originalOpacity = btn.style.opacity;
-  btn.style.opacity = '0.5';
-  
-  const fn = `qv_${Date.now()}.${file.name.split('.').pop()}`;
-  const { error } = await sb.storage.from('audios').upload(fn, file); 
-  isUploadingAudio = false;
-  btn.style.opacity = originalOpacity;
-  
-  if (error) { alert('Upload error: ' + error.message); return; }
-  if (questionRows[i]) questionRows[i].video_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
-  
-  const urlInput = document.getElementById(`q-vid-url-${i}`);
-  if (urlInput) urlInput.value = '';
-  renderQFields(); 
-}
-
-function renderQFields() {
-  const wrap = document.getElementById('q-builder'); if (!wrap) return;
-  wrap.innerHTML = questionRows.map((q, i) => buildQRow(q.type || 'multiple_choice', q, i)).join('');
-}
+function renderQFields() { const wrap = document.getElementById('q-builder'); if (!wrap) return; wrap.innerHTML = questionRows.map((q, i) => buildQRow(q.type || 'multiple_choice', q, i)).join(''); }
 
 function updateDndCats(i, val) { if (questionRows[i]) { questionRows[i].categories = val.split(',').map(s=>s.trim()).filter(Boolean); renderQFields(); } }
 function addDndItem(i) { if (questionRows[i]) { questionRows[i].items.push({ word:'', category: questionRows[i].categories[0]||'' }); renderQFields(); } }
 function removeDndItem(i, idx) { if (questionRows[i]) { questionRows[i].items.splice(idx,1); renderQFields(); } }
-
 function addMatchPair(i) { if (questionRows[i]) { if(!questionRows[i].pairs) questionRows[i].pairs=[]; questionRows[i].pairs.push({left:'', right:''}); renderQFields(); } }
 function removeMatchPair(i, pIdx) { if (questionRows[i] && questionRows[i].pairs) { questionRows[i].pairs.splice(pIdx, 1); renderQFields(); } }
-
-function duplicateQ(i) {
-  const cloned = JSON.parse(JSON.stringify(questionRows[i]));
-  questionRows.splice(i + 1, 0, cloned);
-  openQStates[i+1] = true;
-  renderQFields();
-}
+function duplicateQ(i) { const cloned = JSON.parse(JSON.stringify(questionRows[i])); questionRows.splice(i + 1, 0, cloned); openQStates[i+1] = true; renderQFields(); }
 function removeQ(i) { questionRows.splice(i,1); renderQFields(); }
-
 function updateQOption(i, j, v) { if (questionRows[i]) { questionRows[i].options[j] = v; } }
 function addQOption(i) { if (questionRows[i]) { questionRows[i].options.push(''); renderQFields(); } }
-function removeQOption(i, j) {
-  if (!questionRows[i] || questionRows[i].options.length <= 2) { alert('You need at least 2 options.'); return; }
-  questionRows[i].options.splice(j, 1);
-  if(questionRows[i].correctIndices) {
-     const idx = questionRows[i].correctIndices.indexOf(j);
-     if (idx > -1) questionRows[i].correctIndices.splice(idx, 1);
-     for(let k=0; k<questionRows[i].correctIndices.length; k++){
-         if(questionRows[i].correctIndices[k] > j) questionRows[i].correctIndices[k]--;
-     }
-  }
-  renderQFields();
-}
-function toggleCorrectIndex(i, j) {
-  if(!questionRows[i].correctIndices) questionRows[i].correctIndices = [];
-  const idx = questionRows[i].correctIndices.indexOf(j);
-  if (idx > -1) questionRows[i].correctIndices.splice(idx, 1);
-  else questionRows[i].correctIndices.push(j);
-  questionRows[i].answer = questionRows[i].correctIndices.map(index => questionRows[i].options[index]).join(' | ');
-}
+function removeQOption(i, j) { if (!questionRows[i] || questionRows[i].options.length <= 2) { alert('You need at least 2 options.'); return; } questionRows[i].options.splice(j, 1); if(questionRows[i].correctIndices) { const idx = questionRows[i].correctIndices.indexOf(j); if (idx > -1) questionRows[i].correctIndices.splice(idx, 1); for(let k=0; k<questionRows[i].correctIndices.length; k++){ if(questionRows[i].correctIndices[k] > j) questionRows[i].correctIndices[k]--; } } renderQFields(); }
+function toggleCorrectIndex(i, j) { if(!questionRows[i].correctIndices) questionRows[i].correctIndices = []; const idx = questionRows[i].correctIndices.indexOf(j); if (idx > -1) questionRows[i].correctIndices.splice(idx, 1); else questionRows[i].correctIndices.push(j); questionRows[i].answer = questionRows[i].correctIndices.map(index => questionRows[i].options[index]).join(' | '); }
 
 function buildQRow(qType, q, i) {
   q = q || {};
-  
-  if (qType === 'multiple_choice') {
-    if (!Array.isArray(q.options)) q.options = ['', ''];
-    if (!q.correctIndices) q.correctIndices = typeof q.correctIndex === 'number' ? [q.correctIndex] : [0];
-  }
-  
-  const isOpen = openQStates[i] !== false; 
-  const dState = isOpen ? 'open' : '';
-  const toggleText = isOpen ? 'Hide' : 'Edit';
-  
-  let typeLabel = '';
-  let summary = '';
+  if (qType === 'multiple_choice') { if (!Array.isArray(q.options)) q.options = ['', '']; if (!q.correctIndices) q.correctIndices = typeof q.correctIndex === 'number' ? [q.correctIndex] : [0]; }
+  const isOpen = openQStates[i] !== false; const dState = isOpen ? 'open' : ''; const toggleText = isOpen ? 'Hide' : 'Edit';
+  let typeLabel = ''; let summary = '';
   
   if (qType === 'matching') { typeLabel = 'Matching'; summary = (q.pairs && q.pairs[0] && q.pairs[0].left) ? esc(q.pairs[0].left) + '...' : '(Empty)'; }
   else if (qType === 'drag_drop') { typeLabel = 'Drag & Drop'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
@@ -2147,121 +1144,62 @@ function buildQRow(qType, q, i) {
   else if (qType === 'dictation') { typeLabel = 'Dictation'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
   else { typeLabel = 'Multiple Choice'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
 
-  let html = `<div class="q-card">
-    <div class="q-card-header ${dState}" onclick="toggleQCard(${i})">
-      <div><span class="q-card-title">${typeLabel}</span> <span class="q-card-summary">${summary}</span></div>
-      <div class="q-card-actions">
-        <button class="q-card-btn-action" onclick="event.stopPropagation(); duplicateQ(${i})" title="Duplicate">📄</button>
-        <button class="q-card-btn-action delete" onclick="event.stopPropagation(); removeQ(${i})" title="Delete item">🗑️</button>
-        <button class="q-card-toggle" onclick="toggleQCard(${i}, event)">${toggleText}</button>
-      </div>
-    </div>
-    <div class="q-card-body ${dState}">`;
+  let html = `<div class="q-card"><div class="q-card-header ${dState}" onclick="toggleQCard(${i})"><div><span class="q-card-title">${typeLabel}</span> <span class="q-card-summary">${summary}</span></div><div class="q-card-actions"><button class="q-card-btn-action" onclick="event.stopPropagation(); duplicateQ(${i})" title="Duplicate">📄</button><button class="q-card-btn-action delete" onclick="event.stopPropagation(); removeQ(${i})" title="Delete item">🗑️</button><button class="q-card-toggle" onclick="toggleQCard(${i}, event)">${toggleText}</button></div></div><div class="q-card-body ${dState}">`;
 
   if (qType === 'drag_drop') {
       const catsStr = (q.categories || []).join(', ');
-      html += `<span class="field-label" style="margin-top:0">Instruction text</span>
-        <input type="text" placeholder="e.g. Sort the past tense sounds" value="${esc(q.prompt||'')}" oninput="questionRows[${i}].prompt=this.value"/>
-        <span class="field-label">Categories (comma-separated)</span>
-        <input type="text" placeholder="e.g. /t/, /d/, /id/" value="${esc(catsStr)}" onchange="updateDndCats(${i}, this.value)"/>
-        <span class="field-label">Words to sort</span>
-        <div id="dnd-items-wrap-${i}">`;
-          
-      (q.items || []).forEach((item, idx) => {
-        html += `<div style="display:flex;gap:8px;margin-bottom:8px">
-          <input type="text" placeholder="Word" value="${esc(item.word)}" oninput="questionRows[${i}].items[${idx}].word=this.value" style="flex:2;margin:0"/>
-          <select style="flex:1;margin:0" onchange="questionRows[${i}].items[${idx}].category=this.value">`;
-        (q.categories || []).forEach(c => { html += `<option value="${esc(c)}" ${item.category===c?'selected':''}>${esc(c)}</option>`; });
-        html += `</select><button class="q-card-delete" style="background:var(--bg); border-radius:4px; padding:0 8px;" onclick="removeDndItem(${i}, ${idx})">×</button></div>`;
-      });
+      html += `<span class="field-label" style="margin-top:0">Instruction text</span><input type="text" placeholder="e.g. Sort the past tense sounds" value="${esc(q.prompt||'')}" oninput="questionRows[${i}].prompt=this.value"/><span class="field-label">Categories (comma-separated)</span><input type="text" placeholder="e.g. /t/, /d/, /id/" value="${esc(catsStr)}" onchange="updateDndCats(${i}, this.value)"/><span class="field-label">Words to sort</span><div id="dnd-items-wrap-${i}">`;
+      (q.items || []).forEach((item, idx) => { html += `<div style="display:flex;gap:8px;margin-bottom:8px"><input type="text" placeholder="Word" value="${esc(item.word)}" oninput="questionRows[${i}].items[${idx}].word=this.value" style="flex:2;margin:0"/><select style="flex:1;margin:0" onchange="questionRows[${i}].items[${idx}].category=this.value">`; (q.categories || []).forEach(c => { html += `<option value="${esc(c)}" ${item.category===c?'selected':''}>${esc(c)}</option>`; }); html += `</select><button class="q-card-delete" style="background:var(--bg); border-radius:4px; padding:0 8px;" onclick="removeDndItem(${i}, ${idx})">×</button></div>`; });
       html += `</div><button class="secondary-btn" style="padding:6px;font-size:12px;margin-top:8px" onclick="addDndItem(${i})">+ Add word</button>`;
   }
   else if (qType === 'drag_drop_text') {
-      html += `<span class="field-label" style="margin-top:0">Text/Sentence (Use brackets [ ] for draggable words)</span>
-        <textarea placeholder="e.g. She [works] at the hospital every Sunday." oninput="questionRows[${i}].prompt=this.value" style="min-height:90px">${esc(q.prompt||'')}</textarea>
-        <span class="field-label" style="color:var(--text-muted); font-weight:normal; text-transform:none">
-          The blank boxes and draggable buttons will be created automatically where you put the brackets.
-        </span>`;
+      html += `<span class="field-label" style="margin-top:0">Text/Sentence (Use brackets [ ] for draggable words)</span><textarea placeholder="e.g. She [works] at the hospital every Sunday." oninput="questionRows[${i}].prompt=this.value" style="min-height:90px">${esc(q.prompt||'')}</textarea><span class="field-label" style="color:var(--text-muted); font-weight:normal; text-transform:none">The blank boxes and draggable buttons will be created automatically where you put the brackets.</span>`;
   }
   else if (qType === 'matching') {
-    html += `<span class="field-label" style="margin-top:0">Matching Pairs</span>
-      <div id="match-pairs-${i}">`;
-    (q.pairs || [{left:'', right:''}]).forEach((pair, pIdx) => {
-        html += `<div style="display:flex;gap:8px;margin-bottom:8px">
-        <input type="text" placeholder="Word (Left side)" value="${esc(pair.left)}" oninput="questionRows[${i}].pairs[${pIdx}].left=this.value" style="flex:1;margin:0"/>
-        <input type="text" placeholder="Match (Right side)" value="${esc(pair.right)}" oninput="questionRows[${i}].pairs[${pIdx}].right=this.value" style="flex:1;margin:0"/>
-        <button class="q-card-delete" onclick="removeMatchPair(${i}, ${pIdx})" style="background:var(--bg); border-radius:4px; padding:0 8px;">×</button></div>`;
-    });
+    html += `<span class="field-label" style="margin-top:0">Matching Pairs</span><div id="match-pairs-${i}">`;
+    (q.pairs || [{left:'', right:''}]).forEach((pair, pIdx) => { html += `<div style="display:flex;gap:8px;margin-bottom:8px"><input type="text" placeholder="Word (Left side)" value="${esc(pair.left)}" oninput="questionRows[${i}].pairs[${pIdx}].left=this.value" style="flex:1;margin:0"/><input type="text" placeholder="Match (Right side)" value="${esc(pair.right)}" oninput="questionRows[${i}].pairs[${pIdx}].right=this.value" style="flex:1;margin:0"/><button class="q-card-delete" onclick="removeMatchPair(${i}, ${pIdx})" style="background:var(--bg); border-radius:4px; padding:0 8px;">×</button></div>`; });
     html += `</div><button class="secondary-btn" style="padding:6px;font-size:12px;margin-top:8px" onclick="addMatchPair(${i})">+ Add pair</button>`;
   } 
   else if (qType === 'fill_in_blank') {
-    html += `<span class="field-label" style="margin-top:0">Text/Sentence (Use brackets [ ] for the correct answers)</span>
-      <textarea placeholder="e.g. She [works] (work) at the hospital every Sunday and [has] (have) free days." oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt||'')}</textarea>
-      <span class="field-label" style="color:var(--text-muted); font-weight:normal; text-transform:none">
-        The blank inputs will be created automatically where you put the brackets.
-      </span>
-      <span class="field-label" style="margin-top:10px">Hint (optional)</span>
-      <input type="text" placeholder="e.g. Simple present tense" value="${esc(q.hint||'')}" oninput="questionRows[${i}].hint=this.value"/>`;
-      
-      if (!(q.prompt || '').includes('[') && q.answer) {
-         html += `<span class="field-label" style="color:var(--red)">Legacy format detected: Please update this question to use brackets [answer] inside the text above.</span>
-         <input type="text" placeholder="Correct answer" value="${esc(q.answer||'')}" oninput="questionRows[${i}].answer=this.value"/>`;
-      }
+    html += `<span class="field-label" style="margin-top:0">Text/Sentence (Use brackets [ ] for the correct answers)</span><textarea placeholder="e.g. She [works] (work) at the hospital every Sunday and [has] (have) free days." oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt||'')}</textarea><span class="field-label" style="color:var(--text-muted); font-weight:normal; text-transform:none">The blank inputs will be created automatically where you put the brackets.</span><span class="field-label" style="margin-top:10px">Hint (optional)</span><input type="text" placeholder="e.g. Simple present tense" value="${esc(q.hint||'')}" oninput="questionRows[${i}].hint=this.value"/>`;
+    if (!(q.prompt || '').includes('[') && q.answer) { html += `<span class="field-label" style="color:var(--red)">Legacy format detected: Please update this question to use brackets [answer] inside the text above.</span><input type="text" placeholder="Correct answer" value="${esc(q.answer||'')}" oninput="questionRows[${i}].answer=this.value"/>`; }
   } 
   else if (qType === 'dictation' || qType === 'open_answer') {
     const label = qType === 'open_answer' ? 'Expected answer / keywords (shown to student after submitting)' : 'Expected answer (for correction)';
-    html += `<span class="field-label" style="margin-top:0">Instruction for student</span>
-      <textarea placeholder="Write the instruction or question here..." oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt||'')}</textarea>
-      <span class="field-label">${label}</span>
-      <textarea placeholder="e.g. /ɪ/ — the vowel is short and relaxed" oninput="questionRows[${i}].answer=this.value">${esc(q.answer||'')}</textarea>`;
+    html += `<span class="field-label" style="margin-top:0">Instruction for student</span><textarea placeholder="Write the instruction or question here..." oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt||'')}</textarea><span class="field-label">${label}</span><textarea placeholder="e.g. /ɪ/ — the vowel is short and relaxed" oninput="questionRows[${i}].answer=this.value">${esc(q.answer||'')}</textarea>`;
   } 
   else {
-    const opts = q.options || ['', ''];
-    const correctIndices = q.correctIndices || [0];
-    
-    html += `<span class="field-label" style="margin-top:0">Question prompt</span>
-      <textarea placeholder="Write the question here..." oninput="questionRows[${i}].prompt=this.value" style="margin-bottom:12px">${esc(q.prompt||'')}</textarea>
-      <span class="field-label">Options (Check the boxes for the correct answers)</span>`;
-      
+    const opts = q.options || ['', '']; const correctIndices = q.correctIndices || [0];
+    html += `<span class="field-label" style="margin-top:0">Question prompt</span><textarea placeholder="Write the question here..." oninput="questionRows[${i}].prompt=this.value" style="margin-bottom:12px">${esc(q.prompt||'')}</textarea><span class="field-label">Options (Check the boxes for the correct answers)</span>`;
     opts.forEach((o, j) => {
-      const isCorrect = correctIndices.includes(j);
-      const borderCol = isCorrect ? 'var(--green)' : 'var(--border)';
-      html += `<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;background:var(--bg);padding:6px 10px;border-radius:var(--radius-sm);border:1px solid ${borderCol}">
-        <input type="checkbox" value="${j}" ${isCorrect?'checked':''} onchange="toggleCorrectIndex(${i}, ${j})" title="Mark as correct" style="margin:0;width:16px;height:16px;accent-color:var(--green);cursor:pointer">
-        <input type="text" placeholder="Answer option ${j+1}" value="${esc(o)}" oninput="updateQOption(${i},${j},this.value)" style="margin:0;flex:1;border:none;background:transparent">
-        <button class="q-card-delete" onclick="removeQOption(${i},${j})">×</button>
-      </div>`;
+      const isCorrect = correctIndices.includes(j); const borderCol = isCorrect ? 'var(--green)' : 'var(--border)';
+      html += `<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;background:var(--bg);padding:6px 10px;border-radius:var(--radius-sm);border:1px solid ${borderCol}"><input type="checkbox" value="${j}" ${isCorrect?'checked':''} onchange="toggleCorrectIndex(${i}, ${j})" title="Mark as correct" style="margin:0;width:16px;height:16px;accent-color:var(--green);cursor:pointer"><input type="text" placeholder="Answer option ${j+1}" value="${esc(o)}" oninput="updateQOption(${i},${j},this.value)" style="margin:0;flex:1;border:none;background:transparent"><button class="q-card-delete" onclick="removeQOption(${i},${j})">×</button></div>`;
     });
     html += `<button class="secondary-btn" style="font-size:11px;padding:6px 10px;margin-bottom:8px" onclick="addQOption(${i})">+ Add option</button>`;
   }
   
   let parts = parseYtUrlParts(q.video_url || '');
-  let mediaHtml = `
-    <div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)">
-      <span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this question (optional)</span>
-      
-      <div style="margin-bottom:12px">
-        <span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">🎧 Audio (Upload MP3)</span>
-        <input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})" style="margin-bottom:4px; padding:6px; font-size:12px;"/>
-        <div id="q-audio-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.audio_url?'✅ Audio saved':''}</div>
-      </div>
+  let mediaHtml = `<div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)"><span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this question (optional)</span><div style="margin-bottom:12px"><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">🎧 Audio (Upload MP3)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})" style="margin-bottom:4px; padding:6px; font-size:12px;"/><div id="q-audio-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.audio_url?'✅ Audio saved':''}</div></div><div><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">📺 Video (YouTube Link OR Upload MP4)</span><div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap"><input type="url" id="q-vid-url-${i}" placeholder="YouTube URL..." value="${parts.url && !parts.url.includes('supabase.co') ? esc(parts.url) : ''}" oninput="updateQVideoUrl(${i}, this.value)" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/><input type="number" id="q-vid-start-${i}" placeholder="Start (sec)" value="${parts.start}" oninput="updateQVideoUrl(${i}, document.getElementById('q-vid-url-${i}').value)" style="margin:0;flex:1;min-width:80px; padding:6px; font-size:12px;"/><input type="number" id="q-vid-end-${i}" placeholder="End (sec)" value="${parts.end}" oninput="updateQVideoUrl(${i}, document.getElementById('q-vid-url-${i}').value)" style="margin:0;flex:1;min-width:80px; padding:6px; font-size:12px;"/><span style="font-size:11px;color:var(--text-muted);font-weight:700">OR</span><input type="file" accept="video/*" onchange="uploadQVideo(event,${i})" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/></div><div id="q-video-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.video_url?'✅ Video saved':''}</div></div></div>`;
+  html += mediaHtml + `</div></div>`; return html;
+}
 
-      <div>
-        <span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">📺 Video (YouTube Link OR Upload MP4)</span>
-        <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap">
-            <input type="url" id="q-vid-url-${i}" placeholder="YouTube URL..." value="${parts.url && !parts.url.includes('supabase.co') ? esc(parts.url) : ''}" oninput="updateQVideoUrl(${i}, this.value)" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/>
-            <input type="number" id="q-vid-start-${i}" placeholder="Start (sec)" value="${parts.start}" oninput="updateQVideoUrl(${i}, document.getElementById('q-vid-url-${i}').value)" style="margin:0;flex:1;min-width:80px; padding:6px; font-size:12px;"/>
-            <input type="number" id="q-vid-end-${i}" placeholder="End (sec)" value="${parts.end}" oninput="updateQVideoUrl(${i}, document.getElementById('q-vid-url-${i}').value)" style="margin:0;flex:1;min-width:80px; padding:6px; font-size:12px;"/>
-            <span style="font-size:11px;color:var(--text-muted);font-weight:700">OR</span>
-            <input type="file" accept="video/*" onchange="uploadQVideo(event,${i})" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/>
-        </div>
-        <div id="q-video-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.video_url?'✅ Video saved':''}</div>
-      </div>
-    </div>
-  `;
-  html += mediaHtml;
-  html += `</div></div>`;
-  return html;
+function addQuestion(type) {
+  let newQ;
+  if (type === 'drag_drop') newQ = { type: 'drag_drop', prompt: '', categories: [], items: [], audio_url: '', video_url: '' };
+  else if (type === 'matching') newQ = { type: 'matching', pairs: [{left:'', right:''}] };
+  else if (type === 'fill_in_blank') newQ = { type: 'fill_in_blank', prompt: '', answer: '', hint: '', audio_url: '', video_url: '' };
+  else if (type === 'dictation' || type === 'open_answer') newQ = { type: type, prompt: '', answer: '', audio_url: '', video_url: '' };
+  else if (type === 'drag_drop_text') newQ = { type: 'drag_drop_text', prompt: '', audio_url: '', video_url: '' };
+  else newQ = { type: 'multiple_choice', prompt: '', options: ['', ''], correctIndex: 0, answer: '', audio_url: '', video_url: '' };
+  questionRows.push(newQ); Object.keys(openQStates).forEach(k => openQStates[k] = false); openQStates[questionRows.length - 1] = true; renderQFields();
+}
+
+function renderTeacherProgress(allProgress) {
+  const list = document.getElementById('t-student-progress-list'); if (!list) return;
+  if (!dbProfiles.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No students registered yet.</div>'; return; }
+  const students = dbProfiles.filter(p => p.id !== currentUser.id);
+  if (!students.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No students registered yet.</div>'; return; }
+  list.innerHTML = students.map(s => { const done = allProgress.filter(p => p.user_id === s.id).length; return `<div class="student-prog-row"><div style="display:flex;align-items:center;gap:10px;"><div class="post-avatar" style="width:30px;height:30px;font-size:12px">${renderAvatarHTML(s.id, s.username || 'Student')}</div><div class="student-prog-name">${esc(s.username || 'Unnamed Student')}</div></div><div class="student-prog-stats"><span style="font-weight:700;color:var(--brand)">${done}</span> lessons completed</div></div>`; }).join('');
 }
 </script>
 </body>
