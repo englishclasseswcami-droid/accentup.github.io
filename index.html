@@ -42,7 +42,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .nav-tab.logout-btn-nav:hover{background:var(--red);color:#fff}
 .page{display:none;padding:2rem 1.5rem;max-width:960px;margin:0 auto}
 .page.active{display:block}
-.page-full{max-width:1300px} /* Ampliado para mejor UX */
+.page-full{max-width:1300px} 
 .section-intro{margin-bottom:1.75rem}
 .section-intro h2{font-size:20px;font-weight:800;color:var(--brand-dark);margin-bottom:5px}
 .section-intro p{font-size:13px;color:var(--text-muted);line-height:1.6}
@@ -279,6 +279,9 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .dnd-col.active-drop{border-color:var(--brand);background:var(--brand-light)}
 .dnd-col-header{padding:12px 10px;font-weight:800;text-align:center;border-bottom:1.5px solid var(--border);background:var(--bg);border-radius:var(--radius-sm) var(--radius-sm) 0 0;color:var(--text)}
 .dnd-col-body{padding:10px;flex:1;min-height:120px;display:flex;flex-direction:column;gap:8px;align-items:center}
+.dnd-inline-dropzone { display: inline-block; min-width: 80px; height: 32px; border-bottom: 2px solid var(--brand); background: var(--skool-hover); vertical-align: bottom; margin: 0 4px; text-align: center; cursor: pointer; transition: all 0.2s; }
+.dnd-inline-dropzone.active-drop { background: var(--brand-light); border-color: var(--brand); }
+.dnd-inline-dropzone .dnd-chip { margin: 0; padding: 4px 10px; font-size: 13px; transform: translateY(-4px); }
 
 .matching-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .match-col-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-light);margin-bottom:8px}
@@ -332,7 +335,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .t-panel h3{font-size:14px;font-weight:700;color:var(--text);margin-bottom:.9rem;padding-bottom:10px;border-bottom:1px solid var(--border)}
 .field-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-light);margin-bottom:5px;margin-top:.9rem;display:block}
 .field-label:first-of-type{margin-top:0}
-select,textarea,input[type=text],input[type=password],input[type=email],input[type=url],input[type=file]{width:100%;padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .15s;margin-bottom:8px}
+select,textarea,input[type=text],input[type=password],input[type=email],input[type=url],input[type=file],input[type=number]{width:100%;padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .15s;margin-bottom:8px}
 select:focus,textarea:focus,input:focus{border-color:var(--brand);background:#fff}
 textarea{resize:vertical;min-height:70px}
 
@@ -346,10 +349,11 @@ textarea{resize:vertical;min-height:70px}
 .q-card-actions { display: flex; gap: 8px; align-items: center; }
 .q-card-body { padding: 16px; display: none; }
 .q-card-body.open { display: block; }
-.q-card-toggle { font-size: 12px; color: var(--text-muted); background: none; border: none; cursor: pointer; font-weight: 600; font-family:'Inter',sans-serif; }
+.q-card-toggle { font-size: 12px; color: var(--text-muted); background: none; border: none; cursor: pointer; font-weight: 600; font-family:'Inter',sans-serif; padding: 4px; }
 .q-card-toggle:hover { color: var(--brand); }
-.q-card-delete { font-size: 16px; color: var(--text-light); background: none; border: none; cursor: pointer; line-height: 1; padding: 0 4px; }
-.q-card-delete:hover { color: var(--red); }
+.q-card-btn-action { font-size: 16px; color: var(--text-light); background: none; border: none; cursor: pointer; line-height: 1; padding: 4px; transition: color 0.15s;}
+.q-card-btn-action:hover { color: var(--brand); }
+.q-card-btn-action.delete:hover { color: var(--red); }
 
 .primary-btn{width:100%;padding:10px;border-radius:var(--radius-sm);background:var(--brand);color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;margin-top:.9rem;transition:background .15s;font-family:'Inter',sans-serif}
 .primary-btn:hover{background:var(--brand-dark)}
@@ -713,7 +717,6 @@ footer strong{color:var(--brand)}
         <div id="view-exercise" style="display:none">
           <h2 id="player-title" class="lesson-title-main"></h2>
           <div id="cv-task-text" class="text-content-main ql-editor" style="border:none;padding:0;margin-bottom:1.5rem;display:none"></div>
-          <audio id="player-audio" controls style="display:none;width:100%;margin-bottom:1.25rem;border-radius:30px"></audio>
           <div id="cv-task-audios" class="lesson-audios-box" style="display:none"></div>
           <div id="player-questions"></div>
           <div class="player-footer">
@@ -820,11 +823,15 @@ footer strong{color:var(--brand)}
         
         <div id="fields-video">
           <span class="field-label">YouTube URL</span>
-          <input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..."/>
+          <div style="display:flex; gap:8px;">
+            <input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..." style="flex:2; margin-bottom:0;"/>
+            <input type="number" id="t-les-vid-start" placeholder="Start (sec)" style="flex:1; margin-bottom:0;" title="Start time in seconds"/>
+            <input type="number" id="t-les-vid-end" placeholder="End (sec)" style="flex:1; margin-bottom:0;" title="End time in seconds"/>
+          </div>
         </div>
         
         <div id="fields-text" style="display:none">
-          <span class="field-label">Content (text, instructions, notes)</span>
+          <span class="field-label" style="margin-top:12px;">Content (text, instructions, notes)</span>
           <div id="quill-editor-container"></div>
         </div>
         
@@ -843,7 +850,8 @@ footer strong{color:var(--brand)}
             <button class="secondary-btn" onclick="addQuestion('matching')">+ Matching</button>
             <button class="secondary-btn" onclick="addQuestion('open_answer')">+ Open Answer</button>
             <button class="secondary-btn" onclick="addQuestion('dictation')">+ Dictation</button>
-            <button class="secondary-btn" onclick="addQuestion('drag_drop')">+ Drag & Drop</button>
+            <button class="secondary-btn" onclick="addQuestion('drag_drop_text')">+ Drag & Drop (Into text)</button>
+            <button class="secondary-btn" onclick="addQuestion('drag_drop')">+ Drag & Drop (Categorize)</button>
           </div>
         </div>
 
@@ -853,7 +861,7 @@ footer strong{color:var(--brand)}
           <div class="audio-add-row">
             <input type="text" id="t-audio-label" placeholder="Label (e.g. Word 1)" style="margin-bottom:0;flex:1"/>
             <input type="file" id="t-audio-file" accept="audio/*" style="margin-bottom:0;width:auto;flex:1"/>
-            <button class="secondary-btn" onclick="addSharedAudio()" id="btn-add-audio">+ Add</button>
+            <button class="secondary-btn" onclick="addSharedAudio()">+ Add</button>
           </div>
           <div id="t-shared-audios-render"></div>
         </div>
@@ -932,15 +940,41 @@ function timeAgo(d) {
   if (s < 31536000) return Math.floor(s/2592000) + 'mo';
   return Math.floor(s/31536000) + 'y';
 }
-function formatYouTubeUrl(url) {
+function buildYtUrl(url, start, end) {
   if (!url || !url.trim()) return '';
-  url = url.trim();
-  if (url.includes('youtube.com/embed/')) return url;
-  if (url.includes('youtu.be/')) return `https://www.youtube.com/embed/${url.split('youtu.be/')[1].split('?')[0].split('&')[0]}`;
-  if (url.includes('youtube.com/watch')) {
-    try { const id = new URL(url).searchParams.get('v'); return id ? `https://www.youtube.com/embed/${id}` : url; } catch(e) { return url; }
+  let finalUrl = url.trim();
+  let videoId = '';
+  
+  if (finalUrl.includes('youtube.com/embed/')) {
+     videoId = finalUrl.split('youtube.com/embed/')[1].split('?')[0];
+  } else if (finalUrl.includes('youtu.be/')) {
+     videoId = finalUrl.split('youtu.be/')[1].split('?')[0].split('&')[0];
+     finalUrl = `https://www.youtube.com/embed/${videoId}`;
+  } else if (finalUrl.includes('youtube.com/watch')) {
+     try { videoId = new URL(finalUrl).searchParams.get('v'); finalUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : finalUrl; } catch(e) {}
   }
-  return url;
+  
+  if (finalUrl.includes('youtube.com/embed/')) {
+     try {
+         const u = new URL(finalUrl);
+         if(start) u.searchParams.set('start', start);
+         if(end) u.searchParams.set('end', end);
+         return u.toString();
+     } catch(e) { return finalUrl; }
+  }
+  return finalUrl;
+}
+
+function parseYtUrlParts(url) {
+   if (!url || !url.includes('youtube.com/embed/')) return { url, start:'', end:'' };
+   try {
+     const u = new URL(url);
+     const start = u.searchParams.get('start') || '';
+     const end = u.searchParams.get('end') || '';
+     u.searchParams.delete('start');
+     u.searchParams.delete('end');
+     return { url: u.toString(), start, end };
+   } catch(e) { return { url, start:'', end:'' }; }
 }
 
 /* ══════════════════════════════════════════
@@ -1061,41 +1095,40 @@ function goToPage(pageId) {
 }
 
 /* ══════════════════════════════════════════
-   DATA
+   DATA (FETCH SEGURO)
 ══════════════════════════════════════════ */
 async function fetchData() {
   if (!currentUser) return;
   try {
-    const isTeacher = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
     const userEmail = currentUser?.email?.toLowerCase() || '';
+    const isTeacher = userEmail === TEACHER_EMAIL.toLowerCase();
 
-    const pMod = sb.from('modules').select('*').order('order_index');
-    const pSub = sb.from('submodules').select('*').order('order_index');
-    const pLes = sb.from('lessons').select('*').order('order_index');
-    const pProg = sb.from('student_progress').select('*').eq('user_id', currentUser.id);
-    const pPosts = sb.from('posts').select('*').order('created_at', { ascending: false });
-    const pComments = sb.from('comments').select('*').order('created_at', { ascending: true });
-    const pLikes = sb.from('likes').select('*');
-    const pProfiles = sb.from('user_profiles').select('*');
-    const pAllProg = isTeacher ? sb.from('student_progress').select('*') : Promise.resolve({data:[]});
+    // Carga secuencial ultra-segura para evitar bugs de Promise.all
+    const rMod = await sb.from('modules').select('*').order('order_index');
+    const rSub = await sb.from('submodules').select('*').order('order_index');
+    const rLes = await sb.from('lessons').select('*').order('order_index');
+    const rProg = await sb.from('student_progress').select('*').eq('user_id', currentUser.id);
+    const rPosts = await sb.from('posts').select('*').order('created_at', { ascending: false });
+    const rComments = await sb.from('comments').select('*').order('created_at', { ascending: true });
+    const rLikes = await sb.from('likes').select('*');
+    const rProfiles = await sb.from('user_profiles').select('*');
+    const rAllProg = isTeacher ? await sb.from('student_progress').select('*') : { data: [] };
 
-    const [rMod, rSub, rLes, rProg, rPosts, rComments, rLikes, rProfiles, rAllProg] = await Promise.all([pMod, pSub, pLes, pProg, pPosts, pComments, pLikes, pProfiles, pAllProg]);
-    
     const allModules = rMod.data || [];
     dbModules = allModules.filter(m => isTeacher || !m.is_private || (m.allowed_emails && m.allowed_emails.toLowerCase().includes(userEmail)));
     
-    dbSubmodules = rSub?.data || []; 
-    dbLessons = rLes?.data || []; 
-    dbProgress = rProg?.data || [];
-    dbPosts = rPosts?.data || []; 
-    dbComments = rComments?.data || []; 
-    dbLikes = rLikes?.data || []; 
-    dbProfiles = rProfiles?.data || [];
+    dbSubmodules = rSub.data || []; 
+    dbLessons = rLes.data || []; 
+    dbProgress = rProg.data || [];
+    dbPosts = rPosts.data || []; 
+    dbComments = rComments.data || []; 
+    dbLikes = rLikes.data || []; 
+    dbProfiles = rProfiles.data || [];
     
     renderClassroomGrid(); 
     updateModuleSelect(); 
     renderManageList();
-    if (isTeacher) renderTeacherProgress(rAllProg?.data || []);
+    if (isTeacher) renderTeacherProgress(rAllProg.data || []);
     if (document.getElementById('page-community').classList.contains('active')) renderCommunityFeed();
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -1394,10 +1427,12 @@ function showLesson(lessonId) {
   if (currentLesson.type === 'video') {
     document.getElementById('view-video').style.display = 'block';
     document.getElementById('cv-video-title').textContent = currentLesson.title;
-    const embedUrl = formatYouTubeUrl(currentLesson.video_url);
-    document.getElementById('cv-video-player').innerHTML = embedUrl
-      ? `<iframe src="${esc(embedUrl)}" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe>`
+    
+    // YouTube time support is native because the URL already contains ?start=X&end=Y if saved that way
+    document.getElementById('cv-video-player').innerHTML = currentLesson.video_url
+      ? `<iframe src="${esc(currentLesson.video_url)}" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe>`
       : '<div style="color:#fff;padding:2rem;text-align:center">No video URL saved.</div>';
+      
     document.getElementById('cv-video-text').innerHTML = currentLesson.text_content || '';
     renderAudios('cv-video-audios', audios); renderResources('cv-video-resources', resources);
     updateCompleteButton('btn-complete-video', isDone);
@@ -1445,7 +1480,7 @@ function showLesson(lessonId) {
 }
 
 /* ══════════════════════════════════════════
-   EXERCISE PLAYER
+   EXERCISE PLAYER (MULTI-FORMATO)
 ══════════════════════════════════════════ */
 function renderPlayerQuestions(isDone = false) {
   const wrap = document.getElementById('player-questions');
@@ -1459,9 +1494,9 @@ function renderPlayerQuestions(isDone = false) {
     const qAudio = q.audio_url ? `<audio controls src="${esc(q.audio_url)}" style="width:100%;height:36px;margin-bottom:10px;border-radius:20px"></audio>` : '';
     let qVideo = '';
     if (q.video_url) {
-      const formattedUrl = formatYouTubeUrl(q.video_url);
-      if (formattedUrl.includes('youtube.com/embed/')) {
-        qVideo = `<div class="video-container" style="margin-bottom:12px; border-radius:8px; overflow:hidden;"><iframe src="${esc(formattedUrl)}" allowfullscreen></iframe></div>`;
+      // Usar la URL guardada (que ya tiene los tiempos si se configuraron)
+      if (q.video_url.includes('youtube.com/embed/')) {
+        qVideo = `<div class="video-container" style="margin-bottom:12px; border-radius:8px; overflow:hidden;"><iframe src="${esc(q.video_url)}" allowfullscreen></iframe></div>`;
       } else {
         qVideo = `<video controls src="${esc(q.video_url)}" style="width:100%;border-radius:var(--radius-sm);margin-bottom:12px;background:#000;max-height:400px"></video>`;
       }
@@ -1473,6 +1508,24 @@ function renderPlayerQuestions(isDone = false) {
       const words = shuffle([...(q.items||[])]);
       const cats = q.categories || [];
       return `<div class="ex-question-block">${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><div class="dnd-instruction">☝️ Tap a word, then tap a box below to sort it.</div><div class="dnd-bank" id="dnd-bank-${i}" onclick="dndZoneClick(this, ${i})">${words.map((w,wIdx)=>`<div class="dnd-chip" id="dnd-chip-${i}-${wIdx}" onclick="event.stopPropagation();dndChipClick(this, ${i})">${esc(w.word)}</div>`).join('')}</div><div class="dnd-cols">${cats.map(c=>`<div class="dnd-col" onclick="dndZoneClick(this, ${i})" data-cat="${escapeJSArg(c)}"><div class="dnd-col-header">${esc(c)}</div><div class="dnd-col-body"></div></div>`).join('')}</div></div>`;
+    }
+    
+    if (qType === 'drag_drop_text') {
+      let parts = q.prompt.split(/\[.*?\]/g);
+      let matches = [...q.prompt.matchAll(/\[(.*?)\]/g)].map(m => m[1]);
+      let words = shuffle([...matches]); 
+      
+      let sentenceHtml = parts.map((part, pIdx) => {
+          let out = esc(part);
+          if (pIdx < matches.length) {
+             out += `<span class="dnd-inline-dropzone" id="dnd-drop-${i}-${pIdx}" onclick="dndInlineDrop(this, ${i}, ${pIdx})" data-expected="${esc(matches[pIdx])}"></span>`;
+          }
+          return out;
+      }).join('');
+      
+      let bankHtml = `<div class="dnd-bank" id="dnd-bank-inline-${i}" onclick="dndInlineReturn(this, ${i})">` + words.map((w, wIdx) => `<div class="dnd-chip" id="dnd-chip-inline-${i}-${wIdx}" onclick="event.stopPropagation(); dndInlineSelect(this, ${i})">${esc(w)}</div>`).join('') + `</div>`;
+      
+      return `<div class="ex-question-block">${qMedia}<div class="dnd-instruction">☝️ Tap a word, then tap a blank line to fill it.</div><div class="ex-q-text dnd-text-wrap" style="line-height:2.5; font-size:16px">${sentenceHtml}</div>${bankHtml}</div>`;
     }
     
     if (qType === 'matching') {
@@ -1515,9 +1568,12 @@ function renderPlayerQuestions(isDone = false) {
     const rawOpts = Array.isArray(q.options) ? q.options : [];
     const opts = rawOpts.filter(o => o && String(o).trim() !== '');
     const shuffled = shuffle([...opts]);
+    
+    let givenArr = Array.isArray(prevAnswers[i]) ? prevAnswers[i] : [prevAnswers[i]];
+    
     return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><div class="options-grid">${shuffled.map((o,j)=>{
-      const isSelected = given === o ? 'selected' : '';
-      return `<button class="opt-btn ${isSelected}" id="opt-${i}-${j}" onclick="selectOpt(${i},${j},'${escapeJSArg(o)}',${shuffled.length})" ${disabledAttr}>${esc(o)}</button>`;
+      const isSelected = givenArr.includes(o) ? 'selected' : '';
+      return `<button class="opt-btn ${isSelected}" id="opt-${i}-${j}" onclick="toggleOpt(${i},${j},'${escapeJSArg(o)}')" ${disabledAttr}>${esc(o)}</button>`;
     }).join('')}</div></div>`;
   }).join('');
 }
@@ -1527,6 +1583,21 @@ function updateMultiBlank(i, pIdx, val, total) {
    studentAnswers[i][pIdx] = val;
 }
 
+// Logic for Multiple Choice (Multiple correct)
+function toggleOpt(qi, oi, val) {
+  if(!Array.isArray(studentAnswers[qi])) studentAnswers[qi] = [];
+  const idx = studentAnswers[qi].indexOf(val);
+  const btn = document.getElementById(`opt-${qi}-${oi}`);
+  if(idx > -1) {
+     studentAnswers[qi].splice(idx, 1);
+     btn.classList.remove('selected');
+  } else {
+     studentAnswers[qi].push(val);
+     btn.classList.add('selected');
+  }
+}
+
+// Logic for Drag and Drop Categorize
 function dndChipClick(chipEl, i) {
   document.querySelectorAll(`#player-questions .dnd-chip[id^="dnd-chip-${i}-"]`).forEach(c => c.classList.remove('selected'));
   document.querySelectorAll(`#player-questions .dnd-bank[id="dnd-bank-${i}"], #player-questions .dnd-col[onclick="dndZoneClick(this, ${i})"]`).forEach(c => c.classList.add('active-drop'));
@@ -1543,11 +1614,34 @@ function dndZoneClick(zoneEl, i) {
       document.querySelectorAll(`#player-questions .dnd-col, #player-questions .dnd-bank`).forEach(c => c.classList.remove('active-drop')); 
   }
 }
-function selectOpt(qi, oi, val, numOpts) {
-  for (let j = 0; j < numOpts; j++) { const b = document.getElementById(`opt-${qi}-${j}`); if (b) b.classList.remove('selected'); }
-  document.getElementById(`opt-${qi}-${oi}`)?.classList.add('selected');
-  studentAnswers[qi] = val;
+
+// Logic for Drag and Drop Inline Text
+function dndInlineSelect(chipEl, i) {
+  document.querySelectorAll(`#player-questions .dnd-chip[id^="dnd-chip-inline-${i}-"]`).forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll(`#player-questions .dnd-inline-dropzone[id^="dnd-drop-${i}-"], #player-questions .dnd-bank[id="dnd-bank-inline-${i}"]`).forEach(c => c.classList.add('active-drop'));
+  selectedDragChips[i] = chipEl;
+  chipEl.classList.add('selected');
 }
+function dndInlineDrop(zoneEl, i, pIdx) {
+  if (!selectedDragChips[i]) return;
+  if (zoneEl.children.length > 0) {
+      // Put existing chip back to bank
+      document.getElementById(`dnd-bank-inline-${i}`).appendChild(zoneEl.children[0]);
+  }
+  zoneEl.appendChild(selectedDragChips[i]);
+  selectedDragChips[i].classList.remove('selected');
+  selectedDragChips[i] = null;
+  document.querySelectorAll(`#player-questions .dnd-inline-dropzone, #player-questions .dnd-bank`).forEach(c => c.classList.remove('active-drop'));
+}
+function dndInlineReturn(zoneEl, i) {
+  if (!selectedDragChips[i]) return;
+  zoneEl.appendChild(selectedDragChips[i]);
+  selectedDragChips[i].classList.remove('selected');
+  selectedDragChips[i] = null;
+  document.querySelectorAll(`#player-questions .dnd-inline-dropzone, #player-questions .dnd-bank`).forEach(c => c.classList.remove('active-drop'));
+}
+
+
 function matchLeft(i, lIdx, val) {
   if (matchState[i].pairs[lIdx] !== undefined) return;
   document.querySelectorAll(`.match-chip[id^='ml-${i}-']`).forEach(el => { if (!el.classList.contains('matched')) el.classList.remove('selected'); });
@@ -1583,6 +1677,7 @@ async function submitExercise() {
     else if (qType === 'drag_drop') {
       totalQ += q.items.length;
       document.querySelectorAll(`[id^="dnd-chip-${i}-"]`).forEach(chip => {
+        if (chip.id.includes('inline')) return; // ignore inline text chips here
         const word = chip.textContent.trim();
         const expectedCat = q.items.find(x => x.word === word)?.category;
         const parentCol = chip.closest('.dnd-col');
@@ -1592,6 +1687,25 @@ async function submitExercise() {
         if (ok) { correct++; chip.classList.add('correct'); } else chip.classList.add('wrong');
         results.push({ prompt: word, answer: expectedCat || '?', given: actualCat || 'Unassigned', ok });
       });
+    }
+    else if (qType === 'drag_drop_text') {
+      let matches = [...q.prompt.matchAll(/\[(.*?)\]/g)].map(m => m[1]);
+      totalQ += matches.length;
+      let allCorrect = true;
+      
+      document.querySelectorAll(`#player-questions .dnd-inline-dropzone[id^="dnd-drop-${i}-"]`).forEach(dz => {
+          let expected = dz.dataset.expected;
+          let chip = dz.querySelector('.dnd-chip');
+          let given = chip ? chip.textContent.trim() : '';
+          let isOk = given === expected;
+          if (isOk) { correct++; } else { allCorrect = false; }
+          if (chip) {
+              chip.classList.add(isOk ? 'correct' : 'wrong');
+              chip.onclick = null;
+          }
+      });
+      document.getElementById(`dnd-bank-inline-${i}`).onclick = null;
+      results.push({ prompt: 'Fill in blanks text', answer: 'Check visually above', given: '', ok: allCorrect });
     }
     else if (qType === 'matching') {
       const pairs = q.pairs || (q.left ? [q] : []);
@@ -1631,24 +1745,35 @@ async function submitExercise() {
       }
     }
     else {
+      // Multiple Choice / Dictation
       totalQ++;
-      const correctAns = q.answer || (Array.isArray(q.options) && q.options[q.correctIndex ?? 0]) || '';
-      let given = '';
-      if (qType === 'dictation') given = document.getElementById('dict-'+i)?.value.trim() || '';
-      else given = studentAnswers[i] || '';
+      let givenArr = Array.isArray(studentAnswers[i]) ? studentAnswers[i] : [studentAnswers[i] || ''];
       
-      studentAnswers[i] = given; 
-      let ok = String(given).toLowerCase().trim() === String(correctAns).toLowerCase().trim();
-      if (ok) correct++;
-      
-      if (qType !== 'dictation') {
-        document.querySelectorAll(`[id^="opt-${i}-"]`).forEach(b => {
-          b.disabled = true;
-          if (b.textContent.trim() === String(correctAns).trim()) b.classList.add('correct');
-          else if (b.classList.contains('selected')) b.classList.add('wrong');
-        });
+      if (qType === 'dictation') {
+         let given = document.getElementById('dict-'+i)?.value.trim() || '';
+         studentAnswers[i] = given;
+         let ok = String(given).toLowerCase().trim() === String(q.answer).toLowerCase().trim();
+         if(ok) correct++;
+         results.push({ prompt: q.prompt, answer: q.answer, given, ok });
+      } else {
+         // Multiple choice checkboxes evaluation
+         let correctAnsArray = q.correctIndices ? q.correctIndices.map(idx => q.options[idx]) : [q.options[q.correctIndex || 0]];
+         let isOk = false;
+         
+         // Strict check: they must have selected all correct ones and no wrong ones
+         if (givenArr.length === correctAnsArray.length && givenArr.every(val => correctAnsArray.includes(val))) {
+             isOk = true;
+             correct++;
+         }
+         
+         document.querySelectorAll(`[id^="opt-${i}-"]`).forEach((b, j) => {
+            b.disabled = true;
+            let optText = q.options[j];
+            if (correctAnsArray.includes(optText)) b.classList.add('correct');
+            else if (givenArr.includes(optText)) b.classList.add('wrong');
+         });
+         results.push({ prompt: q.prompt, answer: correctAnsArray.join(', '), given: givenArr.join(', '), ok: isOk });
       }
-      results.push({ prompt: q.prompt, answer: correctAns, given, ok });
     }
   });
 
@@ -1801,7 +1926,10 @@ async function saveLesson() {
   payload.text_content = quillEditor.root.innerHTML;
 
   if (type === 'video') {
-    payload.video_url = formatYouTubeUrl(document.getElementById('t-les-video-url').value.trim());
+    let url = document.getElementById('t-les-video-url').value.trim();
+    let start = document.getElementById('t-les-vid-start').value;
+    let end = document.getElementById('t-les-vid-end').value;
+    payload.video_url = buildYtUrl(url, start, end);
   } else if (type === 'embed') {
     payload.video_url = document.getElementById('t-les-embed-code').value.trim();
   } else if (type === 'task') {
@@ -1836,7 +1964,12 @@ function editLesson(id) {
   
   quillEditor.root.innerHTML = l.text_content || '';
   
-  if (l.type === 'video') { document.getElementById('t-les-video-url').value = l.video_url || ''; }
+  if (l.type === 'video') { 
+      let parts = parseYtUrlParts(l.video_url);
+      document.getElementById('t-les-video-url').value = parts.url; 
+      document.getElementById('t-les-vid-start').value = parts.start; 
+      document.getElementById('t-les-vid-end').value = parts.end; 
+  }
   if (l.type === 'embed') { document.getElementById('t-les-embed-code').value = l.video_url || ''; }
   if (l.type === 'task') {
     let raw = safeParseJSON(l.task_content);
@@ -1854,6 +1987,13 @@ function editLesson(id) {
        questionRows = raw;
     }
     
+    // Normalizar checkboxes de multiple choice viejos
+    questionRows.forEach(q => {
+        if(q.type === 'multiple_choice' && !q.correctIndices) {
+            q.correctIndices = typeof q.correctIndex === 'number' ? [q.correctIndex] : [0];
+        }
+    });
+
     openQStates = {}; if(questionRows.length > 0) openQStates[0] = true;
     renderQFields();
   }
@@ -1866,7 +2006,9 @@ function editLesson(id) {
 }
 function cancelEditLes() {
   document.getElementById('edit-les-id').value = ''; document.getElementById('t-les-title').value = '';
-  document.getElementById('t-les-video-url').value = ''; document.getElementById('t-les-embed-code').value = '';
+  document.getElementById('t-les-video-url').value = ''; 
+  document.getElementById('t-les-vid-start').value = ''; document.getElementById('t-les-vid-end').value = '';
+  document.getElementById('t-les-embed-code').value = '';
   document.getElementById('t-les-resources').value = '';
   document.getElementById('t-les-resources-current').textContent = ''; 
   quillEditor.root.innerHTML = ''; questionRows = []; tempAudios = []; openQStates = {};
@@ -1914,7 +2056,9 @@ function toggleQCard(i, event) {
 
 function updateQVideoUrl(i, val) {
   if (questionRows[i]) {
-    questionRows[i].video_url = val;
+    let start = document.getElementById(`q-vid-start-${i}`)?.value || '';
+    let end = document.getElementById(`q-vid-end-${i}`)?.value || '';
+    questionRows[i].video_url = buildYtUrl(val, start, end);
   }
 }
 
@@ -1950,15 +2094,34 @@ function removeDndItem(i, idx) { if (questionRows[i]) { questionRows[i].items.sp
 function addMatchPair(i) { if (questionRows[i]) { if(!questionRows[i].pairs) questionRows[i].pairs=[]; questionRows[i].pairs.push({left:'', right:''}); renderQFields(); } }
 function removeMatchPair(i, pIdx) { if (questionRows[i] && questionRows[i].pairs) { questionRows[i].pairs.splice(pIdx, 1); renderQFields(); } }
 
+function duplicateQ(i) {
+  const cloned = JSON.parse(JSON.stringify(questionRows[i]));
+  questionRows.splice(i + 1, 0, cloned);
+  openQStates[i+1] = true;
+  renderQFields();
+}
 function removeQ(i) { questionRows.splice(i,1); renderQFields(); }
-function updateQOption(i, j, v) { if (questionRows[i]) { questionRows[i].options[j] = v; if (questionRows[i].correctIndex === j) questionRows[i].answer = v; } }
+
+function updateQOption(i, j, v) { if (questionRows[i]) { questionRows[i].options[j] = v; } }
 function addQOption(i) { if (questionRows[i]) { questionRows[i].options.push(''); renderQFields(); } }
 function removeQOption(i, j) {
   if (!questionRows[i] || questionRows[i].options.length <= 2) { alert('You need at least 2 options.'); return; }
   questionRows[i].options.splice(j, 1);
-  if (questionRows[i].correctIndex === j) questionRows[i].correctIndex = 0;
-  else if (questionRows[i].correctIndex > j) questionRows[i].correctIndex--;
-  questionRows[i].answer = questionRows[i].options[questionRows[i].correctIndex]; renderQFields();
+  if(questionRows[i].correctIndices) {
+     const idx = questionRows[i].correctIndices.indexOf(j);
+     if (idx > -1) questionRows[i].correctIndices.splice(idx, 1);
+     for(let k=0; k<questionRows[i].correctIndices.length; k++){
+         if(questionRows[i].correctIndices[k] > j) questionRows[i].correctIndices[k]--;
+     }
+  }
+  renderQFields();
+}
+function toggleCorrectIndex(i, j) {
+  if(!questionRows[i].correctIndices) questionRows[i].correctIndices = [];
+  const idx = questionRows[i].correctIndices.indexOf(j);
+  if (idx > -1) questionRows[i].correctIndices.splice(idx, 1);
+  else questionRows[i].correctIndices.push(j);
+  questionRows[i].answer = questionRows[i].correctIndices.map(index => questionRows[i].options[index]).join(' | ');
 }
 
 function buildQRow(qType, q, i) {
@@ -1966,7 +2129,7 @@ function buildQRow(qType, q, i) {
   
   if (qType === 'multiple_choice') {
     if (!Array.isArray(q.options)) q.options = ['', ''];
-    if (typeof q.correctIndex !== 'number') q.correctIndex = 0;
+    if (!q.correctIndices) q.correctIndices = typeof q.correctIndex === 'number' ? [q.correctIndex] : [0];
   }
   
   const isOpen = openQStates[i] !== false; 
@@ -1978,6 +2141,7 @@ function buildQRow(qType, q, i) {
   
   if (qType === 'matching') { typeLabel = 'Matching'; summary = (q.pairs && q.pairs[0] && q.pairs[0].left) ? esc(q.pairs[0].left) + '...' : '(Empty)'; }
   else if (qType === 'drag_drop') { typeLabel = 'Drag & Drop'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
+  else if (qType === 'drag_drop_text') { typeLabel = 'Drag & Drop (Text)'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
   else if (qType === 'fill_in_blank') { typeLabel = 'Fill in Blank'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
   else if (qType === 'open_answer') { typeLabel = 'Open Answer'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
   else if (qType === 'dictation') { typeLabel = 'Dictation'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
@@ -1987,8 +2151,9 @@ function buildQRow(qType, q, i) {
     <div class="q-card-header ${dState}" onclick="toggleQCard(${i})">
       <div><span class="q-card-title">${typeLabel}</span> <span class="q-card-summary">${summary}</span></div>
       <div class="q-card-actions">
+        <button class="q-card-btn-action" onclick="event.stopPropagation(); duplicateQ(${i})" title="Duplicate">📄</button>
+        <button class="q-card-btn-action delete" onclick="event.stopPropagation(); removeQ(${i})" title="Delete item">🗑️</button>
         <button class="q-card-toggle" onclick="toggleQCard(${i}, event)">${toggleText}</button>
-        <button class="q-card-delete" onclick="event.stopPropagation(); removeQ(${i})" title="Delete item">×</button>
       </div>
     </div>
     <div class="q-card-body ${dState}">`;
@@ -2011,6 +2176,13 @@ function buildQRow(qType, q, i) {
       });
       html += `</div><button class="secondary-btn" style="padding:6px;font-size:12px;margin-top:8px" onclick="addDndItem(${i})">+ Add word</button>`;
   }
+  else if (qType === 'drag_drop_text') {
+      html += `<span class="field-label" style="margin-top:0">Text/Sentence (Use brackets [ ] for draggable words)</span>
+        <textarea placeholder="e.g. She [works] at the hospital every Sunday." oninput="questionRows[${i}].prompt=this.value" style="min-height:90px">${esc(q.prompt||'')}</textarea>
+        <span class="field-label" style="color:var(--text-muted); font-weight:normal; text-transform:none">
+          The blank boxes and draggable buttons will be created automatically where you put the brackets.
+        </span>`;
+  }
   else if (qType === 'matching') {
     html += `<span class="field-label" style="margin-top:0">Matching Pairs</span>
       <div id="match-pairs-${i}">`;
@@ -2023,16 +2195,15 @@ function buildQRow(qType, q, i) {
     html += `</div><button class="secondary-btn" style="padding:6px;font-size:12px;margin-top:8px" onclick="addMatchPair(${i})">+ Add pair</button>`;
   } 
   else if (qType === 'fill_in_blank') {
-    const hasBrackets = (q.prompt || '').includes('[') && (q.prompt || '').includes(']');
     html += `<span class="field-label" style="margin-top:0">Text/Sentence (Use brackets [ ] for the correct answers)</span>
       <textarea placeholder="e.g. She [works] (work) at the hospital every Sunday and [has] (have) free days." oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt||'')}</textarea>
       <span class="field-label" style="color:var(--text-muted); font-weight:normal; text-transform:none">
-        The blanks will be created automatically where you put the brackets.
+        The blank inputs will be created automatically where you put the brackets.
       </span>
       <span class="field-label" style="margin-top:10px">Hint (optional)</span>
       <input type="text" placeholder="e.g. Simple present tense" value="${esc(q.hint||'')}" oninput="questionRows[${i}].hint=this.value"/>`;
       
-      if (!hasBrackets && q.answer) {
+      if (!(q.prompt || '').includes('[') && q.answer) {
          html += `<span class="field-label" style="color:var(--red)">Legacy format detected: Please update this question to use brackets [answer] inside the text above.</span>
          <input type="text" placeholder="Correct answer" value="${esc(q.answer||'')}" oninput="questionRows[${i}].answer=this.value"/>`;
       }
@@ -2046,17 +2217,17 @@ function buildQRow(qType, q, i) {
   } 
   else {
     const opts = q.options || ['', ''];
-    const correctIndex = q.correctIndex !== undefined ? q.correctIndex : 0;
+    const correctIndices = q.correctIndices || [0];
     
     html += `<span class="field-label" style="margin-top:0">Question prompt</span>
       <textarea placeholder="Write the question here..." oninput="questionRows[${i}].prompt=this.value" style="margin-bottom:12px">${esc(q.prompt||'')}</textarea>
-      <span class="field-label">Options (Check the radio button for the correct answer)</span>`;
+      <span class="field-label">Options (Check the boxes for the correct answers)</span>`;
       
     opts.forEach((o, j) => {
-      const isCorrect = correctIndex === j;
+      const isCorrect = correctIndices.includes(j);
       const borderCol = isCorrect ? 'var(--green)' : 'var(--border)';
       html += `<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;background:var(--bg);padding:6px 10px;border-radius:var(--radius-sm);border:1px solid ${borderCol}">
-        <input type="radio" name="correct_${i}" value="${j}" ${isCorrect?'checked':''} onchange="questionRows[${i}].correctIndex=${j};questionRows[${i}].answer=questionRows[${i}].options[${j}];renderQFields()" title="Mark as correct" style="margin:0;width:16px;height:16px;accent-color:var(--green);cursor:pointer">
+        <input type="checkbox" value="${j}" ${isCorrect?'checked':''} onchange="toggleCorrectIndex(${i}, ${j})" title="Mark as correct" style="margin:0;width:16px;height:16px;accent-color:var(--green);cursor:pointer">
         <input type="text" placeholder="Answer option ${j+1}" value="${esc(o)}" oninput="updateQOption(${i},${j},this.value)" style="margin:0;flex:1;border:none;background:transparent">
         <button class="q-card-delete" onclick="removeQOption(${i},${j})">×</button>
       </div>`;
@@ -2064,6 +2235,7 @@ function buildQRow(qType, q, i) {
     html += `<button class="secondary-btn" style="font-size:11px;padding:6px 10px;margin-bottom:8px" onclick="addQOption(${i})">+ Add option</button>`;
   }
   
+  let parts = parseYtUrlParts(q.video_url || '');
   let mediaHtml = `
     <div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)">
       <span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this question (optional)</span>
@@ -2077,179 +2249,20 @@ function buildQRow(qType, q, i) {
       <div>
         <span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">📺 Video (YouTube Link OR Upload MP4)</span>
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap">
-            <input type="url" id="q-vid-url-${i}" placeholder="Paste YouTube URL here..." value="${q.video_url && !q.video_url.includes('supabase.co') ? esc(q.video_url) : ''}" oninput="updateQVideoUrl(${i}, this.value)" style="margin:0;flex:1;min-width:200px; padding:6px; font-size:12px;"/>
+            <input type="url" id="q-vid-url-${i}" placeholder="YouTube URL..." value="${parts.url && !parts.url.includes('supabase.co') ? esc(parts.url) : ''}" oninput="updateQVideoUrl(${i}, this.value)" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/>
+            <input type="number" id="q-vid-start-${i}" placeholder="Start (sec)" value="${parts.start}" oninput="updateQVideoUrl(${i}, document.getElementById('q-vid-url-${i}').value)" style="margin:0;flex:1;min-width:80px; padding:6px; font-size:12px;"/>
+            <input type="number" id="q-vid-end-${i}" placeholder="End (sec)" value="${parts.end}" oninput="updateQVideoUrl(${i}, document.getElementById('q-vid-url-${i}').value)" style="margin:0;flex:1;min-width:80px; padding:6px; font-size:12px;"/>
             <span style="font-size:11px;color:var(--text-muted);font-weight:700">OR</span>
-            <input type="file" accept="video/*" onchange="uploadQVideo(event,${i})" style="margin:0;flex:1;min-width:200px; padding:6px; font-size:12px;"/>
+            <input type="file" accept="video/*" onchange="uploadQVideo(event,${i})" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/>
         </div>
         <div id="q-video-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.video_url?'✅ Video saved':''}</div>
       </div>
     </div>
   `;
   html += mediaHtml;
-  
   html += `</div></div>`;
   return html;
 }
-
-function addQuestion(type) {
-  let newQ;
-  if (type === 'drag_drop') newQ = { type: 'drag_drop', prompt: '', categories: [], items: [], audio_url: '', video_url: '' };
-  else if (type === 'matching') newQ = { type: 'matching', pairs: [{left:'', right:''}] };
-  else if (type === 'fill_in_blank') newQ = { type: 'fill_in_blank', prompt: '', answer: '', hint: '', audio_url: '', video_url: '' };
-  else if (type === 'dictation' || type === 'open_answer') newQ = { type: type, prompt: '', answer: '', audio_url: '', video_url: '' };
-  else newQ = { type: 'multiple_choice', prompt: '', options: ['', ''], correctIndex: 0, answer: '', audio_url: '', video_url: '' };
-  
-  questionRows.push(newQ); 
-  Object.keys(openQStates).forEach(k => openQStates[k] = false);
-  openQStates[questionRows.length - 1] = true;
-  renderQFields();
-}
-
-/* ── STUDENT PROGRESS PANEL ── */
-function renderTeacherProgress(allProgress) {
-  const list = document.getElementById('t-student-progress-list'); if (!list) return;
-  if (!dbProfiles.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No students registered yet.</div>'; return; }
-  
-  const students = dbProfiles.filter(p => p.id !== currentUser.id);
-  if (!students.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No students registered yet.</div>'; return; }
-
-  list.innerHTML = students.map(s => {
-    const done = allProgress.filter(p => p.user_id === s.id).length;
-    return `
-      <div class="student-prog-row">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div class="post-avatar" style="width:30px;height:30px;font-size:12px">${renderAvatarHTML(s.id, s.username || 'Student')}</div>
-          <div class="student-prog-name">${esc(s.username || 'Unnamed Student')}</div>
-        </div>
-        <div class="student-prog-stats">
-          <span style="font-weight:700;color:var(--brand)">${done}</span> lessons completed
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-/* ══════════════════════════════════════════
-   MOTOR DE SONIDOS
-══════════════════════════════════════════ */
-const vowels = {
-  pure:[
-    {ipa:"/iː/",mw:"[ee]",name:"Long E",keyword:"he",type:"vowel",words:["he","see","feel","team","people","key","ski","machine","belief"],spellings:["e — he, me","ee — see, feel","ea — team, read","ie — belief","ey — key","i — ski, machine"],tip:"Similar to Spanish /i/ but held slightly longer. Tense the tongue high and spread the lips slightly."},
-    {ipa:"/ɪ/",mw:"[ih]",name:"Short I",keyword:"hit",type:"vowel",words:["hit","sit","win","big","quick","busy","women","build","gym"],spellings:["i — hit, sit","y — gym, symbol","ui — build","u — busy","o — women"],tip:"Not the Spanish /i/. The lips are relaxed — not spread. Much shorter and laxer."},
-    {ipa:"/ɛ/",mw:"[eh]",name:"Short E",keyword:"head",type:"vowel",words:["head","bed","said","friend","many","any","weather","says"],spellings:["e — bed","ea — head, weather","ai — said","ie — friend","a — many, any"],tip:"Close to Spanish /e/ but a little lower and more open."},
-    {ipa:"/æ/",mw:"[a]",name:"Short A",keyword:"cap",type:"vowel",words:["cap","cat","man","bad","apple","laugh","plaid","half"],spellings:["a — cap, cat","au — laugh","ai — plaid"],tip:"Doesn't exist in Spanish. Open the mouth wide, push the tongue forward and low. Tense and bright."},
-    {ipa:"/ɑ/",mw:"[ah]",name:"Open A",keyword:"cop",type:"vowel",words:["cop","hot","father","calm","palm","spa","watch","want"],spellings:["o — cop, hot","a — father, calm","al — palm","wa — watch, want"],tip:"Wide-open, relaxed /a/ pushed back in the throat. The mouth is fully open."},
-    {ipa:"/ə/ or /ʌ/",mw:"[uh]",name:"Schwa",keyword:"cup",type:"vowel",words:["cup","fun","done","love","about","sofa","button","pencil"],spellings:["u — cup, fun","o — love, done","a — about (unstressed)","o — sofa (unstressed)"],tip:"The most common sound in English! Every unstressed syllable tends to become /ə/."},
-    {ipa:"/uː/",mw:"[u]",name:"Long OO",keyword:"who",type:"vowel",words:["who","food","moon","true","blue","school","through","suit"],spellings:["oo — food, moon","ue — true, blue","ew — chew, brew","ou — through","ui — suit"],tip:"Similar to Spanish /u/ but sometimes starts with a /j/ glide. Lips tightly rounded."},
-    {ipa:"/ʊ/",mw:"[uu]",name:"Short OO",keyword:"took",type:"vowel",words:["took","book","foot","good","could","would","pull","put"],spellings:["oo — book, foot","ou — could, would","u — pull, put","o — wolf"],tip:"A short, relaxed version of /uː/. Practice the difference: 'food' vs 'foot'."},
-    {ipa:"/ɔː/",mw:"[aw]",name:"AW sound",keyword:"law",type:"vowel",words:["law","call","also","thought","caught","ball","walk","water"],spellings:["aw — law, saw","al — call, ball, walk","au — caught, water","ou — thought","o — also"],tip:"A mid-back rounded vowel. Lips are loosely rounded."}
-  ],
-  diphthongs:[
-    {ipa:"/eɪ/",mw:"[ei]",name:"Long A",keyword:"hey",type:"diphthong",words:["hey","day","made","great","they","vein","weigh","eight"],spellings:["ay — day, say","a_e — made, late","ey — they, hey","ei — vein, eight","ai — rain"],tip:"Must glide upward — the mouth closes as you say it. Not a flat Spanish /e/."},
-    {ipa:"/oʊ/",mw:"[ou]",name:"Long O",keyword:"home",type:"diphthong",words:["home","go","know","phone","road","though","toe","boat"],spellings:["o — go, so","o_e — home, phone","ow — know, show","oa — road, boat","ou — though"],tip:"Starts in the center and glides toward a rounded /ʊ/ at the end."},
-    {ipa:"/aɪ/",mw:"[ai]",name:"Long I",keyword:"hi",type:"diphthong",words:["hi","my","time","high","fly","night","buy","pie","guide"],spellings:["i_e — time, bike","y — my, fly","igh — night, high","uy — buy","ie — pie"],tip:"Starts with a wide open /ɑ/ and glides up toward /ɪ/."},
-    {ipa:"/aʊ/",mw:"[au]",name:"OW sound",keyword:"how",type:"diphthong",words:["how","now","loud","down","about","crowd","out","mouth"],spellings:["ow — how, now, crowd","ou — loud, out, about, mouth"],tip:"Starts open and the lips round at the end toward /ʊ/."},
-    {ipa:"/ɔɪ/",mw:"[oi]",name:"OY sound",keyword:"boy",type:"diphthong",words:["boy","voice","coin","toy","oil","noise","royal","joint"],spellings:["oy — boy, toy, royal","oi — coin, oil, voice, noise"],tip:"Starts with rounded lips /ɔ/ and glides up toward /ɪ/."}
-  ],
-  rcolored:[
-    {ipa:"/ɝ/",mw:"[er]",name:"Stressed ER",keyword:"her",type:"rcolored",words:["her","bird","word","nurse","earth","first","hurt","work"],spellings:["er — her, fern","ir — bird, first","ur — nurse, hurt","or — word, work","ear — earth, learn"],tip:"The tongue curls back while the vowel is produced. No equivalent in Spanish."},
-    {ipa:"/ɚ/",mw:"[er]",name:"Unstressed ER",keyword:"bigger",type:"rcolored",words:["bigger","butter","doctor","teacher","mother","color","dollar"],spellings:["er — bigger, mother","or — doctor, color","ar — dollar, popular"],tip:"The unstressed /ɝ/. Very common in '-er', '-or', '-ar' endings."},
-    {ipa:"/ɑr/",mw:"[ar]",name:"AR sound",keyword:"far",type:"rcolored",words:["far","car","heart","park","start","guard"],spellings:["ar — far, car, park","ear — heart","ua — guard"],tip:"Wide-open /ɑ/ followed by the American R curl."},
-    {ipa:"/ɛr/",mw:"[er]",name:"AIR sound",keyword:"fare",type:"rcolored",words:["fare","care","air","there","where","wear","bear","their"],spellings:["are — fare, care","air — air, fair","ere — there, where","ear — wear, bear"],tip:"A mid-front /ɛ/ that transitions into the American R."},
-    {ipa:"/ɪr/",mw:"[eer]",name:"EAR sound",keyword:"here",type:"rcolored",words:["here","ear","fear","deer","beer","cheer","year"],spellings:["ere — here","ear — ear, fear","eer — deer, beer, cheer"],tip:"Starts with the high /iː/ position then curls into the R."},
-    {ipa:"/ɔr/",mw:"[or]",name:"OR sound",keyword:"or",type:"rcolored",words:["or","for","more","door","four","floor","war","born"],spellings:["or — or, for, born","ore — more, store","oor — door, floor","our — four, court","ar — war"],tip:"A rounded /ɔ/ that flows into the American R."}
-  ]
-};
-const consonants = {
-  stops:[
-    {ipa:"/p/",mw:"[p]",name:"P sound",keyword:"pen",words:["pen","top","happy","apple","camp"],spellings:["p — pen, top","pp — happy, apple"],tip:"Aspirated at the start of stressed syllables — you feel a puff of air."},
-    {ipa:"/b/",mw:"[b]",name:"B sound",keyword:"big",words:["big","cab","able","baby","job","ebb"],spellings:["b — big, cab","bb — ebb"],tip:"No aspiration. Always keep it a full stop with both lips."},
-    {ipa:"/t/",mw:"[t]",name:"T sound",keyword:"top",words:["top","cat","water","butter","action","nature","question"],spellings:["t — top, cat","tt — butter","ti — action (=/ʃ/)","tu — nature (=/tʃ/)"],tip:"Between vowels, American /t/ becomes a quick flap — like a fast /d/."},
-    {ipa:"/d/",mw:"[d]",name:"D sound",keyword:"dog",words:["dog","ride","made","middle","add","loved","could"],spellings:["d — dog, ride","dd — middle, add","ed — loved (past tense)"],tip:"Between vowels it can sound like a flap. Focus on voicing."},
-    {ipa:"/k/",mw:"[k]",name:"K sound",keyword:"cat",words:["cat","kite","queen","school","fix","account","antique","choir"],spellings:["c — cat","k — kite","ck — back","qu — queen (=/kw/)","x — fix (=/ks/)","ch — choir"],tip:"Spelled many ways: c, k, ck, ch, x."},
-    {ipa:"/g/",mw:"[g]",name:"G sound",keyword:"go",words:["go","big","egg","ghost","guest","exact"],spellings:["g — go, big","gg — egg","gh — ghost","gu — guest","x — exact (=/gz/)"],tip:"'Gh' is silent in many words but sounds like /g/ in 'ghost'."}
-  ],
-  fricatives:[
-    {ipa:"/f/",mw:"[f]",name:"F sound",keyword:"fan",words:["fan","off","phone","cough","laugh"],spellings:["f — fan, feel","ff — off","ph — phone","gh — cough, laugh"],tip:"'Ph' always makes this sound. 'Gh' at the end also makes /f/."},
-    {ipa:"/v/",mw:"[v]",name:"V sound",keyword:"van",words:["van","have","love","of","vivid","river"],spellings:["v — van, vivid","f — of (=/v/)"],tip:"Spanish doesn't have a true /v/. Top teeth must press on the lower lip and vibrate."},
-    {ipa:"/θ/",mw:"[th]",name:"TH voiceless",keyword:"think",words:["think","bath","three","tooth","through","author"],spellings:["th — think, bath, three, author"],tip:"Tongue tip between teeth, blow air — no voice. Don't substitute /t/, /s/, or /f/."},
-    {ipa:"/ð/",mw:"[th]",name:"TH voiced",keyword:"the",words:["the","this","mother","breathe","father"],spellings:["th — th, this, mother, breathe"],tip:"Same position as voiceless TH but with voicing. Spanish speakers often use /d/."},
-    {ipa:"/s/",mw:"[s]",name:"S sound",keyword:"see",words:["see","miss","city","psychology","scene","science"],spellings:["s — see","ss — miss","c — city (before e/i)","sc — scene","ps — psychology"],tip:"'c' before e/i/y makes /s/. 'Ps' at the start — the P is silent."},
-    {ipa:"/z/",mw:"[z]",name:"Z sound",keyword:"zoo",words:["zoo","fizz","rose","dogs","his","scissors","xylophone"],spellings:["z — zoo","zz — fizz","s — rose, dogs (voiced)","ss — scissors","x — xylophone"],tip:"Most plurals spelled '-s' are actually /z/ ('dogs', 'runs', 'plays')."},
-    {ipa:"/ʃ/",mw:"[sh]",name:"SH sound",keyword:"she",words:["she","ship","nation","special","sure","machine","chef","ocean"],spellings:["sh — she, ship","ti — nation","ci — special","su — sure","ch — chef","ce — ocean"],tip:"Hides in 'ti' (nation), 'ci' (special), 'ch' (chef)."},
-    {ipa:"/ʒ/",mw:"[zh]",name:"ZH sound",keyword:"measure",words:["measure","vision","usual","beige","genre"],spellings:["si — vision","su — measure, usual","ge — beige","g — genre"],tip:"The voiced /ʃ/. The 's' in 'vision'."},
-    {ipa:"/h/",mw:"[h]",name:"H sound",keyword:"hat",words:["hat","ahead","who","hello","whole"],spellings:["h — hat, hello","wh — who, whole (=/h/)"],tip:"A gentle breath — much softer than the Spanish /x/ (as in 'Juan')."}
-  ],
-  affricates:[
-    {ipa:"/tʃ/",mw:"[ch]",name:"CH sound",keyword:"chin",words:["chin","watch","teacher","nature","question","cello"],spellings:["ch — chin","tch — watch","tu — nature","ti — question","c — cello"],tip:"Starts like /t/ and releases as /ʃ/."},
-    {ipa:"/dʒ/",mw:"[j]",name:"J sound",keyword:"job",words:["job","judge","gym","age","bridge","soldier"],spellings:["j — job","g — gym, age (before e/i/y)","dge — judge, bridge","di — soldier"],tip:"'G' before e, i, y often makes /dʒ/. 'Dge' always makes /dʒ/."}
-  ],
-  nasals:[
-    {ipa:"/m/",mw:"[m]",name:"M sound",keyword:"man",words:["man","him","summer","dumb","climb"],spellings:["m — man","mm — summer","mb — dumb, climb (silent b)"],tip:"Watch for silent letters: 'climb' (b silent)."},
-    {ipa:"/n/",mw:"[n]",name:"N sound",keyword:"no",words:["no","sun","know","knife","gnat","inn"],spellings:["n — no, sun","kn — know (silent k)","gn — gnat (silent g)","nn — inn"],tip:"'Kn' at the start — the K is always silent."},
-    {ipa:"/ŋ/",mw:"[ng]",name:"NG sound",keyword:"sing",words:["sing","thing","think","long","ring","bank"],spellings:["ng — sing, ring","n — think, bank (before /k/)"],tip:"One sound — back of tongue to soft palate."}
-  ],
-  liquids:[
-    {ipa:"/r/",mw:"[r]",name:"American R",keyword:"red",words:["red","car","bird","world","river","write","wrap"],spellings:["r — red, river","rr — sorry","wr — write (silent w)","rh — rhyme (silent h)"],tip:"The tongue curls back without touching anything. Unlike Spanish trilled /r/."},
-    {ipa:"/l/",mw:"[l]",name:"L sound",keyword:"like",words:["like","call","feel","hello","people","walk","half","calm"],spellings:["l — like, feel","ll — call, hello","le — people","lk — walk (silent l)","lf — half (silent l)"],tip:"Light L (start of syllable) vs dark L (end — almost a vowel). Many silent L words."},
-    {ipa:"/j/",mw:"[y]",name:"Y glide",keyword:"yes",words:["yes","you","year","use","cute","few","onion"],spellings:["y — yes, year","u — use, cute (=/juː/)","ew — few (=/juː/)","i — onion (=/j/)"],tip:"'U' in 'use' and 'cute' starts with this /j/ glide."},
-    {ipa:"/w/",mw:"[w]",name:"W sound",keyword:"we",words:["we","world","quick","away","always","one","once"],spellings:["w — we, world","wh — where, when","qu — quick (=/kw/)","o — one (=/w/)"],tip:"Start with lips tightly rounded like /uː/, then move quickly into the next vowel."}
-  ]
-};
-
-const USE_REAL_AUDIO = false;
-function playWord(word) {
-  if (USE_REAL_AUDIO) { const a = new Audio('audio/' + word.toLowerCase() + '.mp3'); a.play().catch(() => speakWord(word)); }
-  else speakWord(word);
-}
-function speakWord(word) {
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(word); u.lang = 'en-US'; u.rate = 0.85;
-  window.speechSynthesis.speak(u);
-}
-
-function bc(t){return t==="vowel"?"badge-vowel":t==="diphthong"?"badge-diphthong":t==="rcolored"?"badge-rcolored":"badge-consonant";}
-function bl(t){return t==="rcolored"?"r-colored":t;}
-
-function renderCard(s, isActive, onclick) {
-  const d = document.createElement('div');
-  d.className = 'sound-card' + (isActive ? ' active' : '');
-  d.innerHTML = `<div class="sound-ipa">${s.ipa}</div><div class="sound-mw">${s.mw}</div><div class="sound-example">as in "<strong>${s.keyword}</strong>"</div><span class="sound-type-badge ${bc(s.type||'consonant')}">${bl(s.type||'consonant')}</span><div><button class="play-btn" onclick="event.stopPropagation();playWord('${escapeJSArg(s.keyword)}')"><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg>${s.keyword}</button></div>`;
-  d.onclick = onclick; return d;
-}
-
-function renderDetail(pid, s, isCon) {
-  document.getElementById(pid).innerHTML = `
-    <div class="detail-header">
-      <div><div class="detail-big-ipa">${s.ipa}</div><div class="detail-big-mw">${s.mw}</div></div>
-      <div><div class="detail-name">${s.name}</div><div class="detail-keyword">as in "<strong>${s.keyword}</strong>"</div><span class="sound-type-badge ${isCon?'badge-consonant':bc(s.type)}" style="margin-top:6px;display:inline-block">${isCon?'consonant':bl(s.type)}</span></div>
-    </div>
-    <div class="detail-body">
-      <div class="detail-section"><div class="detail-section-label">${isCon?'Example words':'Practice words'}</div>
-        <div class="words-wrap">${s.words.map((w,i)=>`<span class="word-pill${i===0?' highlight':''}" onclick="playWord('${escapeJSArg(w)}')">${w} ▶</span>`).join('')}</div>
-      </div>
-      <div class="detail-section"><div class="detail-section-label">${isCon?'All spellings':'How it\'s spelled'}</div>
-        <div class="words-wrap">${s.spellings.map(sp=>`<span class="word-pill">${sp}</span>`).join('')}</div>
-      </div>
-    </div>
-    <div class="tip-box"><div class="tip-label">For Spanish speakers</div><div class="tip-text">${s.tip}</div></div>`;
-}
-
-function buildGrid(cid, list, getA, setA, pid, isCon, rebuild) {
-  const c = document.getElementById(cid); if (!c) return; c.innerHTML = '';
-  list.forEach(s => c.appendChild(renderCard(s, getA()===s.ipa, () => { setA(s.ipa); renderDetail(pid,s,isCon); rebuild(); })));
-}
-function buildAllVowelGrids() {
-  const ga=()=>activeVowel, sa=v=>{activeVowel=v;};
-  [['pure-vowel-grid','pure'],['diphthong-grid','diphthongs'],['rcolored-grid','rcolored']].forEach(([id,k])=>buildGrid(id,vowels[k],ga,sa,'vowel-detail',false,buildAllVowelGrids));
-}
-function buildAllConsonantGrids() {
-  const ga=()=>activeConsonant, sa=v=>{activeConsonant=v;};
-  [['stops-grid','stops'],['fricatives-grid','fricatives'],['affricates-grid','affricates'],['nasals-grid','nasals'],['liquids-grid','liquids']].forEach(([id,k])=>buildGrid(id,consonants[k],ga,sa,'consonant-detail',true,buildAllConsonantGrids));
-}
-buildAllVowelGrids();
-buildAllConsonantGrids();
 </script>
 </body>
 </html>
