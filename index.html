@@ -1081,7 +1081,7 @@ async function submitExercise() {
 }
 
 function retryExercise() { 
-  dbProgress = dbProgress.filter(p => p.lesson_id !== currentLesson.id);
+  dbProgress = dbProgress.filter(p => p.lesson_id !== currentLesson.id); 
   showLesson(currentLesson.id); 
 }
 
