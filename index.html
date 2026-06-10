@@ -840,11 +840,19 @@ function parseYtDisplayUrl(url) {
 
 document.addEventListener('DOMContentLoaded', () => {
   quillEditor = new Quill('#quill-editor-container', { theme: 'snow', placeholder: 'Write your lesson content here...', modules: { toolbar: [[{ header: [1,2,3,4,false] }],['bold','italic','strike','code','blockquote','code-block'],[{ list:'ordered' },{ list:'bullet' }],['link','image','video'],['clean']] } });
+  communityQuill = new Quill('#community-editor-container', { theme: 'snow', placeholder: 'Share something with the community...', modules: { toolbar: [['bold','italic'],['link'],['clean']] } });
+  editPostQuill = new Quill('#edit-post-editor-container', { theme: 'snow', modules: { toolbar: [['bold','italic'],['link'],['clean']] } });
   sb.auth.onAuthStateChange((_e, session) => { currentUser = session?.user || null; updateAuthUI(); if (currentUser) fetchData(); });
   renderQFields(); toggleLessonFields();
 });
 
-function handleNavAuth() { currentUser ? sb.auth.signOut() : goToPage('auth'); }
+async function handleNavAuth() {
+  if (currentUser) {
+    try { await sb.auth.signOut(); } catch(e) { console.error('Sign out error:', e); }
+  } else {
+    goToPage('auth');
+  }
+}
 function updateAuthUI() {
   const btn = document.getElementById('nav-auth-btn'); const teacherTab = document.getElementById('nav-teacher-tab'); const profileTab = document.getElementById('nav-profile-tab');
   if (currentUser) {
@@ -877,7 +885,13 @@ async function handleAuth() {
   const res = isLoginMode ? await sb.auth.signInWithPassword({ email, password: pw }) : await sb.auth.signUp({ email, password: pw });
   if (res.error) { errEl.textContent = res.error.message; errEl.style.display = 'block'; btn.disabled = false; btn.textContent = isLoginMode ? 'Log in' : 'Create account'; } 
   else {
-    if (!isLoginMode || res.data?.user) { const checkProf = await sb.from('user_profiles').select('id').eq('id', res.data.user.id).single(); if (!checkProf.data) await sb.from('user_profiles').insert([{ id: res.data.user.id, username: email.split('@')[0] }]); }
+    if (!isLoginMode || res.data?.user) {
+      const userId = res.data?.user?.id;
+      if (userId) {
+        const checkProf = await sb.from('user_profiles').select('id').eq('id', userId).single();
+        if (!checkProf.data) await sb.from('user_profiles').insert([{ id: userId, username: email.split('@')[0] }]);
+      }
+    }
     btn.disabled = false; btn.textContent = isLoginMode ? 'Log in' : 'Create account';
   }
 }
@@ -888,7 +902,7 @@ function goToPage(pageId) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const tabBtn = document.querySelector(`.nav-tab[data-page="${pageId}"]`); if (tabBtn) tabBtn.classList.add('active');
   const pageEl = document.getElementById('page-' + pageId); if (pageEl) pageEl.classList.add('active');
-  if (pageId === 'classroom') renderClassroomGrid(); if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); } if (pageId === 'streaks') renderStreaks(); if (pageId === 'sounds') buildAllSoundsGrids();
+  if (pageId === 'classroom') renderClassroomGrid(); if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); } if (pageId === 'streaks') renderStreaks(); if (pageId === 'sounds') buildAllSoundsGrids(); if (pageId === 'community') loadPosts();
   if (pageId === 'profile') { const p = dbProfiles.find(x => x.id === currentUser?.id); if (p) document.getElementById('profile-username').value = p.username || ''; }
   window.scrollTo(0, 0);
 }
@@ -1091,7 +1105,7 @@ async function submitExercise() {
       document.querySelectorAll(`#player-questions .dnd-inline-dropzone[id^="dnd-drop-${i}-"]`).forEach(dz => {
           let expected = dz.dataset.expected; let chip = dz.querySelector('.dnd-chip'); let given = chip ? chip.textContent.trim() : ''; let isOk = given === expected;
           if (isOk) { correct++; } else { allCorrect = false; } if (chip) { chip.classList.add(isOk ? 'correct' : 'wrong'); chip.onclick = null; }
-      }); document.getElementById(`dnd-bank-inline-${i}`).onclick = null; results.push({ prompt: 'Fill in blanks text', answer: 'Check visually above', given: '', ok: allCorrect });
+      }); const bankInline = document.getElementById(`dnd-bank-inline-${i}`); if (bankInline) bankInline.onclick = null; results.push({ prompt: 'Fill in blanks text', answer: 'Check visually above', given: '', ok: allCorrect });
     }
     else if (qType === 'matching') {
       const pairs = q.pairs || (q.left ? [q] : []); totalQ += pairs.length;
@@ -1156,6 +1170,7 @@ async function submitExercise() {
 }
 
 function retryExercise() { 
+  if (!currentLesson) return;
   dbProgress = dbProgress.filter(p => p.lesson_id !== currentLesson.id); 
   showLesson(currentLesson.id); 
 }
@@ -1174,6 +1189,136 @@ async function deleteComment(id) {
   const { error } = await sb.from('comments').delete().eq('id', id).eq('user_id', currentUser.id);
   if (error) { alert('Could not delete comment: ' + error.message); return; }
   if (currentViewedPostId) loadComments(currentViewedPostId);
+}
+
+/* ══════════════════════════════════════════
+   COMMUNITY
+══════════════════════════════════════════ */
+async function loadPosts() {
+  const list = document.getElementById('community-posts-list');
+  if (!list) return;
+  list.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-light);font-size:14px">Loading posts...</div>';
+  const { data: posts, error } = await sb.from('posts').select('*').order('created_at', { ascending: false });
+  if (error) { list.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text-light);font-size:14px">Could not load posts.</div>'; return; }
+  if (!posts || !posts.length) { list.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-light);font-size:14px">No posts yet. Be the first to share!</div>'; return; }
+  list.innerHTML = posts.map(p => {
+    const canEdit = currentUser?.id === p.user_id;
+    const preview = (p.body || '').replace(/<[^>]+>/g, '').substring(0, 200);
+    return `<div class="post-card" onclick="openPost('${esc(p.id)}')">
+      <div class="post-header">
+        <div class="post-avatar">${renderAvatarHTML(p.user_id, p.user_id)}</div>
+        <span class="post-author">${getDisplayName(p.user_id, p.user_id)}</span>
+        <span class="post-date">${timeAgo(p.created_at)}</span>
+      </div>
+      <div class="post-title">${esc(p.title || '')}</div>
+      ${preview ? `<div class="post-preview">${esc(preview)}</div>` : ''}
+      <div class="post-actions" onclick="event.stopPropagation()">
+        <button class="action-btn">❤️ ${p.likes || 0}</button>
+        ${canEdit ? `<button class="action-btn edit-post-btn" onclick="openEditPostModal('${esc(p.id)}', event)">✏️ Edit</button>` : ''}
+        ${canEdit ? `<button class="action-btn delete-post-btn" onclick="deletePost('${esc(p.id)}')">🗑 Delete</button>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function openPost(postId) {
+  currentViewedPostId = postId;
+  document.getElementById('community-feed-view').style.display = 'none';
+  document.getElementById('community-post-view').style.display = 'block';
+  const { data: p } = await sb.from('posts').select('*').eq('id', postId).single();
+  if (!p) { backToCommunityFeed(); return; }
+  const canEdit = currentUser?.id === p.user_id;
+  document.getElementById('single-post-render').innerHTML = `
+    <div class="post-header">
+      <div class="post-avatar">${renderAvatarHTML(p.user_id, p.user_id)}</div>
+      <span class="post-author">${getDisplayName(p.user_id, p.user_id)}</span>
+      <span class="post-date">${timeAgo(p.created_at)}</span>
+    </div>
+    <h2 class="post-title" style="font-size:20px;margin-bottom:1rem">${esc(p.title || '')}</h2>
+    <div class="post-full-body">${p.body || ''}</div>
+    <div class="post-actions">
+      <button class="action-btn">❤️ ${p.likes || 0}</button>
+      ${canEdit ? `<button class="action-btn edit-post-btn" onclick="openEditPostModal('${esc(p.id)}', event)">✏️ Edit</button>` : ''}
+      ${canEdit ? `<button class="action-btn delete-post-btn" onclick="deletePost('${esc(p.id)}')">🗑 Delete</button>` : ''}
+    </div>`;
+  loadComments(postId);
+}
+
+function backToCommunityFeed() {
+  currentViewedPostId = null;
+  document.getElementById('community-post-view').style.display = 'none';
+  document.getElementById('community-feed-view').style.display = 'block';
+  loadPosts();
+}
+
+async function loadComments(postId) {
+  const list = document.getElementById('comments-list');
+  if (!list) return;
+  const { data: comments } = await sb.from('comments').select('*').eq('post_id', postId).order('created_at');
+  if (!comments || !comments.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0">No comments yet.</div>'; return; }
+  list.innerHTML = comments.map(c => {
+    const canDel = currentUser?.id === c.user_id;
+    return `<div class="comment-item">
+      <div class="post-avatar" style="width:32px;height:32px;font-size:12px;flex-shrink:0">${renderAvatarHTML(c.user_id, c.user_id)}</div>
+      <div class="comment-bubble">
+        <div class="comment-author" style="display:flex;align-items:center;justify-content:space-between">
+          <span>${getDisplayName(c.user_id, c.user_id)}</span>
+          ${canDel ? `<button class="action-btn delete-post-btn" style="font-size:11px" onclick="deleteComment('${esc(c.id)}')">🗑</button>` : ''}
+        </div>
+        <div class="comment-text">${esc(c.body || '')}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function submitPost() {
+  if (!currentUser) { goToPage('auth'); return; }
+  const titleEl = document.getElementById('new-post-title');
+  const title = titleEl?.value.trim();
+  const body = communityQuill ? communityQuill.root.innerHTML : '';
+  if (!title) { alert('Please add a title.'); return; }
+  const { error } = await sb.from('posts').insert([{ user_id: currentUser.id, title, body, likes: 0 }]);
+  if (error) { alert('Error posting: ' + error.message); return; }
+  if (titleEl) titleEl.value = '';
+  if (communityQuill) communityQuill.root.innerHTML = '';
+  loadPosts();
+}
+
+async function submitComment() {
+  if (!currentUser || !currentViewedPostId) return;
+  const input = document.getElementById('new-comment-input');
+  const body = input?.value.trim();
+  if (!body) return;
+  const { error } = await sb.from('comments').insert([{ post_id: currentViewedPostId, user_id: currentUser.id, body }]);
+  if (error) { alert('Error posting comment: ' + error.message); return; }
+  if (input) input.value = '';
+  loadComments(currentViewedPostId);
+}
+
+function openEditPostModal(postId, event) {
+  if (event) event.stopPropagation();
+  const idInput = document.getElementById('edit-post-id');
+  if (idInput) idInput.value = postId;
+  const modal = document.getElementById('edit-post-modal');
+  if (modal) modal.classList.remove('hidden');
+}
+
+function closeEditPostModal() {
+  const modal = document.getElementById('edit-post-modal');
+  if (modal) modal.classList.add('hidden');
+}
+
+async function saveEditedPost() {
+  if (!currentUser) return;
+  const id = document.getElementById('edit-post-id')?.value;
+  const title = document.getElementById('edit-post-title')?.value.trim();
+  if (!id || !title) { alert('Title is required.'); return; }
+  const payload = { title };
+  if (editPostQuill) payload.body = editPostQuill.root.innerHTML;
+  const { error } = await sb.from('posts').update(payload).eq('id', id).eq('user_id', currentUser.id);
+  if (error) { alert('Error saving: ' + error.message); return; }
+  closeEditPostModal();
+  if (currentViewedPostId === id) openPost(id); else loadPosts();
 }
 
 function showOpenAnswerCompleted() { document.getElementById('score-area').innerHTML = `<div class="score-panel"><div class="score-top"><div class="score-circle open"><div class="pct">✓</div></div><div class="score-msg">Exercise submitted!<div class="sub">Review the expected answers above.</div></div></div></div>`; document.getElementById('score-area').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
@@ -1289,12 +1434,28 @@ async function uploadQAudio(event, i) {
   }
 }
 
-async function uploadQVideo(event, i) { const file = event.target.files[0]; if (!file) return; isUploadingAudio = true; const btn = event.target; const originalOpacity = btn.style.opacity; btn.style.opacity = '0.5'; const fn = `qv_${Date.now()}.${file.name.split('.').pop()}`; const { error } = await sb.storage.from('audios').upload(fn, file); isUploadingAudio = false; btn.style.opacity = originalOpacity; if (error) { alert('Upload error: ' + error.message); return; } if (questionRows[i]) questionRows[i].video_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl; const urlInput = document.getElementById(`q-vid-url-${i}`); if (urlInput) urlInput.value = ''; renderQFields(); }
+async function uploadQVideo(event, i) {
+  const file = event.target.files[0]; if (!file) return;
+  isUploadingAudio = true;
+  const btn = event.target; const originalOpacity = btn.style.opacity; btn.style.opacity = '0.5';
+  try {
+    const fn = `qv_${Date.now()}.${file.name.split('.').pop()}`;
+    const { error } = await sb.storage.from('audios').upload(fn, file);
+    if (error) { alert('Upload error: ' + error.message); return; }
+    if (questionRows[i]) questionRows[i].video_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
+    const urlInput = document.getElementById(`q-vid-url-${i}`); if (urlInput) urlInput.value = '';
+    renderQFields();
+  } catch(err) {
+    alert('Upload error: ' + err.message);
+  } finally {
+    isUploadingAudio = false; btn.style.opacity = originalOpacity;
+  }
+}
 
 function renderQFields() { const wrap = document.getElementById('q-builder'); if (!wrap) return; wrap.innerHTML = questionRows.map((q, i) => buildQRow(q.type || 'multiple_choice', q, i)).join(''); }
 
 function updateDndCats(i, val) { if (questionRows[i]) { questionRows[i].categories = val.split(',').map(s=>s.trim()).filter(Boolean); renderQFields(); } }
-function addDndItem(i) { if (questionRows[i]) { q = questionRows[i]; if (!q.items) q.items = []; q.items.push({ word:'', category: q.categories[0]||'' }); renderQFields(); } }
+function addDndItem(i) { if (questionRows[i]) { let q = questionRows[i]; if (!q.items) q.items = []; q.items.push({ word:'', category: q.categories[0]||'' }); renderQFields(); } }
 function removeDndItem(i, idx) { if (questionRows[i]) { questionRows[i].items.splice(idx,1); renderQFields(); } }
 function addMatchPair(i) { if (questionRows[i]) { if(!questionRows[i].pairs) questionRows[i].pairs=[]; questionRows[i].pairs.push({left:'', right:''}); renderQFields(); } }
 function removeMatchPair(i, pIdx) { if (questionRows[i] && questionRows[i].pairs) { questionRows[i].pairs.splice(pIdx, 1); renderQFields(); } }
