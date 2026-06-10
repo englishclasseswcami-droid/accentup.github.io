@@ -1177,14 +1177,49 @@ async function deleteLesson(id) { if (!confirm('Delete this lesson?')) return; a
 async function moveLesson(id, dir) { const les = dbLessons.find(l => l.id === id); if (!les) return; const siblings = dbLessons.filter(l => l.module_id === les.module_id && l.submodule_id === les.submodule_id); const idx = siblings.findIndex(l => l.id === id); const t = siblings[idx + dir]; if (!t) return; await sb.from('lessons').update({ order_index: t.order_index }).eq('id', id); await sb.from('lessons').update({ order_index: les.order_index }).eq('id', t.id); fetchData(); }
 
 /* ── SHARED AUDIOS ── */
-async function addSharedAudio() { const label = document.getElementById('t-audio-label').value.trim(); const file = document.getElementById('t-audio-file').files[0]; if (!label || !file) { alert('Add a label and choose an audio file.'); return; } isUploadingAudio = true; const btn = document.getElementById('btn-add-audio'); btn.disabled = true; btn.textContent = 'Uploading...'; const fn = `aud_${Date.now()}.${file.name.split('.').pop()}`; const { error } = await sb.storage.from('audios').upload(fn, file); btn.disabled = false; btn.textContent = '+ Add'; isUploadingAudio = false; if (error) { alert('Upload error: ' + error.message); return; } const url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl; tempAudios.push({ label, url }); document.getElementById('t-audio-label').value = ''; document.getElementById('t-audio-file').value = ''; renderTempAudios(); }
-function renderTempAudios() { document.getElementById('t-shared-audios-render').innerHTML = tempAudios.map((a,i) => `<div class="audio-saved-item"><span>🔊 ${esc(a.label)}</span><button class="danger-btn" style="padding:2px 8px;font-size:10px" onclick="tempAudios.splice(${i},1);renderTempAudios()">Remove</button></div>`).join(''); }
+async function addSharedAudio() { 
+  const label = document.getElementById('t-audio-label').value.trim(); 
+  const file = document.getElementById('t-audio-file').files[0]; 
+  if (!label || !file) { alert('Add a label and choose an audio file.'); return; } 
+  isUploadingAudio = true; 
+  const btn = document.getElementById('btn-add-audio'); btn.disabled = true; btn.textContent = 'Uploading...'; 
+  try {
+    const fn = `aud_${Date.now()}_${Math.floor(Math.random()*1000)}.${file.name.split('.').pop()}`; 
+    const { error } = await sb.storage.from('audios').upload(fn, file); 
+    if (error) throw error;
+    const url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl; 
+    tempAudios.push({ label, url }); 
+    document.getElementById('t-audio-label').value = ''; document.getElementById('t-audio-file').value = ''; 
+    renderTempAudios(); 
+  } catch(err) {
+    alert('Upload error: ' + err.message);
+  } finally {
+    btn.disabled = false; btn.textContent = '+ Add'; isUploadingAudio = false;
+  }
+}
 
 /* ── QUESTION BUILDER ── */
 function toggleQCard(i, event) { if(event) { event.stopPropagation(); } openQStates[i] = !openQStates[i]; renderQFields(); }
 function updateQVideoUrl(i, val) { if (questionRows[i]) { questionRows[i].video_url = buildYtUrl(val); } }
-async function uploadQVideo(event, i) { const file = event.target.files[0]; if (!file) return; isUploadingAudio = true; const btn = event.target; const originalOpacity = btn.style.opacity; btn.style.opacity = '0.5'; const fn = `qv_${Date.now()}.${file.name.split('.').pop()}`; const { error } = await sb.storage.from('audios').upload(fn, file); isUploadingAudio = false; btn.style.opacity = originalOpacity; if (error) { alert('Upload error: ' + error.message); return; } if (questionRows[i]) questionRows[i].video_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl; const urlInput = document.getElementById(`q-vid-url-${i}`); if (urlInput) urlInput.value = ''; renderQFields(); }
-
+async function uploadQAudio(event, i) {
+  const file = event.target.files[0]; if (!file) return; 
+  isUploadingAudio = true;
+  const el = document.getElementById('q-audio-' + i);
+  if (el) el.textContent = '⏳ Uploading...';
+  try {
+    const fn = `qa_${Date.now()}_${Math.floor(Math.random()*1000)}.${file.name.split('.').pop()}`;
+    const { error } = await sb.storage.from('audios').upload(fn, file, { upsert: false });
+    if (error) throw error;
+    if (questionRows[i]) questionRows[i].audio_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
+    if (el) el.textContent = '✅ Audio saved';
+    renderQFields(); 
+  } catch (err) {
+    alert('Audio upload error: ' + err.message);
+    if (el) el.textContent = '❌ Error';
+  } finally {
+    isUploadingAudio = false;
+  }
+}
 function renderQFields() { const wrap = document.getElementById('q-builder'); if (!wrap) return; wrap.innerHTML = questionRows.map((q, i) => buildQRow(q.type || 'multiple_choice', q, i)).join(''); }
 
 function updateDndCats(i, val) { if (questionRows[i]) { questionRows[i].categories = val.split(',').map(s=>s.trim()).filter(Boolean); renderQFields(); } }
@@ -1248,8 +1283,7 @@ function buildQRow(qType, q, i) {
   }
   
   let parts = { url: q.video_url && !q.video_url.includes('supabase.co') ? parseYtDisplayUrl(q.video_url) : '' };
-  let mediaHtml = `<div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)"><span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this question (optional)</span><div style="margin-bottom:12px"><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">🎧 Audio (Upload MP3)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})" style="margin-bottom:4px; padding:6px; font-size:12px;"/><div id="q-audio-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.audio_url?'✅ Audio saved':''}</div></div><div><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">📺 Video (YouTube Link OR Upload MP4)</span><div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap"><input type="url" id="q-vid-url-${i}" placeholder="YouTube URL..." value="${parts.url ? esc(parts.url) : ''}" oninput="updateQVideoUrl(${i}, this.value)" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/><span style="font-size:11px;color:var(--text-muted);font-weight:700">OR</span><input type="file" accept="video/*" onchange="uploadQVideo(event,${i})" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/></div><div id="q-video-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.video_url?'✅ Video saved':''}</div></div></div>`;
-  html += mediaHtml + `</div></div>`; return html;
+let mediaHtml = `<div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)"><span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this question (optional)</span><div style="margin-bottom:12px"><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">🎧 Audio (Upload MP3)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})" style="margin-bottom:4px; padding:6px; font-size:12px;"/><div id="q-audio-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.audio_url?`✅ Audio saved <br><audio controls src="${esc(q.audio_url)}" style="height:30px; margin-top:5px;"></audio>`:''}</div></div><div><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">📺 Video (YouTube Link OR Upload MP4)</span><div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap"><input type="url" id="q-vid-url-${i}" placeholder="YouTube URL..." value="${parts.url ? esc(parts.url) : ''}" oninput="updateQVideoUrl(${i}, this.value)" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/><span style="font-size:11px;color:var(--text-muted);font-weight:700">OR</span><input type="file" accept="video/*" onchange="uploadQVideo(event,${i})" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/></div><div id="q-video-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.video_url?'✅ Video saved':''}</div></div></div>`;  html += mediaHtml + `</div></div>`; return html;
 }
 
 function addQuestion(type) {
