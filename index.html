@@ -251,6 +251,42 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 @media(max-width:900px){.teacher-layout{grid-template-columns:1fr}}
 .t-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.25rem; box-shadow:0 4px 12px rgba(0,0,0,0.02)}
 .t-panel h3{font-size:14px;font-weight:700;color:var(--text);margin-bottom:.9rem;padding-bottom:10px;border-bottom:1px solid var(--border)}
+/* Teacher inner tabs */
+.t-tabs{display:flex;gap:4px;margin-bottom:1.25rem;background:var(--skool-hover);border-radius:var(--radius-sm);padding:4px}
+.t-tab-btn{flex:1;padding:7px 10px;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;background:transparent;color:var(--text-muted);transition:all .18s;font-family:'Inter',sans-serif;text-align:center}
+.t-tab-btn.active{background:var(--surface);color:var(--brand);box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+.t-tab-panel{display:none}.t-tab-panel.active{display:block}
+/* Accordion */
+.acc-header{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;padding:9px 12px;background:var(--skool-hover);border-radius:var(--radius-sm);margin-bottom:4px;transition:background .15s}
+.acc-header:hover{background:var(--brand-light)}
+.acc-header-label{font-weight:700;font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px}
+.acc-chevron{font-size:10px;color:var(--text-muted);transition:transform .2s;display:inline-block}
+.acc-chevron.open{transform:rotate(180deg)}
+.acc-body{display:none;margin-bottom:8px}.acc-body.open{display:block}
+/* Streaks page */
+.streak-hero{text-align:center;padding:2rem 1rem 1.5rem;background:linear-gradient(135deg,var(--brand-dark) 0%,var(--brand-mid) 100%);border-radius:var(--radius);color:#fff;margin-bottom:1.5rem}
+.streak-fire{font-size:52px;line-height:1;margin-bottom:.5rem}
+.streak-count{font-size:48px;font-weight:900;letter-spacing:-2px;line-height:1}
+.streak-label{font-size:13px;opacity:.75;margin-top:4px;font-weight:500}
+.streak-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.streak-stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.streak-stat-num{font-size:28px;font-weight:800;color:var(--brand);letter-spacing:-1px}
+.streak-stat-lbl{font-size:11px;color:var(--text-muted);font-weight:600;margin-top:2px}
+.streak-cal-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.5rem}
+.streak-cal-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:1rem}
+.streak-cal-grid{display:flex;flex-wrap:wrap;gap:4px}
+.streak-day{width:18px;height:18px;border-radius:3px;background:var(--skool-hover);transition:background .15s}
+.streak-day.done{background:var(--brand)}
+.streak-day.today{outline:2px solid var(--accent);outline-offset:1px}
+.streak-all-students{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem}
+.streak-all-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:1rem;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.streak-stu-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.streak-stu-row:last-child{border-bottom:none}
+.streak-stu-name{font-size:13px;font-weight:600;color:var(--text);flex:1}
+.streak-stu-flame{font-size:13px;font-weight:700;color:var(--brand)}
+.streak-prog-bar-wrap{flex:2;min-width:80px;background:var(--skool-hover);border-radius:99px;height:6px;overflow:hidden}
+.streak-prog-bar{height:100%;background:var(--brand);border-radius:99px;transition:width .4s}
+@media(max-width:600px){.streak-stats-row{grid-template-columns:1fr 1fr}.streak-day{width:14px;height:14px}}
 .field-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-light);margin-bottom:5px;margin-top:.9rem;display:block}
 .field-label:first-of-type{margin-top:0}
 select,textarea,input[type=text],input[type=password],input[type=email],input[type=url],input[type=file],input[type=number]{width:100%;padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .15s;margin-bottom:8px}
@@ -387,6 +423,7 @@ footer strong{color:var(--brand)}
     <button class="nav-tab" data-page="consonants">Consonants</button>
     <button class="nav-tab" data-page="classroom" id="nav-classroom">Classroom</button>
     <button class="nav-tab" data-page="community" id="nav-community">Community</button>
+    <button class="nav-tab" data-page="streaks" id="nav-streaks-tab" style="display:none">🔥 Streaks</button>
     <button class="nav-tab" data-page="profile" id="nav-profile-tab" style="display:none">Profile</button>
     <button class="nav-tab teacher-tab" id="nav-teacher-tab" data-page="teacher">Teacher ✦</button>
     <button class="nav-tab auth-btn" id="nav-auth-btn" onclick="handleNavAuth()">Log in</button>
@@ -639,77 +676,109 @@ footer strong{color:var(--brand)}
   </div>
 </div>
 
+<div class="page" id="page-streaks">
+  <div class="section-intro"><h2>🔥 Streaks</h2><p>Keep your momentum — every day you practice counts.</p></div>
+  <div id="streaks-student-view">
+    <div class="streak-hero">
+      <div class="streak-fire">🔥</div>
+      <div class="streak-count" id="streak-current-num">0</div>
+      <div class="streak-label">day streak</div>
+    </div>
+    <div class="streak-stats-row">
+      <div class="streak-stat-card"><div class="streak-stat-num" id="streak-best-num">0</div><div class="streak-stat-lbl">Best streak</div></div>
+      <div class="streak-stat-card"><div class="streak-stat-num" id="streak-total-num">0</div><div class="streak-stat-lbl">Lessons done</div></div>
+      <div class="streak-stat-card"><div class="streak-stat-num" id="streak-days-num">0</div><div class="streak-stat-lbl">Active days</div></div>
+    </div>
+    <div class="streak-cal-wrap">
+      <div class="streak-cal-title">Last 90 days</div>
+      <div class="streak-cal-grid" id="streak-cal-grid"></div>
+    </div>
+  </div>
+  <div id="streaks-teacher-view" style="display:none">
+    <div class="streak-all-students">
+      <div class="streak-all-title">📊 Student Activity</div>
+      <div id="streak-all-list"><div style="color:var(--text-light);font-size:13px;text-align:center;padding:1rem 0">Loading...</div></div>
+    </div>
+  </div>
+</div>
+
 <div class="page page-full" id="page-teacher">
-  <div class="teacher-header"><h2>Teacher Dashboard</h2><p>Organize your content, control access, and view student progress.</p></div>
+  <div class="teacher-header"><h2>Teacher Dashboard</h2><p>Organize your content and control access.</p></div>
   <div class="teacher-layout">
     <div>
-      <div class="t-panel">
-        <h3 id="panel-title-mod">📂 1. Create Module</h3>
-        <input type="hidden" id="edit-mod-id" value=""/>
-        <div style="display:flex; gap:12px; margin-bottom:8px">
-          <div style="flex:1"><span class="field-label" style="margin-top:0">Module name</span><input type="text" id="t-mod-title" placeholder="e.g. Pronunciation Basics" style="margin-bottom:0"/></div>
-          <div style="flex:1"><span class="field-label" style="margin-top:0">Access Control</span><label style="font-size:13px;display:flex;align-items:center;gap:6px;height:35px;margin:0"><input type="checkbox" id="t-mod-private" onchange="document.getElementById('t-mod-emails-wrap').style.display = this.checked ? 'block' : 'none'" style="width:auto;margin:0"/> Make module private</label></div>
+      <div class="t-panel" style="padding-bottom:1rem">
+        <div class="t-tabs">
+          <button class="t-tab-btn active" onclick="switchTTab('mod',this)">📂 Module</button>
+          <button class="t-tab-btn" onclick="switchTTab('sub',this)">📁 Subfolder</button>
+          <button class="t-tab-btn" onclick="switchTTab('les',this)">📝 Lesson</button>
         </div>
-        <div id="t-mod-emails-wrap" style="display:none; margin-bottom:12px;"><span class="field-label">Allowed emails (comma separated)</span><textarea id="t-mod-emails" placeholder="e.g. student1@gmail.com, student2@yahoo.com" style="min-height:60px;"></textarea></div>
-        <div style="display:flex;gap:8px; margin-top:12px;"><button class="primary-btn" style="margin-top:0;" onclick="saveModule()">Save module</button><button class="secondary-btn" id="btn-cancel-mod" style="display:none;" onclick="cancelEditMod()">Cancel</button></div>
-      </div>
-      <div class="t-panel">
-        <h3 id="panel-title-sub">📁 2. Create Subfolder</h3>
-        <input type="hidden" id="edit-sub-id" value=""/>
-        <div style="display:flex; gap:12px; margin-bottom:8px">
-          <div style="flex:1"><span class="field-label" style="margin-top:0">Inside module</span><select id="t-sub-parent" style="margin-bottom:0"></select></div>
-          <div style="flex:1"><span class="field-label" style="margin-top:0">Subfolder name</span><input type="text" id="t-sub-title" placeholder="e.g. 1. The American R" style="margin-bottom:0"/></div>
-        </div>
-        <div style="display:flex;gap:8px; margin-top:12px;"><button class="primary-btn" style="background:var(--brand-mid); margin-top:0;" onclick="saveSubmodule()">Save subfolder</button><button class="secondary-btn" id="btn-cancel-sub" style="display:none;" onclick="cancelEditSub()">Cancel</button></div>
-      </div>
-      <div class="t-panel">
-        <h3 id="panel-title-les">📝 3. Add Lesson</h3>
-        <input type="hidden" id="edit-les-id" value=""/>
-        <div style="display:flex; gap:12px; margin-bottom:12px">
-          <div style="flex:1"><span class="field-label" style="margin-top:0">Module</span><select id="t-les-module" onchange="updateSubfolderSelect()" style="margin-bottom:0"></select></div>
-          <div style="flex:1"><span class="field-label" style="margin-top:0">Subfolder (optional)</span><select id="t-les-submodule" style="margin-bottom:0"></select></div>
-        </div>
-        <div style="display:flex; gap:12px; margin-bottom:12px">
-          <div style="flex:1"><span class="field-label" style="margin-top:0">Lesson type</span><select id="t-les-type" onchange="toggleLessonFields()" style="margin-bottom:0"><option value="video">📺 Video</option><option value="text">📄 Reading material</option><option value="task">📝 Interactive exercise</option><option value="embed">🌐 Embed</option></select></div>
-          <div style="flex:2"><span class="field-label" style="margin-top:0">Lesson title</span><input type="text" id="t-les-title" placeholder="e.g. Lesson 1 — Short I vs Long E" style="margin-bottom:0"/></div>
-        </div>
-        <hr style="border:0;border-top:1px solid var(--skool-border);margin:1.25rem 0"/>
-        
-        <div id="fields-video"><span class="field-label">YouTube URL</span><div style="display:flex; gap:8px;"><input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..." style="flex:2; margin-bottom:0;"/><input type="number" id="t-les-vid-start" placeholder="Start (sec)" style="flex:1; margin-bottom:0;" title="Start time in seconds"/><input type="number" id="t-les-vid-end" placeholder="End (sec)" style="flex:1; margin-bottom:0;" title="End time in seconds"/></div></div>
-        <div id="fields-text" style="display:none"><span class="field-label" style="margin-top:12px;">Content (text, instructions, notes)</span><div id="quill-editor-container"></div></div>
-        <div id="fields-embed" style="display:none"><span class="field-label">Embed code (iframe)</span><textarea id="t-les-embed-code" placeholder="Paste your iframe code here..." style="font-family:monospace;min-height:100px"></textarea></div>
-        
-        <div id="fields-task" style="display:none">
-          <span class="field-label" style="margin-top: 1.5rem; margin-bottom: 8px;">Questions / Items</span>
-          <div id="q-builder"></div>
-          <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top: 1rem;">
-            <button class="secondary-btn" onclick="addQuestion('multiple_choice')">+ Multiple Choice</button>
-            <button class="secondary-btn" onclick="addQuestion('fill_in_blank')">+ Fill in Blanks</button>
-            <button class="secondary-btn" onclick="addQuestion('matching')">+ Matching</button>
-            <button class="secondary-btn" onclick="addQuestion('open_answer')">+ Open Answer</button>
-            <button class="secondary-btn" onclick="addQuestion('dictation')">+ Dictation</button>
-            <button class="secondary-btn" onclick="addQuestion('drag_drop_text')">+ Drag & Drop (Text)</button>
-            <button class="secondary-btn" onclick="addQuestion('drag_drop')">+ Drag & Drop (Categories)</button>
+        <!-- TAB: Module -->
+        <div class="t-tab-panel active" id="t-tab-mod">
+          <h3 id="panel-title-mod" style="border:none;padding-bottom:0;margin-bottom:.9rem">📂 Create Module</h3>
+          <input type="hidden" id="edit-mod-id" value=""/>
+          <div style="display:flex; gap:12px; margin-bottom:8px">
+            <div style="flex:1"><span class="field-label" style="margin-top:0">Module name</span><input type="text" id="t-mod-title" placeholder="e.g. Pronunciation Basics" style="margin-bottom:0"/></div>
+            <div style="flex:1"><span class="field-label" style="margin-top:0">Access Control</span><label style="font-size:13px;display:flex;align-items:center;gap:6px;height:35px;margin:0"><input type="checkbox" id="t-mod-private" onchange="document.getElementById('t-mod-emails-wrap').style.display = this.checked ? 'block' : 'none'" style="width:auto;margin:0"/> Make module private</label></div>
           </div>
+          <div id="t-mod-emails-wrap" style="display:none; margin-bottom:12px;"><span class="field-label">Allowed emails (comma separated)</span><textarea id="t-mod-emails" placeholder="e.g. student1@gmail.com, student2@yahoo.com" style="min-height:60px;"></textarea></div>
+          <div style="display:flex;gap:8px; margin-top:12px;"><button class="primary-btn" style="margin-top:0;" onclick="saveModule()">Save module</button><button class="secondary-btn" id="btn-cancel-mod" style="display:none;" onclick="cancelEditMod()">Cancel</button></div>
         </div>
-
-        <div style="margin-top:1.25rem;background:#F0FDF4;padding:14px;border-radius:var(--radius-sm);border:1px solid #BBF7D0">
-          <p style="font-size:12px;font-weight:700;color:#166534;margin-bottom:4px">🎧 Lesson audio examples</p>
-          <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Add clickable audios for practice words or examples.</p>
-          <div class="audio-add-row"><input type="text" id="t-audio-label" placeholder="Label (e.g. Word 1)" style="margin-bottom:0;flex:1"/><input type="file" id="t-audio-file" accept="audio/*" style="margin-bottom:0;width:auto;flex:1"/><button class="secondary-btn" onclick="addSharedAudio()">+ Add</button></div>
-          <div id="t-shared-audios-render"></div>
+        <!-- TAB: Subfolder -->
+        <div class="t-tab-panel" id="t-tab-sub">
+          <h3 id="panel-title-sub" style="border:none;padding-bottom:0;margin-bottom:.9rem">📁 Create Subfolder</h3>
+          <input type="hidden" id="edit-sub-id" value=""/>
+          <div style="display:flex; gap:12px; margin-bottom:8px">
+            <div style="flex:1"><span class="field-label" style="margin-top:0">Inside module</span><select id="t-sub-parent" style="margin-bottom:0"></select></div>
+            <div style="flex:1"><span class="field-label" style="margin-top:0">Subfolder name</span><input type="text" id="t-sub-title" placeholder="e.g. 1. The American R" style="margin-bottom:0"/></div>
+          </div>
+          <div style="display:flex;gap:8px; margin-top:12px;"><button class="primary-btn" style="background:var(--brand-mid); margin-top:0;" onclick="saveSubmodule()">Save subfolder</button><button class="secondary-btn" id="btn-cancel-sub" style="display:none;" onclick="cancelEditSub()">Cancel</button></div>
         </div>
-        <div style="margin-top:1.25rem;background:#FFF9F6;padding:14px;border-radius:var(--radius-sm);border:1px solid var(--accent)">
-          <p style="font-size:12px;font-weight:700;color:var(--accent-dark);margin-bottom:4px">📎 Attach resources (PDFs, guides, images)</p>
-          <input type="file" id="t-les-resources" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" multiple/>
-          <div id="t-les-resources-current" style="font-size:11px;color:var(--text-muted);margin-top:-4px"></div>
+        <!-- TAB: Lesson -->
+        <div class="t-tab-panel" id="t-tab-les">
+          <h3 id="panel-title-les" style="border:none;padding-bottom:0;margin-bottom:.9rem">📝 Add Lesson</h3>
+          <input type="hidden" id="edit-les-id" value=""/>
+          <div style="display:flex; gap:12px; margin-bottom:12px">
+            <div style="flex:1"><span class="field-label" style="margin-top:0">Module</span><select id="t-les-module" onchange="updateSubfolderSelect()" style="margin-bottom:0"></select></div>
+            <div style="flex:1"><span class="field-label" style="margin-top:0">Subfolder (optional)</span><select id="t-les-submodule" style="margin-bottom:0"></select></div>
+          </div>
+          <div style="display:flex; gap:12px; margin-bottom:12px">
+            <div style="flex:1"><span class="field-label" style="margin-top:0">Lesson type</span><select id="t-les-type" onchange="toggleLessonFields()" style="margin-bottom:0"><option value="video">📺 Video</option><option value="text">📄 Reading material</option><option value="task">📝 Interactive exercise</option><option value="embed">🌐 Embed</option></select></div>
+            <div style="flex:2"><span class="field-label" style="margin-top:0">Lesson title</span><input type="text" id="t-les-title" placeholder="e.g. Lesson 1 — Short I vs Long E" style="margin-bottom:0"/></div>
+          </div>
+          <hr style="border:0;border-top:1px solid var(--skool-border);margin:1.25rem 0"/>
+          <div id="fields-video"><span class="field-label">YouTube URL</span><div style="display:flex; gap:8px;"><input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..." style="flex:2; margin-bottom:0;"/><input type="number" id="t-les-vid-start" placeholder="Start (sec)" style="flex:1; margin-bottom:0;" title="Start time in seconds"/><input type="number" id="t-les-vid-end" placeholder="End (sec)" style="flex:1; margin-bottom:0;" title="End time in seconds"/></div></div>
+          <div id="fields-text" style="display:none"><span class="field-label" style="margin-top:12px;">Content (text, instructions, notes)</span><div id="quill-editor-container"></div></div>
+          <div id="fields-embed" style="display:none"><span class="field-label">Embed code (iframe)</span><textarea id="t-les-embed-code" placeholder="Paste your iframe code here..." style="font-family:monospace;min-height:100px"></textarea></div>
+          <div id="fields-task" style="display:none">
+            <span class="field-label" style="margin-top: 1.5rem; margin-bottom: 8px;">Questions / Items</span>
+            <div id="q-builder"></div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top: 1rem;">
+              <button class="secondary-btn" onclick="addQuestion('multiple_choice')">+ Multiple Choice</button>
+              <button class="secondary-btn" onclick="addQuestion('fill_in_blank')">+ Fill in Blanks</button>
+              <button class="secondary-btn" onclick="addQuestion('matching')">+ Matching</button>
+              <button class="secondary-btn" onclick="addQuestion('open_answer')">+ Open Answer</button>
+              <button class="secondary-btn" onclick="addQuestion('dictation')">+ Dictation</button>
+              <button class="secondary-btn" onclick="addQuestion('drag_drop_text')">+ Drag &amp; Drop (Text)</button>
+              <button class="secondary-btn" onclick="addQuestion('drag_drop')">+ Drag &amp; Drop (Categories)</button>
+            </div>
+          </div>
+          <div style="margin-top:1.25rem;background:#F0FDF4;padding:14px;border-radius:var(--radius-sm);border:1px solid #BBF7D0">
+            <p style="font-size:12px;font-weight:700;color:#166534;margin-bottom:4px">🎧 Lesson audio examples</p>
+            <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Add clickable audios for practice words or examples.</p>
+            <div class="audio-add-row"><input type="text" id="t-audio-label" placeholder="Label (e.g. Word 1)" style="margin-bottom:0;flex:1"/><input type="file" id="t-audio-file" accept="audio/*" style="margin-bottom:0;width:auto;flex:1"/><button class="secondary-btn" onclick="addSharedAudio()">+ Add</button></div>
+            <div id="t-shared-audios-render"></div>
+          </div>
+          <div style="margin-top:1.25rem;background:#FFF9F6;padding:14px;border-radius:var(--radius-sm);border:1px solid var(--accent)">
+            <p style="font-size:12px;font-weight:700;color:var(--accent-dark);margin-bottom:4px">📎 Attach resources (PDFs, guides, images)</p>
+            <input type="file" id="t-les-resources" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" multiple/>
+            <div id="t-les-resources-current" style="font-size:11px;color:var(--text-muted);margin-top:-4px"></div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:1rem;"><button class="primary-btn" onclick="saveLesson()" id="btn-save-les" style="margin-top:0">Save lesson</button><button class="secondary-btn" id="btn-cancel-les" style="display:none;margin-top:0" onclick="cancelEditLes()">Cancel</button></div>
         </div>
-        <div style="display:flex;gap:8px;margin-top:1rem;"><button class="primary-btn" onclick="saveLesson()" id="btn-save-les" style="margin-top:0">Save lesson</button><button class="secondary-btn" id="btn-cancel-les" style="display:none;margin-top:0" onclick="cancelEditLes()">Cancel</button></div>
       </div>
     </div>
     <div>
       <div class="t-panel"><h3>🛠 Content manager</h3><div id="t-manage-list"><div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div></div></div>
-      <div class="t-panel"><h3>📊 Student Progress</h3><div id="t-student-progress-list"><div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">Loading...</div></div></div>
     </div>
   </div>
 </div>
@@ -769,11 +838,13 @@ function updateAuthUI() {
   const btn = document.getElementById('nav-auth-btn'); const teacherTab = document.getElementById('nav-teacher-tab'); const profileTab = document.getElementById('nav-profile-tab');
   if (currentUser) {
     btn.textContent = 'Log out'; btn.classList.add('logout-btn-nav'); btn.classList.remove('auth-btn'); profileTab.style.display = 'inline-block';
+    document.getElementById('nav-streaks-tab').style.display = 'inline-block';
     if (currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase()) teacherTab.style.display = 'inline-block';
     if (document.getElementById('page-auth').classList.contains('active')) goToPage('classroom');
   } else {
     btn.textContent = 'Log in'; btn.classList.remove('logout-btn-nav'); btn.classList.add('auth-btn'); teacherTab.style.display = 'none'; profileTab.style.display = 'none';
-    if (['page-classroom','page-teacher','page-community','page-profile'].includes(document.querySelector('.page.active')?.id)) goToPage('home');
+    document.getElementById('nav-streaks-tab').style.display = 'none';
+    if (['page-classroom','page-teacher','page-community','page-profile','page-streaks'].includes(document.querySelector('.page.active')?.id)) goToPage('home');
   }
 }
 
@@ -800,13 +871,13 @@ async function handleAuth() {
   }
 }
 
-document.querySelectorAll('.nav-tab[data-page]').forEach(tab => { tab.onclick = () => { const page = tab.dataset.page; if (['classroom','teacher','community','profile'].includes(page) && !currentUser) { goToPage('auth'); return; } goToPage(page); }; });
+document.querySelectorAll('.nav-tab[data-page]').forEach(tab => { tab.onclick = () => { const page = tab.dataset.page; if (['classroom','teacher','community','profile','streaks'].includes(page) && !currentUser) { goToPage('auth'); return; } goToPage(page); }; });
 
 function goToPage(pageId) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const tabBtn = document.querySelector(`.nav-tab[data-page="${pageId}"]`); if (tabBtn) tabBtn.classList.add('active');
   const pageEl = document.getElementById('page-' + pageId); if (pageEl) pageEl.classList.add('active');
-  if (pageId === 'classroom') renderClassroomGrid(); if (pageId === 'community') renderCommunityFeed(); if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); }
+  if (pageId === 'classroom') renderClassroomGrid(); if (pageId === 'community') renderCommunityFeed(); if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); } if (pageId === 'streaks') renderStreaks();
   if (pageId === 'profile') { const p = dbProfiles.find(x => x.id === currentUser?.id); if (p) document.getElementById('profile-username').value = p.username || ''; }
   window.scrollTo(0, 0);
 }
@@ -824,8 +895,8 @@ async function fetchData() {
     const rComments = await sb.from('comments').select('*').order('created_at', { ascending: true }); dbComments = rComments?.data || [];
     const rLikes = await sb.from('likes').select('*'); dbLikes = rLikes?.data || [];
     const rProfiles = await sb.from('user_profiles').select('*'); dbProfiles = rProfiles?.data || [];
-    if (isTeacher) { const rAllProg = await sb.from('student_progress').select('*'); renderTeacherProgress(rAllProg?.data || []); }
     if (document.getElementById('page-community').classList.contains('active')) renderCommunityFeed();
+    if (document.getElementById('page-streaks').classList.contains('active')) renderStreaks();
   } catch (error) { console.error("Error fetching data:", error); }
 }
 
@@ -1056,13 +1127,13 @@ function showScore(correct, total, results, readonly) {
 ══════════════════════════════════════════ */
 async function saveModule() { const title = document.getElementById('t-mod-title').value.trim(); const editId = document.getElementById('edit-mod-id').value; const isPrivate = document.getElementById('t-mod-private').checked; const allowedEmails = document.getElementById('t-mod-emails').value.trim(); if (!title) { alert('Add a module name.'); return; } const payload = editId ? { title, is_private: isPrivate, allowed_emails: allowedEmails } : { title, order_index: dbModules.length, is_private: isPrivate, allowed_emails: allowedEmails }; const res = editId ? await sb.from('modules').update(payload).eq('id', editId) : await sb.from('modules').insert([payload]); if (res.error) { alert('Error: ' + res.error.message); return; } await fetchData(); alert(editId ? 'Module updated!' : 'Module created!'); cancelEditMod(); }
 function editModule(id) { const m = dbModules.find(x => x.id === id); if (!m) return; document.getElementById('t-mod-title').value = m.title; document.getElementById('edit-mod-id').value = m.id; document.getElementById('t-mod-private').checked = m.is_private; document.getElementById('t-mod-emails-wrap').style.display = m.is_private ? 'block' : 'none'; document.getElementById('t-mod-emails').value = m.allowed_emails || ''; document.getElementById('panel-title-mod').textContent = '✏️ Edit module'; document.getElementById('btn-cancel-mod').style.display = 'inline-block'; window.scrollTo(0, 0); }
-function cancelEditMod() { document.getElementById('t-mod-title').value = ''; document.getElementById('edit-mod-id').value = ''; document.getElementById('t-mod-private').checked = false; document.getElementById('t-mod-emails-wrap').style.display = 'none'; document.getElementById('t-mod-emails').value = ''; document.getElementById('panel-title-mod').textContent = '📂 1. Create Module'; document.getElementById('btn-cancel-mod').style.display = 'none'; }
+function cancelEditMod() { document.getElementById('t-mod-title').value = ''; document.getElementById('edit-mod-id').value = ''; document.getElementById('t-mod-private').checked = false; document.getElementById('t-mod-emails-wrap').style.display = 'none'; document.getElementById('t-mod-emails').value = ''; document.getElementById('panel-title-mod').textContent = '📂 Create Module'; document.getElementById('btn-cancel-mod').style.display = 'none'; }
 async function deleteModule(id) { if (!confirm('Delete this module and ALL its content?')) return; await sb.from('lessons').delete().eq('module_id', id); await sb.from('submodules').delete().eq('module_id', id); await sb.from('modules').delete().eq('id', id); fetchData(); }
 async function moveModule(id, dir) { const idx = dbModules.findIndex(m => m.id === id); const t = dbModules[idx + dir]; if (!t) return; await sb.from('modules').update({ order_index: t.order_index }).eq('id', id); await sb.from('modules').update({ order_index: dbModules[idx].order_index }).eq('id', t.id); fetchData(); }
 
 async function saveSubmodule() { const title = document.getElementById('t-sub-title').value.trim(); const modId = document.getElementById('t-sub-parent').value; const editId = document.getElementById('edit-sub-id').value; if (!title || !modId) { alert('Select a module and add a name.'); return; } const orderIdx = dbSubmodules.filter(s => s.module_id === modId).length; const payload = editId ? { title, module_id: modId } : { title, module_id: modId, order_index: orderIdx }; const res = editId ? await sb.from('submodules').update(payload).eq('id', editId) : await sb.from('submodules').insert([payload]); if (res.error) { alert('Error: ' + res.error.message); return; } await fetchData(); alert(editId ? 'Subfolder updated!' : 'Subfolder created!'); cancelEditSub(); }
 function editSubmodule(id) { const s = dbSubmodules.find(x => x.id === id); if (!s) return; document.getElementById('t-sub-title').value = s.title; document.getElementById('t-sub-parent').value = s.module_id; document.getElementById('edit-sub-id').value = s.id; document.getElementById('panel-title-sub').textContent = '✏️ Edit subfolder'; document.getElementById('btn-cancel-sub').style.display = 'inline-block'; window.scrollTo(0, 0); }
-function cancelEditSub() { document.getElementById('t-sub-title').value = ''; document.getElementById('edit-sub-id').value = ''; document.getElementById('panel-title-sub').textContent = '📁 2. Create Subfolder'; document.getElementById('btn-cancel-sub').style.display = 'none'; }
+function cancelEditSub() { document.getElementById('t-sub-title').value = ''; document.getElementById('edit-sub-id').value = ''; document.getElementById('panel-title-sub').textContent = '📁 Create Subfolder'; document.getElementById('btn-cancel-sub').style.display = 'none'; }
 async function deleteSubmodule(id) { if (!confirm('Delete this subfolder? Lessons inside will stay in the main module.')) return; await sb.from('submodules').delete().eq('id', id); fetchData(); }
 async function moveSubmodule(id, dir) { const sub = dbSubmodules.find(s => s.id === id); if (!sub) return; const siblings = dbSubmodules.filter(s => s.module_id === sub.module_id); const idx = siblings.findIndex(s => s.id === id); const t = siblings[idx + dir]; if (!t) return; await sb.from('submodules').update({ order_index: t.order_index }).eq('id', id); await sb.from('submodules').update({ order_index: sub.order_index }).eq('id', t.id); fetchData(); }
 
@@ -1103,7 +1174,7 @@ function editLesson(id) {
   }
   tempAudios = safeParseJSON(l.content); renderTempAudios(); const resArr = safeParseJSON(l.resources); document.getElementById('t-les-resources-current').textContent = resArr.length ? `${resArr.length} file(s) already attached` : ''; document.getElementById('panel-title-les').textContent = '✏️ Edit lesson'; document.getElementById('btn-cancel-les').style.display = 'inline-block'; window.scrollTo(0, 0);
 }
-function cancelEditLes() { document.getElementById('edit-les-id').value = ''; document.getElementById('t-les-title').value = ''; document.getElementById('t-les-video-url').value = ''; document.getElementById('t-les-vid-start').value = ''; document.getElementById('t-les-vid-end').value = ''; document.getElementById('t-les-embed-code').value = ''; document.getElementById('t-les-resources').value = ''; document.getElementById('t-les-resources-current').textContent = ''; quillEditor.root.innerHTML = ''; questionRows = []; tempAudios = []; openQStates = {}; renderQFields(); renderTempAudios(); document.getElementById('panel-title-les').textContent = '📝 3. Add Lesson'; document.getElementById('btn-cancel-les').style.display = 'none'; }
+function cancelEditLes() { document.getElementById('edit-les-id').value = ''; document.getElementById('t-les-title').value = ''; document.getElementById('t-les-video-url').value = ''; document.getElementById('t-les-vid-start').value = ''; document.getElementById('t-les-vid-end').value = ''; document.getElementById('t-les-embed-code').value = ''; document.getElementById('t-les-resources').value = ''; document.getElementById('t-les-resources-current').textContent = ''; quillEditor.root.innerHTML = ''; questionRows = []; tempAudios = []; openQStates = {}; renderQFields(); renderTempAudios(); document.getElementById('panel-title-les').textContent = '📝 Add Lesson'; document.getElementById('btn-cancel-les').style.display = 'none'; }
 async function deleteLesson(id) { if (!confirm('Delete this lesson?')) return; await sb.from('lessons').delete().eq('id', id); fetchData(); }
 async function moveLesson(id, dir) { const les = dbLessons.find(l => l.id === id); if (!les) return; const siblings = dbLessons.filter(l => l.module_id === les.module_id && l.submodule_id === les.submodule_id); const idx = siblings.findIndex(l => l.id === id); const t = siblings[idx + dir]; if (!t) return; await sb.from('lessons').update({ order_index: t.order_index }).eq('id', id); await sb.from('lessons').update({ order_index: les.order_index }).eq('id', t.id); fetchData(); }
 
@@ -1194,6 +1265,21 @@ function addQuestion(type) {
   questionRows.push(newQ); Object.keys(openQStates).forEach(k => openQStates[k] = false); openQStates[questionRows.length - 1] = true; renderQFields();
 }
 
+function switchTTab(name, btn) {
+  document.querySelectorAll('.t-tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.t-tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('t-tab-' + name).classList.add('active');
+}
+
+function toggleAcc(bodyId, chevronId) {
+  const body = document.getElementById(bodyId);
+  const chev = document.getElementById(chevronId);
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chev.classList.toggle('open', !isOpen);
+}
+
 function renderManageList() {
   const list = document.getElementById('t-manage-list');
   if (!list) return;
@@ -1202,82 +1288,170 @@ function renderManageList() {
     return;
   }
   const iconMap = { video:'📺', text:'📄', task:'📝', embed:'🌐' };
-  const btnStyle = 'background:none;border:1px solid var(--border);border-radius:4px;padding:2px 7px;font-size:11px;cursor:pointer;color:var(--text-muted)';
-  const dangerStyle = 'background:none;border:1px solid #ffb3b3;border-radius:4px;padding:2px 7px;font-size:11px;cursor:pointer;color:#e05252';
+  const btnS = 'background:none;border:1px solid var(--border);border-radius:4px;padding:2px 7px;font-size:11px;cursor:pointer;color:var(--text-muted)';
+  const delS = 'background:none;border:1px solid #ffb3b3;border-radius:4px;padding:2px 7px;font-size:11px;cursor:pointer;color:#e05252';
 
   let html = '';
-  dbModules.forEach(m => {
-    const mLessons = dbLessons.filter(l => l.module_id === m.id);
-    const mSubs    = dbSubmodules.filter(s => s.module_id === m.id);
-    const privBadge = m.is_private ? ' <span style="font-size:10px;background:var(--brand);color:#fff;padding:1px 6px;border-radius:99px;vertical-align:middle">Private</span>' : '';
+  dbModules.forEach((m, mi) => {
+    const mLessons  = dbLessons.filter(l => l.module_id === m.id);
+    const mSubs     = dbSubmodules.filter(s => s.module_id === m.id);
+    const privBadge = m.is_private ? ' <span style="font-size:10px;background:var(--brand);color:#fff;padding:1px 6px;border-radius:99px">Private</span>' : '';
+    const bodyId  = `acc-mod-body-${m.id}`;
+    const chevId  = `acc-mod-chev-${m.id}`;
+    const lesCount = mLessons.length;
 
     html += `
-    <div style="border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:10px;overflow:hidden">
-      <!-- Module header -->
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 12px;background:var(--skool-hover);flex-wrap:wrap">
-        <span style="font-weight:700;font-size:13px;color:var(--text)">📂 ${esc(m.title)}${privBadge}</span>
-        <div style="display:flex;gap:5px;flex-wrap:wrap">
-          <button style="${btnStyle}" onclick="moveModule('${esc(m.id)}',-1)">▲</button>
-          <button style="${btnStyle}" onclick="moveModule('${esc(m.id)}',1)">▼</button>
-          <button style="${btnStyle}" onclick="editModule('${esc(m.id)}')">✏️ Edit</button>
-          <button style="${dangerStyle}" onclick="deleteModule('${esc(m.id)}')">🗑 Delete</button>
+    <div style="border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;overflow:hidden">
+      <div class="acc-header" onclick="toggleAcc('${bodyId}','${chevId}')">
+        <span class="acc-header-label">📂 ${esc(m.title)}${privBadge} <span style="font-size:11px;font-weight:400;color:var(--text-muted)">${lesCount} lesson${lesCount!==1?'s':''}</span></span>
+        <div style="display:flex;align-items:center;gap:5px" onclick="event.stopPropagation()">
+          <button style="${btnS}" onclick="moveModule('${esc(m.id)}',-1)">▲</button>
+          <button style="${btnS}" onclick="moveModule('${esc(m.id)}',1)">▼</button>
+          <button style="${btnS}" onclick="editModule('${esc(m.id)}');switchTTab('mod',document.querySelector('.t-tab-btn'))">✏️</button>
+          <button style="${delS}" onclick="deleteModule('${esc(m.id)}')">🗑</button>
+          <span class="acc-chevron" id="${chevId}">▼</span>
         </div>
-      </div>`;
+      </div>
+      <div class="acc-body" id="${bodyId}">`;
 
-    // Subfolders and their lessons
+    // Subfolders
     mSubs.forEach(s => {
       const subLessons = mLessons.filter(l => l.submodule_id === s.id);
+      const sBodyId = `acc-sub-body-${s.id}`;
+      const sChevId = `acc-sub-chev-${s.id}`;
       html += `
-      <div style="padding:6px 12px 6px 24px;border-top:1px solid var(--border);background:var(--surface)">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:4px">
-          <span style="font-size:12px;font-weight:600;color:var(--text-muted)">📁 ${esc(s.title)}</span>
-          <div style="display:flex;gap:5px;flex-wrap:wrap">
-            <button style="${btnStyle}" onclick="moveSubmodule('${esc(s.id)}',-1)">▲</button>
-            <button style="${btnStyle}" onclick="moveSubmodule('${esc(s.id)}',1)">▼</button>
-            <button style="${btnStyle}" onclick="editSubmodule('${esc(s.id)}')">✏️ Edit</button>
-            <button style="${dangerStyle}" onclick="deleteSubmodule('${esc(s.id)}')">🗑 Delete</button>
+        <div style="border-top:1px solid var(--border)">
+          <div class="acc-header" style="border-radius:0;background:var(--surface);padding:7px 12px 7px 20px" onclick="toggleAcc('${sBodyId}','${sChevId}')">
+            <span class="acc-header-label" style="font-size:12px;font-weight:600;color:var(--text-muted)">📁 ${esc(s.title)} <span style="font-weight:400">${subLessons.length} lesson${subLessons.length!==1?'s':''}</span></span>
+            <div style="display:flex;align-items:center;gap:5px" onclick="event.stopPropagation()">
+              <button style="${btnS}" onclick="moveSubmodule('${esc(s.id)}',-1)">▲</button>
+              <button style="${btnS}" onclick="moveSubmodule('${esc(s.id)}',1)">▼</button>
+              <button style="${btnS}" onclick="editSubmodule('${esc(s.id)}');switchTTab('sub',document.querySelectorAll('.t-tab-btn')[1])">✏️</button>
+              <button style="${delS}" onclick="deleteSubmodule('${esc(s.id)}')">🗑</button>
+              <span class="acc-chevron" id="${sChevId}">▼</span>
+            </div>
           </div>
-        </div>`;
+          <div class="acc-body" id="${sBodyId}">`;
       subLessons.forEach(l => {
-        html += `
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:4px 0 4px 14px;border-top:1px dashed var(--border)">
+        html += `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:5px 12px 5px 32px;border-top:1px dashed var(--border);background:var(--surface)">
           <span style="font-size:12px;color:var(--text)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span>
-          <div style="display:flex;gap:5px;flex-wrap:wrap">
-            <button style="${btnStyle}" onclick="moveLesson('${esc(l.id)}',-1)">▲</button>
-            <button style="${btnStyle}" onclick="moveLesson('${esc(l.id)}',1)">▼</button>
-            <button style="${btnStyle}" onclick="editLesson('${esc(l.id)}')">✏️ Edit</button>
-            <button style="${dangerStyle}" onclick="deleteLesson('${esc(l.id)}')">🗑 Delete</button>
-          </div>
-        </div>`;
+          <div style="display:flex;gap:4px">
+            <button style="${btnS}" onclick="moveLesson('${esc(l.id)}',-1)">▲</button>
+            <button style="${btnS}" onclick="moveLesson('${esc(l.id)}',1)">▼</button>
+            <button style="${btnS}" onclick="editLesson('${esc(l.id)}');switchTTab('les',document.querySelectorAll('.t-tab-btn')[2])">✏️</button>
+            <button style="${delS}" onclick="deleteLesson('${esc(l.id)}')">🗑</button>
+          </div></div>`;
       });
-      html += '</div>'; // end subfolder
+      html += `</div></div>`; // close acc-body + subfolder div
     });
 
-    // Orphan lessons (no submodule)
+    // Orphan lessons
     const orphans = mLessons.filter(l => !l.submodule_id);
-    if (orphans.length) {
-      orphans.forEach(l => {
-        html += `
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:6px 12px 6px 24px;border-top:1px dashed var(--border);background:var(--surface)">
-          <span style="font-size:12px;color:var(--text)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span>
-          <div style="display:flex;gap:5px;flex-wrap:wrap">
-            <button style="${btnStyle}" onclick="moveLesson('${esc(l.id)}',-1)">▲</button>
-            <button style="${btnStyle}" onclick="moveLesson('${esc(l.id)}',1)">▼</button>
-            <button style="${btnStyle}" onclick="editLesson('${esc(l.id)}')">✏️ Edit</button>
-            <button style="${dangerStyle}" onclick="deleteLesson('${esc(l.id)}')">🗑 Delete</button>
-          </div>
-        </div>`;
-      });
-    }
+    orphans.forEach(l => {
+      html += `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:5px 12px 5px 20px;border-top:1px dashed var(--border);background:var(--surface)">
+        <span style="font-size:12px;color:var(--text)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span>
+        <div style="display:flex;gap:4px">
+          <button style="${btnS}" onclick="moveLesson('${esc(l.id)}',-1)">▲</button>
+          <button style="${btnS}" onclick="moveLesson('${esc(l.id)}',1)">▼</button>
+          <button style="${btnS}" onclick="editLesson('${esc(l.id)}');switchTTab('les',document.querySelectorAll('.t-tab-btn')[2])">✏️</button>
+          <button style="${delS}" onclick="deleteLesson('${esc(l.id)}')">🗑</button>
+        </div></div>`;
+    });
 
     if (!mSubs.length && !mLessons.length) {
-      html += `<div style="padding:8px 24px;font-size:12px;color:var(--text-muted);border-top:1px solid var(--border)">No lessons yet.</div>`;
+      html += `<div style="padding:8px 20px;font-size:12px;color:var(--text-muted);border-top:1px solid var(--border)">No lessons yet.</div>`;
     }
 
-    html += '</div>'; // end module card
+    html += `</div></div>`; // close acc-body + module wrapper
   });
 
   list.innerHTML = html;
+}
+
+/* ══════════════════════════════════════════
+   STREAKS
+══════════════════════════════════════════ */
+function calcStreak(dates) {
+  // dates: array of 'YYYY-MM-DD' strings (UTC)
+  if (!dates.length) return { current: 0, best: 0, activeDays: 0 };
+  const unique = [...new Set(dates)].sort();
+  const today = new Date(); today.setHours(0,0,0,0);
+  const todayStr = today.toISOString().slice(0,10);
+  const yest = new Date(today); yest.setDate(yest.getDate()-1);
+  const yesterdayStr = yest.toISOString().slice(0,10);
+  // current streak
+  let current = 0;
+  const lastDay = unique[unique.length-1];
+  if (lastDay === todayStr || lastDay === yesterdayStr) {
+    let check = lastDay === todayStr ? todayStr : yesterdayStr;
+    for (let i = unique.length-1; i >= 0; i--) {
+      if (unique[i] === check) { current++; const d = new Date(check); d.setDate(d.getDate()-1); check = d.toISOString().slice(0,10); }
+      else if (unique[i] < check) break;
+    }
+  }
+  // best streak
+  let best = 1, run = 1;
+  for (let i = 1; i < unique.length; i++) {
+    const prev = new Date(unique[i-1]); prev.setDate(prev.getDate()+1);
+    if (prev.toISOString().slice(0,10) === unique[i]) { run++; if (run > best) best = run; }
+    else run = 1;
+  }
+  return { current, best: Math.max(best, current), activeDays: unique.length };
+}
+
+async function renderStreaks() {
+  if (!currentUser) return;
+  const isTeacher = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
+  document.getElementById('streaks-student-view').style.display = isTeacher ? 'none' : 'block';
+  document.getElementById('streaks-teacher-view').style.display = isTeacher ? 'block' : 'none';
+
+  if (isTeacher) {
+    // Teacher sees all students
+    const rAllProg = await sb.from('student_progress').select('user_id,lesson_id,created_at');
+    const allProg  = rAllProg?.data || [];
+    const students = dbProfiles.filter(p => p.id !== currentUser.id);
+    const totalLessons = dbLessons.length;
+    const list = document.getElementById('streak-all-list');
+    if (!students.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;text-align:center;padding:1rem">No students yet.</div>'; return; }
+    list.innerHTML = students.map(s => {
+      const sProg   = allProg.filter(p => p.user_id === s.id);
+      const done    = sProg.length;
+      const pct     = totalLessons ? Math.round(done/totalLessons*100) : 0;
+      const dates   = sProg.map(p => p.created_at ? p.created_at.slice(0,10) : null).filter(Boolean);
+      const { current } = calcStreak(dates);
+      return `<div class="streak-stu-row">
+        <div class="post-avatar" style="width:30px;height:30px;font-size:12px;flex-shrink:0">${renderAvatarHTML(s.id, s.username||'Student')}</div>
+        <span class="streak-stu-name">${esc(s.username||'Unnamed')}</span>
+        <span class="streak-stu-flame">🔥 ${current}d</span>
+        <div class="streak-prog-bar-wrap"><div class="streak-prog-bar" style="width:${pct}%"></div></div>
+        <span style="font-size:11px;color:var(--text-muted);white-space:nowrap">${done}/${totalLessons}</span>
+      </div>`;
+    }).join('');
+    return;
+  }
+
+  // Student view
+  const dates = dbProgress.map(p => p.created_at ? p.created_at.slice(0,10) : null).filter(Boolean);
+  const { current, best, activeDays } = calcStreak(dates);
+  document.getElementById('streak-current-num').textContent = current;
+  document.getElementById('streak-best-num').textContent    = best;
+  document.getElementById('streak-total-num').textContent   = dbProgress.length;
+  document.getElementById('streak-days-num').textContent    = activeDays;
+
+  // 90-day calendar
+  const doneSet = new Set(dates);
+  const grid    = document.getElementById('streak-cal-grid');
+  const today   = new Date(); today.setHours(0,0,0,0);
+  const todayStr = today.toISOString().slice(0,10);
+  let calHtml = '';
+  for (let i = 89; i >= 0; i--) {
+    const d = new Date(today); d.setDate(d.getDate()-i);
+    const ds = d.toISOString().slice(0,10);
+    const isDone  = doneSet.has(ds);
+    const isToday = ds === todayStr;
+    calHtml += `<div class="streak-day${isDone?' done':''}${isToday?' today':''}" title="${ds}"></div>`;
+  }
+  grid.innerHTML = calHtml;
 }
 
 function renderTeacherProgress(allProgress) {
