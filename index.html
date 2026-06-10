@@ -12,7 +12,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--brand-dark:#07216b;--brand:#2150e3;--brand-mid:#1639a8;--brand-light:#EEEDFE;--accent:#cafc05;--accent-light:#fffbca;--bg:#F7F7FB;--surface:#FFFFFF;--text:#14141F;--text-muted:#6B6B80;--text-light:#A0A0B5;--border:rgba(0,0,0,0.08);--radius:16px;--radius-sm:8px;--green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--red:#D85A30;--red-light:#FAECE7;--red-dark:#4A1B0C;--skool-border:#E5E7EB;--skool-hover:#F3F4F6;}
+:root{
+  --brand-dark: #07216b;
+  --brand: #2150e3;
+  --brand-mid: #1639a8;
+  --brand-light: #EEEDFE;
+  --accent: #cafc05;
+  --accent-light: #fffbca;
+  --bg:#F7F7FB;--surface:#FFFFFF;
+  --text:#14141F;--text-muted:#6B6B80;--text-light:#A0A0B5;
+  --border:rgba(0,0,0,0.08);--radius:16px;--radius-sm:8px;
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;
+  --red:#D85A30;--red-light:#FAECE7;--red-dark:#4A1B0C;
+  --skool-border:#E5E7EB;--skool-hover:#F3F4F6;
+}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;gap:.75rem;flex-wrap:wrap}
 .logo{font-size:22px;font-weight:900;color:var(--brand-dark);letter-spacing:-1px;white-space:nowrap}
@@ -263,7 +276,8 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .acc-chevron{font-size:10px;color:var(--text-muted);transition:transform .2s;display:inline-block}
 .acc-chevron.open{transform:rotate(180deg)}
 .acc-body{display:none;margin-bottom:8px}.acc-body.open{display:block}
-/* Streaks page */
+
+/* STREAKS PAGE */
 .streak-hero{text-align:center;padding:2rem 1rem 1.5rem;background:linear-gradient(135deg,var(--brand-dark) 0%,var(--brand-mid) 100%);border-radius:var(--radius);color:#fff;margin-bottom:1.5rem}
 .streak-fire{font-size:52px;line-height:1;margin-bottom:.5rem}
 .streak-count{font-size:48px;font-weight:900;letter-spacing:-2px;line-height:1}
@@ -287,6 +301,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .streak-prog-bar-wrap{flex:2;min-width:80px;background:var(--skool-hover);border-radius:99px;height:6px;overflow:hidden}
 .streak-prog-bar{height:100%;background:var(--brand);border-radius:99px;transition:width .4s}
 @media(max-width:600px){.streak-stats-row{grid-template-columns:1fr 1fr}.streak-day{width:14px;height:14px}}
+
 .field-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-light);margin-bottom:5px;margin-top:.9rem;display:block}
 .field-label:first-of-type{margin-top:0}
 select,textarea,input[type=text],input[type=password],input[type=email],input[type=url],input[type=file],input[type=number]{width:100%;padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .15s;margin-bottom:8px}
@@ -328,12 +343,6 @@ textarea{resize:vertical;min-height:70px}
 .audio-add-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
 .audio-add-row input{margin-bottom:0}
 .audio-saved-item{display:flex;justify-content:space-between;align-items:center;background:var(--surface);border:1px solid var(--skool-border);border-radius:var(--radius-sm);padding:6px 10px;margin-bottom:6px;font-size:12px;font-weight:600;color:var(--text)}
-footer{text-align:center;padding:2rem;font-size:12px;color:var(--text-light);border-top:1px solid var(--border);margin-top:3rem}
-footer strong{color:var(--brand)}
-.student-prog-row{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid var(--skool-border)}
-.student-prog-row:last-child{border-bottom:none}
-.student-prog-name{font-size:14px;font-weight:600;color:var(--text)}
-.student-prog-stats{font-size:12px;color:var(--text-muted)}
 
 /* EXERCISE PLAYER & MIXED TYPES */
 .ex-question-block{background:var(--bg);border:1px solid var(--skool-border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem}
@@ -419,8 +428,7 @@ footer strong{color:var(--brand)}
   <div class="logo">Accent<span>Up</span></div>
   <div class="nav-tabs">
     <button class="nav-tab active" data-page="home" id="nav-home">Home</button>
-    <button class="nav-tab" data-page="vowels">Vowels</button>
-    <button class="nav-tab" data-page="consonants">Consonants</button>
+    <button class="nav-tab" data-page="sounds">Sounds</button>
     <button class="nav-tab" data-page="classroom" id="nav-classroom">Classroom</button>
     <button class="nav-tab" data-page="community" id="nav-community">Community</button>
     <button class="nav-tab" data-page="streaks" id="nav-streaks-tab" style="display:none">🔥 Streaks</button>
@@ -450,6 +458,7 @@ footer strong{color:var(--brand)}
     <div class="lp-container">
       <h2 class="lp-h2">Your resume says "Advanced English", but everyday reality feels completely different...</h2>
       <p class="lp-p">If you are here, it’s probably because these thoughts cross your mind more often than you'd like to admit:</p>
+      
       <div class="lp-quotes-grid">
         <div class="lp-speech-bubble"><p>“I hate when someone says ‘What?’ and I have to repeat myself.”</p></div>
         <div class="lp-speech-bubble"><p>“I sound angry even when I’m not.”</p></div>
@@ -458,6 +467,7 @@ footer strong{color:var(--brand)}
         <div class="lp-speech-bubble"><p>“I’ve been learning English for years, and I still get stuck."</p></div>
         <div class="lp-speech-bubble"><p>“I know the answer, but I usually keep it to myself.”</p></div>
       </div>
+      
       <div class="lp-bridge">
         <div class="lp-bridge-text">
           <p>You stay quieter than you’d like in meetings or social situations. You feel like the most interesting part of you is missing. Over time, this starts to affect more than your English. You feel less confident. Less present.</p>
@@ -473,6 +483,7 @@ footer strong{color:var(--brand)}
     <div class="lp-container">
       <h2 class="lp-h2">Forget traditional English courses. Speaking is a physical skill.</h2>
       <p class="lp-p">AccentUp is designed around a unique 3-step framework that shifts you from just "knowing" English to actually owning it.</p>
+      
       <div class="lp-mech-grid">
         <div class="lp-mech-card">
           <div class="lp-mech-icon">🧏</div><span class="lp-mech-step">STEP 1</span>
@@ -515,6 +526,7 @@ footer strong{color:var(--brand)}
     <div class="lp-container">
       <h2 class="lp-h2" style="margin-bottom:0.5rem">The AccentUp 6-Month Mentorship</h2>
       <p class="lp-p" style="color:var(--accent-light);">A personalized, 1-on-1 coaching program designed to permanently transform the way you speak English.</p>
+      
       <div class="lp-offer-box">
         <h3>💎 The Core Program Includes:</h3>
         <ul class="lp-offer-list">
@@ -567,17 +579,20 @@ footer strong{color:var(--brand)}
   </section>
 </div>
 
-<div class="page" id="page-vowels">
-  <div class="section-intro"><h2>Vowel sounds</h2><p>American English has 19 vowel sounds. Click any card to explore mouth position, spellings, and tips for Spanish speakers.</p></div>
-  <div id="vowel-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
+<div class="page" id="page-sounds">
+  <div class="section-intro">
+    <h2>Sounds of American English</h2>
+    <p>Explore the 19 vowel sounds and 24 consonant sounds. Click any card to explore mouth position, spellings, and tips.</p>
+  </div>
+  
+  <div id="sound-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
+  
+  <h2 class="lp-h2" style="font-size:24px; text-align:left; margin: 2rem 0 1rem; color:var(--brand-dark)">Vowels</h2>
   <div class="sub-heading">Pure vowels</div><div class="sound-grid" id="pure-vowel-grid"></div>
   <div class="sub-heading">Diphthongs</div><div class="sound-grid" id="diphthong-grid"></div>
   <div class="sub-heading">R-colored vowels</div><div class="sound-grid" id="rcolored-grid"></div>
-</div>
 
-<div class="page" id="page-consonants">
-  <div class="section-intro"><h2>Consonant sounds</h2><p>American English has 24 consonant sounds. Every card includes all spelling patterns for that sound.</p></div>
-  <div id="consonant-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
+  <h2 class="lp-h2" style="font-size:24px; text-align:left; margin: 3rem 0 1rem; color:var(--brand-dark)">Consonants</h2>
   <div class="sub-heading">Stops</div><div class="sound-grid" id="stops-grid"></div>
   <div class="sub-heading">Fricatives</div><div class="sound-grid" id="fricatives-grid"></div>
   <div class="sub-heading">Affricates</div><div class="sound-grid" id="affricates-grid"></div>
@@ -712,7 +727,6 @@ footer strong{color:var(--brand)}
           <button class="t-tab-btn" onclick="switchTTab('sub',this)">📁 Subfolder</button>
           <button class="t-tab-btn" onclick="switchTTab('les',this)">📝 Lesson</button>
         </div>
-        <!-- TAB: Module -->
         <div class="t-tab-panel active" id="t-tab-mod">
           <h3 id="panel-title-mod" style="border:none;padding-bottom:0;margin-bottom:.9rem">📂 Create Module</h3>
           <input type="hidden" id="edit-mod-id" value=""/>
@@ -723,7 +737,6 @@ footer strong{color:var(--brand)}
           <div id="t-mod-emails-wrap" style="display:none; margin-bottom:12px;"><span class="field-label">Allowed emails (comma separated)</span><textarea id="t-mod-emails" placeholder="e.g. student1@gmail.com, student2@yahoo.com" style="min-height:60px;"></textarea></div>
           <div style="display:flex;gap:8px; margin-top:12px;"><button class="primary-btn" style="margin-top:0;" onclick="saveModule()">Save module</button><button class="secondary-btn" id="btn-cancel-mod" style="display:none;" onclick="cancelEditMod()">Cancel</button></div>
         </div>
-        <!-- TAB: Subfolder -->
         <div class="t-tab-panel" id="t-tab-sub">
           <h3 id="panel-title-sub" style="border:none;padding-bottom:0;margin-bottom:.9rem">📁 Create Subfolder</h3>
           <input type="hidden" id="edit-sub-id" value=""/>
@@ -733,7 +746,6 @@ footer strong{color:var(--brand)}
           </div>
           <div style="display:flex;gap:8px; margin-top:12px;"><button class="primary-btn" style="background:var(--brand-mid); margin-top:0;" onclick="saveSubmodule()">Save subfolder</button><button class="secondary-btn" id="btn-cancel-sub" style="display:none;" onclick="cancelEditSub()">Cancel</button></div>
         </div>
-        <!-- TAB: Lesson -->
         <div class="t-tab-panel" id="t-tab-les">
           <h3 id="panel-title-les" style="border:none;padding-bottom:0;margin-bottom:.9rem">📝 Add Lesson</h3>
           <input type="hidden" id="edit-les-id" value=""/>
@@ -746,9 +758,11 @@ footer strong{color:var(--brand)}
             <div style="flex:2"><span class="field-label" style="margin-top:0">Lesson title</span><input type="text" id="t-les-title" placeholder="e.g. Lesson 1 — Short I vs Long E" style="margin-bottom:0"/></div>
           </div>
           <hr style="border:0;border-top:1px solid var(--skool-border);margin:1.25rem 0"/>
-          <div id="fields-video"><span class="field-label">YouTube URL</span><input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..." style="margin-bottom:0;"/></div>
+          
+          <div id="fields-video"><span class="field-label">YouTube URL (e.g. ...&t=36s)</span><input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..." style="margin-bottom:0;"/></div>
           <div id="fields-text" style="display:none"><span class="field-label" style="margin-top:12px;">Content (text, instructions, notes)</span><div id="quill-editor-container"></div></div>
           <div id="fields-embed" style="display:none"><span class="field-label">Embed code (iframe)</span><textarea id="t-les-embed-code" placeholder="Paste your iframe code here..." style="font-family:monospace;min-height:100px"></textarea></div>
+          
           <div id="fields-task" style="display:none">
             <span class="field-label" style="margin-top: 1.5rem; margin-bottom: 8px;">Questions / Items</span>
             <div id="q-builder"></div>
@@ -801,7 +815,7 @@ let currentLesson=null, activeModuleId=null, currentViewedPostId=null;
 let studentAnswers={}; let matchState={}; let selectedDragChips={}; 
 let questionRows=[], tempAudios=[], isUploadingAudio=false;
 let quillEditor=null, communityQuill=null, editPostQuill=null;
-let activeVowel=null, activeConsonant=null, openQStates={}; 
+let activeSound=null, openQStates={}; 
 
 function safeParseJSON(d){if(Array.isArray(d))return d;if(typeof d==='string'){try{return JSON.parse(d)}catch(e){return[]}}return[]}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -809,18 +823,35 @@ function escapeJSArg(s){return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function timeAgo(d){const s=Math.floor((new Date()-new Date(d))/1000);if(s<60)return'Just now';if(s<3600)return Math.floor(s/60)+'m';if(s<86400)return Math.floor(s/3600)+'h';if(s<2592000)return Math.floor(s/86400)+'d';if(s<31536000)return Math.floor(s/2592000)+'mo';return Math.floor(s/31536000)+'y'}
 
+function parseYtTime(tStr) {
+  if(!tStr) return '';
+  let t = tStr.replace('s','');
+  if(t.includes('m')) { let p = t.split('m'); return ((parseInt(p[0])||0)*60 + (parseInt(p[1])||0)).toString(); }
+  return t;
+}
 function buildYtUrl(url) {
   if (!url || !url.trim()) return '';
-  let finalUrl = url.trim();
-  if (finalUrl.includes('youtu.be/')) { const id = finalUrl.split('youtu.be/')[1].split('?')[0].split('&')[0]; return `https://www.youtube.com/embed/${id}`; }
-  if (finalUrl.includes('youtube.com/watch')) { try { const id = new URL(finalUrl).searchParams.get('v'); return id ? `https://www.youtube.com/embed/${id}` : finalUrl; } catch(e) {} }
-  if (finalUrl.includes('youtube.com/embed/')) { try { const u = new URL(finalUrl); u.searchParams.delete('start'); u.searchParams.delete('end'); return u.toString(); } catch(e) {} }
+  let finalUrl = url.trim(); let videoId = ''; let startTime = '';
+  try { let u = new URL(finalUrl); if(u.searchParams.has('t')) startTime = parseYtTime(u.searchParams.get('t')); } catch(e){}
+  if (finalUrl.includes('youtu.be/')) {
+    const parts = finalUrl.split('youtu.be/')[1].split('?'); videoId = parts[0].split('&')[0];
+    if(parts[1] && parts[1].includes('t=')) { const match = parts[1].match(/t=([^&]+)/); if(match) startTime = parseYtTime(match[1]); }
+    finalUrl = `https://www.youtube.com/embed/${videoId}`;
+  } else if (finalUrl.includes('youtube.com/watch')) {
+    try { videoId = new URL(finalUrl).searchParams.get('v'); finalUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : finalUrl; } catch(e) {}
+  }
+  if (finalUrl.includes('youtube.com/embed/')) {
+    try { const u = new URL(finalUrl); u.searchParams.delete('start'); u.searchParams.delete('end'); if(startTime) u.searchParams.set('start', startTime); return u.toString(); } catch(e) { return finalUrl; }
+  }
   return finalUrl;
 }
 function parseYtDisplayUrl(url) {
   if (!url) return '';
-  try { if (url.includes('youtube.com/embed/')) { const id = url.split('youtube.com/embed/')[1].split('?')[0]; return `https://www.youtube.com/watch?v=${id}`; } } catch(e) {}
-  return url;
+  try { 
+    if (url.includes('youtube.com/embed/')) { 
+      const u = new URL(url); let id = u.pathname.split('/').pop(); let start = u.searchParams.get('start'); let res = `https://www.youtube.com/watch?v=${id}`; if(start) res += `&t=${start}s`; return res;
+    } 
+  } catch(e) {} return url;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -842,7 +873,7 @@ function updateAuthUI() {
   } else {
     btn.textContent = 'Log in'; btn.classList.remove('logout-btn-nav'); btn.classList.add('auth-btn'); teacherTab.style.display = 'none'; profileTab.style.display = 'none';
     document.getElementById('nav-streaks-tab').style.display = 'none';
-    if (['page-classroom','page-teacher','page-community','page-profile','page-streaks'].includes(document.querySelector('.page.active')?.id)) goToPage('home');
+    if (['page-classroom','page-teacher','page-community','page-profile','page-streaks','page-sounds'].includes(document.querySelector('.page.active')?.id)) goToPage('home');
   }
 }
 
@@ -869,7 +900,7 @@ async function handleAuth() {
   }
 }
 
-document.querySelectorAll('.nav-tab[data-page]').forEach(tab => { tab.onclick = () => { const page = tab.dataset.page; if (['classroom','teacher','community','profile','streaks'].includes(page) && !currentUser) { goToPage('auth'); return; } goToPage(page); }; });
+document.querySelectorAll('.nav-tab[data-page]').forEach(tab => { tab.onclick = () => { const page = tab.dataset.page; if (['classroom','teacher','community','profile','streaks','sounds'].includes(page) && !currentUser) { goToPage('auth'); return; } goToPage(page); }; });
 
 function goToPage(pageId) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -893,6 +924,7 @@ async function fetchData() {
     const rComments = await sb.from('comments').select('*').order('created_at', { ascending: true }); dbComments = rComments?.data || [];
     const rLikes = await sb.from('likes').select('*'); dbLikes = rLikes?.data || [];
     const rProfiles = await sb.from('user_profiles').select('*'); dbProfiles = rProfiles?.data || [];
+    if (isTeacher) { const rAllProg = await sb.from('student_progress').select('*'); renderTeacherProgress(rAllProg?.data || []); }
     if (document.getElementById('page-community').classList.contains('active')) renderCommunityFeed();
     if (document.getElementById('page-streaks').classList.contains('active')) renderStreaks();
   } catch (error) { console.error("Error fetching data:", error); }
@@ -941,8 +973,8 @@ async function toggleLike(postId, inDetail = false) { const existing = dbLikes.f
 
 function renderClassroomGrid() {
   const grid = document.getElementById('classroom-modules-grid'); if (!grid) return;
-  if (!currentUser) { grid.innerHTML = '<div style="color:var(--text-light);font-size:14px;grid-column:1/-1;text-align:center;padding:3rem 0">Log in to access the classroom.</div>'; return; }
-  if (!dbModules.length) { grid.innerHTML = '<div style="color:var(--text-light);font-size:14px;grid-column:1/-1;text-align:center;padding:3rem 0">No content yet!</div>'; return; }
+  if (!currentUser) { grid.innerHTML = '<div style="color:var(--text-light);font-size:14px;text-align:center;padding:3rem 0;grid-column:1/-1">Log in to access the classroom.</div>'; return; }
+  if (!dbModules.length) { grid.innerHTML = '<div style="color:var(--text-light);font-size:14px;text-align:center;padding:3rem 0;grid-column:1/-1">No content yet!</div>'; return; }
   grid.innerHTML = dbModules.map(m => {
     const modLessons = dbLessons.filter(l => l.module_id === m.id); const total = modLessons.length; const done = modLessons.filter(l => dbProgress.some(p => p.lesson_id === l.id)).length; const pct = total === 0 ? 0 : Math.round(done / total * 100);
     return `<div class="course-card" onclick="openModule('${m.id}')">${m.is_private ? `<span class="private-badge">Private</span>` : ''}<div class="course-card-title">${esc(m.title)}</div><div class="course-card-desc">${total} lesson${total !== 1 ? 's' : ''}</div><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;background:var(--skool-border);border-radius:10px;height:6px;overflow:hidden"><div style="background:var(--green);width:${pct}%;height:100%;border-radius:10px;transition:width .3s"></div></div><span style="font-size:11px;font-weight:700;color:var(--text-muted)">${pct}%</span></div></div>`;
@@ -1053,7 +1085,6 @@ async function submitExercise() {
 
   content.forEach((q, i) => {
     let qType = q.type || currentLesson.task_type;
-    
     if (qType === 'open_answer') {
       hasOpenAnswer = true; totalQ++; const el = document.getElementById('oa-' + i); if (el) { el.style.borderColor = 'var(--brand)'; el.disabled = true; studentAnswers[i] = el.value; }
       const revealEl = document.getElementById('reveal-' + i); if (revealEl) revealEl.classList.add('visible');
@@ -1146,7 +1177,7 @@ async function saveLesson() {
   const btn = document.getElementById('btn-save-les'); btn.disabled = true; btn.textContent = 'Saving...';
 
   let payload = { module_id: moduleId, submodule_id: submodId || null, type, title, content: tempAudios, text_content: quillEditor.root.innerHTML };
-  if (type === 'video') { payload.video_url = buildYtUrl(document.getElementById('t-les-video-url').value.trim()); } 
+  if (type === 'video') { let url = document.getElementById('t-les-video-url').value.trim(); payload.video_url = buildYtUrl(url); } 
   else if (type === 'embed') { payload.video_url = document.getElementById('t-les-embed-code').value.trim(); } 
   else if (type === 'task') { payload.task_type = 'mixed'; payload.task_content = questionRows; }
 
@@ -1247,8 +1278,8 @@ function buildQRow(qType, q, i) {
     html += `<button class="secondary-btn" style="font-size:11px;padding:6px 10px;margin-bottom:8px" onclick="addQOption(${i})">+ Add option</button>`;
   }
   
-  let parts = { url: q.video_url && !q.video_url.includes('supabase.co') ? parseYtDisplayUrl(q.video_url) : '' };
-  let mediaHtml = `<div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)"><span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this question (optional)</span><div style="margin-bottom:12px"><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">🎧 Audio (Upload MP3)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})" style="margin-bottom:4px; padding:6px; font-size:12px;"/><div id="q-audio-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.audio_url?'✅ Audio saved':''}</div></div><div><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">📺 Video (YouTube Link OR Upload MP4)</span><div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap"><input type="url" id="q-vid-url-${i}" placeholder="YouTube URL..." value="${parts.url ? esc(parts.url) : ''}" oninput="updateQVideoUrl(${i}, this.value)" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/><span style="font-size:11px;color:var(--text-muted);font-weight:700">OR</span><input type="file" accept="video/*" onchange="uploadQVideo(event,${i})" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/></div><div id="q-video-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.video_url?'✅ Video saved':''}</div></div></div>`;
+  let displayUrl = q.video_url && !q.video_url.includes('supabase.co') ? parseYtDisplayUrl(q.video_url) : '';
+  let mediaHtml = `<div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)"><span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this question (optional)</span><div style="margin-bottom:12px"><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">🎧 Audio (Upload MP3)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})" style="margin-bottom:4px; padding:6px; font-size:12px;"/><div id="q-audio-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.audio_url?'✅ Audio saved':''}</div></div><div><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">📺 Video (YouTube Link OR Upload MP4)</span><div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap"><input type="url" id="q-vid-url-${i}" placeholder="YouTube URL (e.g. ...&t=36s)" value="${esc(displayUrl)}" oninput="updateQVideoUrl(${i}, this.value)" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/><span style="font-size:11px;color:var(--text-muted);font-weight:700">OR</span><input type="file" accept="video/*" onchange="uploadQVideo(event,${i})" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/></div><div id="q-video-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.video_url?'✅ Video saved':''}</div></div></div>`;
   html += mediaHtml + `</div></div>`; return html;
 }
 
@@ -1263,202 +1294,16 @@ function addQuestion(type) {
   questionRows.push(newQ); Object.keys(openQStates).forEach(k => openQStates[k] = false); openQStates[questionRows.length - 1] = true; renderQFields();
 }
 
-function switchTTab(name, btn) {
-  document.querySelectorAll('.t-tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.t-tab-panel').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('t-tab-' + name).classList.add('active');
+/* ── SOUNDS ENGINE ── */
+function buildAllSoundsGrids() {
+  const ga = () => activeSound;
+  const sa = (v, s, isCon) => { activeSound = v; renderDetail('sound-detail', s, isCon); buildAllSoundsGrids(); };
+  const build = (cid, list, isCon) => { const c = document.getElementById(cid); if (!c) return; c.innerHTML = ''; list.forEach(s => c.appendChild(renderCard(s, ga()===s.ipa, () => sa(s.ipa, s, isCon)))); };
+  build('pure-vowel-grid', vowels.pure, false); build('diphthong-grid', vowels.diphthongs, false); build('rcolored-grid', vowels.rcolored, false);
+  build('stops-grid', consonants.stops, true); build('fricatives-grid', consonants.fricatives, true); build('affricates-grid', consonants.affricates, true); build('nasals-grid', consonants.nasals, true); build('liquids-grid', consonants.liquids, true);
 }
+buildAllSoundsGrids();
 
-function toggleAcc(bodyId, chevronId) {
-  const body = document.getElementById(bodyId);
-  const chev = document.getElementById(chevronId);
-  const isOpen = body.classList.contains('open');
-  body.classList.toggle('open', !isOpen);
-  chev.classList.toggle('open', !isOpen);
-}
-
-function renderManageList() {
-  const list = document.getElementById('t-manage-list');
-  if (!list) return;
-  if (!dbModules.length) {
-    list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div>';
-    return;
-  }
-  const iconMap = { video:'📺', text:'📄', task:'📝', embed:'🌐' };
-  const btnS = 'background:none;border:1px solid var(--border);border-radius:4px;padding:2px 7px;font-size:11px;cursor:pointer;color:var(--text-muted)';
-  const delS = 'background:none;border:1px solid #ffb3b3;border-radius:4px;padding:2px 7px;font-size:11px;cursor:pointer;color:#e05252';
-
-  let html = '';
-  dbModules.forEach((m, mi) => {
-    const mLessons  = dbLessons.filter(l => l.module_id === m.id);
-    const mSubs     = dbSubmodules.filter(s => s.module_id === m.id);
-    const privBadge = m.is_private ? ' <span style="font-size:10px;background:var(--brand);color:#fff;padding:1px 6px;border-radius:99px">Private</span>' : '';
-    const bodyId  = `acc-mod-body-${m.id}`;
-    const chevId  = `acc-mod-chev-${m.id}`;
-    const lesCount = mLessons.length;
-
-    html += `
-    <div style="border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;overflow:hidden">
-      <div class="acc-header" onclick="toggleAcc('${bodyId}','${chevId}')">
-        <span class="acc-header-label">📂 ${esc(m.title)}${privBadge} <span style="font-size:11px;font-weight:400;color:var(--text-muted)">${lesCount} lesson${lesCount!==1?'s':''}</span></span>
-        <div style="display:flex;align-items:center;gap:5px" onclick="event.stopPropagation()">
-          <button style="${btnS}" onclick="moveModule('${esc(m.id)}',-1)">▲</button>
-          <button style="${btnS}" onclick="moveModule('${esc(m.id)}',1)">▼</button>
-          <button style="${btnS}" onclick="editModule('${esc(m.id)}');switchTTab('mod',document.querySelector('.t-tab-btn'))">✏️</button>
-          <button style="${delS}" onclick="deleteModule('${esc(m.id)}')">🗑</button>
-          <span class="acc-chevron" id="${chevId}">▼</span>
-        </div>
-      </div>
-      <div class="acc-body" id="${bodyId}">`;
-
-    // Subfolders
-    mSubs.forEach(s => {
-      const subLessons = mLessons.filter(l => l.submodule_id === s.id);
-      const sBodyId = `acc-sub-body-${s.id}`;
-      const sChevId = `acc-sub-chev-${s.id}`;
-      html += `
-        <div style="border-top:1px solid var(--border)">
-          <div class="acc-header" style="border-radius:0;background:var(--surface);padding:7px 12px 7px 20px" onclick="toggleAcc('${sBodyId}','${sChevId}')">
-            <span class="acc-header-label" style="font-size:12px;font-weight:600;color:var(--text-muted)">📁 ${esc(s.title)} <span style="font-weight:400">${subLessons.length} lesson${subLessons.length!==1?'s':''}</span></span>
-            <div style="display:flex;align-items:center;gap:5px" onclick="event.stopPropagation()">
-              <button style="${btnS}" onclick="moveSubmodule('${esc(s.id)}',-1)">▲</button>
-              <button style="${btnS}" onclick="moveSubmodule('${esc(s.id)}',1)">▼</button>
-              <button style="${btnS}" onclick="editSubmodule('${esc(s.id)}');switchTTab('sub',document.querySelectorAll('.t-tab-btn')[1])">✏️</button>
-              <button style="${delS}" onclick="deleteSubmodule('${esc(s.id)}')">🗑</button>
-              <span class="acc-chevron" id="${sChevId}">▼</span>
-            </div>
-          </div>
-          <div class="acc-body" id="${sBodyId}">`;
-      subLessons.forEach(l => {
-        html += `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:5px 12px 5px 32px;border-top:1px dashed var(--border);background:var(--surface)">
-          <span style="font-size:12px;color:var(--text)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span>
-          <div style="display:flex;gap:4px">
-            <button style="${btnS}" onclick="moveLesson('${esc(l.id)}',-1)">▲</button>
-            <button style="${btnS}" onclick="moveLesson('${esc(l.id)}',1)">▼</button>
-            <button style="${btnS}" onclick="editLesson('${esc(l.id)}');switchTTab('les',document.querySelectorAll('.t-tab-btn')[2])">✏️</button>
-            <button style="${delS}" onclick="deleteLesson('${esc(l.id)}')">🗑</button>
-          </div></div>`;
-      });
-      html += `</div></div>`; // close acc-body + subfolder div
-    });
-
-    // Orphan lessons
-    const orphans = mLessons.filter(l => !l.submodule_id);
-    orphans.forEach(l => {
-      html += `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:5px 12px 5px 20px;border-top:1px dashed var(--border);background:var(--surface)">
-        <span style="font-size:12px;color:var(--text)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span>
-        <div style="display:flex;gap:4px">
-          <button style="${btnS}" onclick="moveLesson('${esc(l.id)}',-1)">▲</button>
-          <button style="${btnS}" onclick="moveLesson('${esc(l.id)}',1)">▼</button>
-          <button style="${btnS}" onclick="editLesson('${esc(l.id)}');switchTTab('les',document.querySelectorAll('.t-tab-btn')[2])">✏️</button>
-          <button style="${delS}" onclick="deleteLesson('${esc(l.id)}')">🗑</button>
-        </div></div>`;
-    });
-
-    if (!mSubs.length && !mLessons.length) {
-      html += `<div style="padding:8px 20px;font-size:12px;color:var(--text-muted);border-top:1px solid var(--border)">No lessons yet.</div>`;
-    }
-
-    html += `</div></div>`; // close acc-body + module wrapper
-  });
-
-  list.innerHTML = html;
-}
-
-/* ══════════════════════════════════════════
-   STREAKS
-══════════════════════════════════════════ */
-function calcStreak(dates) {
-  // dates: array of 'YYYY-MM-DD' strings (UTC)
-  if (!dates.length) return { current: 0, best: 0, activeDays: 0 };
-  const unique = [...new Set(dates)].sort();
-  const today = new Date(); today.setHours(0,0,0,0);
-  const todayStr = today.toISOString().slice(0,10);
-  const yest = new Date(today); yest.setDate(yest.getDate()-1);
-  const yesterdayStr = yest.toISOString().slice(0,10);
-  // current streak
-  let current = 0;
-  const lastDay = unique[unique.length-1];
-  if (lastDay === todayStr || lastDay === yesterdayStr) {
-    let check = lastDay === todayStr ? todayStr : yesterdayStr;
-    for (let i = unique.length-1; i >= 0; i--) {
-      if (unique[i] === check) { current++; const d = new Date(check); d.setDate(d.getDate()-1); check = d.toISOString().slice(0,10); }
-      else if (unique[i] < check) break;
-    }
-  }
-  // best streak
-  let best = 1, run = 1;
-  for (let i = 1; i < unique.length; i++) {
-    const prev = new Date(unique[i-1]); prev.setDate(prev.getDate()+1);
-    if (prev.toISOString().slice(0,10) === unique[i]) { run++; if (run > best) best = run; }
-    else run = 1;
-  }
-  return { current, best: Math.max(best, current), activeDays: unique.length };
-}
-
-async function renderStreaks() {
-  if (!currentUser) return;
-  const isTeacher = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
-  document.getElementById('streaks-student-view').style.display = isTeacher ? 'none' : 'block';
-  document.getElementById('streaks-teacher-view').style.display = isTeacher ? 'block' : 'none';
-
-  if (isTeacher) {
-    // Teacher sees all students
-    const rAllProg = await sb.from('student_progress').select('user_id,lesson_id,created_at');
-    const allProg  = rAllProg?.data || [];
-    const students = dbProfiles.filter(p => p.id !== currentUser.id);
-    const totalLessons = dbLessons.length;
-    const list = document.getElementById('streak-all-list');
-    if (!students.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;text-align:center;padding:1rem">No students yet.</div>'; return; }
-    list.innerHTML = students.map(s => {
-      const sProg   = allProg.filter(p => p.user_id === s.id);
-      const done    = sProg.length;
-      const pct     = totalLessons ? Math.round(done/totalLessons*100) : 0;
-      const dates   = sProg.map(p => p.created_at ? p.created_at.slice(0,10) : null).filter(Boolean);
-      const { current } = calcStreak(dates);
-      return `<div class="streak-stu-row">
-        <div class="post-avatar" style="width:30px;height:30px;font-size:12px;flex-shrink:0">${renderAvatarHTML(s.id, s.username||'Student')}</div>
-        <span class="streak-stu-name">${esc(s.username||'Unnamed')}</span>
-        <span class="streak-stu-flame">🔥 ${current}d</span>
-        <div class="streak-prog-bar-wrap"><div class="streak-prog-bar" style="width:${pct}%"></div></div>
-        <span style="font-size:11px;color:var(--text-muted);white-space:nowrap">${done}/${totalLessons}</span>
-      </div>`;
-    }).join('');
-    return;
-  }
-
-  // Student view
-  const dates = dbProgress.map(p => p.created_at ? p.created_at.slice(0,10) : null).filter(Boolean);
-  const { current, best, activeDays } = calcStreak(dates);
-  document.getElementById('streak-current-num').textContent = current;
-  document.getElementById('streak-best-num').textContent    = best;
-  document.getElementById('streak-total-num').textContent   = dbProgress.length;
-  document.getElementById('streak-days-num').textContent    = activeDays;
-
-  // 90-day calendar
-  const doneSet = new Set(dates);
-  const grid    = document.getElementById('streak-cal-grid');
-  const today   = new Date(); today.setHours(0,0,0,0);
-  const todayStr = today.toISOString().slice(0,10);
-  let calHtml = '';
-  for (let i = 89; i >= 0; i--) {
-    const d = new Date(today); d.setDate(d.getDate()-i);
-    const ds = d.toISOString().slice(0,10);
-    const isDone  = doneSet.has(ds);
-    const isToday = ds === todayStr;
-    calHtml += `<div class="streak-day${isDone?' done':''}${isToday?' today':''}" title="${ds}"></div>`;
-  }
-  grid.innerHTML = calHtml;
-}
-
-function renderTeacherProgress(allProgress) {
-  const list = document.getElementById('t-student-progress-list'); if (!list) return;
-  if (!dbProfiles.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No students registered yet.</div>'; return; }
-  const students = dbProfiles.filter(p => p.id !== currentUser.id);
-  if (!students.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No students registered yet.</div>'; return; }
-  list.innerHTML = students.map(s => { const done = allProgress.filter(p => p.user_id === s.id).length; return `<div class="student-prog-row"><div style="display:flex;align-items:center;gap:10px;"><div class="post-avatar" style="width:30px;height:30px;font-size:12px">${renderAvatarHTML(s.id, s.username || 'Student')}</div><div class="student-prog-name">${esc(s.username || 'Unnamed Student')}</div></div><div class="student-prog-stats"><span style="font-weight:700;color:var(--brand)">${done}</span> lessons completed</div></div>`; }).join('');
-}
 </script>
 </body>
 </html>
