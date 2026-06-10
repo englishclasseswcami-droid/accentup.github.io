@@ -810,16 +810,25 @@ function parseYtTime(tStr) {
 function buildYtUrl(url) {
   if (!url || !url.trim()) return '';
   let finalUrl = url.trim(); let videoId = ''; let startTime = '';
-  try { let u = new URL(finalUrl); if(u.searchParams.has('t')) startTime = parseYtTime(u.searchParams.get('t')); } catch(e){}
+  try { 
+    let u = new URL(finalUrl); 
+    if (u.searchParams.has('t')) {
+      let tStr = u.searchParams.get('t').replace('s','');
+      if (tStr.includes('m')) { 
+        let p = tStr.split('m'); 
+        startTime = ((parseInt(p[0])||0)*60 + (parseInt(p[1])||0)).toString(); 
+      } else { startTime = tStr; }
+    }
+  } catch(e){}
   if (finalUrl.includes('youtu.be/')) {
     const parts = finalUrl.split('youtu.be/')[1].split('?'); videoId = parts[0].split('&')[0];
-    if(parts[1] && parts[1].includes('t=')) { const match = parts[1].match(/t=([^&]+)/); if(match) startTime = parseYtTime(match[1]); }
+    if (parts[1] && parts[1].includes('t=')) { const match = parts[1].match(/t=([^&]+)/); if (match) startTime = parseYtTime(match[1]); }
     finalUrl = `https://www.youtube.com/embed/${videoId}`;
   } else if (finalUrl.includes('youtube.com/watch')) {
     try { videoId = new URL(finalUrl).searchParams.get('v'); finalUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : finalUrl; } catch(e) {}
   }
   if (finalUrl.includes('youtube.com/embed/')) {
-    try { const u = new URL(finalUrl); u.searchParams.delete('start'); u.searchParams.delete('end'); if(startTime) u.searchParams.set('start', startTime); return u.toString(); } catch(e) { return finalUrl; }
+    try { const u = new URL(finalUrl); u.searchParams.delete('start'); u.searchParams.delete('end'); if (startTime) u.searchParams.set('start', startTime); return u.toString(); } catch(e) { return finalUrl; }
   }
   return finalUrl;
 }
@@ -887,13 +896,27 @@ function goToPage(pageId) {
 async function fetchData() {
   if (!currentUser) return;
   try {
-    const userEmail = currentUser?.email?.toLowerCase() || ''; const isTeacher = userEmail === TEACHER_EMAIL.toLowerCase();
-    const rMod = await sb.from('modules').select('*').order('order_index'); dbModules = (rMod?.data || []).filter(m => isTeacher || !m.is_private || (m.allowed_emails && m.allowed_emails.toLowerCase().includes(userEmail)));
-    const rSub = await sb.from('submodules').select('*').order('order_index'); dbSubmodules = rSub?.data || []; 
-    const rLes = await sb.from('lessons').select('*').order('order_index'); dbLessons = rLes?.data || []; 
-    const rProg = await sb.from('student_progress').select('*').eq('user_id', currentUser.id); dbProgress = rProg?.data || [];
-    renderClassroomGrid(); updateModuleSelect(); if(isTeacher) renderManageList();
-    const rProfiles = await sb.from('user_profiles').select('*'); dbProfiles = rProfiles?.data || [];
+    const userEmail = currentUser?.email?.toLowerCase() || '';
+    const isTeacher = userEmail === TEACHER_EMAIL.toLowerCase();
+
+    const [rMod, rSub, rLes, rProg] = await Promise.all([
+      sb.from('modules').select('*').order('order_index'),
+      sb.from('submodules').select('*').order('order_index'),
+      sb.from('lessons').select('*').order('order_index'),
+      sb.from('student_progress').select('*').eq('user_id', currentUser.id)
+    ]);
+
+    dbModules = (rMod?.data || []).filter(m => isTeacher || !m.is_private ||
+      (m.allowed_emails && m.allowed_emails.toLowerCase().split(',').map(e => e.trim()).includes(userEmail)));
+    dbSubmodules = rSub?.data || [];
+    dbLessons = rLes?.data || [];
+    dbProgress = rProg?.data || [];
+
+    renderClassroomGrid(); updateModuleSelect(); if (isTeacher) renderManageList();
+
+    const rProfiles = await sb.from('user_profiles').select('*');
+    dbProfiles = rProfiles?.data || [];
+
     if (isTeacher) { const rAllProg = await sb.from('student_progress').select('*'); renderTeacherProgress(rAllProg?.data || []); }
     if (document.getElementById('page-streaks').classList.contains('active')) renderStreaks();
   } catch (error) { console.error("Error fetching data:", error); }
@@ -956,7 +979,7 @@ function showLesson(lessonId) {
   } else if (currentLesson.type === 'task') {
     studentAnswers = {}; matchState = {}; selectedDragChips = {}; document.getElementById('view-exercise').style.display = 'block'; document.getElementById('player-title').textContent = currentLesson.title;
     const taskTextEl = document.getElementById('cv-task-text'); if (taskTextEl) { taskTextEl.innerHTML = currentLesson.text_content || ''; taskTextEl.style.display = (currentLesson.text_content && currentLesson.text_content !== '<p><br></p>') ? 'block' : 'none'; }
-    document.getElementById('submit-btn').disabled = isDone; document.getElementById('submit-btn').style.display = isDone ? 'none' : 'inline-block'; document.getElementById('retry-btn').style.display = isDone ? 'inline-block' : 'none'; document.getElementById('score-area').innerHTML = ''; document.getElementById('score-area').innerHTML = '';
+    document.getElementById('submit-btn').disabled = isDone; document.getElementById('submit-btn').style.display = isDone ? 'none' : 'inline-block'; document.getElementById('retry-btn').style.display = isDone ? 'inline-block' : 'none'; document.getElementById('score-area').innerHTML = '';
     renderAudios('cv-task-audios', audios); renderPlayerQuestions(isDone); renderResources('cv-task-resources', resources);
     if (isDone) { const prev = dbProgress.find(p => p.lesson_id === lessonId); if (prev) showScore(prev.score, prev.total_questions, [], true); }
   }
@@ -1137,6 +1160,22 @@ function retryExercise() {
   showLesson(currentLesson.id); 
 }
 
+async function deletePost(id) {
+  if (!currentUser) return;
+  if (!confirm('Delete this post?')) return;
+  const { error } = await sb.from('posts').delete().eq('id', id).eq('user_id', currentUser.id);
+  if (error) { alert('Could not delete post: ' + error.message); return; }
+  backToCommunityFeed();
+}
+
+async function deleteComment(id) {
+  if (!currentUser) return;
+  if (!confirm('Delete this comment?')) return;
+  const { error } = await sb.from('comments').delete().eq('id', id).eq('user_id', currentUser.id);
+  if (error) { alert('Could not delete comment: ' + error.message); return; }
+  if (currentViewedPostId) loadComments(currentViewedPostId);
+}
+
 function showOpenAnswerCompleted() { document.getElementById('score-area').innerHTML = `<div class="score-panel"><div class="score-top"><div class="score-circle open"><div class="pct">✓</div></div><div class="score-msg">Exercise submitted!<div class="sub">Review the expected answers above.</div></div></div></div>`; document.getElementById('score-area').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
 function showScore(correct, total, results, readonly) {
   const pct = total > 0 ? Math.round(correct / total * 100) : 0; const cls = pct >= 80 ? 'great' : pct >= 50 ? 'ok' : 'low'; const msg = pct >= 80 ? '¡Great work! 🎉' : pct >= 50 ? 'Good effort — keep practicing!' : 'Review and try again.';
@@ -1160,8 +1199,8 @@ function cancelEditSub() { document.getElementById('t-sub-title').value = ''; do
 async function deleteSubmodule(id) { if (!confirm('Delete this subfolder? Lessons inside will stay in the main module.')) return; await sb.from('submodules').delete().eq('id', id); fetchData(); }
 async function moveSubmodule(id, dir) { const sub = dbSubmodules.find(s => s.id === id); if (!sub) return; const siblings = dbSubmodules.filter(s => s.module_id === sub.module_id); const idx = siblings.findIndex(s => s.id === id); const t = siblings[idx + dir]; if (!t) return; await sb.from('submodules').update({ order_index: t.order_index }).eq('id', id); await sb.from('submodules').update({ order_index: sub.order_index }).eq('id', t.id); fetchData(); }
 
-function toggleLessonFields() { const type = document.getElementById('t-les-type').value; document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none'; document.getElementById('fields-text').style.display = 'block'; document.getElementById('fields-embed').style.display = type === 'embed' ? 'block' : 'none'; document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none'; }
-UX_MODULE_SELECT: function updateModuleSelect() { const modSelect = document.getElementById('t-les-module'); const subParentSelect = document.getElementById('t-sub-parent'); const currentMod = modSelect.value; const currentParent = subParentSelect.value; const mHtml = dbModules.map(m => `<option value="${esc(m.id)}">${esc(m.title)}</option>`).join(''); modSelect.innerHTML = mHtml; subParentSelect.innerHTML = mHtml; if (currentMod && dbModules.some(m => m.id === currentMod)) modSelect.value = currentMod; if (currentParent && dbModules.some(m => m.id === currentParent)) subParentSelect.value = currentParent; updateSubfolderSelect(); }
+function toggleLessonFields() { const type = document.getElementById('t-les-type').value; document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none'; document.getElementById('fields-text').style.display = type === 'text' ? 'block' : 'none'; document.getElementById('fields-embed').style.display = type === 'embed' ? 'block' : 'none'; document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none'; }
+function updateModuleSelect() { const modSelect = document.getElementById('t-les-module'); const subParentSelect = document.getElementById('t-sub-parent'); const currentMod = modSelect.value; const currentParent = subParentSelect.value; const mHtml = dbModules.map(m => `<option value="${esc(m.id)}">${esc(m.title)}</option>`).join(''); modSelect.innerHTML = mHtml; subParentSelect.innerHTML = mHtml; if (currentMod && dbModules.some(m => m.id === currentMod)) modSelect.value = currentMod; if (currentParent && dbModules.some(m => m.id === currentParent)) subParentSelect.value = currentParent; updateSubfolderSelect(); }
 function updateSubfolderSelect() { const modId = document.getElementById('t-les-module').value; const subSelect = document.getElementById('t-les-submodule'); const currentSub = subSelect.value; const subs = dbSubmodules.filter(s => s.module_id === modId); subSelect.innerHTML = `<option value="">-- No subfolder (main module) --</option>` + subs.map(s => `<option value="${esc(s.id)}">${esc(s.title)}</option>`).join(''); if (currentSub && subs.some(s => s.id === currentSub)) subSelect.value = currentSub; }
 
 async function saveLesson() {
@@ -1540,27 +1579,6 @@ function speakWord(word) {
 function bc(t){return t==="vowel"?"badge-vowel":t==="diphthong"?"badge-diphthong":t==="rcolored"?"badge-rcolored":"badge-consonant";}
 function bl(t){return t==="rcolored"?"r-colored":t;}
 
-/* ── MEDIA SEGURO AUDIOS ── */
-async function uploadQAudio(event, i) {
-  const file = event.target.files[0]; if (!file) return; 
-  isUploadingAudio = true;
-  const el = document.getElementById('q-audio-' + i);
-  if (el) el.textContent = '⏳ Uploading...';
-  try {
-    const fn = `qa_${Date.now()}_${Math.floor(Math.random()*1000)}.${file.name.split('.').pop()}`;
-    const { error } = await sb.storage.from('audios').upload(fn, file, { upsert: false });
-    if (error) throw error;
-    if (questionRows[i]) questionRows[i].audio_url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
-    if (el) el.textContent = '✅ Audio saved';
-    renderQFields(); 
-  } catch (err) {
-    alert('Audio upload error: ' + err.message);
-    if (el) el.textContent = '❌ Error';
-  } finally {
-    isUploadingAudio = false;
-  }
-}
-
 /* ── SOUNDS ENGINE (COMBINED) ── */
 function buildAllSoundsGrids() {
   const ga = () => activeSound;
@@ -1570,34 +1588,6 @@ function buildAllSoundsGrids() {
   build('stops-grid', consonants.stops, true); build('fricatives-grid', consonants.fricatives, true); build('affricates-grid', consonants.affricates, true); build('nasals-grid', consonants.nasals, true); build('liquids-grid', consonants.liquids, true);
 }
 
-</script>
-<script>
-/* YouTube URL Parser with timestamps */
-function buildYtUrl(url) {
-  if (!url || !url.trim()) return '';
-  let finalUrl = url.trim(); let videoId = ''; let startTime = '';
-  try { 
-      let u = new URL(finalUrl); 
-      if(u.searchParams.has('t')) {
-          let tStr = u.searchParams.get('t').replace('s','');
-          if(tStr.includes('m')) { 
-              let p = tStr.split('m'); 
-              startTime = ((parseInt(p[0])||0)*60 + (parseInt(p[1])||0)).toString(); 
-          } else { startTime = tStr; }
-      }
-  } catch(e){}
-  if (finalUrl.includes('youtu.be/')) {
-    const parts = finalUrl.split('youtu.be/')[1].split('?'); videoId = parts[0].split('&')[0];
-    if(parts[1] && parts[1].includes('t=')) { const match = parts[1].match(/t=([^&]+)/); if(match) startTime = parseYtTime(match[1]); }
-    finalUrl = `https://www.youtube.com/embed/${videoId}`;
-  } else if (finalUrl.includes('youtube.com/watch')) {
-    try { videoId = new URL(finalUrl).searchParams.get('v'); finalUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : finalUrl; } catch(e) {}
-  }
-  if (finalUrl.includes('youtube.com/embed/')) {
-    try { const u = new URL(finalUrl); u.searchParams.delete('start'); u.searchParams.delete('end'); if(startTime) u.searchParams.set('start', startTime); return u.toString(); } catch(e) { return finalUrl; }
-  }
-  return finalUrl;
-}
 </script>
 </body>
 </html>
