@@ -341,7 +341,7 @@ footer strong{color:var(--brand)}
 .ex-q-text{font-size:15px;font-weight:600;color:var(--text);margin-bottom:1rem;line-height:1.5}
 .options-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 @media(max-width:440px){.options-grid{grid-template-columns:1fr}}
-.opt-btn{padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);font-size:14px;font-weight:500;color:var(--text);cursor:pointer;transition:all .15s;text-align:left;font-family:'Inter',sans-serif}
+.opt-btn{padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);font-size:14px;font-weight:500;color:var(--text);cursor:pointer;transition:all .15s;text-align:left;font-family:'Inter',sans-serif;width:100%;display:block}
 .opt-btn:hover:not(:disabled){border-color:var(--brand);color:var(--brand);background:var(--brand-light)}
 .opt-btn.selected{border-color:var(--brand);background:var(--brand-light);color:var(--brand);font-weight:700}
 .opt-btn.correct{border-color:var(--green);background:var(--green-light);color:var(--green-dark)}
@@ -746,6 +746,7 @@ footer strong{color:var(--brand)}
             <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top: 1rem;">
               <button class="secondary-btn" onclick="addQuestion('multiple_choice')">+ Multiple Choice</button>
               <button class="secondary-btn" onclick="addQuestion('fill_in_blank')">+ Fill in Blanks</button>
+              <button class="secondary-btn" onclick="addQuestion('short_answer')">+ Short Text Answer</button>
               <button class="secondary-btn" onclick="addQuestion('matching')">+ Matching</button>
               <button class="secondary-btn" onclick="addQuestion('open_answer')">+ Open Answer</button>
               <button class="secondary-btn" onclick="addQuestion('dictation')">+ Dictation</button>
@@ -844,6 +845,19 @@ document.addEventListener('DOMContentLoaded', () => {
   editPostQuill = new Quill('#edit-post-editor-container', { theme: 'snow', modules: { toolbar: [['bold','italic'],['link'],['clean']] } });
   sb.auth.onAuthStateChange((_e, session) => { currentUser = session?.user || null; updateAuthUI(); if (currentUser) fetchData(); });
   renderQFields(); toggleLessonFields();
+
+  /* ── Multiple Choice: event delegation via data-attributes ── */
+  document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.opt-btn');
+    if (!btn || btn.disabled) return;
+    const qi = parseInt(btn.dataset.qi);
+    const oi = parseInt(btn.dataset.oi);
+    if (isNaN(qi) || isNaN(oi)) return;
+    const val = btn.dataset.val;
+    const isMulti = btn.dataset.multi === 'true';
+    const total = parseInt(btn.dataset.total);
+    toggleOpt(qi, oi, val, isMulti, total);
+  });
 });
 
 async function handleNavAuth() {
@@ -1039,13 +1053,14 @@ function renderPlayerQuestions(isDone = false) {
     }
     if (qType === 'dictation') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="dict-${i}" placeholder="Write what you hear…" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(prevAnswers[i] || '')}</textarea></div>`;
     if (qType === 'open_answer') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="oa-${i}" placeholder="Type your answer here..." oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(prevAnswers[i] || '')}</textarea>${q.answer ? `<div class="open-answer-reveal ${isDone?'visible':''}" id="reveal-${i}"><strong>Expected answer:</strong> ${esc(q.answer)}</div>` : ''}</div>`;
+    if (qType === 'short_answer') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><input class="fitb-input" id="sa-${i}" type="text" placeholder="Write your answer here…" value="${esc(prevAnswers[i] || '')}" autocomplete="off" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}/>${isDone && q.answer ? `<div class="open-answer-reveal visible"><strong>Expected answer:</strong> ${esc(q.answer)}</div>` : ''}</div>`;
     
     const opts = (Array.isArray(q.options) ? q.options : []).filter(o => o && String(o).trim() !== ''); const shuffled = shuffle([...opts]);
     const correctAnsArr = q.correctIndices ? q.correctIndices.map(idx => q.options[idx]) : [q.options[q.correctIndex ?? 0]];
     let isMulti = correctAnsArr.length > 1;
     let givenRaw = prevAnswers[i];
     let givenArr = Array.isArray(givenRaw) ? givenRaw : (givenRaw ? [givenRaw] : []);
-    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div>${isMulti ? '<div style="font-size:11px;color:var(--brand-mid);font-weight:600;margin-bottom:8px">✔ Select all correct answers</div>' : ''}<div class="options-grid">${shuffled.map((o,j)=>{ return `<button class="opt-btn ${givenArr.includes(o) ? 'selected' : ''}" id="opt-${i}-${j}" onclick="toggleOpt(${i},${j},'${escapeJSArg(o)}', ${isMulti}, ${shuffled.length})" ${disabledAttr}>${esc(o)}</button>`; }).join('')}</div></div>`;
+    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div>${isMulti ? '<div style="font-size:11px;color:var(--brand-mid);font-weight:600;margin-bottom:8px">✔ Select all correct answers</div>' : ''}<div class="options-grid">${shuffled.map((o,j)=>{ return `<button class="opt-btn ${givenArr.includes(o) ? 'selected' : ''}" id="opt-${i}-${j}" data-qi="${i}" data-oi="${j}" data-val="${esc(o)}" data-multi="${isMulti}" data-total="${shuffled.length}" ${disabledAttr}>${esc(o)}</button>`; }).join('')}</div></div>`;
   }).join('');
 }
 
@@ -1126,7 +1141,20 @@ async function submitExercise() {
     }
     else {
       totalQ++;
-      if (qType === 'dictation') {
+      if (qType === 'short_answer') {
+         const el = document.getElementById('sa-'+i);
+         let given = el ? el.value.trim() : (studentAnswers[i] || '');
+         studentAnswers[i] = given;
+         if (q.answer) {
+           let ok = String(given).toLowerCase().trim() === String(q.answer).toLowerCase().trim();
+           if (ok) correct++;
+           if (el) { el.classList.add(ok ? 'correct' : 'wrong'); el.disabled = true; }
+           results.push({ prompt: q.prompt, answer: q.answer, given, ok });
+         } else {
+           hasOpenAnswer = true;
+           if (el) { el.style.borderColor = 'var(--brand)'; el.disabled = true; }
+         }
+      } else if (qType === 'dictation') {
          let given = document.getElementById('dict-'+i)?.value.trim() || ''; studentAnswers[i] = given; let ok = String(given).toLowerCase().trim() === String(q.answer).toLowerCase().trim();
          if(ok) correct++; results.push({ prompt: q.prompt, answer: q.answer, given, ok });
       } else {
@@ -1478,6 +1506,7 @@ function buildQRow(qType, q, i) {
   else if (qType === 'fill_in_blank') { typeLabel = 'Fill in Blank'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
   else if (qType === 'open_answer') { typeLabel = 'Open Answer'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
   else if (qType === 'dictation') { typeLabel = 'Dictation'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
+  else if (qType === 'short_answer') { typeLabel = 'Short Text Answer'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
   else { typeLabel = 'Multiple Choice'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
 
   let html = `<div class="q-card"><div class="q-card-header ${dState}" onclick="toggleQCard(${i})"><div><span class="q-card-title">${typeLabel}</span> <span class="q-card-summary">${summary}</span></div><div class="q-card-actions"><button class="q-card-btn-action" onclick="event.stopPropagation(); duplicateQ(${i})" title="Duplicate">📄</button><button class="q-card-btn-action delete" onclick="event.stopPropagation(); removeQ(${i})" title="Delete item">🗑️</button><button class="q-card-toggle" onclick="toggleQCard(${i}, event)">${toggleText}</button></div></div><div class="q-card-body ${dState}">`;
@@ -1503,6 +1532,9 @@ function buildQRow(qType, q, i) {
   else if (qType === 'dictation' || qType === 'open_answer') {
     const label = qType === 'open_answer' ? 'Expected answer / keywords (shown to student after submitting)' : 'Expected answer (for correction)';
     html += `<span class="field-label" style="margin-top:0">Instruction for student</span><textarea placeholder="Write the instruction or question here..." oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt||'')}</textarea><span class="field-label">${label}</span><textarea placeholder="e.g. /ɪ/ — the vowel is short and relaxed" oninput="questionRows[${i}].answer=this.value">${esc(q.answer||'')}</textarea>`;
+  }
+  else if (qType === 'short_answer') {
+    html += `<span class="field-label" style="margin-top:0">Question prompt</span><textarea placeholder="e.g. Write the word that contains the short /ɪ/ sound." oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt||'')}</textarea><span class="field-label">Expected answer (optional — leave blank for free writing)</span><input type="text" placeholder="e.g. bit" value="${esc(q.answer||'')}" oninput="questionRows[${i}].answer=this.value"/>`;
   } 
   else {
     const opts = q.options || ['', '']; const correctIndices = q.correctIndices || [0];
@@ -1524,6 +1556,7 @@ function addQuestion(type) {
   if (type === 'drag_drop') newQ = { type: 'drag_drop', prompt: '', categories: [], items: [], audio_url: '', video_url: '' };
   else if (type === 'matching') newQ = { type: 'matching', pairs: [{left:'', right:''}] };
   else if (type === 'fill_in_blank') newQ = { type: 'fill_in_blank', prompt: '', answer: '', hint: '', audio_url: '', video_url: '' };
+  else if (type === 'short_answer') newQ = { type: 'short_answer', prompt: '', answer: '', audio_url: '', video_url: '' };
   else if (type === 'dictation' || type === 'open_answer') newQ = { type: type, prompt: '', answer: '', audio_url: '', video_url: '' };
   else if (type === 'drag_drop_text') newQ = { type: 'drag_drop_text', prompt: '', audio_url: '', video_url: '' };
   else newQ = { type: 'multiple_choice', prompt: '', options: ['', ''], correctIndices: [0], answer: '', audio_url: '', video_url: '' };
