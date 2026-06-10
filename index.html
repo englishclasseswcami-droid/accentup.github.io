@@ -1007,6 +1007,7 @@ function renderPlayerQuestions(isDone = false) {
     let givenArr = Array.isArray(prevAnswers[i]) ? prevAnswers[i] : [prevAnswers[i]];
     let isMulti = q.correctIndices && q.correctIndices.length > 1;
     return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><div class="options-grid">${shuffled.map((o,j)=>{ return `<button class="opt-btn ${givenArr.includes(o) ? 'selected' : ''}" id="opt-${i}-${j}" onclick="toggleOpt(${i},${j},'${escapeJSArg(o)}', ${isMulti}, ${shuffled.length})" ${disabledAttr}>${esc(o)}</button>`; }).join('')}</div></div>`;
+  }).join('');
 }
 
 function updateMultiBlank(i, pIdx, val, total) { if (!Array.isArray(studentAnswers[i])) studentAnswers[i] = new Array(total).fill(''); studentAnswers[i][pIdx] = val; }
