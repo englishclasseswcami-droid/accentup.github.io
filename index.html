@@ -1099,7 +1099,7 @@ async function submitExercise() {
       } else {
          let correctAnsArray = q.correctIndices ? q.correctIndices.map(idx => q.options[idx]) : [q.options[q.correctIndex || 0]]; let isOk = false;
          if (givenArr.length === correctAnsArray.length && givenArr.every(val => correctAnsArray.includes(val))) { isOk = true; correct++; }
-         document.querySelectorAll(`[id^="opt-${i}-"]`).forEach((b, j) => { b.disabled = true; let optText = q.options[j]; if (correctAnsArray.includes(optText)) b.classList.add('correct'); else if (givenArr.includes(optText)) b.classList.add('wrong'); });
+         document.querySelectorAll(`[id^="opt-${i}-"]`).forEach((b) => { b.disabled = true; let optText = b.textContent.trim(); if (correctAnsArray.includes(optText)) b.classList.add('correct'); else if (givenArr.includes(optText)) b.classList.add('wrong'); });
          results.push({ prompt: q.prompt, answer: correctAnsArray.join(', '), given: givenArr.join(', '), ok: isOk });
       }
     }
@@ -1110,7 +1110,10 @@ async function submitExercise() {
   if (currentUser && currentLesson) { await sb.from('student_progress').upsert({ user_id: currentUser.id, lesson_id: currentLesson.id, score: correct, total_questions: totalQ, answers: studentAnswers }, { onConflict: 'user_id,lesson_id' }); await fetchData(); if (activeModuleId) renderSidebar(activeModuleId); }
 }
 
-function retryExercise() { showLesson(currentLesson.id); }
+function retryExercise() { 
+  dbProgress = dbProgress.filter(p => p.lesson_id !== currentLesson.id);
+  showLesson(currentLesson.id); 
+}
 
 function showOpenAnswerCompleted() { document.getElementById('score-area').innerHTML = `<div class="score-panel"><div class="score-top"><div class="score-circle open"><div class="pct">✓</div></div><div class="score-msg">Exercise submitted!<div class="sub">Review the expected answers above.</div></div></div></div>`; document.getElementById('score-area').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
 function showScore(correct, total, results, readonly) {
@@ -1182,7 +1185,8 @@ async function addSharedAudio() {
   const file = document.getElementById('t-audio-file').files[0]; 
   if (!label || !file) { alert('Add a label and choose an audio file.'); return; } 
   isUploadingAudio = true; 
-  const btn = document.getElementById('btn-add-audio'); btn.disabled = true; btn.textContent = 'Uploading...'; 
+  const btn = document.querySelector('button[onclick="addSharedAudio()"]');
+  if (btn) { btn.disabled = true; btn.textContent = 'Uploading...'; }
   try {
     const fn = `aud_${Date.now()}_${Math.floor(Math.random()*1000)}.${file.name.split('.').pop()}`; 
     const { error } = await sb.storage.from('audios').upload(fn, file); 
@@ -1191,6 +1195,13 @@ async function addSharedAudio() {
     tempAudios.push({ label, url }); 
     document.getElementById('t-audio-label').value = ''; document.getElementById('t-audio-file').value = ''; 
     renderTempAudios(); 
+  } catch(err) {
+    alert('Upload error: ' + err.message);
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '+ Add'; }
+    isUploadingAudio = false; 
+  }
+}
   } catch(err) {
     alert('Upload error: ' + err.message);
   } finally {
