@@ -1004,14 +1004,38 @@ function renderPlayerQuestions(isDone = false) {
     if (qType === 'open_answer') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="oa-${i}" placeholder="Type your answer here..." oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(prevAnswers[i] || '')}</textarea>${q.answer ? `<div class="open-answer-reveal ${isDone?'visible':''}" id="reveal-${i}"><strong>Expected answer:</strong> ${esc(q.answer)}</div>` : ''}</div>`;
     
     const opts = (Array.isArray(q.options) ? q.options : []).filter(o => o && String(o).trim() !== ''); const shuffled = shuffle([...opts]);
-    let givenArr = Array.isArray(prevAnswers[i]) ? prevAnswers[i] : [prevAnswers[i]];
-    let isMulti = q.correctIndices && q.correctIndices.length > 1;
-    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><div class="options-grid">${shuffled.map((o,j)=>{ return `<button class="opt-btn ${givenArr.includes(o) ? 'selected' : ''}" id="opt-${i}-${j}" onclick="toggleOpt(${i},${j},'${escapeJSArg(o)}', ${isMulti}, ${shuffled.length})" ${disabledAttr}>${esc(o)}</button>`; }).join('')}</div></div>`;
-  }).join('');
+    const correctAnsArr = q.correctIndices ? q.correctIndices.map(idx => q.options[idx]) : [q.options[q.correctIndex ?? 0]];
+    let isMulti = correctAnsArr.length > 1;
+    let givenRaw = prevAnswers[i];
+    let givenArr = Array.isArray(givenRaw) ? givenRaw : (givenRaw ? [givenRaw] : []);
+    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div>${isMulti ? '<div style="font-size:11px;color:var(--brand-mid);font-weight:600;margin-bottom:8px">✔ Select all correct answers</div>' : ''}<div class="options-grid">${shuffled.map((o,j)=>{ return `<button class="opt-btn ${givenArr.includes(o) ? 'selected' : ''}" id="opt-${i}-${j}" onclick="toggleOpt(${i},${j},'${escapeJSArg(o)}', ${isMulti}, ${shuffled.length})" ${disabledAttr}>${esc(o)}</button>`; }).join('')}</div></div>`;
 }
 
 function updateMultiBlank(i, pIdx, val, total) { if (!Array.isArray(studentAnswers[i])) studentAnswers[i] = new Array(total).fill(''); studentAnswers[i][pIdx] = val; }
-function toggleOpt(qi, oi, val, isMulti, totalOpts) { if (!isMulti) { studentAnswers[qi] = [val]; for (let j = 0; j < totalOpts; j++) { const b = document.getElementById(`opt-${qi}-${j}`); if (b) b.classList.remove('selected'); } const btn = document.getElementById(`opt-${qi}-${oi}`); if (btn) btn.classList.add('selected'); } else { if(!Array.isArray(studentAnswers[qi])) studentAnswers[qi] = []; const idx = studentAnswers[qi].indexOf(val); const btn = document.getElementById(`opt-${qi}-${oi}`); if(idx > -1) { studentAnswers[qi].splice(idx, 1); if(btn) btn.classList.remove('selected'); } else { studentAnswers[qi].push(val); if(btn) btn.classList.add('selected'); } } }
+function toggleOpt(qi, oi, val, isMulti, totalOpts) {
+  if (!isMulti) {
+    // Single choice — store plain string, highlight one button
+    studentAnswers[qi] = val;
+    for (let j = 0; j < totalOpts; j++) {
+      const b = document.getElementById(`opt-${qi}-${j}`);
+      if (b) b.classList.remove('selected');
+    }
+    const btn = document.getElementById(`opt-${qi}-${oi}`);
+    if (btn) btn.classList.add('selected');
+  } else {
+    // Multiple choice — store array, toggle each button
+    if (!Array.isArray(studentAnswers[qi])) studentAnswers[qi] = [];
+    const idx = studentAnswers[qi].indexOf(val);
+    const btn = document.getElementById(`opt-${qi}-${oi}`);
+    if (idx > -1) {
+      studentAnswers[qi].splice(idx, 1);
+      if (btn) btn.classList.remove('selected');
+    } else {
+      studentAnswers[qi].push(val);
+      if (btn) btn.classList.add('selected');
+    }
+  }
+}
 function dndChipClick(chipEl, i) { document.querySelectorAll(`#player-questions .dnd-chip[id^="dnd-chip-${i}-"]`).forEach(c => c.classList.remove('selected')); document.querySelectorAll(`#player-questions .dnd-bank[id="dnd-bank-${i}"], #player-questions .dnd-col[onclick="dndZoneClick(this, ${i})"]`).forEach(c => c.classList.add('active-drop')); selectedDragChips[i] = chipEl; chipEl.classList.add('selected'); }
 function dndZoneClick(zoneEl, i) { if (!selectedDragChips[i]) return; const body = zoneEl.classList.contains('dnd-bank') ? zoneEl : zoneEl.querySelector('.dnd-col-body'); if (body) { body.appendChild(selectedDragChips[i]); selectedDragChips[i].classList.remove('selected'); selectedDragChips[i] = null; document.querySelectorAll(`#player-questions .dnd-col, #player-questions .dnd-bank`).forEach(c => c.classList.remove('active-drop')); } }
 function dndInlineSelect(chipEl, i) { document.querySelectorAll(`#player-questions .dnd-chip[id^="dnd-chip-inline-${i}-"]`).forEach(c => c.classList.remove('selected')); document.querySelectorAll(`#player-questions .dnd-inline-dropzone[id^="dnd-drop-${i}-"], #player-questions .dnd-bank[id="dnd-bank-inline-${i}"]`).forEach(c => c.classList.add('active-drop')); selectedDragChips[i] = chipEl; chipEl.classList.add('selected'); }
@@ -1063,14 +1087,40 @@ async function submitExercise() {
       }
     }
     else {
-      totalQ++; let givenArr = Array.isArray(studentAnswers[i]) ? studentAnswers[i] : [studentAnswers[i] || ''];
+      totalQ++;
       if (qType === 'dictation') {
          let given = document.getElementById('dict-'+i)?.value.trim() || ''; studentAnswers[i] = given; let ok = String(given).toLowerCase().trim() === String(q.answer).toLowerCase().trim();
          if(ok) correct++; results.push({ prompt: q.prompt, answer: q.answer, given, ok });
       } else {
-         let correctAnsArray = q.correctIndices ? q.correctIndices.map(idx => q.options[idx]) : [q.options[q.correctIndex || 0]]; let isOk = false;
-         if (givenArr.length === correctAnsArray.length && givenArr.every(val => correctAnsArray.includes(val))) { isOk = true; correct++; }
-         document.querySelectorAll(`[id^="opt-${i}-"]`).forEach((b) => { b.disabled = true; let optText = b.textContent.trim(); if (correctAnsArray.includes(optText)) b.classList.add('correct'); else if (givenArr.includes(optText)) b.classList.add('wrong'); });
+         // Build correct answers array from correctIndices
+         const correctAnsArray = q.correctIndices
+           ? q.correctIndices.map(idx => q.options[idx])
+           : [q.options[q.correctIndex ?? 0]];
+         const isMulti = correctAnsArray.length > 1;
+
+         // Normalize student answer to array
+         let givenArr = Array.isArray(studentAnswers[i])
+           ? studentAnswers[i]
+           : (studentAnswers[i] ? [studentAnswers[i]] : []);
+
+         let isOk = false;
+         if (isMulti) {
+           // All correct answers must be selected, no wrong ones
+           isOk = givenArr.length === correctAnsArray.length &&
+                  givenArr.every(v => correctAnsArray.includes(v));
+         } else {
+           // Single choice — compare directly
+           isOk = givenArr.length === 1 &&
+                  String(givenArr[0]).toLowerCase().trim() === String(correctAnsArray[0]).toLowerCase().trim();
+         }
+         if (isOk) correct++;
+
+         document.querySelectorAll(`[id^="opt-${i}-"]`).forEach((b) => {
+           b.disabled = true;
+           const optText = b.textContent.trim();
+           if (correctAnsArray.includes(optText)) b.classList.add('correct');
+           else if (givenArr.includes(optText)) b.classList.add('wrong');
+         });
          results.push({ prompt: q.prompt, answer: correctAnsArray.join(', '), given: givenArr.join(', '), ok: isOk });
       }
     }
@@ -1275,7 +1325,7 @@ function addQuestion(type) {
   else if (type === 'fill_in_blank') newQ = { type: 'fill_in_blank', prompt: '', answer: '', hint: '', audio_url: '', video_url: '' };
   else if (type === 'dictation' || type === 'open_answer') newQ = { type: type, prompt: '', answer: '', audio_url: '', video_url: '' };
   else if (type === 'drag_drop_text') newQ = { type: 'drag_drop_text', prompt: '', audio_url: '', video_url: '' };
-  else newQ = { type: 'multiple_choice', prompt: '', options: ['', ''], correctIndex: 0, answer: '', audio_url: '', video_url: '' };
+  else newQ = { type: 'multiple_choice', prompt: '', options: ['', ''], correctIndices: [0], answer: '', audio_url: '', video_url: '' };
   questionRows.push(newQ); Object.keys(openQStates).forEach(k => openQStates[k] = false); openQStates[questionRows.length - 1] = true; renderQFields();
 }
 
