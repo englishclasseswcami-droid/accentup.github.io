@@ -404,12 +404,7 @@ footer strong{color:var(--brand)}
 .dnd-inline-dropzone.active-drop { background: var(--brand-light); border-color: var(--brand); }
 .dnd-inline-dropzone .dnd-chip { margin: 0; padding: 4px 10px; font-size: 13px; transform: translateY(-4px); }
 
-.matching-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.match-col-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-light);margin-bottom:8px}
-.match-chip{padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;background:var(--surface);margin-bottom:8px}
-.match-chip.selected{border-color:var(--brand);background:var(--brand-light);color:var(--brand)}
-.match-chip.matched{border-color:var(--green);background:var(--green-light);color:var(--green-dark);cursor:default}
-.match-chip.wrong-match{border-color:var(--red);background:var(--red-light);color:var(--red-dark)}
+
 </style>
 </head>
 <body>
@@ -624,8 +619,8 @@ footer strong{color:var(--brand)}
 <div class="page page-full" id="page-community">
   <div class="community-container">
     <div id="community-feed-view">
-      <div class="section-intro" style="text-align:center"><h2>Community</h2><p>Ask questions, share your progress, and help others.</p></div>
-      <div class="write-post-box">
+      <div class="section-intro" style="text-align:center"><h2>Community</h2><p>Tips, resources, and updates from Camila. Leave a comment or question below each post.</p></div>
+      <div class="write-post-box" id="write-post-box" style="display:none">
         <input type="text" id="new-post-title" class="gate-input" placeholder="Title of your post" style="margin-bottom:8px"/>
         <div id="community-editor-container"></div>
         <div style="text-align:right;margin-top:8px"><button class="primary-btn" style="width:auto;padding:6px 16px" onclick="submitPost()">Post</button></div>
@@ -808,7 +803,6 @@ footer strong{color:var(--brand)}
               <button class="secondary-btn" onclick="addQuestion('multiple_choice')">+ Multiple Choice</button>
               <button class="secondary-btn" onclick="addQuestion('fill_in_blank')">+ Fill in Blanks</button>
               <button class="secondary-btn" onclick="addQuestion('short_answer')">+ Short Text Answer</button>
-              <button class="secondary-btn" onclick="addQuestion('matching')">+ Matching</button>
               <button class="secondary-btn" onclick="addQuestion('open_answer')">+ Open Answer</button>
               <button class="secondary-btn" onclick="addQuestion('dictation')">+ Dictation</button>
               <button class="secondary-btn" onclick="addQuestion('drag_drop_text')">+ Drag &amp; Drop (Text)</button>
@@ -852,7 +846,7 @@ let dbModules=[], dbSubmodules=[], dbLessons=[], dbProgress=[];
 let dbProfiles=[], dbRecordings=[];
 let currentLesson=null, activeModuleId=null, currentViewedPostId=null;
 
-let studentAnswers={}; let matchState={}; let selectedDragChips={}; 
+let studentAnswers={}; let selectedDragChips={}; 
 let questionRows=[], tempAudios=[], isUploadingAudio=false;
 let quillEditor=null, communityQuill=null, editPostQuill=null;
 let activeSound=null, openQStates={};
@@ -1059,7 +1053,7 @@ function showLesson(lessonId) {
   } else if (currentLesson.type === 'embed') {
     document.getElementById('view-embed').style.display = 'block'; document.getElementById('cv-embed-title').textContent = currentLesson.title; document.getElementById('cv-embed-text').innerHTML = currentLesson.text_content || ''; document.getElementById('cv-embed-container').innerHTML = currentLesson.video_url || ''; renderAudios('cv-embed-audios', audios); renderResources('cv-embed-resources', resources); updateCompleteButton('btn-complete-embed', isDone);
   } else if (currentLesson.type === 'task') {
-    studentAnswers = {}; matchState = {}; selectedDragChips = {}; document.getElementById('view-exercise').style.display = 'block'; document.getElementById('player-title').textContent = currentLesson.title;
+    studentAnswers = {}; selectedDragChips = {}; document.getElementById('view-exercise').style.display = 'block'; document.getElementById('player-title').textContent = currentLesson.title;
     const taskTextEl = document.getElementById('cv-task-text'); if (taskTextEl) { taskTextEl.innerHTML = currentLesson.text_content || ''; taskTextEl.style.display = (currentLesson.text_content && currentLesson.text_content !== '<p><br></p>') ? 'block' : 'none'; }
     document.getElementById('submit-btn').disabled = isDone; document.getElementById('submit-btn').style.display = isDone ? 'none' : 'inline-block'; document.getElementById('retry-btn').style.display = isDone ? 'inline-block' : 'none'; document.getElementById('score-area').innerHTML = '';
     renderAudios('cv-task-audios', audios); renderPlayerQuestions(isDone); renderResources('cv-task-resources', resources);
@@ -1104,10 +1098,6 @@ function renderPlayerQuestions(isDone = false) {
       let sentenceHtml = parts.map((part, pIdx) => { let out = esc(part); if (pIdx < matches.length) out += `<span class="dnd-inline-dropzone" id="dnd-drop-${i}-${pIdx}" onclick="dndInlineDrop(this, ${i}, ${pIdx})" data-expected="${esc(matches[pIdx])}"></span>`; return out; }).join('');
       let bankHtml = `<div class="dnd-bank" id="dnd-bank-inline-${i}" onclick="dndInlineReturn(this, ${i})">` + words.map((w, wIdx) => `<div class="dnd-chip" id="dnd-chip-inline-${i}-${wIdx}" onclick="event.stopPropagation(); dndInlineSelect(this, ${i})">${esc(w)}</div>`).join('') + `</div>`;
       return `<div class="ex-question-block">${qMedia}<div class="dnd-instruction">☝️ Tap a word, then tap a blank line to fill it.</div><div class="ex-q-text dnd-text-wrap" style="line-height:2.5; font-size:16px">${sentenceHtml}</div>${bankHtml}</div>`;
-    }
-    if (qType === 'matching') {
-      const pairs = q.pairs || (q.left ? [q] : []); const lefts = pairs.map(p => p.left); const rights = shuffle([...pairs.map(p => p.right)]); matchState[i] = { leftSel: null, pairs: {} };
-      return `<div class="ex-question-block">${qMedia}<div class="ex-q-text">Match the correct pairs</div><div class="matching-cols"><div><div class="match-col-label">Words</div>${lefts.map((l,lIdx)=>`<div class="match-chip" id="ml-${i}-${lIdx}" onclick="matchLeft(${i}, ${lIdx}, '${escapeJSArg(l)}')">${esc(l)}</div>`).join('')}</div><div><div class="match-col-label">Sounds / meanings</div>${rights.map((r,rIdx)=>`<div class="match-chip" id="mr-${i}-${rIdx}" onclick="matchRight(${i}, ${rIdx}, '${escapeJSArg(r)}')">${esc(r)}</div>`).join('')}</div></div></div>`;
     }
     if (qType === 'fill_in_blank') {
       if ((q.prompt || '').includes('[')) {
@@ -1170,8 +1160,6 @@ function dndZoneClick(zoneEl, i) { if (!selectedDragChips[i]) return; const body
 function dndInlineSelect(chipEl, i) { document.querySelectorAll(`#player-questions .dnd-chip[id^="dnd-chip-inline-${i}-"]`).forEach(c => c.classList.remove('selected')); document.querySelectorAll(`#player-questions .dnd-inline-dropzone[id^="dnd-drop-${i}-"], #player-questions .dnd-bank[id="dnd-bank-inline-${i}"]`).forEach(c => c.classList.add('active-drop')); selectedDragChips[i] = chipEl; chipEl.classList.add('selected'); }
 function dndInlineDrop(zoneEl, i, pIdx) { if (!selectedDragChips[i]) return; if (zoneEl.children.length > 0) document.getElementById(`dnd-bank-inline-${i}`).appendChild(zoneEl.children[0]); zoneEl.appendChild(selectedDragChips[i]); selectedDragChips[i].classList.remove('selected'); selectedDragChips[i] = null; document.querySelectorAll(`#player-questions .dnd-inline-dropzone, #player-questions .dnd-bank`).forEach(c => c.classList.remove('active-drop')); }
 function dndInlineReturn(zoneEl, i) { if (!selectedDragChips[i]) return; zoneEl.appendChild(selectedDragChips[i]); selectedDragChips[i].classList.remove('selected'); selectedDragChips[i] = null; document.querySelectorAll(`#player-questions .dnd-inline-dropzone, #player-questions .dnd-bank`).forEach(c => c.classList.remove('active-drop')); }
-function matchLeft(i, lIdx, val) { if (matchState[i].pairs[lIdx] !== undefined) return; document.querySelectorAll(`.match-chip[id^='ml-${i}-']`).forEach(el => { if (!el.classList.contains('matched')) el.classList.remove('selected'); }); matchState[i].leftSel = { lIdx, val }; document.getElementById(`ml-${i}-${lIdx}`)?.classList.add('selected'); }
-function matchRight(i, rIdx, val) { if (!matchState[i].leftSel) return; const lIdx = matchState[i].leftSel.lIdx; if (matchState[i].pairs[lIdx] !== undefined) return; matchState[i].pairs[lIdx] = val; if(!studentAnswers[i]) studentAnswers[i] = []; studentAnswers[i][lIdx] = val; document.getElementById(`ml-${i}-${lIdx}`)?.classList.remove('selected'); document.getElementById(`ml-${i}-${lIdx}`)?.classList.add('matched'); document.getElementById(`mr-${i}-${rIdx}`)?.classList.add('matched'); matchState[i].leftSel = null; }
 
 async function submitExercise() {
   const content = safeParseJSON(currentLesson.task_content); let correct = 0, totalQ = 0; const results = []; let hasOpenAnswer = false;
@@ -1197,10 +1185,6 @@ async function submitExercise() {
           let expected = dz.dataset.expected; let chip = dz.querySelector('.dnd-chip'); let given = chip ? chip.textContent.trim() : ''; let isOk = given === expected;
           if (isOk) { correct++; } else { allCorrect = false; } if (chip) { chip.classList.add(isOk ? 'correct' : 'wrong'); chip.onclick = null; }
       }); const bankInline = document.getElementById(`dnd-bank-inline-${i}`); if (bankInline) bankInline.onclick = null; results.push({ prompt: 'Fill in blanks text', answer: 'Check visually above', given: '', ok: allCorrect });
-    }
-    else if (qType === 'matching') {
-      const pairs = q.pairs || (q.left ? [q] : []); totalQ += pairs.length;
-      pairs.forEach((p, pIdx) => { let given = (studentAnswers[i] && studentAnswers[i][pIdx]) || ''; let ok = given === p.right; if(ok) correct++; const ml = document.getElementById(`ml-${i}-${pIdx}`); if (!ok && ml) ml.classList.add('wrong-match'); results.push({ prompt: p.left, answer: p.right, given: given, ok }); });
     }
     else if (qType === 'fill_in_blank') {
       if ((q.prompt || '').includes('[')) {
@@ -1428,6 +1412,10 @@ async function deleteComment(id) {
 async function loadPosts(append = false) {
   const list = document.getElementById('community-posts-list');
   if (!list) return;
+  // Only teacher can post
+  const isTeacher = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
+  const writeBox = document.getElementById('write-post-box');
+  if (writeBox) writeBox.style.display = isTeacher ? 'block' : 'none';
   if (!append) { list.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-light);font-size:14px">Loading posts...</div>'; }
   const offset = append ? (parseInt(list.dataset.offset) || 0) : 0;
   const { data: posts, error } = await sb.from('posts').select('*').order('created_at', { ascending: false }).range(offset, offset + 19);
@@ -1615,7 +1603,7 @@ function editLesson(id) {
   if (l.type === 'embed') { document.getElementById('t-les-embed-code').value = l.video_url || ''; }
   if (l.type === 'task') {
     let raw = safeParseJSON(l.task_content);
-    if (l.task_type && l.task_type !== 'mixed') { if (l.task_type === 'matching') { questionRows = [{ type: 'matching', pairs: raw }]; } else if (l.task_type === 'drag_drop') { if(raw[0]) raw[0].type = 'drag_drop'; questionRows = raw; } else { raw.forEach(r => r.type = l.task_type); questionRows = raw; } } else { questionRows = raw; }
+    if (l.task_type && l.task_type !== 'mixed') { if (l.task_type === 'drag_drop') { if(raw[0]) raw[0].type = 'drag_drop'; questionRows = raw; } else { raw.forEach(r => r.type = l.task_type); questionRows = raw; } } else { questionRows = raw; }
     questionRows.forEach(q => { if(q.type === 'multiple_choice' && !q.correctIndices) { q.correctIndices = typeof q.correctIndex === 'number' ? [q.correctIndex] : [0]; } });
     openQStates = {}; if(questionRows.length > 0) openQStates[0] = true; renderQFields();
   }
@@ -1697,8 +1685,6 @@ function renderQFields() { const wrap = document.getElementById('q-builder'); if
 function updateDndCats(i, val) { if (questionRows[i]) { questionRows[i].categories = val.split(',').map(s=>s.trim()).filter(Boolean); renderQFields(); } }
 function addDndItem(i) { if (questionRows[i]) { let q = questionRows[i]; if (!q.items) q.items = []; q.items.push({ word:'', category: q.categories[0]||'' }); renderQFields(); } }
 function removeDndItem(i, idx) { if (questionRows[i]) { questionRows[i].items.splice(idx,1); renderQFields(); } }
-function addMatchPair(i) { if (questionRows[i]) { if(!questionRows[i].pairs) questionRows[i].pairs=[]; questionRows[i].pairs.push({left:'', right:''}); renderQFields(); } }
-function removeMatchPair(i, pIdx) { if (questionRows[i] && questionRows[i].pairs) { questionRows[i].pairs.splice(pIdx, 1); renderQFields(); } }
 function duplicateQ(i) { const cloned = JSON.parse(JSON.stringify(questionRows[i])); questionRows.splice(i + 1, 0, cloned); openQStates[i+1] = true; renderQFields(); }
 function removeQ(i) { questionRows.splice(i,1); renderQFields(); }
 function updateQOption(i, j, v) { if (questionRows[i]) { questionRows[i].options[j] = v; } }
@@ -1712,8 +1698,7 @@ function buildQRow(qType, q, i) {
   const isOpen = openQStates[i] !== false; const dState = isOpen ? 'open' : ''; const toggleText = isOpen ? 'Hide' : 'Edit';
   let typeLabel = ''; let summary = '';
   
-  if (qType === 'matching') { typeLabel = 'Matching'; summary = (q.pairs && q.pairs[0] && q.pairs[0].left) ? esc(q.pairs[0].left) + '...' : '(Empty)'; }
-  else if (qType === 'drag_drop') { typeLabel = 'Drag & Drop'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
+  if (qType === 'drag_drop') { typeLabel = 'Drag & Drop'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
   else if (qType === 'drag_drop_text') { typeLabel = 'Drag & Drop (Text)'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
   else if (qType === 'fill_in_blank') { typeLabel = 'Fill in Blank'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
   else if (qType === 'open_answer') { typeLabel = 'Open Answer'; summary = q.prompt ? esc(q.prompt).substring(0, 30) + '...' : '(Empty)'; }
@@ -1732,11 +1717,6 @@ function buildQRow(qType, q, i) {
   else if (qType === 'drag_drop_text') {
       html += `<span class="field-label" style="margin-top:0">Text/Sentence (Use brackets [ ] for draggable words)</span><textarea placeholder="e.g. She [works] at the hospital every Sunday." oninput="questionRows[${i}].prompt=this.value" style="min-height:90px">${esc(q.prompt||'')}</textarea><span class="field-label" style="color:var(--text-muted); font-weight:normal; text-transform:none">The blank boxes and draggable buttons will be created automatically where you put the brackets.</span>`;
   }
-  else if (qType === 'matching') {
-    html += `<span class="field-label" style="margin-top:0">Matching Pairs</span><div id="match-pairs-${i}">`;
-    (q.pairs || [{left:'', right:''}]).forEach((pair, pIdx) => { html += `<div style="display:flex;gap:8px;margin-bottom:8px"><input type="text" placeholder="Word (Left side)" value="${esc(pair.left)}" oninput="questionRows[${i}].pairs[${pIdx}].left=this.value" style="flex:1;margin:0"/><input type="text" placeholder="Match (Right side)" value="${esc(pair.right)}" oninput="questionRows[${i}].pairs[${pIdx}].right=this.value" style="flex:1;margin:0"/><button class="q-card-delete" onclick="removeMatchPair(${i}, ${pIdx})" style="background:var(--bg); border-radius:4px; padding:0 8px;">×</button></div>`; });
-    html += `</div><button class="secondary-btn" style="padding:6px;font-size:12px;margin-top:8px" onclick="addMatchPair(${i})">+ Add pair</button>`;
-  } 
   else if (qType === 'fill_in_blank') {
     html += `<span class="field-label" style="margin-top:0">Text/Sentence (Use brackets [ ] for the correct answers)</span><textarea placeholder="e.g. She [works] (work) at the hospital every Sunday and [has] (have) free days." oninput="questionRows[${i}].prompt=this.value">${esc(q.prompt||'')}</textarea><span class="field-label" style="color:var(--text-muted); font-weight:normal; text-transform:none">The blank inputs will be created automatically where you put the brackets.</span><span class="field-label" style="margin-top:10px">Hint (optional)</span><input type="text" placeholder="e.g. Simple present tense" value="${esc(q.hint||'')}" oninput="questionRows[${i}].hint=this.value"/>`;
     if (!(q.prompt || '').includes('[') && q.answer) { html += `<span class="field-label" style="color:var(--red)">Legacy format detected: Please update this question to use brackets [answer] inside the text above.</span><input type="text" placeholder="Correct answer" value="${esc(q.answer||'')}" oninput="questionRows[${i}].answer=this.value"/>`; }
@@ -1766,7 +1746,6 @@ function buildQRow(qType, q, i) {
 function addQuestion(type) {
   let newQ;
   if (type === 'drag_drop') newQ = { type: 'drag_drop', prompt: '', categories: [], items: [], audio_url: '', video_url: '' };
-  else if (type === 'matching') newQ = { type: 'matching', pairs: [{left:'', right:''}] };
   else if (type === 'fill_in_blank') newQ = { type: 'fill_in_blank', prompt: '', answer: '', hint: '', audio_url: '', video_url: '' };
   else if (type === 'short_answer') newQ = { type: 'short_answer', prompt: '', answer: '', audio_url: '', video_url: '' };
   else if (type === 'dictation' || type === 'open_answer') newQ = { type: type, prompt: '', answer: '', audio_url: '', video_url: '' };
