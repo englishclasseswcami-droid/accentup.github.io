@@ -252,10 +252,28 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .t-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.25rem; box-shadow:0 4px 12px rgba(0,0,0,0.02)}
 .t-panel h3{font-size:14px;font-weight:700;color:var(--text);margin-bottom:.9rem;padding-bottom:10px;border-bottom:1px solid var(--border)}
 /* Teacher inner tabs */
-.t-tabs{display:flex;gap:4px;margin-bottom:1.25rem;background:var(--skool-hover);border-radius:var(--radius-sm);padding:4px}
+.t-tabs{display:flex;gap:4px;margin-bottom:1.25rem;background:var(--skool-hover);border-radius:var(--radius-sm);padding:4px;flex-wrap:wrap}
 .t-tab-btn{flex:1;padding:7px 10px;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;background:transparent;color:var(--text-muted);transition:all .18s;font-family:'Inter',sans-serif;text-align:center}
 .t-tab-btn.active{background:var(--surface);color:var(--brand);box-shadow:0 1px 4px rgba(0,0,0,0.1)}
 .t-tab-panel{display:none}.t-tab-panel.active{display:block}
+.routine-progress-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:1.5rem}
+.routine-progress-label{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.routine-progress-bar-wrap{height:8px;background:var(--border);border-radius:10px;overflow:hidden}
+.routine-progress-bar{height:100%;background:var(--brand);border-radius:10px;transition:width .4s}
+.routine-day-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem}
+.routine-day-header{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);margin-bottom:.75rem}
+.routine-item{display:flex;align-items:flex-start;gap:12px;padding:.85rem;border-radius:var(--radius-sm);cursor:pointer;border:1.5px solid var(--border);margin-bottom:6px;background:var(--bg);transition:all .15s;user-select:none}
+.routine-item:hover{border-color:var(--brand);background:var(--brand-light)}
+.routine-item.done{background:var(--brand-light);border-color:var(--brand)}
+.routine-item.done .routine-item-title{text-decoration:line-through;color:var(--text-muted)}
+.routine-check{flex-shrink:0;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-top:1px}
+.routine-uncheck{width:20px;height:20px;border:2px solid var(--border);border-radius:4px;background:#fff}
+.routine-item:hover .routine-uncheck{border-color:var(--brand)}
+.routine-item-body{flex:1;min-width:0}
+.routine-item-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px}
+.routine-item-desc{font-size:12px;color:var(--text-muted);line-height:1.5;margin-bottom:4px}
+.routine-day-header-edit{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--brand);margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid var(--brand-light)}
+.routine-edit-item{display:flex;gap:8px;margin-bottom:8px;background:var(--bg);border-radius:var(--radius-sm);padding:10px;border:1px solid var(--border)}
 /* Accordion */
 .acc-header{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;padding:9px 12px;background:var(--skool-hover);border-radius:var(--radius-sm);margin-bottom:4px;transition:background .15s}
 .acc-header:hover{background:var(--brand-light)}
@@ -301,6 +319,14 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .rec-timer{font-size:20px;font-weight:800;color:var(--text);font-family:monospace;letter-spacing:1px}
 .rec-done-row{display:flex;gap:8px;margin-top:.75rem}
 .field-label:first-of-type{margin-top:0}
+.teacher-note{background:#FFFBEA;border-left:3px solid #F5A623;border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:.75rem 1rem;margin-top:.5rem;font-size:13px;color:#5C3D00;line-height:1.5;display:none}
+.teacher-note.visible{display:block}
+.stu-detail{background:var(--bg);border-radius:var(--radius-sm);padding:.75rem 1rem;margin-top:2px;margin-bottom:4px;display:none;border:1px solid var(--border)}
+.stu-detail.open{display:block}
+.stu-mod-row{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px}
+.stu-mod-title{flex:1;font-weight:600;color:var(--text)}
+.streak-stu-row{cursor:pointer;border-radius:var(--radius-sm);transition:background .15s}
+.streak-stu-row:hover{background:var(--brand-light)}
 select,textarea,input[type=text],input[type=password],input[type=email],input[type=url],input[type=file],input[type=number]{width:100%;padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .15s;margin-bottom:8px}
 select:focus,textarea:focus,input:focus{border-color:var(--brand);background:#fff}
 textarea{resize:vertical;min-height:70px}
@@ -429,6 +455,7 @@ footer strong{color:var(--brand)}
     <button class="nav-tab" data-page="sounds">Sounds</button>
     <button class="nav-tab" data-page="classroom" id="nav-classroom">Classroom</button>
     <button class="nav-tab" data-page="community" id="nav-community">Community</button>
+    <button class="nav-tab routine-tab" id="nav-routine-tab" data-page="routine" style="display:none">📅 Routine</button>
     <button class="nav-tab" data-page="streaks" id="nav-streaks-tab" style="display:none">🔥 Streaks</button>
     <button class="nav-tab" data-page="profile" id="nav-profile-tab" style="display:none">Profile</button>
     <button class="nav-tab teacher-tab" id="nav-teacher-tab" data-page="teacher">Teacher ✦</button>
@@ -616,6 +643,10 @@ footer strong{color:var(--brand)}
   </div>
 </div>
 
+<div class="page" id="page-routine">
+  <div style="text-align:center;padding:3rem;color:var(--text-muted)"><div style="font-size:32px;margin-bottom:8px">📅</div><div style="font-size:14px">Loading your routine...</div></div>
+</div>
+
 <div class="page page-full" id="page-community">
   <div class="community-container">
     <div id="community-feed-view">
@@ -761,6 +792,7 @@ footer strong{color:var(--brand)}
           <button class="t-tab-btn active" onclick="switchTTab('mod',this)">📂 Module</button>
           <button class="t-tab-btn" onclick="switchTTab('sub',this)">📁 Subfolder</button>
           <button class="t-tab-btn" onclick="switchTTab('les',this)">📝 Lesson</button>
+          <button class="t-tab-btn" onclick="switchTTab('routine',this)">📅 Routines</button>
         </div>
         <div class="t-tab-panel active" id="t-tab-mod">
           <h3 id="panel-title-mod" style="border:none;padding-bottom:0;margin-bottom:.9rem">📂 Create Module</h3>
@@ -794,7 +826,7 @@ footer strong{color:var(--brand)}
           </div>
           <hr style="border:0;border-top:1px solid var(--skool-border);margin:1.25rem 0"/>
           <div id="fields-video"><span class="field-label">YouTube URL</span><input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..." style="margin-bottom:0;"/></div>
-          <div id="fields-text" style="display:none"><span class="field-label" style="margin-top:12px;">Content (text, instructions, notes)</span><div id="quill-editor-container"></div></div>
+          <div id="fields-text"><span class="field-label" id="text-field-label" style="margin-top:12px">Introduction / Instructions (optional)</span><div id="quill-editor-container"></div></div>
           <div id="fields-embed" style="display:none"><span class="field-label">Embed code (iframe)</span><textarea id="t-les-embed-code" placeholder="Paste your iframe code here..." style="font-family:monospace;min-height:100px"></textarea></div>
           <div id="fields-task" style="display:none">
             <span class="field-label" style="margin-top: 1.5rem; margin-bottom: 8px;">Questions / Items</span>
@@ -822,11 +854,17 @@ footer strong{color:var(--brand)}
           </div>
           <div style="display:flex;gap:8px;margin-top:1rem;"><button class="primary-btn" onclick="saveLesson()" id="btn-save-les" style="margin-top:0">Save lesson</button><button class="secondary-btn" id="btn-cancel-les" style="display:none;margin-top:0" onclick="cancelEditLes()">Cancel</button></div>
         </div>
+        <div class="t-tab-panel" id="t-tab-routine">
+          <div class="field-label" style="margin-top:0">Student</div>
+          <select id="routine-student-select" onchange="loadStudentRoutineForEdit(this.value)">
+            <option value="">— Select a student to edit her routine —</option>
+          </select>
+          <div id="routine-edit-area" style="display:none;margin-top:1.25rem"></div>
+        </div>
       </div>
     </div>
     <div>
       <div class="t-panel"><h3>🛠 Content manager</h3><div id="t-manage-list"><div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div></div></div>
-      <div class="t-panel"><h3>📊 Student Progress</h3><div id="t-student-progress-list"><div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">Loading...</div></div></div>
     </div>
   </div>
 </div>
@@ -852,6 +890,8 @@ let quillEditor=null, communityQuill=null, editPostQuill=null;
 let activeSound=null, openQStates={};
 let mediaRecorder=null, recordingChunks=[], recordingBlob=null;
 let recordingDuration=0, recordingTimer=null, recordingMaxTimer=null, currentRecordingLessonId=null;
+let dbRoutine=null, dbRoutineItems=[], dbRoutineCompletions=[];
+let editingRoutineStudentId=null, editRoutineRows=[];
 
 function safeParseJSON(d){if(Array.isArray(d))return d;if(typeof d==='string'){try{return JSON.parse(d)}catch(e){return[]}}return[]}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -898,7 +938,7 @@ function parseYtDisplayUrl(url) {
 
 document.addEventListener('DOMContentLoaded', () => {
   try { quillEditor = new Quill('#quill-editor-container', { theme: 'snow', placeholder: 'Write your lesson content here...', modules: { toolbar: [[{ header: [1,2,3,4,false] }],['bold','italic','strike','code','blockquote','code-block'],[{ list:'ordered' },{ list:'bullet' }],['link','image','video'],['clean']] } }); } catch(e) { console.warn('Quill lesson init error:', e); }
-  try { communityQuill = new Quill('#community-editor-container', { theme: 'snow', placeholder: 'Share something with the community...', modules: { toolbar: [['bold','italic'],['link'],['clean']] } }); } catch(e) { console.warn('Quill community init error:', e); }
+  try { communityQuill = new Quill('#community-editor-container', { theme: 'snow', placeholder: 'Write your post here — you can add titles, bold text, links, YouTube videos and images...', modules: { toolbar: [[{ header: [1, 2, false] }], ['bold', 'italic', 'underline'], ['link', 'image', 'video'], [{ list: 'ordered' }, { list: 'bullet' }], ['clean']] } }); } catch(e) { console.warn('Quill community init error:', e); }
   try { editPostQuill = new Quill('#edit-post-editor-container', { theme: 'snow', modules: { toolbar: [['bold','italic'],['link'],['clean']] } }); } catch(e) { console.warn('Quill edit post init error:', e); }
   sb.auth.onAuthStateChange((_e, session) => { currentUser = session?.user || null; updateAuthUI(); if (currentUser) fetchData(); });
   renderQFields(); toggleLessonFields();
@@ -916,7 +956,10 @@ function updateAuthUI() {
   if (currentUser) {
     btn.textContent = 'Log out'; btn.classList.add('logout-btn-nav'); btn.classList.remove('auth-btn'); profileTab.style.display = 'inline-block';
     document.getElementById('nav-streaks-tab').style.display = 'inline-block';
-    if (currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase()) teacherTab.style.display = 'inline-block';
+    const isTeacher = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
+    if (isTeacher) teacherTab.style.display = 'inline-block';
+    const routineTab = document.getElementById('nav-routine-tab');
+    if (routineTab) routineTab.style.display = isTeacher ? 'none' : 'inline-block';
     if (document.getElementById('page-auth').classList.contains('active')) goToPage('classroom');
   } else {
     btn.textContent = 'Log in'; btn.classList.remove('logout-btn-nav'); btn.classList.add('auth-btn'); teacherTab.style.display = 'none'; profileTab.style.display = 'none';
@@ -954,13 +997,13 @@ async function handleAuth() {
   }
 }
 
-document.querySelectorAll('.nav-tab[data-page]').forEach(tab => { tab.onclick = () => { const page = tab.dataset.page; if (['classroom','teacher','profile','streaks','sounds'].includes(page) && !currentUser) { goToPage('auth'); return; } goToPage(page); }; });
+document.querySelectorAll('.nav-tab[data-page]').forEach(tab => { tab.onclick = () => { const page = tab.dataset.page; if (['classroom','teacher','profile','streaks','sounds','routine'].includes(page) && !currentUser) { goToPage('auth'); return; } goToPage(page); }; });
 
 function goToPage(pageId) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const tabBtn = document.querySelector(`.nav-tab[data-page="${pageId}"]`); if (tabBtn) tabBtn.classList.add('active');
   const pageEl = document.getElementById('page-' + pageId); if (pageEl) pageEl.classList.add('active');
-  if (pageId === 'classroom') renderClassroomGrid(); if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); } if (pageId === 'streaks') renderStreaks(); if (pageId === 'sounds') buildAllSoundsGrids(); if (pageId === 'community') loadPosts();
+  if (pageId === 'classroom') renderClassroomGrid(); if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); } if (pageId === 'streaks') renderStreaks(); if (pageId === 'sounds') buildAllSoundsGrids(); if (pageId === 'community') loadPosts(); if (pageId === 'routine') renderRoutine();
   if (pageId === 'profile') { const p = dbProfiles.find(x => x.id === currentUser?.id); if (p) document.getElementById('profile-username').value = p.username || ''; }
   window.scrollTo(0, 0);
 }
@@ -994,7 +1037,20 @@ async function fetchData() {
     dbRecordings = rRec?.data || [];
 
     if (isTeacher) { const rAllProg = await sb.from('student_progress').select('*'); renderTeacherProgress(rAllProg?.data || []); }
+    if (!isTeacher) {
+      const rRou = await sb.from('student_routines').select('*').eq('student_id', currentUser.id).maybeSingle();
+      dbRoutine = rRou?.data || null;
+      if (dbRoutine) {
+        const [rItems, rComp] = await Promise.all([
+          sb.from('routine_items').select('*').eq('routine_id', dbRoutine.id).order('day_of_week').order('order_index'),
+          sb.from('routine_completions').select('*').eq('student_id', currentUser.id).eq('week_start', getWeekStart())
+        ]);
+        dbRoutineItems = rItems?.data || [];
+        dbRoutineCompletions = rComp?.data || [];
+      } else { dbRoutineItems = []; dbRoutineCompletions = []; }
+    }
     if (document.getElementById('page-streaks').classList.contains('active')) renderStreaks();
+    if (document.getElementById('page-routine')?.classList.contains('active')) renderRoutine();
   } catch (error) { console.error("Error fetching data:", error); }
 }
 
@@ -1109,16 +1165,16 @@ function renderPlayerQuestions(isDone = false) {
         return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><input class="fitb-input" id="fitb-${i}" type="text" placeholder="Your answer…" value="${esc(prevAnswers[i] || '')}" autocomplete="off" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}/></div>`;
       }
     }
-    if (qType === 'dictation') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="dict-${i}" placeholder="Write what you hear…" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(prevAnswers[i] || '')}</textarea></div>`;
-    if (qType === 'open_answer') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="oa-${i}" placeholder="Type your answer here..." oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(prevAnswers[i] || '')}</textarea>${q.answer ? `<div class="open-answer-reveal ${isDone?'visible':''}" id="reveal-${i}"><strong>Expected answer:</strong> ${esc(q.answer)}</div>` : ''}</div>`;
-    if (qType === 'short_answer') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><input class="fitb-input" id="sa-${i}" type="text" placeholder="Write your answer here…" value="${esc(prevAnswers[i] || '')}" autocomplete="off" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}/>${isDone && q.answer ? `<div class="open-answer-reveal visible"><strong>Expected answer:</strong> ${esc(q.answer)}</div>` : ''}</div>`;
+    if (qType === 'dictation') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="dict-${i}" placeholder="Write what you hear…" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(prevAnswers[i] || '')}</textarea>${isDone && q.teacher_note ? `<div class="teacher-note visible">${esc(q.teacher_note)}</div>` : `<div class="teacher-note" id="note-${i}">${esc(q.teacher_note||'')}</div>`}</div>`;
+    if (qType === 'open_answer') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><textarea class="dictation-input" id="oa-${i}" placeholder="Type your answer here..." oninput="studentAnswers[${i}]=this.value" ${disabledAttr}>${esc(prevAnswers[i] || '')}</textarea>${q.answer ? `<div class="open-answer-reveal ${isDone?'visible':''}" id="reveal-${i}"><strong>Expected answer:</strong> ${esc(q.answer)}</div>` : ''}${isDone && q.teacher_note ? `<div class="teacher-note visible">${esc(q.teacher_note)}</div>` : `<div class="teacher-note" id="note-${i}">${esc(q.teacher_note||'')}</div>`}</div>`;
+    if (qType === 'short_answer') return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div><input class="fitb-input" id="sa-${i}" type="text" placeholder="Write your answer here…" value="${esc(prevAnswers[i] || '')}" autocomplete="off" oninput="studentAnswers[${i}]=this.value" ${disabledAttr}/>${isDone && q.answer ? `<div class="open-answer-reveal visible"><strong>Expected answer:</strong> ${esc(q.answer)}</div>` : ''}${isDone && q.teacher_note ? `<div class="teacher-note visible">${esc(q.teacher_note)}</div>` : `<div class="teacher-note" id="note-${i}">${esc(q.teacher_note||'')}</div>`}</div>`;
     
-    const opts = (Array.isArray(q.options) ? q.options : []).filter(o => o && String(o).trim() !== ''); const shuffled = shuffle([...opts]);
+    const opts = (Array.isArray(q.options) ? q.options : []).filter(o => o && String(o).trim() !== ''); const shuffled = [...opts];
     const correctAnsArr = q.correctIndices ? q.correctIndices.map(idx => q.options[idx]) : [q.options[q.correctIndex ?? 0]];
     let isMulti = correctAnsArr.length > 1;
     let givenRaw = prevAnswers[i];
     let givenArr = Array.isArray(givenRaw) ? givenRaw : (givenRaw ? [givenRaw] : []);
-    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div>${isMulti ? '<div style="font-size:11px;color:var(--brand-mid);font-weight:600;margin-bottom:8px">✔ Select all correct answers</div>' : ''}<div class="options-grid">${shuffled.map((o,j)=>{ return `<button class="opt-btn ${givenArr.includes(o) ? 'selected' : ''}" id="opt-${i}-${j}" data-qi="${i}" data-oi="${j}" data-val="${esc(o)}" data-multi="${isMulti}" data-total="${shuffled.length}" onclick="handleOptClick(this)" ${disabledAttr}>${esc(o)}</button>`; }).join('')}</div></div>`;
+    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div>${isMulti ? '<div style="font-size:11px;color:var(--brand-mid);font-weight:600;margin-bottom:8px">✔ Select all correct answers</div>' : ''}<div class="options-grid">${shuffled.map((o,j)=>{ return `<button class="opt-btn ${givenArr.includes(o) ? 'selected' : ''}" id="opt-${i}-${j}" data-qi="${i}" data-oi="${j}" data-val="${esc(o)}" data-multi="${isMulti}" data-total="${shuffled.length}" onclick="handleOptClick(this)" ${disabledAttr}>${esc(o)}</button>`; }).join('')}</div>${isDone && q.teacher_note ? `<div class="teacher-note visible">${esc(q.teacher_note)}</div>` : `<div class="teacher-note" id="note-${i}">${esc(q.teacher_note||'')}</div>`}</div>`;
   }).join('');
 }
 
@@ -1253,6 +1309,8 @@ async function submitExercise() {
   });
 
   document.getElementById('submit-btn').disabled = true; document.getElementById('submit-btn').style.display = 'none'; document.getElementById('retry-btn').style.display = 'inline-block';
+  // Reveal teacher notes for all questions
+  safeParseJSON(currentLesson.task_content).forEach((q, i) => { if (q.teacher_note && q.teacher_note.trim()) { const n = document.getElementById('note-'+i); if (n) n.classList.add('visible'); } });
   if(hasOpenAnswer && results.length === 0) showOpenAnswerCompleted(); else showScore(correct, totalQ, results, false);
   if (currentUser && currentLesson) { await sb.from('student_progress').upsert({ user_id: currentUser.id, lesson_id: currentLesson.id, score: correct, total_questions: totalQ, answers: studentAnswers }, { onConflict: 'user_id,lesson_id' }); await fetchData(); if (activeModuleId) renderSidebar(activeModuleId); }
 }
@@ -1572,7 +1630,15 @@ function cancelEditSub() { document.getElementById('t-sub-title').value = ''; do
 async function deleteSubmodule(id) { if (!confirm('Delete this subfolder? Lessons inside will stay in the main module.')) return; await sb.from('submodules').delete().eq('id', id); fetchData(); }
 async function moveSubmodule(id, dir) { const sub = dbSubmodules.find(s => s.id === id); if (!sub) return; const siblings = dbSubmodules.filter(s => s.module_id === sub.module_id); const idx = siblings.findIndex(s => s.id === id); const t = siblings[idx + dir]; if (!t) return; await sb.from('submodules').update({ order_index: t.order_index }).eq('id', id); await sb.from('submodules').update({ order_index: sub.order_index }).eq('id', t.id); fetchData(); }
 
-function toggleLessonFields() { const type = document.getElementById('t-les-type').value; document.getElementById('fields-video').style.display = type === 'video' ? 'block' : 'none'; document.getElementById('fields-text').style.display = type === 'text' ? 'block' : 'none'; document.getElementById('fields-embed').style.display = type === 'embed' ? 'block' : 'none'; document.getElementById('fields-task').style.display = type === 'task' ? 'block' : 'none'; }
+function toggleLessonFields() {
+  const type = document.getElementById('t-les-type').value;
+  document.getElementById('fields-video').style.display  = type === 'video'  ? 'block' : 'none';
+  document.getElementById('fields-embed').style.display  = type === 'embed'  ? 'block' : 'none';
+  document.getElementById('fields-task').style.display   = type === 'task'   ? 'block' : 'none';
+  document.getElementById('fields-text').style.display   = 'block'; // always visible
+  const lbl = document.getElementById('text-field-label');
+  if (lbl) lbl.textContent = type === 'text' ? 'Content' : 'Introduction / Instructions (optional — shown above the lesson)';
+}
 function updateModuleSelect() { const modSelect = document.getElementById('t-les-module'); const subParentSelect = document.getElementById('t-sub-parent'); const currentMod = modSelect.value; const currentParent = subParentSelect.value; const mHtml = dbModules.map(m => `<option value="${esc(m.id)}">${esc(m.title)}</option>`).join(''); modSelect.innerHTML = mHtml; subParentSelect.innerHTML = mHtml; if (currentMod && dbModules.some(m => m.id === currentMod)) modSelect.value = currentMod; if (currentParent && dbModules.some(m => m.id === currentParent)) subParentSelect.value = currentParent; updateSubfolderSelect(); }
 function updateSubfolderSelect() { const modId = document.getElementById('t-les-module').value; const subSelect = document.getElementById('t-les-submodule'); const currentSub = subSelect.value; const subs = dbSubmodules.filter(s => s.module_id === modId); subSelect.innerHTML = `<option value="">-- No subfolder (main module) --</option>` + subs.map(s => `<option value="${esc(s.id)}">${esc(s.title)}</option>`).join(''); if (currentSub && subs.some(s => s.id === currentSub)) subSelect.value = currentSub; }
 
@@ -1740,7 +1806,8 @@ function buildQRow(qType, q, i) {
   
   let parts = { url: q.video_url && !q.video_url.includes('supabase.co') ? parseYtDisplayUrl(q.video_url) : '' };
   let mediaHtml = `<div style="background:var(--skool-hover); border-radius:var(--radius-sm); padding:12px; margin-top:16px; border:1px dashed var(--border)"><span class="field-label" style="margin-top:0; margin-bottom:10px;">Media for this question (optional)</span><div style="margin-bottom:12px"><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">🎧 Audio (Upload MP3)</span><input type="file" accept="audio/*" onchange="uploadQAudio(event,${i})" style="margin-bottom:4px; padding:6px; font-size:12px;"/><div id="q-audio-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.audio_url?`✅ Audio saved <br><audio controls src="${esc(q.audio_url)}" style="height:30px; margin-top:5px;"></audio>`:''}</div></div><div><span style="font-size:12px; font-weight:600; color:var(--text); display:block; margin-bottom:4px;">📺 Video (YouTube Link OR Upload MP4)</span><div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap"><input type="url" id="q-vid-url-${i}" placeholder="YouTube URL..." value="${parts.url ? esc(parts.url) : ''}" oninput="updateQVideoUrl(${i}, this.value)" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px;"/><span style="font-size:11px;color:var(--text-muted);font-weight:700">OR</span><input type="file" accept="video/*" onchange="uploadQVideo(event,${i})" style="margin:0;flex:2;min-width:180px; padding:6px; font-size:12px"/></div><div id="q-video-${i}" style="font-size:11px;color:var(--brand-mid); font-weight:600;">${q.video_url?'✅ Video saved':''}</div></div></div>`;
-  html += mediaHtml + `</div></div>`; return html;
+  const noteHtml = `<div style="background:#FFFDF0;border:1px dashed #F5A623;border-radius:var(--radius-sm);padding:10px;margin-top:12px"><span class="field-label" style="margin-top:0;color:#8a6500">💬 Teacher's note (shown to student after submitting)</span><textarea placeholder="Optional: explain why the answer is correct, give a pronunciation tip, etc." oninput="questionRows[${i}].teacher_note=this.value" style="min-height:60px;font-size:13px;margin:0;background:#fff">${esc(q.teacher_note||'')}</textarea></div>`;
+  html += mediaHtml + noteHtml + `</div></div>`; return html;
 }
 
 function addQuestion(type) {
@@ -1757,8 +1824,10 @@ function addQuestion(type) {
 function switchTTab(name, btn) {
   document.querySelectorAll('.t-tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.t-tab-panel').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('t-tab-' + name).classList.add('active');
+  if (btn) btn.classList.add('active');
+  document.getElementById('t-tab-' + name)?.classList.add('active');
+  if (name === 'les') { updateModuleSelect(); updateSubfolderSelect(); }
+  if (name === 'routine') renderTeacherRoutineTab();
 }
 
 function toggleAcc(bodyId, chevronId) {
@@ -1908,13 +1977,33 @@ async function renderStreaks() {
       const { current } = calcStreak(dates);
       const speakSecs = allRec.filter(r => r.user_id === s.id).reduce((a, r) => a + (r.duration_seconds || 0), 0);
       const speakLabel = speakSecs > 0 ? `<span style="font-size:11px;font-weight:700;color:var(--brand-mid);white-space:nowrap">🎙 ${fmtDur(speakSecs)}</span>` : '';
-      return `<div class="streak-stu-row">
-        <div class="post-avatar" style="width:30px;height:30px;font-size:12px;flex-shrink:0">${renderAvatarHTML(s.id, s.username||'Student')}</div>
-        <span class="streak-stu-name">${esc(s.username||'Unnamed')}</span>
-        <span class="streak-stu-flame">🔥 ${current}d</span>
-        ${speakLabel}
-        <div class="streak-prog-bar-wrap"><div class="streak-prog-bar" style="width:${pct}%"></div></div>
-        <span style="font-size:11px;color:var(--text-muted);white-space:nowrap">${done}/${totalLessons}</span>
+      // Per-module breakdown
+      const moduleDetail = dbModules.map(m => {
+        const mLessons = dbLessons.filter(l => l.module_id === m.id);
+        if (!mLessons.length) return '';
+        const mDone = mLessons.filter(l => sProg.some(p => p.lesson_id === l.id)).length;
+        const mPct = Math.round(mDone/mLessons.length*100);
+        const color = mPct === 100 ? 'var(--green)' : mPct > 0 ? 'var(--brand)' : 'var(--border)';
+        return `<div class="stu-mod-row">
+          <span class="stu-mod-title">${esc(m.title)}</span>
+          <span style="font-size:11px;color:var(--text-muted);white-space:nowrap">${mDone}/${mLessons.length}</span>
+          <div style="width:80px;height:6px;background:var(--border);border-radius:10px;overflow:hidden;flex-shrink:0">
+            <div style="height:100%;width:${mPct}%;background:${color};border-radius:10px"></div>
+          </div>
+          <span style="font-size:11px;font-weight:700;color:${color};white-space:nowrap">${mPct}%</span>
+        </div>`;
+      }).join('');
+      return `<div>
+        <div class="streak-stu-row" onclick="toggleStudentDetail('${s.id}')">
+          <div class="post-avatar" style="width:30px;height:30px;font-size:12px;flex-shrink:0">${renderAvatarHTML(s.id, s.username||'Student')}</div>
+          <span class="streak-stu-name">${esc(s.username||'Unnamed')}</span>
+          <span class="streak-stu-flame">🔥 ${current}d</span>
+          ${speakLabel}
+          <div class="streak-prog-bar-wrap"><div class="streak-prog-bar" style="width:${pct}%"></div></div>
+          <span style="font-size:11px;color:var(--text-muted);white-space:nowrap">${done}/${totalLessons}</span>
+          <span style="font-size:11px;color:var(--text-muted)">▾</span>
+        </div>
+        <div class="stu-detail" id="stu-det-${s.id}">${moduleDetail || '<div style="font-size:12px;color:var(--text-muted);padding:4px 0">No activity yet.</div>'}</div>
       </div>`;
     }).join('');
     return;
@@ -1955,13 +2044,12 @@ async function renderStreaks() {
   }
 }
 
-function renderTeacherProgress(allProgress) {
-  const list = document.getElementById('t-student-progress-list'); if (!list) return;
-  if (!dbProfiles.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No students registered yet.</div>'; return; }
-  const students = dbProfiles.filter(p => p.id !== currentUser.id);
-  if (!students.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No students registered yet.</div>'; return; }
-  list.innerHTML = students.map(s => { const done = allProgress.filter(p => p.user_id === s.id).length; return `<div class="student-prog-row"><div style="display:flex;align-items:center;gap:10px;"><div class="post-avatar" style="width:30px;height:30px;font-size:12px">${renderAvatarHTML(s.id, s.username || 'Student')}</div><div class="student-prog-name">${esc(s.username || 'Unnamed Student')}</div></div><div class="student-prog-stats"><span style="font-weight:700;color:var(--brand)">${done}</span> lessons completed</div></div>`; }).join('');
+function toggleStudentDetail(id) {
+  const el = document.getElementById('stu-det-' + id);
+  if (el) el.classList.toggle('open');
 }
+
+function renderTeacherProgress() { /* moved to Streaks page */ }
 
 /* ══════════════════════════════════════════
    PHONETIC SOUNDS DICTIONARY
@@ -2174,6 +2262,178 @@ function speakWord(word) {
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(word); u.lang = 'en-US'; u.rate = 0.85;
   window.speechSynthesis.speak(u);
+}
+
+/* ══════════════════════════════════════════
+   WEEKLY ROUTINE
+══════════════════════════════════════════ */
+function getWeekStart() {
+  const d = new Date(); const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  const mon = new Date(d.getFullYear(), d.getMonth(), diff);
+  return mon.toISOString().slice(0, 10);
+}
+
+function formatWeekRange(weekStart) {
+  const mon = new Date(weekStart + 'T00:00:00');
+  const sat = new Date(mon); sat.setDate(mon.getDate() + 5);
+  const opts = { month: 'long', day: 'numeric' };
+  return mon.toLocaleDateString('en-US', opts) + ' – ' + sat.toLocaleDateString('en-US', opts);
+}
+
+function renderRoutine() {
+  const page = document.getElementById('page-routine');
+  if (!page) return;
+  if (!currentUser) return;
+  const isTeacher = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
+  if (isTeacher) { page.innerHTML = '<div style="padding:2rem;color:var(--text-muted);font-size:14px;text-align:center">Routines are managed in the Teacher Dashboard → 📅 Routines tab.</div>'; return; }
+  if (!dbRoutine || !dbRoutineItems.length) {
+    page.innerHTML = `<div class="section-intro"><h2>📅 Weekly Routine</h2></div><div style="text-align:center;padding:3rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)"><div style="font-size:48px;margin-bottom:12px">📅</div><div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px">No routine yet</div><div style="font-size:13px;color:var(--text-muted)">Your teacher will set up your weekly routine soon.</div></div>`;
+    return;
+  }
+  const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const weekStart = getWeekStart();
+  const completedIds = new Set(dbRoutineCompletions.map(c => c.item_id));
+  const total = dbRoutineItems.length;
+  const done = dbRoutineItems.filter(item => completedIds.has(item.id)).length;
+  const pct = total ? Math.round(done/total*100) : 0;
+  const mon = new Date(weekStart + 'T00:00:00');
+  let html = `<div class="section-intro"><h2>📅 Weekly Routine</h2><p>Week of ${formatWeekRange(weekStart)}</p></div>
+    <div class="routine-progress-wrap">
+      <div class="routine-progress-label"><span>${done} / ${total} activities done</span><span style="font-size:12px;color:var(--brand);font-weight:800">${pct}%</span></div>
+      <div class="routine-progress-bar-wrap"><div class="routine-progress-bar" style="width:${pct}%"></div></div>
+    </div>`;
+  for (let d = 0; d <= 5; d++) {
+    const dayItems = dbRoutineItems.filter(i => i.day_of_week === d).sort((a,b) => a.order_index - b.order_index);
+    if (!dayItems.length) continue;
+    const dayDate = new Date(mon); dayDate.setDate(mon.getDate() + d);
+    const dayLabel = dayDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    html += `<div class="routine-day-block"><div class="routine-day-header">${dayLabel}</div>`;
+    dayItems.forEach(item => {
+      const isDone = completedIds.has(item.id);
+      const lessonBtn = item.lesson_id ? `<button class="outline-btn" onclick="event.stopPropagation();openRoutineLesson('${item.lesson_id}')" style="font-size:11px;padding:4px 10px;margin-top:5px">→ Open in Classroom</button>` : '';
+      html += `<div class="routine-item ${isDone?'done':''}" onclick="toggleRoutineCompletion('${item.id}')">
+        <div class="routine-check">${isDone ? '✅' : '<div class="routine-uncheck"></div>'}</div>
+        <div class="routine-item-body"><div class="routine-item-title">${esc(item.title)}</div>${item.description?`<div class="routine-item-desc">${esc(item.description)}</div>`:''}${lessonBtn}</div>
+      </div>`;
+    });
+    html += '</div>';
+  }
+  page.innerHTML = html;
+}
+
+async function toggleRoutineCompletion(itemId) {
+  if (!currentUser) return;
+  const weekStart = getWeekStart();
+  const idx = dbRoutineCompletions.findIndex(c => c.item_id === itemId);
+  if (idx > -1) {
+    await sb.from('routine_completions').delete().eq('student_id', currentUser.id).eq('item_id', itemId).eq('week_start', weekStart);
+    dbRoutineCompletions.splice(idx, 1);
+  } else {
+    const { data } = await sb.from('routine_completions').insert({ student_id: currentUser.id, item_id: itemId, week_start: weekStart }).select().maybeSingle();
+    if (data) dbRoutineCompletions.push(data);
+    else dbRoutineCompletions.push({ item_id: itemId, student_id: currentUser.id, week_start: weekStart });
+  }
+  renderRoutine();
+}
+
+function openRoutineLesson(lessonId) {
+  const lesson = dbLessons.find(l => l.id === lessonId);
+  if (!lesson) return;
+  goToPage('classroom');
+  setTimeout(() => { openModule(lesson.module_id); setTimeout(() => showLesson(lessonId), 350); }, 150);
+}
+
+function renderTeacherRoutineTab() {
+  const sel = document.getElementById('routine-student-select');
+  if (!sel) return;
+  const students = dbProfiles.filter(p => p.id !== currentUser?.id);
+  const prev = sel.value;
+  sel.innerHTML = '<option value="">— Select a student —</option>' +
+    students.map(s => `<option value="${s.id}" ${prev===s.id?'selected':''}>${esc(s.username||'Student')}</option>`).join('');
+  if (prev && students.some(s => s.id === prev)) loadStudentRoutineForEdit(prev);
+}
+
+async function loadStudentRoutineForEdit(studentId) {
+  const area = document.getElementById('routine-edit-area');
+  if (!studentId) { if(area) area.style.display='none'; return; }
+  editingRoutineStudentId = studentId;
+  const { data: routine } = await sb.from('student_routines').select('*').eq('student_id', studentId).maybeSingle();
+  if (routine) {
+    const { data: items } = await sb.from('routine_items').select('*').eq('routine_id', routine.id).order('day_of_week').order('order_index');
+    editRoutineRows = (items||[]).map(r => ({ ...r, tempId: r.id }));
+  } else { editRoutineRows = []; }
+  renderRoutineEditor();
+}
+
+function renderRoutineEditor() {
+  const area = document.getElementById('routine-edit-area');
+  if (!area) return;
+  area.style.display = 'block';
+  const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  let html = '';
+  for (let d = 0; d <= 5; d++) {
+    const dayItems = editRoutineRows.filter(r => r.day_of_week === d);
+    html += `<div style="margin-bottom:1.5rem"><div class="routine-day-header-edit">${DAYS[d]}</div>`;
+    dayItems.forEach(item => {
+      const tid = item.tempId || item.id;
+      const lessonOpts = dbModules.map(m => {
+        const ml = dbLessons.filter(l => l.module_id === m.id);
+        if (!ml.length) return '';
+        return `<optgroup label="${esc(m.title)}">${ml.map(l=>`<option value="${l.id}" ${item.lesson_id===l.id?'selected':''}>${esc(l.title)}</option>`).join('')}</optgroup>`;
+      }).join('');
+      html += `<div class="routine-edit-item">
+        <div style="flex:1">
+          <input type="text" placeholder="Activity title *" value="${esc(item.title||'')}" onchange="updateRoutineItemField('${tid}','title',this.value)" style="margin-bottom:4px"/>
+          <input type="text" placeholder="Short description (optional)" value="${esc(item.description||'')}" onchange="updateRoutineItemField('${tid}','description',this.value)" style="margin-bottom:4px;font-size:12px"/>
+          <select onchange="updateRoutineItemField('${tid}','lesson_id',this.value)" style="font-size:12px;margin-bottom:0">
+            <option value="">🔗 Link to a platform lesson (optional)</option>${lessonOpts}
+          </select>
+        </div>
+        <button class="q-card-delete" onclick="removeRoutineItemRow('${tid}')" style="align-self:flex-start;margin-top:2px">×</button>
+      </div>`;
+    });
+    html += `<button class="secondary-btn" onclick="addRoutineItemRow(${d})" style="font-size:12px;padding:5px 10px;margin-top:4px">+ Add activity</button></div>`;
+  }
+  html += `<button class="primary-btn" id="save-routine-btn" onclick="saveStudentRoutine()" style="margin-top:.5rem">Save routine</button>`;
+  area.innerHTML = html;
+}
+
+function addRoutineItemRow(day) {
+  editRoutineRows.push({ tempId:'tmp_'+Date.now()+'_'+Math.random(), day_of_week:day, title:'', description:'', lesson_id:null });
+  renderRoutineEditor();
+}
+function removeRoutineItemRow(tid) {
+  editRoutineRows = editRoutineRows.filter(r => (r.tempId||r.id) !== tid);
+  renderRoutineEditor();
+}
+function updateRoutineItemField(tid, field, value) {
+  const row = editRoutineRows.find(r => (r.tempId||r.id) === tid);
+  if (row) row[field] = value || null;
+}
+
+async function saveStudentRoutine() {
+  if (!editingRoutineStudentId) return;
+  const btn = document.getElementById('save-routine-btn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Saving...'; }
+  try {
+    const { data: routine, error: rErr } = await sb.from('student_routines')
+      .upsert({ student_id: editingRoutineStudentId, updated_at: new Date().toISOString() }, { onConflict: 'student_id' })
+      .select().maybeSingle();
+    if (rErr) throw rErr;
+    await sb.from('routine_items').delete().eq('routine_id', routine.id);
+    const valid = editRoutineRows.filter(r => r.title && r.title.trim());
+    if (valid.length) {
+      const { error: iErr } = await sb.from('routine_items').insert(
+        valid.map((r, idx) => ({ routine_id: routine.id, day_of_week: r.day_of_week, title: r.title.trim(), description: r.description||'', lesson_id: r.lesson_id||null, order_index: idx }))
+      );
+      if (iErr) throw iErr;
+    }
+    if (btn) { btn.disabled=false; btn.textContent='✅ Saved!'; setTimeout(()=>{ if(btn) btn.textContent='Save routine'; }, 2500); }
+  } catch(err) {
+    alert('Error saving routine: ' + err.message);
+    if (btn) { btn.disabled=false; btn.textContent='Save routine'; }
+  }
 }
 
 /* ── SOUNDS ENGINE ── */
