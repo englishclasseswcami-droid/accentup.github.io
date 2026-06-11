@@ -894,24 +894,11 @@ function parseYtDisplayUrl(url) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  quillEditor = new Quill('#quill-editor-container', { theme: 'snow', placeholder: 'Write your lesson content here...', modules: { toolbar: [[{ header: [1,2,3,4,false] }],['bold','italic','strike','code','blockquote','code-block'],[{ list:'ordered' },{ list:'bullet' }],['link','image','video'],['clean']] } });
-  communityQuill = new Quill('#community-editor-container', { theme: 'snow', placeholder: 'Share something with the community...', modules: { toolbar: [['bold','italic'],['link'],['clean']] } });
-  editPostQuill = new Quill('#edit-post-editor-container', { theme: 'snow', modules: { toolbar: [['bold','italic'],['link'],['clean']] } });
+  try { quillEditor = new Quill('#quill-editor-container', { theme: 'snow', placeholder: 'Write your lesson content here...', modules: { toolbar: [[{ header: [1,2,3,4,false] }],['bold','italic','strike','code','blockquote','code-block'],[{ list:'ordered' },{ list:'bullet' }],['link','image','video'],['clean']] } }); } catch(e) { console.warn('Quill lesson init error:', e); }
+  try { communityQuill = new Quill('#community-editor-container', { theme: 'snow', placeholder: 'Share something with the community...', modules: { toolbar: [['bold','italic'],['link'],['clean']] } }); } catch(e) { console.warn('Quill community init error:', e); }
+  try { editPostQuill = new Quill('#edit-post-editor-container', { theme: 'snow', modules: { toolbar: [['bold','italic'],['link'],['clean']] } }); } catch(e) { console.warn('Quill edit post init error:', e); }
   sb.auth.onAuthStateChange((_e, session) => { currentUser = session?.user || null; updateAuthUI(); if (currentUser) fetchData(); });
   renderQFields(); toggleLessonFields();
-
-  /* ── Multiple Choice: event delegation via data-attributes ── */
-  document.addEventListener('click', function(e) {
-    const btn = e.target.closest('.opt-btn');
-    if (!btn || btn.disabled) return;
-    const qi = parseInt(btn.dataset.qi);
-    const oi = parseInt(btn.dataset.oi);
-    if (isNaN(qi) || isNaN(oi)) return;
-    const val = btn.dataset.val;
-    const isMulti = btn.dataset.multi === 'true';
-    const total = parseInt(btn.dataset.total);
-    toggleOpt(qi, oi, val, isMulti, total);
-  });
 });
 
 async function handleNavAuth() {
