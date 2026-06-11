@@ -1123,11 +1123,19 @@ function renderPlayerQuestions(isDone = false) {
     let isMulti = correctAnsArr.length > 1;
     let givenRaw = prevAnswers[i];
     let givenArr = Array.isArray(givenRaw) ? givenRaw : (givenRaw ? [givenRaw] : []);
-    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div>${isMulti ? '<div style="font-size:11px;color:var(--brand-mid);font-weight:600;margin-bottom:8px">✔ Select all correct answers</div>' : ''}<div class="options-grid">${shuffled.map((o,j)=>{ return `<button class="opt-btn ${givenArr.includes(o) ? 'selected' : ''}" id="opt-${i}-${j}" data-qi="${i}" data-oi="${j}" data-val="${esc(o)}" data-multi="${isMulti}" data-total="${shuffled.length}" ${disabledAttr}>${esc(o)}</button>`; }).join('')}</div></div>`;
+    return `<div class="ex-question-block"><div class="ex-q-num">Question ${i+1}</div>${qMedia}<div class="ex-q-text">${esc(q.prompt)}</div>${isMulti ? '<div style="font-size:11px;color:var(--brand-mid);font-weight:600;margin-bottom:8px">✔ Select all correct answers</div>' : ''}<div class="options-grid">${shuffled.map((o,j)=>{ return `<button class="opt-btn ${givenArr.includes(o) ? 'selected' : ''}" id="opt-${i}-${j}" data-qi="${i}" data-oi="${j}" data-val="${esc(o)}" data-multi="${isMulti}" data-total="${shuffled.length}" onclick="handleOptClick(this)" ${disabledAttr}>${esc(o)}</button>`; }).join('')}</div></div>`;
   }).join('');
 }
 
 function updateMultiBlank(i, pIdx, val, total) { if (!Array.isArray(studentAnswers[i])) studentAnswers[i] = new Array(total).fill(''); studentAnswers[i][pIdx] = val; }
+function handleOptClick(btn) {
+  if (!btn || btn.disabled) return;
+  const qi = parseInt(btn.dataset.qi);
+  const oi = parseInt(btn.dataset.oi);
+  if (isNaN(qi) || isNaN(oi)) return;
+  toggleOpt(qi, oi, btn.dataset.val, btn.dataset.multi === 'true', parseInt(btn.dataset.total));
+}
+
 function toggleOpt(qi, oi, val, isMulti, totalOpts) {
   if (!isMulti) {
     // Single choice — store plain string, highlight one button
