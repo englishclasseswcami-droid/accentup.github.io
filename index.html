@@ -287,7 +287,19 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .streak-prog-bar-wrap{flex:2;min-width:80px;background:var(--skool-hover);border-radius:99px;height:6px;overflow:hidden}
 .streak-prog-bar{height:100%;background:var(--brand);border-radius:99px;transition:width .4s}
 @media(max-width:600px){.streak-stats-row{grid-template-columns:1fr 1fr}.streak-day{width:14px;height:14px}}
-.field-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-light);margin-bottom:5px;margin-top:.9rem;display:block}
+.streak-speak-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.5rem}
+.rec-panel{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-top:1.5rem}
+.rec-panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.rec-panel-title{font-size:14px;font-weight:700;color:var(--text)}
+.rec-prev-lbl{font-size:12px;color:var(--text-muted)}
+.rec-btn-start{width:100%;padding:11px;background:var(--brand);color:#fff;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:700;cursor:pointer;transition:background .15s;font-family:'Inter',sans-serif}
+.rec-btn-start:hover{background:var(--brand-dark)}
+.rec-btn-stop{width:100%;padding:11px;background:#e05252;color:#fff;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
+.rec-active-row{display:flex;align-items:center;gap:10px;margin-bottom:.75rem}
+.rec-dot{width:10px;height:10px;border-radius:50%;background:#e05252;animation:recpulse 1s infinite;flex-shrink:0}
+@keyframes recpulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.75)}}
+.rec-timer{font-size:20px;font-weight:800;color:var(--text);font-family:monospace;letter-spacing:1px}
+.rec-done-row{display:flex;gap:8px;margin-top:.75rem}
 .field-label:first-of-type{margin-top:0}
 select,textarea,input[type=text],input[type=password],input[type=email],input[type=url],input[type=file],input[type=number]{width:100%;padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .15s;margin-bottom:8px}
 select:focus,textarea:focus,input:focus{border-color:var(--brand);background:#fff}
@@ -665,6 +677,38 @@ footer strong{color:var(--brand)}
           <div id="score-area"></div>
           <div id="cv-task-resources" class="resources-panel" style="display:none"></div>
         </div>
+
+        <!-- Recording panel — shared across all lesson types -->
+        <div id="recording-panel" class="rec-panel" style="display:none">
+          <div class="rec-panel-header">
+            <span class="rec-panel-title">🎙 Record your pronunciation</span>
+            <span class="rec-prev-lbl" id="rec-prev-label"></span>
+          </div>
+          <div id="rec-idle-view">
+            <button class="rec-btn-start" onclick="startRecording()">⏺ Start recording</button>
+          </div>
+          <div id="rec-active-view" style="display:none">
+            <div class="rec-active-row">
+              <span class="rec-dot"></span>
+              <span class="rec-timer" id="rec-timer">0:00</span>
+            </div>
+            <button class="rec-btn-stop" onclick="stopRecording()">⏹ Stop</button>
+          </div>
+          <div id="rec-done-view" style="display:none">
+            <audio id="rec-playback" controls style="width:100%;height:36px;border-radius:20px"></audio>
+            <div class="rec-done-row">
+              <button class="submit-btn" id="rec-save-btn" onclick="saveRecording()" style="flex:1;padding:9px">💾 Save recording</button>
+              <button class="outline-btn" onclick="retakeRecording()" style="padding:9px 14px">↺ Re-record</button>
+            </div>
+          </div>
+          <div id="rec-saved-view" style="display:none">
+            <div style="font-size:12px;color:var(--green,#1D9E75);font-weight:700;margin-bottom:8px">✅ Recording saved</div>
+            <audio id="rec-saved-audio" controls style="width:100%;height:36px;border-radius:20px"></audio>
+            <div style="margin-top:8px">
+              <button class="outline-btn" onclick="retakeRecording()" style="font-size:12px;padding:6px 14px">↺ Re-record</button>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   </div>
@@ -686,6 +730,14 @@ footer strong{color:var(--brand)}
     <div class="streak-cal-wrap">
       <div class="streak-cal-title">Last 90 days</div>
       <div class="streak-cal-grid" id="streak-cal-grid"></div>
+    </div>
+    <div class="streak-speak-wrap" id="speak-wrap" style="display:none">
+      <div class="streak-cal-title" style="margin-bottom:.75rem">🎙 Speaking Time</div>
+      <div class="streak-stats-row">
+        <div class="streak-stat-card"><div class="streak-stat-num" id="speak-total" style="font-size:22px">0:00</div><div class="streak-stat-lbl">Total</div></div>
+        <div class="streak-stat-card"><div class="streak-stat-num" id="speak-week" style="font-size:22px">0:00</div><div class="streak-stat-lbl">This week</div></div>
+        <div class="streak-stat-card"><div class="streak-stat-num" id="speak-sessions">0</div><div class="streak-stat-lbl">Sessions</div></div>
+      </div>
     </div>
   </div>
   <div id="streaks-teacher-view" style="display:none">
@@ -788,13 +840,15 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser=null, isLoginMode=true;
 let dbModules=[], dbSubmodules=[], dbLessons=[], dbProgress=[];
-let dbProfiles=[];
+let dbProfiles=[], dbRecordings=[];
 let currentLesson=null, activeModuleId=null, currentViewedPostId=null;
 
 let studentAnswers={}; let matchState={}; let selectedDragChips={}; 
 let questionRows=[], tempAudios=[], isUploadingAudio=false;
 let quillEditor=null, communityQuill=null, editPostQuill=null;
-let activeSound=null, openQStates={}; 
+let activeSound=null, openQStates={};
+let mediaRecorder=null, recordingChunks=[], recordingBlob=null;
+let recordingDuration=0, recordingTimer=null, currentRecordingLessonId=null;
 
 function safeParseJSON(d){if(Array.isArray(d))return d;if(typeof d==='string'){try{return JSON.parse(d)}catch(e){return[]}}return[]}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -942,8 +996,12 @@ async function fetchData() {
 
     renderClassroomGrid(); updateModuleSelect(); if (isTeacher) renderManageList();
 
-    const rProfiles = await sb.from('user_profiles').select('*');
+    const [rProfiles, rRec] = await Promise.all([
+      sb.from('user_profiles').select('*'),
+      sb.from('recordings').select('*').eq('user_id', currentUser.id)
+    ]);
     dbProfiles = rProfiles?.data || [];
+    dbRecordings = rRec?.data || [];
 
     if (isTeacher) { const rAllProg = await sb.from('student_progress').select('*'); renderTeacherProgress(rAllProg?.data || []); }
     if (document.getElementById('page-streaks').classList.contains('active')) renderStreaks();
@@ -986,7 +1044,7 @@ function renderSidebar(moduleId) {
   sidebar.innerHTML = html || '<div style="font-size:12px;color:var(--text-light);text-align:center;margin-top:1rem">Empty folder</div>';
 }
 function setActiveSidebarItem(id) { document.querySelectorAll('.c-item').forEach(el => el.classList.remove('active')); document.getElementById(id)?.classList.add('active'); }
-function hideAllViews() { ['view-welcome','view-video','view-text','view-exercise','view-embed'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; }); const vp = document.getElementById('cv-video-player'); if (vp) vp.innerHTML = ''; }
+function hideAllViews() { ['view-welcome','view-video','view-text','view-exercise','view-embed'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; }); const vp = document.getElementById('cv-video-player'); if (vp) vp.innerHTML = ''; const rp = document.getElementById('recording-panel'); if (rp) rp.style.display = 'none'; }
 function renderAudios(panelId, list) { const el = document.getElementById(panelId); if (!el) return; const arr = safeParseJSON(list); if (!arr.length) { el.style.display = 'none'; return; } el.style.display = 'block'; el.innerHTML = arr.map(a => `<div class="lesson-audio-row"><span class="lesson-audio-label">🔊 ${esc(a.label)}</span><audio controls src="${esc(a.url)}"></audio></div>`).join(''); }
 function renderResources(panelId, list) { const el = document.getElementById(panelId); if (!el) return; const arr = safeParseJSON(list); if (!arr.length) { el.style.display = 'none'; return; } el.style.display = 'block'; el.innerHTML = `<div class="resources-heading">Resources</div><div class="resources-list">${arr.map(r => `<a href="${esc(r.url)}" target="_blank" class="resource-link">📎 ${esc(r.name)}</a>`).join('')}</div>`; }
 function updateCompleteButton(btnId, isDone) { const btn = document.getElementById(btnId); if (!btn) return; btn.textContent = isDone ? 'Completed ✅' : 'Mark as complete'; btn.style.background = isDone ? 'var(--green)' : 'var(--brand)'; btn.disabled = isDone; }
@@ -1011,6 +1069,11 @@ function showLesson(lessonId) {
     renderAudios('cv-task-audios', audios); renderPlayerQuestions(isDone); renderResources('cv-task-resources', resources);
     if (isDone) { const prev = dbProgress.find(p => p.lesson_id === lessonId); if (prev) showScore(prev.score, prev.total_questions, [], true); }
   }
+
+  // Recording panel — show for all lesson types
+  const recPanel = document.getElementById('recording-panel');
+  if (recPanel) recPanel.style.display = 'block';
+  initRecordingPanel(lessonId);
 }
 
 function renderPlayerQuestions(isDone = false) {
@@ -1201,6 +1264,122 @@ function retryExercise() {
   if (!currentLesson) return;
   dbProgress = dbProgress.filter(p => p.lesson_id !== currentLesson.id); 
   showLesson(currentLesson.id); 
+}
+
+/* ══════════════════════════════════════════
+   RECORDING
+══════════════════════════════════════════ */
+function fmtDur(s) {
+  s = Math.round(s || 0);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  if (h > 0) return `${h}h ${m}m`;
+  return `${m}:${sec.toString().padStart(2, '0')}`;
+}
+
+function showRecView(state) {
+  ['idle','active','done','saved'].forEach(s => {
+    const el = document.getElementById(`rec-${s}-view`);
+    if (el) el.style.display = s === state ? 'block' : 'none';
+  });
+}
+
+function initRecordingPanel(lessonId) {
+  currentRecordingLessonId = lessonId;
+  recordingBlob = null; recordingDuration = 0;
+  clearInterval(recordingTimer);
+  const existing = dbRecordings.find(r => r.lesson_id === lessonId);
+  const prevLbl = document.getElementById('rec-prev-label');
+  if (existing) {
+    const savedAudio = document.getElementById('rec-saved-audio');
+    if (savedAudio) savedAudio.src = existing.url;
+    if (prevLbl) prevLbl.textContent = `Last: ${fmtDur(existing.duration_seconds)}`;
+    showRecView('saved');
+  } else {
+    if (prevLbl) prevLbl.textContent = '';
+    showRecView('idle');
+  }
+}
+
+async function startRecording() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const mimeType = ['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus','audio/mp4']
+      .find(t => { try { return MediaRecorder.isTypeSupported(t); } catch(e) { return false; } }) || '';
+    mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : {});
+    recordingChunks = [];
+    mediaRecorder.ondataavailable = e => { if (e.data && e.data.size > 0) recordingChunks.push(e.data); };
+    mediaRecorder.onstop = () => {
+      stream.getTracks().forEach(t => t.stop());
+      const type = mediaRecorder.mimeType || 'audio/webm';
+      recordingBlob = new Blob(recordingChunks, { type });
+      const url = URL.createObjectURL(recordingBlob);
+      const pb = document.getElementById('rec-playback');
+      if (pb) pb.src = url;
+      showRecView('done');
+    };
+    mediaRecorder.start(100);
+    const startTime = Date.now();
+    recordingDuration = 0;
+    const timerEl = document.getElementById('rec-timer');
+    if (timerEl) timerEl.textContent = '0:00';
+    clearInterval(recordingTimer);
+    recordingTimer = setInterval(() => {
+      recordingDuration = Math.floor((Date.now() - startTime) / 1000);
+      if (timerEl) timerEl.textContent = fmtDur(recordingDuration);
+    }, 500);
+    showRecView('active');
+  } catch(err) {
+    alert('Could not access microphone. Please allow microphone permission in your browser and try again.');
+  }
+}
+
+function stopRecording() {
+  clearInterval(recordingTimer);
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+}
+
+function retakeRecording() {
+  clearInterval(recordingTimer);
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+  recordingBlob = null; recordingDuration = 0;
+  const pb = document.getElementById('rec-playback');
+  if (pb) pb.src = '';
+  showRecView('idle');
+}
+
+async function saveRecording() {
+  if (!recordingBlob || !currentRecordingLessonId || !currentUser) return;
+  const btn = document.getElementById('rec-save-btn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Saving...'; }
+  try {
+    const mType = recordingBlob.type || '';
+    const ext = mType.includes('mp4') ? 'mp4' : mType.includes('ogg') ? 'ogg' : 'webm';
+    const filename = `rec_${currentUser.id}_${currentRecordingLessonId}.${ext}`;
+    const { error: upErr } = await sb.storage.from('audios').upload(filename, recordingBlob, {
+      upsert: true, contentType: recordingBlob.type
+    });
+    if (upErr) throw upErr;
+    const url = sb.storage.from('audios').getPublicUrl(filename).data.publicUrl;
+    const { error: dbErr } = await sb.from('recordings').upsert({
+      user_id: currentUser.id, lesson_id: currentRecordingLessonId,
+      url, duration_seconds: recordingDuration
+    }, { onConflict: 'user_id,lesson_id' });
+    if (dbErr) throw dbErr;
+    // Update local cache
+    const rec = { user_id: currentUser.id, lesson_id: currentRecordingLessonId, url, duration_seconds: recordingDuration, created_at: new Date().toISOString() };
+    const idx = dbRecordings.findIndex(r => r.lesson_id === currentRecordingLessonId);
+    if (idx > -1) dbRecordings[idx] = rec; else dbRecordings.push(rec);
+    const savedAudio = document.getElementById('rec-saved-audio');
+    if (savedAudio) savedAudio.src = url;
+    const prevLbl = document.getElementById('rec-prev-label');
+    if (prevLbl) prevLbl.textContent = `Last: ${fmtDur(recordingDuration)}`;
+    showRecView('saved');
+  } catch(err) {
+    alert('Error saving recording: ' + err.message);
+    if (btn) { btn.disabled = false; btn.textContent = '💾 Save recording'; }
+  }
 }
 
 async function deletePost(id) {
@@ -1699,8 +1878,12 @@ async function renderStreaks() {
   document.getElementById('streaks-teacher-view').style.display = isTeacher ? 'block' : 'none';
 
   if (isTeacher) {
-    const rAllProg = await sb.from('student_progress').select('user_id,lesson_id,created_at');
-    const allProg  = rAllProg?.data || [];
+    const [rAllProg, rAllRec] = await Promise.all([
+      sb.from('student_progress').select('user_id,lesson_id,created_at'),
+      sb.from('recordings').select('user_id,duration_seconds')
+    ]);
+    const allProg = rAllProg?.data || [];
+    const allRec  = rAllRec?.data || [];
     const students = dbProfiles.filter(p => p.id !== currentUser.id);
     const totalLessons = dbLessons.length;
     const list = document.getElementById('streak-all-list');
@@ -1711,10 +1894,13 @@ async function renderStreaks() {
       const pct     = totalLessons ? Math.round(done/totalLessons*100) : 0;
       const dates   = sProg.map(p => p.created_at ? p.created_at.slice(0,10) : null).filter(Boolean);
       const { current } = calcStreak(dates);
+      const speakSecs = allRec.filter(r => r.user_id === s.id).reduce((a, r) => a + (r.duration_seconds || 0), 0);
+      const speakLabel = speakSecs > 0 ? `<span style="font-size:11px;font-weight:700;color:var(--brand-mid);white-space:nowrap">🎙 ${fmtDur(speakSecs)}</span>` : '';
       return `<div class="streak-stu-row">
         <div class="post-avatar" style="width:30px;height:30px;font-size:12px;flex-shrink:0">${renderAvatarHTML(s.id, s.username||'Student')}</div>
         <span class="streak-stu-name">${esc(s.username||'Unnamed')}</span>
         <span class="streak-stu-flame">🔥 ${current}d</span>
+        ${speakLabel}
         <div class="streak-prog-bar-wrap"><div class="streak-prog-bar" style="width:${pct}%"></div></div>
         <span style="font-size:11px;color:var(--text-muted);white-space:nowrap">${done}/${totalLessons}</span>
       </div>`;
@@ -1737,11 +1923,22 @@ async function renderStreaks() {
   for (let i = 89; i >= 0; i--) {
     const d = new Date(today); d.setDate(d.getDate()-i);
     const ds = d.toISOString().slice(0,10);
-    const isDone  = doneSet.has(ds);
-    const isToday = ds === todayStr;
-    calHtml += `<div class="streak-day${isDone?' done':''}${isToday?' today':''}" title="${ds}"></div>`;
+    calHtml += `<div class="streak-day${doneSet.has(ds)?' done':''}${ds===todayStr?' today':''}" title="${ds}"></div>`;
   }
   grid.innerHTML = calHtml;
+
+  // Speaking time
+  const totalSecs = dbRecordings.reduce((a, r) => a + (r.duration_seconds || 0), 0);
+  const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7); weekAgo.setHours(0,0,0,0);
+  const weekSecs = dbRecordings.filter(r => r.created_at && new Date(r.created_at) >= weekAgo).reduce((a, r) => a + (r.duration_seconds || 0), 0);
+  const sessions = dbRecordings.length;
+  const speakWrap = document.getElementById('speak-wrap');
+  if (speakWrap) {
+    speakWrap.style.display = sessions > 0 ? 'block' : 'none';
+    document.getElementById('speak-total').textContent  = fmtDur(totalSecs);
+    document.getElementById('speak-week').textContent   = fmtDur(weekSecs);
+    document.getElementById('speak-sessions').textContent = sessions;
+  }
 }
 
 function renderTeacherProgress(allProgress) {
