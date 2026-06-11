@@ -580,6 +580,9 @@ footer strong{color:var(--brand)}
 
 <div class="page" id="page-sounds">
   <div class="section-intro"><h2>Sounds of American English</h2><p>Explore the 19 vowel sounds and 24 consonant sounds. Click any card to explore mouth position, spellings, and tips.</p></div>
+  <div style="margin-bottom:1.5rem">
+    <input type="text" id="sounds-search" placeholder="🔍  Search by sound, word, or name — e.g. /ɪ/, hit, Short I" oninput="filterSounds(this.value)" style="margin-bottom:0;border-radius:30px;padding:10px 18px;font-size:14px"/>
+  </div>
   <div id="sound-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
   <div class="sub-heading" style="font-size:18px; color:var(--brand-dark)">Pure Vowels</div><div class="sound-grid" id="pure-vowel-grid"></div>
   <div class="sub-heading" style="font-size:18px; color:var(--brand-dark)">Diphthongs</div><div class="sound-grid" id="diphthong-grid"></div>
@@ -702,7 +705,10 @@ footer strong{color:var(--brand)}
             </div>
           </div>
           <div id="rec-saved-view" style="display:none">
-            <div style="font-size:12px;color:var(--green,#1D9E75);font-weight:700;margin-bottom:8px">✅ Recording saved</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+              <div style="font-size:12px;color:var(--green,#1D9E75);font-weight:700">✅ Recording saved</div>
+              <div style="font-size:11px;color:var(--text-muted)" id="rec-total-label"></div>
+            </div>
             <audio id="rec-saved-audio" controls style="width:100%;height:36px;border-radius:20px"></audio>
             <div style="margin-top:8px">
               <button class="outline-btn" onclick="retakeRecording()" style="font-size:12px;padding:6px 14px">↺ Re-record</button>
@@ -731,12 +737,15 @@ footer strong{color:var(--brand)}
       <div class="streak-cal-title">Last 90 days</div>
       <div class="streak-cal-grid" id="streak-cal-grid"></div>
     </div>
-    <div class="streak-speak-wrap" id="speak-wrap" style="display:none">
+    <div class="streak-speak-wrap" id="speak-wrap">
       <div class="streak-cal-title" style="margin-bottom:.75rem">🎙 Speaking Time</div>
-      <div class="streak-stats-row">
-        <div class="streak-stat-card"><div class="streak-stat-num" id="speak-total" style="font-size:22px">0:00</div><div class="streak-stat-lbl">Total</div></div>
-        <div class="streak-stat-card"><div class="streak-stat-num" id="speak-week" style="font-size:22px">0:00</div><div class="streak-stat-lbl">This week</div></div>
-        <div class="streak-stat-card"><div class="streak-stat-num" id="speak-sessions">0</div><div class="streak-stat-lbl">Sessions</div></div>
+      <div id="speak-empty" style="font-size:13px;color:var(--text-muted);text-align:center;padding:.5rem 0 .25rem">Start recording in any lesson to track your speaking time.</div>
+      <div id="speak-stats" style="display:none">
+        <div class="streak-stats-row">
+          <div class="streak-stat-card"><div class="streak-stat-num" id="speak-total" style="font-size:22px">0:00</div><div class="streak-stat-lbl">Total</div></div>
+          <div class="streak-stat-card"><div class="streak-stat-num" id="speak-week" style="font-size:22px">0:00</div><div class="streak-stat-lbl">This week</div></div>
+          <div class="streak-stat-card"><div class="streak-stat-num" id="speak-sessions">0</div><div class="streak-stat-lbl">Sessions</div></div>
+        </div>
       </div>
     </div>
   </div>
@@ -848,7 +857,7 @@ let questionRows=[], tempAudios=[], isUploadingAudio=false;
 let quillEditor=null, communityQuill=null, editPostQuill=null;
 let activeSound=null, openQStates={};
 let mediaRecorder=null, recordingChunks=[], recordingBlob=null;
-let recordingDuration=0, recordingTimer=null, currentRecordingLessonId=null;
+let recordingDuration=0, recordingTimer=null, recordingMaxTimer=null, currentRecordingLessonId=null;
 
 function safeParseJSON(d){if(Array.isArray(d))return d;if(typeof d==='string'){try{return JSON.parse(d)}catch(e){return[]}}return[]}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -996,7 +1005,7 @@ async function fetchData() {
 }
 
 function renderAvatarHTML(userId, email) { const p = dbProfiles.find(x => x.id === userId); if (p?.avatar_url) return `<img src="${p.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`; return esc((email || '?').split('@')[0].charAt(0).toUpperCase()); }
-function getDisplayName(userId, email) { const p = dbProfiles.find(x => x.id === userId); return p?.username ? esc(p.username) : esc((email || '?').split('@')[0]); }
+function getDisplayName(userId, email) { const p = dbProfiles.find(x => x.id === userId); if (p?.username) return esc(p.username); if (email && email.includes('@')) return esc(email.split('@')[0]); return 'Student'; }
 async function saveProfile() {
   const username = document.getElementById('profile-username').value.trim(); if (!username) { alert('Please choose a username.'); return; }
   const btn = document.getElementById('btn-save-profile'); btn.disabled = true; btn.textContent = 'Saving...';
@@ -1057,9 +1066,18 @@ function showLesson(lessonId) {
     if (isDone) { const prev = dbProgress.find(p => p.lesson_id === lessonId); if (prev) showScore(prev.score, prev.total_questions, [], true); }
   }
 
-  // Recording panel — show for all lesson types
+  // Recording panel — position before complete/submit button
   const recPanel = document.getElementById('recording-panel');
-  if (recPanel) recPanel.style.display = 'block';
+  if (recPanel) {
+    const viewMap = { video:'view-video', text:'view-text', embed:'view-embed', task:'view-exercise' };
+    const viewEl = document.getElementById(viewMap[currentLesson.type]);
+    if (viewEl) {
+      const anchor = viewEl.querySelector('.lesson-complete-wrap') || viewEl.querySelector('.player-footer');
+      if (anchor) anchor.parentNode.insertBefore(recPanel, anchor);
+      else viewEl.appendChild(recPanel);
+    }
+    recPanel.style.display = 'block';
+  }
   initRecordingPanel(lessonId);
 }
 
@@ -1283,16 +1301,20 @@ function showRecView(state) {
 function initRecordingPanel(lessonId) {
   currentRecordingLessonId = lessonId;
   recordingBlob = null; recordingDuration = 0;
-  clearInterval(recordingTimer);
+  clearInterval(recordingTimer); clearTimeout(recordingMaxTimer);
   const existing = dbRecordings.find(r => r.lesson_id === lessonId);
   const prevLbl = document.getElementById('rec-prev-label');
+  const totalSecs = dbRecordings.reduce((a, r) => a + (r.duration_seconds || 0), 0);
+  const totalLbl = document.getElementById('rec-total-label');
   if (existing) {
     const savedAudio = document.getElementById('rec-saved-audio');
     if (savedAudio) savedAudio.src = existing.url;
     if (prevLbl) prevLbl.textContent = `Last: ${fmtDur(existing.duration_seconds)}`;
+    if (totalLbl && totalSecs > 0) totalLbl.textContent = `🎙 ${fmtDur(totalSecs)} total`;
     showRecView('saved');
   } else {
     if (prevLbl) prevLbl.textContent = '';
+    if (totalLbl) totalLbl.textContent = '';
     showRecView('idle');
   }
 }
@@ -1320,10 +1342,12 @@ async function startRecording() {
     const timerEl = document.getElementById('rec-timer');
     if (timerEl) timerEl.textContent = '0:00';
     clearInterval(recordingTimer);
+    clearTimeout(recordingMaxTimer);
     recordingTimer = setInterval(() => {
       recordingDuration = Math.floor((Date.now() - startTime) / 1000);
       if (timerEl) timerEl.textContent = fmtDur(recordingDuration);
     }, 500);
+    recordingMaxTimer = setTimeout(() => stopRecording(), 5 * 60 * 1000); // 5-min max
     showRecView('active');
   } catch(err) {
     alert('Could not access microphone. Please allow microphone permission in your browser and try again.');
@@ -1332,11 +1356,13 @@ async function startRecording() {
 
 function stopRecording() {
   clearInterval(recordingTimer);
+  clearTimeout(recordingMaxTimer);
   if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
 }
 
 function retakeRecording() {
   clearInterval(recordingTimer);
+  clearTimeout(recordingMaxTimer);
   if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
   recordingBlob = null; recordingDuration = 0;
   const pb = document.getElementById('rec-playback');
@@ -1370,6 +1396,9 @@ async function saveRecording() {
     if (savedAudio) savedAudio.src = url;
     const prevLbl = document.getElementById('rec-prev-label');
     if (prevLbl) prevLbl.textContent = `Last: ${fmtDur(recordingDuration)}`;
+    const totalSecs = dbRecordings.reduce((a, r) => a + (r.duration_seconds || 0), 0);
+    const totalLbl = document.getElementById('rec-total-label');
+    if (totalLbl) totalLbl.textContent = `🎙 ${fmtDur(totalSecs)} total`;
     showRecView('saved');
   } catch(err) {
     alert('Error saving recording: ' + err.message);
@@ -1396,20 +1425,22 @@ async function deleteComment(id) {
 /* ══════════════════════════════════════════
    COMMUNITY
 ══════════════════════════════════════════ */
-async function loadPosts() {
+async function loadPosts(append = false) {
   const list = document.getElementById('community-posts-list');
   if (!list) return;
-  list.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-light);font-size:14px">Loading posts...</div>';
-  const { data: posts, error } = await sb.from('posts').select('*').order('created_at', { ascending: false });
+  if (!append) { list.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-light);font-size:14px">Loading posts...</div>'; }
+  const offset = append ? (parseInt(list.dataset.offset) || 0) : 0;
+  const { data: posts, error } = await sb.from('posts').select('*').order('created_at', { ascending: false }).range(offset, offset + 19);
   if (error) { list.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text-light);font-size:14px">Could not load posts.</div>'; return; }
-  if (!posts || !posts.length) { list.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-light);font-size:14px">No posts yet. Be the first to share!</div>'; return; }
-  list.innerHTML = posts.map(p => {
+  if (!posts || (!posts.length && !append)) { list.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-light);font-size:14px">No posts yet. Be the first to share!</div>'; return; }
+  const html = posts.map(p => {
     const canEdit = currentUser?.id === p.user_id;
-    const preview = (p.body || '').replace(/<[^>]+>/g, '').substring(0, 200);
+    const bodyText = p.body || p.content || '';
+    const preview = bodyText.replace(/<[^>]+>/g, '').substring(0, 200);
     return `<div class="post-card" onclick="openPost('${esc(p.id)}')">
       <div class="post-header">
-        <div class="post-avatar">${renderAvatarHTML(p.user_id, p.user_id)}</div>
-        <span class="post-author">${getDisplayName(p.user_id, p.user_id)}</span>
+        <div class="post-avatar">${renderAvatarHTML(p.user_id, '')}</div>
+        <span class="post-author">${getDisplayName(p.user_id, '')}</span>
         <span class="post-date">${timeAgo(p.created_at)}</span>
       </div>
       <div class="post-title">${esc(p.title || '')}</div>
@@ -1421,6 +1452,11 @@ async function loadPosts() {
       </div>
     </div>`;
   }).join('');
+  if (append) { const existing = list.querySelector('#posts-more-btn'); if (existing) existing.remove(); list.insertAdjacentHTML('beforeend', html); }
+  else { list.innerHTML = html; }
+  list.dataset.offset = offset + posts.length;
+  const moreBtn = posts.length === 20 ? `<div style="text-align:center;margin-top:1rem"><button class="outline-btn" onclick="loadPosts(true)">Load more</button></div>` : '';
+  list.insertAdjacentHTML('beforeend', `<div id="posts-more-btn">${moreBtn}</div>`);
 }
 
 async function openPost(postId) {
@@ -1430,14 +1466,15 @@ async function openPost(postId) {
   const { data: p } = await sb.from('posts').select('*').eq('id', postId).single();
   if (!p) { backToCommunityFeed(); return; }
   const canEdit = currentUser?.id === p.user_id;
+  const bodyText = p.body || p.content || '';
   document.getElementById('single-post-render').innerHTML = `
     <div class="post-header">
-      <div class="post-avatar">${renderAvatarHTML(p.user_id, p.user_id)}</div>
-      <span class="post-author">${getDisplayName(p.user_id, p.user_id)}</span>
+      <div class="post-avatar">${renderAvatarHTML(p.user_id, '')}</div>
+      <span class="post-author">${getDisplayName(p.user_id, '')}</span>
       <span class="post-date">${timeAgo(p.created_at)}</span>
     </div>
     <h2 class="post-title" style="font-size:20px;margin-bottom:1rem">${esc(p.title || '')}</h2>
-    <div class="post-full-body">${p.body || ''}</div>
+    <div class="post-full-body">${bodyText}</div>
     <div class="post-actions">
       <button class="action-btn">❤️ ${p.likes || 0}</button>
       ${canEdit ? `<button class="action-btn edit-post-btn" onclick="openEditPostModal('${esc(p.id)}', event)">✏️ Edit</button>` : ''}
@@ -1460,14 +1497,15 @@ async function loadComments(postId) {
   if (!comments || !comments.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0">No comments yet.</div>'; return; }
   list.innerHTML = comments.map(c => {
     const canDel = currentUser?.id === c.user_id;
+    const commentText = c.body || c.content || '';
     return `<div class="comment-item">
-      <div class="post-avatar" style="width:32px;height:32px;font-size:12px;flex-shrink:0">${renderAvatarHTML(c.user_id, c.user_id)}</div>
+      <div class="post-avatar" style="width:32px;height:32px;font-size:12px;flex-shrink:0">${renderAvatarHTML(c.user_id, '')}</div>
       <div class="comment-bubble">
         <div class="comment-author" style="display:flex;align-items:center;justify-content:space-between">
-          <span>${getDisplayName(c.user_id, c.user_id)}</span>
+          <span>${getDisplayName(c.user_id, '')}</span>
           ${canDel ? `<button class="action-btn delete-post-btn" style="font-size:11px" onclick="deleteComment('${esc(c.id)}')">🗑</button>` : ''}
         </div>
-        <div class="comment-text">${esc(c.body || '')}</div>
+        <div class="comment-text">${esc(commentText)}</div>
       </div>
     </div>`;
   }).join('');
@@ -1927,9 +1965,11 @@ async function renderStreaks() {
   const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7); weekAgo.setHours(0,0,0,0);
   const weekSecs = dbRecordings.filter(r => r.created_at && new Date(r.created_at) >= weekAgo).reduce((a, r) => a + (r.duration_seconds || 0), 0);
   const sessions = dbRecordings.length;
-  const speakWrap = document.getElementById('speak-wrap');
-  if (speakWrap) {
-    speakWrap.style.display = sessions > 0 ? 'block' : 'none';
+  const speakEmpty = document.getElementById('speak-empty');
+  const speakStats = document.getElementById('speak-stats');
+  if (speakEmpty) speakEmpty.style.display = sessions > 0 ? 'none' : 'block';
+  if (speakStats) speakStats.style.display = sessions > 0 ? 'block' : 'none';
+  if (sessions > 0) {
     document.getElementById('speak-total').textContent  = fmtDur(totalSecs);
     document.getElementById('speak-week').textContent   = fmtDur(weekSecs);
     document.getElementById('speak-sessions').textContent = sessions;
@@ -2216,6 +2256,39 @@ function buildAllSoundsGrids(){
     ["nasals-grid",        consonants.nasals,      true],
     ["liquids-grid",       consonants.liquids,     true]
   ].forEach(function(entry){ buildSoundGrid(entry[0], entry[1], entry[2], buildAllSoundsGrids); });
+}
+
+function filterSounds(query) {
+  const q = (query || '').toLowerCase().trim();
+  if (!q) { buildAllSoundsGrids(); return; }
+  const matches = s =>
+    s.ipa.toLowerCase().includes(q) ||
+    s.mw.toLowerCase().includes(q) ||
+    s.name.toLowerCase().includes(q) ||
+    s.keyword.toLowerCase().includes(q) ||
+    (s.words || []).some(w => w.toLowerCase().includes(q)) ||
+    (s.spellings || []).some(sp => sp.toLowerCase().includes(q));
+  const rebuild = () => filterSounds(document.getElementById('sounds-search')?.value || '');
+  [
+    ["pure-vowel-grid",    vowels.pure,          false],
+    ["diphthong-grid",     vowels.diphthongs,     false],
+    ["rcolored-grid",      vowels.rcolored,       false],
+    ["stops-grid",         consonants.stops,      true],
+    ["fricatives-grid",    consonants.fricatives,  true],
+    ["affricates-grid",    consonants.affricates,  true],
+    ["nasals-grid",        consonants.nasals,      true],
+    ["liquids-grid",       consonants.liquids,     true]
+  ].forEach(function(entry) {
+    const filtered = entry[1].filter(matches);
+    buildSoundGrid(entry[0], filtered, entry[2], rebuild);
+    // Show/hide section heading
+    const grid = document.getElementById(entry[0]);
+    if (grid) {
+      let el = grid.previousElementSibling;
+      while (el && !el.classList.contains('sub-heading')) el = el.previousElementSibling;
+      if (el) el.style.display = filtered.length ? '' : 'none';
+    }
+  });
 }
 
 </script>
