@@ -15,19 +15,36 @@ async function handleNavAuth() {
   }
 }
 function updateAuthUI() {
-  const btn = document.getElementById('nav-auth-btn'); const teacherTab = document.getElementById('nav-teacher-tab'); const profileTab = document.getElementById('nav-profile-tab');
-  if (currentUser) {
-    btn.textContent = 'Log out'; btn.classList.add('logout-btn-nav'); btn.classList.remove('auth-btn'); profileTab.style.display = 'inline-block';
-    document.getElementById('nav-streaks-tab').style.display = 'inline-block';
-    const isTeacher = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
-    if (isTeacher) teacherTab.style.display = 'inline-block';
-    const routineTab = document.getElementById('nav-routine-tab');
-    if (routineTab) routineTab.style.display = isTeacher ? 'none' : 'inline-block';
-    if (document.getElementById('page-auth').classList.contains('active')) goToPage('classroom');
+  const btn = document.getElementById('nav-auth-btn');
+  const isLoggedIn = !!currentUser;
+  const isTeacher = isLoggedIn && currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
+
+  // Public tabs (always visible)
+  // 'home' and 'sounds' always shown when logged out; 'sounds' always shown
+
+  // App tabs visibility
+  const show = (id, visible) => { const el = document.getElementById(id); if (el) el.style.display = visible ? 'inline-block' : 'none'; };
+
+  show('nav-home',       !isLoggedIn);
+  show('nav-dashboard',  isLoggedIn && !isTeacher);
+  show('nav-sounds',     true);
+  show('nav-classroom',  isLoggedIn && !isTeacher);
+  show('nav-community',  isLoggedIn && !isTeacher);
+  show('nav-routine-tab', isLoggedIn && !isTeacher);
+  show('nav-streaks-tab', isLoggedIn);
+  show('nav-profile-tab', isLoggedIn && !isTeacher);
+  show('nav-teacher-tab', isTeacher);
+
+  if (isLoggedIn) {
+    btn.textContent = 'Log out'; btn.classList.add('logout-btn-nav'); btn.classList.remove('auth-btn');
+    if (document.getElementById('page-auth').classList.contains('active')) {
+      goToPage(isTeacher ? 'teacher' : 'dashboard');
+    }
   } else {
-    btn.textContent = 'Log in'; btn.classList.remove('logout-btn-nav'); btn.classList.add('auth-btn'); teacherTab.style.display = 'none'; profileTab.style.display = 'none';
-    document.getElementById('nav-streaks-tab').style.display = 'none';
-    if (['page-classroom','page-teacher','page-profile','page-streaks','page-sounds'].includes(document.querySelector('.page.active')?.id)) goToPage('home');
+    btn.textContent = 'Log in'; btn.classList.remove('logout-btn-nav'); btn.classList.add('auth-btn');
+    const activePage = document.querySelector('.page.active')?.id;
+    const protectedPages = ['page-dashboard','page-classroom','page-teacher','page-profile','page-streaks','page-routine'];
+    if (protectedPages.includes(activePage)) goToPage('home');
   }
 }
 
@@ -60,13 +77,19 @@ async function handleAuth() {
   }
 }
 
-document.querySelectorAll('.nav-tab[data-page]').forEach(tab => { tab.onclick = () => { const page = tab.dataset.page; if (['classroom','teacher','profile','streaks','sounds','routine'].includes(page) && !currentUser) { goToPage('auth'); return; } goToPage(page); }; });
+document.querySelectorAll('.nav-tab[data-page]').forEach(tab => { tab.onclick = () => { const page = tab.dataset.page; if (['classroom','teacher','profile','streaks','sounds','routine','dashboard'].includes(page) && !currentUser) { goToPage('auth'); return; } goToPage(page); }; });
 
 function goToPage(pageId) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const tabBtn = document.querySelector(`.nav-tab[data-page="${pageId}"]`); if (tabBtn) tabBtn.classList.add('active');
   const pageEl = document.getElementById('page-' + pageId); if (pageEl) pageEl.classList.add('active');
-  if (pageId === 'classroom') renderClassroomGrid(); if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); } if (pageId === 'streaks') renderStreaks(); if (pageId === 'sounds') buildAllSoundsGrids(); if (pageId === 'community') loadPosts(); if (pageId === 'routine') renderRoutine();
+  if (pageId === 'classroom') renderClassroomGrid();
+  if (pageId === 'dashboard') renderDashboard();
+  if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); }
+  if (pageId === 'streaks') renderStreaks();
+  if (pageId === 'sounds') buildAllSoundsGrids();
+  if (pageId === 'community') loadPosts();
+  if (pageId === 'routine') renderRoutine();
   if (pageId === 'profile') { const p = dbProfiles.find(x => x.id === currentUser?.id); if (p) document.getElementById('profile-username').value = p.username || ''; }
   window.scrollTo(0, 0);
 }
@@ -126,4 +149,3 @@ async function saveProfile() {
   await sb.from('user_profiles').upsert({ id: currentUser.id, username, avatar_url: avatarUrl }); await fetchData();
   btn.disabled = false; btn.textContent = 'Save profile'; alert('Profile updated!');
 }
-
