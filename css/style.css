@@ -181,8 +181,11 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .gate-btn{padding:10px 18px;border-radius:var(--radius-sm);background:var(--brand);color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:'Inter',sans-serif}
 .gate-btn:hover{background:var(--brand-dark)}
 .gate-error{margin-top:10px;font-size:13px;color:var(--red);display:none}
+.gate-success{margin-top:10px;font-size:13px;color:var(--green,#1D9E75);display:none;line-height:1.5}
 .gate-toggle{margin-top:14px;font-size:13px;color:var(--brand);font-weight:600;cursor:pointer}
 .gate-toggle:hover{text-decoration:underline}
+.gate-forgot{margin-top:8px;font-size:12px;color:var(--text-muted);font-weight:600;cursor:pointer}
+.gate-forgot:hover{color:var(--brand);text-decoration:underline}
 
 /* CLASSROOM & SIDEBAR */
 .course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem;margin-top:1.5rem}
