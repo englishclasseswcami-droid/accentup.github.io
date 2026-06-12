@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AccentUp — Master American English Pronunciation</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<div class="modal-overlay hidden" id="edit-post-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeEditPostModal()">×</button>
+    <h3>Edit post</h3>
+    <input type="hidden" id="edit-post-id"/>
+    <span class="field-label">Title</span>
+    <input type="text" id="edit-post-title" placeholder="Post title"/>
+    <span class="field-label">Content</span>
+    <div id="edit-post-editor-container" style="min-height:120px;margin-bottom:1rem;border-radius:var(--radius-sm);border:1px solid var(--border)"></div>
+    <button class="primary-btn" onclick="saveEditedPost()">Save changes</button>
+  </div>
+</div>
+
+<nav>
+  <div class="logo" onclick="goToPage(currentUser ? (currentUser?.email?.toLowerCase()===TEACHER_EMAIL.toLowerCase()?'teacher':'dashboard') : 'home')">
+    <span>accent<span class="logo-text-up">Up</span></span>
+    <span class="logo-dot"></span>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" data-page="home" id="nav-home">Home</button>
+    <button class="nav-tab" data-page="dashboard" id="nav-dashboard" style="display:none">Dashboard</button>
+    <button class="nav-tab" data-page="sounds" id="nav-sounds">Sounds</button>
+    <button class="nav-tab" data-page="classroom" id="nav-classroom" style="display:none">Classroom</button>
+    <button class="nav-tab" data-page="community" id="nav-community" style="display:none">Community</button>
+    <button class="nav-tab" data-page="routine" id="nav-routine-tab" style="display:none">📅 Routine</button>
+    <button class="nav-tab" data-page="streaks" id="nav-streaks-tab" style="display:none">🔥 Streaks</button>
+    <button class="nav-tab" data-page="profile" id="nav-profile-tab" style="display:none">Profile</button>
+    <button class="nav-tab teacher-tab" id="nav-teacher-tab" data-page="teacher" style="display:none">Teacher ✦</button>
+    <button class="nav-tab auth-btn" id="nav-auth-btn" onclick="handleNavAuth()">Log in</button>
+  </div>
+</nav>
+
+<div class="page" id="page-dashboard">
+  <div style="text-align:center;padding:3rem;color:var(--text-muted);font-size:14px">Loading dashboard...</div>
+</div>
+
+<div class="page active lp-page" id="page-home">
+
+  <!-- ── HERO ── -->
+  <section class="lp-hero">
+    <div class="lp-container lp-hero-inner">
+      <div style="text-align:left">
+        <span class="lp-tag">For professional women · Intermediate / Advanced English</span>
+        <h1 class="lp-h1">Speak English with the same <em>authority</em> you have in your native language.</h1>
+        <p class="lp-subtitle">You already know the grammar and have the vocabulary, but your lack of confidence when speaking is hitting a career ceiling. Unlock your oral fluency in 6 months with AccentUp.</p>
+        <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn">👉 Let's chat on WhatsApp</a>
+        <span class="lp-micro">Personalized, 1-on-1 6-month program · Strictly limited spots</span>
+      </div>
+      <div class="lp-hero-visual">
+        <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Professional woman speaking confidently" class="lp-hero-img"/>
+        <div class="lp-hero-badge">
+          <div class="lp-hero-badge-num">6</div>
+          <div class="lp-hero-badge-text">Month<br>Program</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STATS BAR ── -->
+  <div class="lp-stats-bar">
+    <div class="lp-container">
+      <div class="lp-stats-grid">
+        <div class="lp-stat"><strong>1-on-1</strong><span>Live Sessions</span></div>
+        <div class="lp-stat"><strong>24/7</strong><span>Platform Access</span></div>
+        <div class="lp-stat"><strong>6</strong><span>Months to Fluency</span></div>
+        <div class="lp-stat"><strong>100%</strong><span>Personalized</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PAIN POINTS ── -->
+  <section class="lp-section cream">
+    <div class="lp-container">
+      <h2 class="lp-h2">Your resume says "Advanced English"<br>but everyday reality feels completely different...</h2>
+      <p class="lp-p">If you are here, it's probably because these thoughts cross your mind more often than you'd like to admit:</p>
+      <div class="lp-quotes-grid">
+        <div class="lp-speech-bubble"><p>"I hate when someone says 'What?' and I have to repeat myself."</p></div>
+        <div class="lp-speech-bubble"><p>"I sound angry even when I'm not."</p></div>
+        <div class="lp-speech-bubble"><p>"I sound so much smarter in my first language."</p></div>
+        <div class="lp-speech-bubble"><p>"I understand so much… but when I speak, I can only express half of it."</p></div>
+        <div class="lp-speech-bubble"><p>"I've been learning English for years, and I still get stuck."</p></div>
+        <div class="lp-speech-bubble"><p>"I know the answer, but I usually keep it to myself."</p></div>
+      </div>
+      <div class="lp-bridge">
+        <div class="lp-bridge-text">
+          <p>You stay quieter than you'd like in meetings or social situations. You feel like the most interesting part of you is missing. Over time, this starts to affect more than your English. You feel less confident. Less present.</p>
+          <p>The truth is, conventional English courses focus heavily on theory. Rules. Word lists. Spelling.</p>
+          <p><strong>But speaking isn't theory. Speaking is physical.</strong></p>
+        </div>
+        <div class="lp-bridge-img"><img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?q=80&w=800&auto=format&fit=crop" alt="Professional woman"/></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── METHODOLOGY ── -->
+  <section class="lp-section">
+    <div class="lp-container">
+      <span class="lp-section-badge" style="color:var(--brand);background:var(--brand-light);border-color:var(--brand-light)">The AccentUp Method</span>
+      <h2 class="lp-h2">Forget traditional English courses.<br>Speaking is a physical skill.</h2>
+      <p class="lp-p">AccentUp is designed around a unique 3-step framework that shifts you from just "knowing" English to actually owning it.</p>
+      <div class="lp-mech-grid">
+        <div class="lp-mech-card">
+          <div class="lp-mech-icon">🧏</div>
+          <span class="lp-mech-step">STEP 1</span>
+          <h3>HEAR IT</h3>
+          <p>Decode the real language. Before you can say a sound, you need to truly hear it. We analyze English through its sound system using materials you actually enjoy — your favorite series, movies, TED Talks, or songs.</p>
+        </div>
+        <div class="lp-mech-card">
+          <div class="lp-mech-icon">🌐</div>
+          <span class="lp-mech-step">STEP 2</span>
+          <h3>OWN IT</h3>
+          <p>Intentional practice. This is where the physical training happens. We practice real-world pronunciation by diving deep into connected speech, linking, and natural intonation through intensive shadowing techniques.</p>
+        </div>
+        <div class="lp-mech-card">
+          <div class="lp-mech-icon">👄</div>
+          <span class="lp-mech-step">STEP 3</span>
+          <h3>SAY IT</h3>
+          <p>Automate your speech. We simulate your real professional life: practicing upcoming presentations, simulating high-stakes meetings, and role-playing interviews. Speak under pressure without getting stuck.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── COMPARISON ── -->
+  <section class="lp-section cream">
+    <div class="lp-container">
+      <h2 class="lp-h2">Why AccentUp works where other courses fail</h2>
+      <p class="lp-p">Most English programs treat speaking as a side effect of studying. AccentUp treats it as a skill you build with intention.</p>
+      <div class="lp-compare-grid">
+        <div class="lp-compare-col bad">
+          <div class="lp-compare-header">Traditional English Learning ❌</div>
+          <div class="lp-compare-item"><span>❌</span><p>Focuses on information and rules, assuming that understanding automatically leads to speaking.</p></div>
+          <div class="lp-compare-item"><span>❌</span><p>Prioritizes reading and writing instead of intentional speaking practice.</p></div>
+          <div class="lp-compare-item"><span>❌</span><p>Treats mistakes as something to be avoided at all costs.</p></div>
+          <div class="lp-compare-item"><span>❌</span><p>Ignores confidence, fear, and mindset — assuming it will come naturally with fluency.</p></div>
+          <div class="lp-compare-item"><span>❌</span><p>Creates reliance on constant feedback and always needing "the next course" to improve.</p></div>
+        </div>
+        <div class="lp-compare-col good">
+          <div class="lp-compare-header">AccentUp: Hear It. Own It. Say It. ✅</div>
+          <div class="lp-compare-item"><span>✅</span><p>Focuses on practical spoken English and trains speaking as a physical skill.</p></div>
+          <div class="lp-compare-item"><span>✅</span><p>Prioritizes pronunciation, rhythm, intonation, and real-life communication.</p></div>
+          <div class="lp-compare-item"><span>✅</span><p>Treats mistakes as a natural and necessary part of the learning process.</p></div>
+          <div class="lp-compare-item"><span>✅</span><p>Builds confidence and a growth mindset as skills you intentionally develop.</p></div>
+          <div class="lp-compare-item"><span>✅</span><p>Teaches you how to recognize your own patterns and take full ownership of your progress.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── THE OFFER ── -->
+  <section class="lp-section blue">
+    <div class="lp-container">
+      <span class="lp-section-badge">The Program</span>
+      <h2 class="lp-h2">The AccentUp 6-Month Mentorship</h2>
+      <p class="lp-p" style="color:rgba(255,255,255,0.78)">A personalized, 1-on-1 coaching program designed to permanently transform the way you speak English.</p>
+      <div class="lp-offer-core">
+        <div class="lp-core-card">
+          <div class="lp-core-icon">🎤</div>
+          <h4>Live 60-Minute 1-on-1 Sessions</h4>
+          <p>Highly focused, private coaching sessions with instant, actionable feedback. No generic lessons — we work directly on your oral roadblocks.</p>
+        </div>
+        <div class="lp-core-card">
+          <div class="lp-core-icon">💻</div>
+          <h4>The AccentUp Interactive Platform</h4>
+          <p>24/7 access to our custom-built platform featuring step-by-step explainer videos, phonetic charts, and interactive practice exercises.</p>
+        </div>
+      </div>
+      <div class="lp-bonuses-label">🎁 Exclusive Bonuses Included</div>
+      <div class="lp-bonuses-grid">
+        <div class="lp-bonus-item"><span>📅</span><div><strong>Personalized Weekly Routine</strong><p>A customized training plan to keep improving your pronunciation on your own time.</p></div></div>
+        <div class="lp-bonus-item"><span>🎬</span><div><strong>"Pronunciation Weekly Requests"</strong><p>A weekly video series addressing the exact words, sounds, or phrases you requested.</p></div></div>
+        <div class="lp-bonus-item"><span>👥</span><div><strong>The Private Community</strong><p>Access to our exclusive member network to share wins, exchange resources, and practice together.</p></div></div>
+        <div class="lp-bonus-item"><span>🔑</span><div><strong>Extended Platform Access</strong><p>An extra 3 months of full access to review and solidify your progress after the program ends.</p></div></div>
+        <div class="lp-bonus-item"><span>🚀</span><div><strong>"Boost Your Practice" Masterclass</strong><p>A special video training on how to optimize your study time for maximum results.</p></div></div>
+      </div>
+      <div class="lp-price-box">
+        <p class="lp-price-label">Your Investment in Your Career</p>
+        <div class="lp-price">$530,000 ARS</div>
+        <p class="lp-price-sub">or 3 monthly payments of $200,000 ARS</p>
+        <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn">👉 Secure your spot on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT CAMILA ── -->
+  <section class="lp-section">
+    <div class="lp-container">
+      <div class="lp-mentor">
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop" alt="Camila — Pronunciation Coach" class="lp-mentor-img"/>
+        <div class="lp-mentor-text">
+          <span class="lp-section-badge" style="color:var(--brand);background:var(--brand-light);border-color:var(--brand-light)">Your Coach</span>
+          <h2 class="lp-h2" style="text-align:left;margin-bottom:1rem">Hi, I'm Camila. And I know exactly what's holding your English back.</h2>
+          <p>For years, I've watched incredibly talented, intelligent professional women shrink in meeting rooms or avoid speaking up because they felt insecure about their English pronunciation.</p>
+          <p>They had the vocabulary. They knew the grammar. But the traditional education system completely ignored the most important part of communication: <strong>the physical skill of speaking with authority.</strong></p>
+          <p>I created AccentUp because I was tired of seeing brilliant women hit a language ceiling in their careers. My mission is to give you the exact framework, tools, and feedback you need to stop overthinking every word and start speaking with the confidence and clarity your professional talent deserves.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FINAL CTA ── -->
+  <section class="lp-final-cta">
+    <div class="lp-container">
+      <span class="lp-section-badge">Limited Spots Available</span>
+      <h2 class="lp-h2">Ready to stop holding back<br>and start speaking up?</h2>
+      <p>Your ideas deserve to be heard. Your career deserves to grow. Let's find out if AccentUp is the right fit for you — no pressure, no commitment, just a real conversation.</p>
+      <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn" style="font-size:18px;padding:18px 44px">👉 Let's talk on WhatsApp</a>
+      <div class="lp-micro" style="margin-top:16px">Free 15-min discovery call · 1-on-1 program · Strictly limited spots</div>
+    </div>
+  </section>
+
+  <!-- ── FAQ ── -->
+  <section class="lp-section cream">
+    <div class="lp-container">
+      <h2 class="lp-h2">Frequently Asked Questions</h2>
+      <div class="lp-faq">
+        <details><summary>Is this program right for beginners?</summary><p>No. AccentUp is exclusively designed for professionals who already have an intermediate or advanced understanding of English grammar and vocabulary, but struggle with oral fluency, pronunciation, and confidence.</p></details>
+        <details><summary>I have a very busy schedule. How much time do I need to invest?</summary><p>The program is built for busy professionals. Alongside our highly focused 60-minute weekly live session, you will get a personalized routine using our 24/7 interactive platform. You don't need hours a day — you just need consistent, intentional practice (even 15 minutes a day makes a huge difference).</p></details>
+        <details><summary>Is this a group class or 1-on-1?</summary><p>This is a highly personalized, 1-on-1 mentorship. I work directly with you, using your own real-world materials (like your upcoming presentations or meetings) to tackle your specific blind spots.</p></details>
+        <details><summary>How do I secure my spot?</summary><p>Because this is a personalized 1-on-1 experience, I only work with a small number of students at a time to ensure the highest quality of feedback. Click the button below to reach out to me directly on WhatsApp so we can see if you are a good fit for the program!</p></details>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="page" id="page-sounds">
+  <div class="section-intro"><h2>Sounds of American English</h2><p>Explore the 19 vowel sounds and 24 consonant sounds. Click any card to explore mouth position, spellings, and tips.</p></div>
+  <div style="margin-bottom:1.5rem">
+    <input type="text" id="sounds-search" placeholder="🔍  Search by sound, word, or name — e.g. /ɪ/, hit, Short I" oninput="filterSounds(this.value)" style="margin-bottom:0;border-radius:30px;padding:10px 18px;font-size:14px"/>
+  </div>
+  <div id="sound-detail" class="detail-panel"><div class="detail-empty">Select a sound to explore it</div></div>
+  <div class="sub-heading" style="font-size:18px; color:var(--brand-dark)">Pure Vowels</div><div class="sound-grid" id="pure-vowel-grid"></div>
+  <div class="sub-heading" style="font-size:18px; color:var(--brand-dark)">Diphthongs</div><div class="sound-grid" id="diphthong-grid"></div>
+  <div class="sub-heading" style="font-size:18px; color:var(--brand-dark)">R-Colored Vowels</div><div class="sound-grid" id="rcolored-grid"></div>
+  <div class="sub-heading" style="font-size:18px; color:var(--brand-dark)">Stops</div><div class="sound-grid" id="stops-grid"></div>
+  <div class="sub-heading" style="font-size:18px; color:var(--brand-dark)">Fricatives</div><div class="sound-grid" id="fricatives-grid"></div>
+  <div class="sub-heading" style="font-size:18px; color:var(--brand-dark)">Affricates</div><div class="sound-grid" id="affricates-grid"></div>
+  <div class="sub-heading" style="font-size:18px; color:var(--brand-dark)">Nasals</div><div class="sound-grid" id="nasals-grid"></div>
+  <div class="sub-heading" style="font-size:18px; color:var(--brand-dark)">Liquids &amp; Glides</div><div class="sound-grid" id="liquids-grid"></div>
+</div>
+
+<div class="page" id="page-auth">
+  <div class="gate">
+    <div id="auth-view-main">
+      <h2 id="auth-title">Welcome back</h2>
+      <p id="auth-subtitle">Log in to access your classroom and exercises.</p>
+      <div class="gate-form">
+        <input type="email" class="gate-input" id="auth-email" placeholder="Email" onkeydown="if(event.key==='Enter')handleAuth()"/>
+        <input type="password" class="gate-input" id="auth-pw" placeholder="Password" onkeydown="if(event.key==='Enter')handleAuth()"/>
+        <button class="gate-btn" onclick="handleAuth()" id="auth-submit-btn">Log in</button>
+      </div>
+      <div class="gate-toggle" onclick="toggleAuthMode()" id="auth-toggle">Don't have an account? Sign up</div>
+      <div class="gate-forgot" onclick="showResetRequest()" id="auth-forgot-link">Forgot your password?</div>
+      <div class="gate-error" id="auth-error"></div>
+    </div>
+
+    <div id="auth-view-reset-request" style="display:none">
+      <h2>Reset your password</h2>
+      <p>Enter your email and we'll send you a link to reset your password.</p>
+      <div class="gate-form">
+        <input type="email" class="gate-input" id="reset-email" placeholder="Email" onkeydown="if(event.key==='Enter')sendResetEmail()"/>
+        <button class="gate-btn" onclick="sendResetEmail()" id="reset-submit-btn">Send reset link</button>
+      </div>
+      <div class="gate-toggle" onclick="backToLogin()">Back to log in</div>
+      <div class="gate-error" id="reset-error"></div>
+      <div class="gate-success" id="reset-success"></div>
+    </div>
+
+    <div id="auth-view-reset-confirm" style="display:none">
+      <h2>Set a new password</h2>
+      <p>Enter your new password below.</p>
+      <div class="gate-form">
+        <input type="password" class="gate-input" id="new-pw" placeholder="New password" onkeydown="if(event.key==='Enter')updatePassword()"/>
+        <input type="password" class="gate-input" id="new-pw-confirm" placeholder="Confirm new password" onkeydown="if(event.key==='Enter')updatePassword()"/>
+        <button class="gate-btn" onclick="updatePassword()" id="update-pw-btn">Update password</button>
+      </div>
+      <div class="gate-error" id="update-pw-error"></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-profile">
+  <div class="t-panel" style="max-width:500px;margin:0 auto">
+    <h3>👤 Edit Profile</h3>
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:1rem">Customize your display name and photo for the community.</p>
+    <span class="field-label">Username</span>
+    <input type="text" id="profile-username" placeholder="Choose a display name"/>
+    <span class="field-label">Profile picture</span>
+    <input type="file" id="profile-avatar" accept="image/*"/>
+    <button class="primary-btn" id="btn-save-profile" onclick="saveProfile()">Save profile</button>
+  </div>
+</div>
+
+<div class="page" id="page-routine">
+  <div style="text-align:center;padding:3rem;color:var(--text-muted)"><div style="font-size:32px;margin-bottom:8px">📅</div><div style="font-size:14px">Loading your routine...</div></div>
+</div>
+
+<div class="page page-full" id="page-community">
+  <div class="community-container">
+    <div id="community-feed-view">
+      <div class="section-intro" style="text-align:center"><h2>Community</h2><p>Tips, resources, and updates from Camila. Leave a comment or question below each post.</p></div>
+      <div class="write-post-box" id="write-post-box" style="display:none">
+        <input type="text" id="new-post-title" class="gate-input" placeholder="Title of your post" style="margin-bottom:8px"/>
+        <div id="community-editor-container"></div>
+        <div style="text-align:right;margin-top:8px"><button class="primary-btn" style="width:auto;padding:6px 16px" onclick="submitPost()">Post</button></div>
+      </div>
+      <div id="community-posts-list"><div style="text-align:center;padding:3rem;color:var(--text-light);font-size:14px">Loading posts...</div></div>
+    </div>
+    <div id="community-post-view" style="display:none">
+      <button onclick="backToCommunityFeed()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-weight:600;font-family:'Inter',sans-serif;font-size:13px;margin-bottom:1.5rem;display:flex;align-items:center;gap:6px">← Back to Community</button>
+      <div id="single-post-render"></div>
+      <div class="comments-section">
+        <h3 style="font-size:15px;margin-bottom:12px;color:var(--text)">Comments</h3>
+        <div id="comments-list"></div>
+        <div style="margin-top:1.5rem;display:flex;gap:8px">
+          <input type="text" id="new-comment-input" class="gate-input" placeholder="Write a comment..." onkeydown="if(event.key==='Enter')submitComment()"/>
+          <button class="primary-btn" style="width:auto;padding:8px 16px" onclick="submitComment()">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page page-full" id="page-classroom">
+  <div id="classroom-grid-view">
+    <div class="section-intro"><h2>Classroom</h2><p>Select a folder to see its lessons and activities.</p></div>
+    <div class="course-grid" id="classroom-modules-grid"><div style="color:var(--text-light);font-size:14px;grid-column:1/-1;text-align:center;padding:3rem 0">Loading...</div></div>
+  </div>
+  <div id="classroom-player-view" style="display:none">
+    <button onclick="backToClassroomGrid()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-weight:600;font-family:'Inter',sans-serif;font-size:13px;margin-bottom:1.5rem;display:flex;align-items:center;gap:6px">← Back to Classroom</button>
+    <div class="classroom-container">
+      <aside class="c-sidebar">
+        <div class="c-progress-box"><div class="c-course-title" id="sidebar-mod-title"></div></div>
+        <div class="c-nav-list" id="sidebar-render"></div>
+      </aside>
+      <main class="c-main">
+        <div id="view-welcome" class="c-empty-state"><div style="font-size:40px;margin-bottom:12px">👋</div><h2 style="color:var(--text);font-weight:800;margin-bottom:8px;font-size:18px">Welcome!</h2><p>Select a lesson from the menu on the left to get started.</p></div>
+        <div id="view-video" style="display:none">
+          <h2 id="cv-video-title" class="lesson-title-main"></h2><div id="cv-video-audios" class="lesson-audios-box" style="display:none"></div><div id="cv-video-player" class="video-container"></div><div id="cv-video-text" class="text-content-main ql-editor" style="border:none;padding:0;margin-top:1.5rem"></div><div id="cv-video-resources" class="resources-panel" style="display:none"></div><div class="lesson-complete-wrap"><button class="submit-btn" id="btn-complete-video" onclick="markCurrentLessonComplete()">Mark as complete</button></div>
+        </div>
+        <div id="view-text" style="display:none">
+          <h2 id="cv-text-title" class="lesson-title-main"></h2><div id="cv-text-audios" class="lesson-audios-box" style="display:none"></div><div id="cv-text-content" class="text-content-main ql-editor" style="border:none;padding:0"></div><div id="cv-text-resources" class="resources-panel" style="display:none"></div><div class="lesson-complete-wrap"><button class="submit-btn" id="btn-complete-text" onclick="markCurrentLessonComplete()">Mark as complete</button></div>
+        </div>
+        <div id="view-embed" style="display:none">
+          <h2 id="cv-embed-title" class="lesson-title-main"></h2><div id="cv-embed-audios" class="lesson-audios-box" style="display:none"></div><div id="cv-embed-text" class="text-content-main ql-editor" style="border:none;padding:0;margin-bottom:1.5rem"></div><div id="cv-embed-container" style="width:100%;border-radius:var(--radius);overflow:hidden;margin-bottom:1.5rem"></div><div id="cv-embed-resources" class="resources-panel" style="display:none"></div><div class="lesson-complete-wrap"><button class="submit-btn" id="btn-complete-embed" onclick="markCurrentLessonComplete()">Mark as complete</button></div>
+        </div>
+        <div id="view-exercise" style="display:none">
+          <h2 id="player-title" class="lesson-title-main"></h2>
+          <div id="cv-task-text" class="text-content-main ql-editor" style="border:none;padding:0;margin-bottom:1.5rem;display:none"></div>
+          <audio id="player-audio" controls style="display:none;width:100%;margin-bottom:1.25rem;border-radius:30px"></audio>
+          <div id="cv-task-audios" class="lesson-audios-box" style="display:none"></div>
+          <div id="player-questions"></div>
+          <div class="player-footer"><button class="submit-btn" id="submit-btn" onclick="submitExercise()">Check my answers</button><button class="retry-btn" id="retry-btn" style="display:none" onclick="retryExercise()">Try again</button></div>
+          <div id="score-area"></div>
+          <div id="cv-task-resources" class="resources-panel" style="display:none"></div>
+        </div>
+
+        <!-- Recording panel — shared across all lesson types -->
+        <div id="recording-panel" class="rec-panel" style="display:none">
+          <div class="rec-panel-header">
+            <span class="rec-panel-title">🎙 Record your pronunciation</span>
+            <span class="rec-prev-lbl" id="rec-prev-label"></span>
+          </div>
+          <div id="rec-idle-view">
+            <button class="rec-btn-start" onclick="startRecording()">⏺ Start recording</button>
+          </div>
+          <div id="rec-active-view" style="display:none">
+            <div class="rec-active-row">
+              <span class="rec-dot"></span>
+              <span class="rec-timer" id="rec-timer">0:00</span>
+            </div>
+            <button class="rec-btn-stop" onclick="stopRecording()">⏹ Stop</button>
+          </div>
+          <div id="rec-done-view" style="display:none">
+            <audio id="rec-playback" controls style="width:100%;height:36px;border-radius:20px"></audio>
+            <div class="rec-done-row">
+              <button class="submit-btn" id="rec-save-btn" onclick="saveRecording()" style="flex:1;padding:9px">💾 Save recording</button>
+              <button class="outline-btn" onclick="retakeRecording()" style="padding:9px 14px">↺ Re-record</button>
+            </div>
+          </div>
+          <div id="rec-saved-view" style="display:none">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+              <div style="font-size:12px;color:var(--green,#1D9E75);font-weight:700">✅ Recording saved</div>
+              <div style="font-size:11px;color:var(--text-muted)" id="rec-total-label"></div>
+            </div>
+            <audio id="rec-saved-audio" controls style="width:100%;height:36px;border-radius:20px"></audio>
+            <div style="margin-top:8px">
+              <button class="outline-btn" onclick="retakeRecording()" style="font-size:12px;padding:6px 14px">↺ Re-record</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-streaks">
+  <div class="section-intro"><h2>🔥 Streaks</h2><p>Keep your momentum — every day you practice counts.</p></div>
+  <div id="streaks-student-view">
+    <div class="streak-hero">
+      <div class="streak-fire">🔥</div>
+      <div class="streak-count" id="streak-current-num">0</div>
+      <div class="streak-label">day streak</div>
+    </div>
+    <div class="streak-stats-row">
+      <div class="streak-stat-card"><div class="streak-stat-num" id="streak-best-num">0</div><div class="streak-stat-lbl">Best streak</div></div>
+      <div class="streak-stat-card"><div class="streak-stat-num" id="streak-total-num">0</div><div class="streak-stat-lbl">Lessons done</div></div>
+      <div class="streak-stat-card"><div class="streak-stat-num" id="streak-days-num">0</div><div class="streak-stat-lbl">Active days</div></div>
+    </div>
+    <div class="streak-cal-wrap">
+      <div class="streak-cal-title">Last 90 days</div>
+      <div class="streak-cal-grid" id="streak-cal-grid"></div>
+    </div>
+    <div class="streak-speak-wrap" id="speak-wrap">
+      <div class="streak-cal-title" style="margin-bottom:.75rem">🎙 Speaking Time</div>
+      <div id="speak-empty" style="font-size:13px;color:var(--text-muted);text-align:center;padding:.5rem 0 .25rem">Start recording in any lesson to track your speaking time.</div>
+      <div id="speak-stats" style="display:none">
+        <div class="streak-stats-row">
+          <div class="streak-stat-card"><div class="streak-stat-num" id="speak-total" style="font-size:22px">0:00</div><div class="streak-stat-lbl">Total</div></div>
+          <div class="streak-stat-card"><div class="streak-stat-num" id="speak-week" style="font-size:22px">0:00</div><div class="streak-stat-lbl">This week</div></div>
+          <div class="streak-stat-card"><div class="streak-stat-num" id="speak-sessions">0</div><div class="streak-stat-lbl">Sessions</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="streaks-teacher-view" style="display:none">
+    <div class="streak-all-students">
+      <div class="streak-all-title">📊 Student Activity</div>
+      <div id="streak-all-list"><div style="color:var(--text-light);font-size:13px;text-align:center;padding:1rem 0">Loading...</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="page page-full" id="page-teacher">
+  <div class="teacher-header"><h2>Teacher Dashboard</h2><p>Organize your content and control access.</p></div>
+  <div class="teacher-layout">
+    <div>
+      <div class="t-panel" style="padding-bottom:1rem">
+        <div class="t-tabs">
+          <button class="t-tab-btn active" onclick="switchTTab('mod',this)">📂 Module</button>
+          <button class="t-tab-btn" onclick="switchTTab('sub',this)">📁 Subfolder</button>
+          <button class="t-tab-btn" onclick="switchTTab('les',this)">📝 Lesson</button>
+          <button class="t-tab-btn" onclick="switchTTab('routine',this)">📅 Routines</button>
+          <button class="t-tab-btn" onclick="switchTTab('students',this)">👥 Students <span id="pending-badge" style="display:none;background:#e05252;color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:800;margin-left:4px"></span></button>
+        </div>
+        <div class="t-tab-panel active" id="t-tab-mod">
+          <h3 id="panel-title-mod" style="border:none;padding-bottom:0;margin-bottom:.9rem">📂 Create Module</h3>
+          <input type="hidden" id="edit-mod-id" value=""/>
+          <div style="display:flex; gap:12px; margin-bottom:8px">
+            <div style="flex:1"><span class="field-label" style="margin-top:0">Module name</span><input type="text" id="t-mod-title" placeholder="e.g. Pronunciation Basics" style="margin-bottom:0"/></div>
+            <div style="flex:1"><span class="field-label" style="margin-top:0">Access Control</span><label style="font-size:13px;display:flex;align-items:center;gap:6px;height:35px;margin:0"><input type="checkbox" id="t-mod-private" onchange="document.getElementById('t-mod-emails-wrap').style.display = this.checked ? 'block' : 'none'" style="width:auto;margin:0"/> Make module private</label></div>
+          </div>
+          <div id="t-mod-emails-wrap" style="display:none; margin-bottom:12px;"><span class="field-label">Allowed emails (comma separated)</span><textarea id="t-mod-emails" placeholder="e.g. student1@gmail.com, student2@yahoo.com" style="min-height:60px;"></textarea></div>
+          <div style="display:flex;gap:8px; margin-top:12px;"><button class="primary-btn" style="margin-top:0;" onclick="saveModule()">Save module</button><button class="secondary-btn" id="btn-cancel-mod" style="display:none;" onclick="cancelEditMod()">Cancel</button></div>
+        </div>
+        <div class="t-tab-panel" id="t-tab-sub">
+          <h3 id="panel-title-sub" style="border:none;padding-bottom:0;margin-bottom:.9rem">📁 Create Subfolder</h3>
+          <input type="hidden" id="edit-sub-id" value=""/>
+          <div style="display:flex; gap:12px; margin-bottom:8px">
+            <div style="flex:1"><span class="field-label" style="margin-top:0">Inside module</span><select id="t-sub-parent" style="margin-bottom:0"></select></div>
+            <div style="flex:1"><span class="field-label" style="margin-top:0">Subfolder name</span><input type="text" id="t-sub-title" placeholder="e.g. 1. The American R" style="margin-bottom:0"/></div>
+          </div>
+          <div style="display:flex;gap:8px; margin-top:12px;"><button class="primary-btn" style="background:var(--brand-mid); margin-top:0;" onclick="saveSubmodule()">Save subfolder</button><button class="secondary-btn" id="btn-cancel-sub" style="display:none;" onclick="cancelEditSub()">Cancel</button></div>
+        </div>
+        <div class="t-tab-panel" id="t-tab-les">
+          <h3 id="panel-title-les" style="border:none;padding-bottom:0;margin-bottom:.9rem">📝 Add Lesson</h3>
+          <input type="hidden" id="edit-les-id" value=""/>
+          <div style="display:flex; gap:12px; margin-bottom:12px">
+            <div style="flex:1"><span class="field-label" style="margin-top:0">Module</span><select id="t-les-module" onchange="updateSubfolderSelect()" style="margin-bottom:0"></select></div>
+            <div style="flex:1"><span class="field-label" style="margin-top:0">Subfolder (optional)</span><select id="t-les-submodule" style="margin-bottom:0"></select></div>
+          </div>
+          <div style="display:flex; gap:12px; margin-bottom:12px">
+            <div style="flex:1"><span class="field-label" style="margin-top:0">Lesson type</span><select id="t-les-type" onchange="toggleLessonFields()" style="margin-bottom:0"><option value="video">📺 Video</option><option value="text">📄 Reading material</option><option value="task">📝 Interactive exercise</option><option value="embed">🌐 Embed</option></select></div>
+            <div style="flex:2"><span class="field-label" style="margin-top:0">Lesson title</span><input type="text" id="t-les-title" placeholder="e.g. Lesson 1 — Short I vs Long E" style="margin-bottom:0"/></div>
+          </div>
+          <hr style="border:0;border-top:1px solid var(--skool-border);margin:1.25rem 0"/>
+          <div id="fields-video"><span class="field-label">YouTube URL</span><input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..." style="margin-bottom:0;"/></div>
+          <div id="fields-text"><span class="field-label" id="text-field-label" style="margin-top:12px">Introduction / Instructions (optional)</span><div id="quill-editor-container"></div></div>
+          <div id="fields-embed" style="display:none"><span class="field-label">Embed code (iframe)</span><textarea id="t-les-embed-code" placeholder="Paste your iframe code here..." style="font-family:monospace;min-height:100px"></textarea></div>
+          <div id="fields-task" style="display:none">
+            <span class="field-label" style="margin-top: 1.5rem; margin-bottom: 8px;">Questions / Items</span>
+            <div id="q-builder"></div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top: 1rem;">
+              <button class="secondary-btn" onclick="addQuestion('multiple_choice')">+ Multiple Choice</button>
+              <button class="secondary-btn" onclick="addQuestion('fill_in_blank')">+ Fill in Blanks</button>
+              <button class="secondary-btn" onclick="addQuestion('short_answer')">+ Short Text Answer</button>
+              <button class="secondary-btn" onclick="addQuestion('open_answer')">+ Open Answer</button>
+              <button class="secondary-btn" onclick="addQuestion('dictation')">+ Dictation</button>
+              <button class="secondary-btn" onclick="addQuestion('drag_drop_text')">+ Drag &amp; Drop (Text)</button>
+              <button class="secondary-btn" onclick="addQuestion('drag_drop')">+ Drag &amp; Drop (Categories)</button>
+            </div>
+          </div>
+          <div style="margin-top:1.25rem;background:#F0FDF4;padding:14px;border-radius:var(--radius-sm);border:1px solid #BBF7D0">
+            <p style="font-size:12px;font-weight:700;color:#166534;margin-bottom:4px">🎧 Lesson audio examples</p>
+            <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Add clickable audios for practice words or examples.</p>
+            <div class="audio-add-row"><input type="text" id="t-audio-label" placeholder="Label (e.g. Word 1)" style="margin-bottom:0;flex:1"/><input type="file" id="t-audio-file" accept="audio/*" style="margin-bottom:0;width:auto;flex:1"/><button class="secondary-btn" id="btn-add-audio" onclick="addSharedAudio()">+ Add</button></div>
+            <div id="t-shared-audios-render"></div>
+          </div>
+          <div style="margin-top:1.25rem;background:#FFF9F6;padding:14px;border-radius:var(--radius-sm);border:1px solid var(--accent)">
+            <p style="font-size:12px;font-weight:700;color:var(--accent-dark);margin-bottom:4px">📎 Attach resources (PDFs, guides, images)</p>
+            <input type="file" id="t-les-resources" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" multiple/>
+            <div id="t-les-resources-current" style="font-size:11px;color:var(--text-muted);margin-top:-4px"></div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:1rem;"><button class="primary-btn" onclick="saveLesson()" id="btn-save-les" style="margin-top:0">Save lesson</button><button class="secondary-btn" id="btn-cancel-les" style="display:none;margin-top:0" onclick="cancelEditLes()">Cancel</button></div>
+        </div>
+        <div class="t-tab-panel" id="t-tab-routine">
+          <div class="field-label" style="margin-top:0">Student</div>
+          <select id="routine-student-select" onchange="loadStudentRoutineForEdit(this.value)">
+            <option value="">— Select a student to edit her routine —</option>
+          </select>
+          <div id="routine-edit-area" style="display:none;margin-top:1.25rem"></div>
+        </div>
+        <div class="t-tab-panel" id="t-tab-students">
+          <div class="field-label" style="margin-top:0">Pending approval</div>
+          <div id="students-pending-list"><div style="color:var(--text-light);font-size:13px;padding:.5rem 0">Loading...</div></div>
+          <div class="field-label" style="margin-top:1.5rem">Approved students</div>
+          <div id="students-approved-list"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="t-panel"><h3>🛠 Content manager</h3><div id="t-manage-list"><div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Built with <strong>AccentUp</strong> · American English pronunciation for Spanish speakers</footer>
+
+
+<!-- App scripts — order matters for dependencies -->
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/classroom.js"></script>
+<script src="js/recording.js"></script>
+<script src="js/community.js"></script>
+<script src="js/teacher.js"></script>
+<script src="js/streaks.js"></script>
+<script src="js/sounds.js"></script>
+<script src="js/routine.js"></script>
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>
