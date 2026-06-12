@@ -29,7 +29,7 @@ function updateAuthUI() {
   show('nav-dashboard',  isLoggedIn && !isTeacher);
   show('nav-sounds',     true);
   show('nav-classroom',  isLoggedIn && !isTeacher);
-  show('nav-community',  isLoggedIn && !isTeacher);
+  show('nav-community',  isLoggedIn);
   show('nav-routine-tab', isLoggedIn && !isTeacher);
   show('nav-streaks-tab', isLoggedIn);
   show('nav-profile-tab', isLoggedIn && !isTeacher);
