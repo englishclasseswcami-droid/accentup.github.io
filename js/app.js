@@ -77,7 +77,7 @@ async function handleAuth() {
   }
 }
 
-document.querySelectorAll('.nav-tab[data-page]').forEach(tab => { tab.onclick = () => { const page = tab.dataset.page; if (['classroom','teacher','profile','streaks','sounds','routine','dashboard'].includes(page) && !currentUser) { goToPage('auth'); return; } goToPage(page); }; });
+document.querySelectorAll('.nav-tab[data-page]').forEach(tab => { tab.onclick = () => { const page = tab.dataset.page; if (['classroom','teacher','profile','streaks','routine','dashboard'].includes(page) && !currentUser) { goToPage('auth'); return; } goToPage(page); }; });
 
 function goToPage(pageId) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
