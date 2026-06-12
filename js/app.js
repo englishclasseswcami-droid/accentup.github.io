@@ -2,7 +2,17 @@ document.addEventListener('DOMContentLoaded', () => {
   try { quillEditor = new Quill('#quill-editor-container', { theme: 'snow', placeholder: 'Write your lesson content here...', modules: { toolbar: [[{ header: [1,2,3,4,false] }],['bold','italic','strike','code','blockquote','code-block'],[{ list:'ordered' },{ list:'bullet' }],['link','image','video'],['clean']] } }); } catch(e) { console.warn('Quill lesson init error:', e); }
   try { communityQuill = new Quill('#community-editor-container', { theme: 'snow', placeholder: 'Write your post here — you can add titles, bold text, links, YouTube videos and images...', modules: { toolbar: [[{ header: [1, 2, false] }], ['bold', 'italic', 'underline'], ['link', 'image', 'video'], [{ list: 'ordered' }, { list: 'bullet' }], ['clean']] } }); } catch(e) { console.warn('Quill community init error:', e); }
   try { editPostQuill = new Quill('#edit-post-editor-container', { theme: 'snow', modules: { toolbar: [['bold','italic'],['link'],['clean']] } }); } catch(e) { console.warn('Quill edit post init error:', e); }
-  sb.auth.onAuthStateChange((_e, session) => { currentUser = session?.user || null; updateAuthUI(); if (currentUser) fetchData(); });
+  sb.auth.onAuthStateChange((event, session) => {
+    currentUser = session?.user || null;
+    if (event === 'PASSWORD_RECOVERY') {
+      goToPage('auth');
+      document.getElementById('auth-view-main').style.display = 'none';
+      document.getElementById('auth-view-reset-request').style.display = 'none';
+      document.getElementById('auth-view-reset-confirm').style.display = 'block';
+      return;
+    }
+    updateAuthUI(); if (currentUser) fetchData();
+  });
   renderQFields(); toggleLessonFields();
 });
 
@@ -55,6 +65,52 @@ function toggleAuthMode() {
   document.getElementById('auth-toggle').textContent = isLoginMode ? "Don't have an account? Sign up" : 'Already have an account? Log in';
   document.getElementById('auth-submit-btn').textContent = isLoginMode ? 'Log in' : 'Create account';
   document.getElementById('auth-error').style.display = 'none';
+  document.getElementById('auth-forgot-link').style.display = isLoginMode ? 'block' : 'none';
+}
+
+/* ── PASSWORD RESET ── */
+function showResetRequest() {
+  document.getElementById('auth-view-main').style.display = 'none';
+  document.getElementById('auth-view-reset-request').style.display = 'block';
+  document.getElementById('auth-view-reset-confirm').style.display = 'none';
+  document.getElementById('reset-error').style.display = 'none';
+  document.getElementById('reset-success').style.display = 'none';
+  document.getElementById('reset-email').value = '';
+}
+
+function backToLogin() {
+  document.getElementById('auth-view-main').style.display = 'block';
+  document.getElementById('auth-view-reset-request').style.display = 'none';
+  document.getElementById('auth-view-reset-confirm').style.display = 'none';
+}
+
+async function sendResetEmail() {
+  const email = document.getElementById('reset-email').value.trim();
+  const errEl = document.getElementById('reset-error'); errEl.style.display = 'none';
+  const successEl = document.getElementById('reset-success'); successEl.style.display = 'none';
+  if (!email) { errEl.textContent = 'Please enter your email.'; errEl.style.display = 'block'; return; }
+  const btn = document.getElementById('reset-submit-btn'); btn.disabled = true; btn.textContent = 'Sending...';
+  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + window.location.pathname });
+  btn.disabled = false; btn.textContent = 'Send reset link';
+  if (error) { errEl.textContent = error.message; errEl.style.display = 'block'; }
+  else { successEl.textContent = "✅ Check your email — we've sent you a password reset link."; successEl.style.display = 'block'; }
+}
+
+async function updatePassword() {
+  const pw = document.getElementById('new-pw').value;
+  const pw2 = document.getElementById('new-pw-confirm').value;
+  const errEl = document.getElementById('update-pw-error'); errEl.style.display = 'none';
+  if (!pw || pw.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; errEl.style.display = 'block'; return; }
+  if (pw !== pw2) { errEl.textContent = 'Passwords do not match.'; errEl.style.display = 'block'; return; }
+  const btn = document.getElementById('update-pw-btn'); btn.disabled = true; btn.textContent = 'Updating...';
+  const { error } = await sb.auth.updateUser({ password: pw });
+  btn.disabled = false; btn.textContent = 'Update password';
+  if (error) { errEl.textContent = error.message; errEl.style.display = 'block'; return; }
+  document.getElementById('auth-view-reset-confirm').style.display = 'none';
+  document.getElementById('auth-view-main').style.display = 'block';
+  alert('Password updated! Welcome back.');
+  updateAuthUI();
+  if (currentUser) fetchData();
 }
 
 async function handleAuth() {
@@ -147,4 +203,3 @@ async function saveProfile() {
   await sb.from('user_profiles').upsert({ id: currentUser.id, username, avatar_url: avatarUrl }); await fetchData();
   btn.disabled = false; btn.textContent = 'Save profile'; alert('Profile updated!');
 }
-
