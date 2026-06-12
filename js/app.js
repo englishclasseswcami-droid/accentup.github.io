@@ -51,17 +51,15 @@ function updateAuthUI() {
 function toggleAuthMode() {
   isLoginMode = !isLoginMode;
   document.getElementById('auth-title').textContent = isLoginMode ? 'Welcome back' : 'Create account';
-  document.getElementById('auth-subtitle').textContent = isLoginMode ? 'Log in to access your classroom.' : 'Sign up with your invitation code.';
+  document.getElementById('auth-subtitle').textContent = isLoginMode ? 'Log in to access your classroom.' : 'Sign up below — Camila will review and activate your account.';
   document.getElementById('auth-toggle').textContent = isLoginMode ? "Don't have an account? Sign up" : 'Already have an account? Log in';
-  document.getElementById('auth-code').style.display = isLoginMode ? 'none' : 'block';
   document.getElementById('auth-submit-btn').textContent = isLoginMode ? 'Log in' : 'Create account';
   document.getElementById('auth-error').style.display = 'none';
 }
 
 async function handleAuth() {
-  const email = document.getElementById('auth-email').value.trim(); const pw = document.getElementById('auth-pw').value; const code = document.getElementById('auth-code').value.trim();
+  const email = document.getElementById('auth-email').value.trim(); const pw = document.getElementById('auth-pw').value;
   const errEl = document.getElementById('auth-error'); errEl.style.display = 'none';
-  if (!isLoginMode && code !== STUDENT_ACCESS_CODE) { errEl.textContent = 'Incorrect invitation code.'; errEl.style.display = 'block'; return; }
   const btn = document.getElementById('auth-submit-btn'); btn.disabled = true; btn.textContent = 'Loading...';
   const res = isLoginMode ? await sb.auth.signInWithPassword({ email, password: pw }) : await sb.auth.signUp({ email, password: pw });
   if (res.error) { errEl.textContent = res.error.message; errEl.style.display = 'block'; btn.disabled = false; btn.textContent = isLoginMode ? 'Log in' : 'Create account'; } 
@@ -70,7 +68,7 @@ async function handleAuth() {
       const userId = res.data?.user?.id;
       if (userId) {
         const checkProf = await sb.from('user_profiles').select('id').eq('id', userId).single();
-        if (!checkProf.data) await sb.from('user_profiles').insert([{ id: userId, username: email.split('@')[0] }]);
+        if (!checkProf.data) await sb.from('user_profiles').insert([{ id: userId, username: email.split('@')[0], approved: false }]);
       }
     }
     btn.disabled = false; btn.textContent = isLoginMode ? 'Log in' : 'Create account';
@@ -85,7 +83,7 @@ function goToPage(pageId) {
   const pageEl = document.getElementById('page-' + pageId); if (pageEl) pageEl.classList.add('active');
   if (pageId === 'classroom') renderClassroomGrid();
   if (pageId === 'dashboard') renderDashboard();
-  if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); }
+  if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); updatePendingBadge(); }
   if (pageId === 'streaks') renderStreaks();
   if (pageId === 'sounds') buildAllSoundsGrids();
   if (pageId === 'community') loadPosts();
@@ -149,3 +147,4 @@ async function saveProfile() {
   await sb.from('user_profiles').upsert({ id: currentUser.id, username, avatar_url: avatarUrl }); await fetchData();
   btn.disabled = false; btn.textContent = 'Save profile'; alert('Profile updated!');
 }
+

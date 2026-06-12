@@ -62,7 +62,7 @@ async function openPost(postId) {
   const { data: p } = await sb.from('posts').select('*').eq('id', postId).single();
   if (!p) { backToCommunityFeed(); return; }
   const canEdit = currentUser?.id === p.user_id;
-  const bodyText = p.body || p.content || '';
+  const bodyText = sanitizeHtml(p.body || p.content || '');
   document.getElementById('single-post-render').innerHTML = `
     <div class="post-header">
       <div class="post-avatar">${renderAvatarHTML(p.user_id, '')}</div>

@@ -211,6 +211,62 @@ function switchTTab(name, btn) {
   document.getElementById('t-tab-' + name)?.classList.add('active');
   if (name === 'les') { updateModuleSelect(); updateSubfolderSelect(); }
   if (name === 'routine') renderTeacherRoutineTab();
+  if (name === 'students') renderStudentsTab();
+}
+
+/* ══════════════════════════════════════════
+   STUDENT APPROVAL
+══════════════════════════════════════════ */
+function renderStudentsTab() {
+  const pendingEl  = document.getElementById('students-pending-list');
+  const approvedEl = document.getElementById('students-approved-list');
+  if (!pendingEl || !approvedEl) return;
+  const students = dbProfiles.filter(p => p.id !== currentUser?.id);
+  const pending  = students.filter(s => s.approved === false);
+  const approved = students.filter(s => s.approved !== false);
+
+  pendingEl.innerHTML = pending.length
+    ? pending.map(s => `
+      <div class="streak-stu-row" style="cursor:default">
+        <div class="post-avatar" style="width:30px;height:30px;font-size:12px;flex-shrink:0">${renderAvatarHTML(s.id, s.username||'Student')}</div>
+        <span class="streak-stu-name">${esc(s.username||'Unnamed')}</span>
+        <button class="primary-btn" style="margin:0;padding:6px 16px;width:auto;font-size:12px" onclick="approveStudent('${s.id}')">✅ Approve</button>
+      </div>`).join('')
+    : `<div style="color:var(--text-light);font-size:13px;padding:.5rem 0">No pending sign-ups.</div>`;
+
+  approvedEl.innerHTML = approved.length
+    ? approved.map(s => `
+      <div class="streak-stu-row" style="cursor:default">
+        <div class="post-avatar" style="width:30px;height:30px;font-size:12px;flex-shrink:0">${renderAvatarHTML(s.id, s.username||'Student')}</div>
+        <span class="streak-stu-name">${esc(s.username||'Unnamed')}</span>
+        <button class="outline-btn" style="margin:0;padding:5px 14px;font-size:11px" onclick="revokeStudent('${s.id}')">Revoke access</button>
+      </div>`).join('')
+    : `<div style="color:var(--text-light);font-size:13px;padding:.5rem 0">No approved students yet.</div>`;
+
+  updatePendingBadge();
+}
+
+function updatePendingBadge() {
+  const badge = document.getElementById('pending-badge');
+  if (!badge) return;
+  const count = dbProfiles.filter(p => p.id !== currentUser?.id && p.approved === false).length;
+  if (count > 0) { badge.textContent = count; badge.style.display = 'inline-block'; }
+  else { badge.style.display = 'none'; }
+}
+
+async function approveStudent(studentId) {
+  const { error } = await sb.from('user_profiles').update({ approved: true }).eq('id', studentId);
+  if (error) { alert('Error: ' + error.message); return; }
+  const p = dbProfiles.find(x => x.id === studentId); if (p) p.approved = true;
+  renderStudentsTab();
+}
+
+async function revokeStudent(studentId) {
+  if (!confirm('This student will lose access to lessons until approved again. Continue?')) return;
+  const { error } = await sb.from('user_profiles').update({ approved: false }).eq('id', studentId);
+  if (error) { alert('Error: ' + error.message); return; }
+  const p = dbProfiles.find(x => x.id === studentId); if (p) p.approved = false;
+  renderStudentsTab();
 }
 
 function toggleAcc(bodyId, chevronId) {

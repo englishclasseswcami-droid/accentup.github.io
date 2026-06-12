@@ -93,3 +93,15 @@ function calcStreak(dates) {
   }
   return { current, best: Math.max(best, current), activeDays: unique.length };
 }
+
+/* Sanitize rich-text HTML (e.g. Community posts) before rendering with innerHTML.
+   Allows safe formatting tags from Quill (headers, bold, links, images, iframes for video)
+   but strips <script>, event handlers (onclick, onerror...), and javascript: URLs. */
+function sanitizeHtml(html) {
+  if (typeof DOMPurify === 'undefined') return esc(html); // fail-safe: if library didn't load, escape everything
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ['p','br','strong','b','em','i','u','s','h1','h2','h3','ul','ol','li','a','img','iframe','blockquote','span','div'],
+    ALLOWED_ATTR: ['href','src','alt','target','rel','class','width','height','frameborder','allowfullscreen','allow'],
+    ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i
+  });
+}

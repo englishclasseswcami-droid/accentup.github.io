@@ -9,6 +9,26 @@ function renderDashboard() {
 
   const profile  = dbProfiles.find(p => p.id === currentUser.id);
   const name     = profile?.username || currentUser.email.split('@')[0];
+
+  if (profile && profile.approved === false) {
+    page.innerHTML = `
+      <div style="max-width:480px;margin:4rem auto;text-align:center">
+        <div style="font-size:48px;margin-bottom:1rem">⏳</div>
+        <div class="dash-greeting" style="margin-bottom:.5rem">Hi ${esc(name)}, welcome to AccentUp!</div>
+        <p style="font-size:14px;color:var(--text-muted);line-height:1.6">
+          Your account has been created and is now <strong>pending approval</strong>.
+          Camila will review and activate your access shortly — this usually happens
+          within 24 hours after your enrollment is confirmed.
+        </p>
+        <p style="font-size:13px;color:var(--text-muted);margin-top:1rem">
+          In the meantime, feel free to explore the
+          <a href="#" onclick="goToPage('sounds');return false" style="color:var(--brand);font-weight:700">Sounds of American English</a>
+          — it's free for everyone!
+        </p>
+      </div>`;
+    return;
+  }
+
   const hour     = new Date().getHours();
   const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
 
