@@ -113,3 +113,7 @@ async function saveRecording() {
   }
 }
 
+
+function toggleRecPanel() {
+  document.getElementById('recording-panel')?.classList.toggle('collapsed');
+}
