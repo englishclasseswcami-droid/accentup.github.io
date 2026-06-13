@@ -41,6 +41,7 @@ function updateAuthUI() {
   show('nav-classroom',  isLoggedIn && !isTeacher);
   show('nav-community',  isLoggedIn);
   show('nav-routine-tab', isLoggedIn && !isTeacher);
+  show('nav-reference-tab', isLoggedIn);
   show('nav-streaks-tab', isLoggedIn);
   show('nav-profile-tab', isLoggedIn && !isTeacher);
   show('nav-teacher-tab', isTeacher);
@@ -53,7 +54,7 @@ function updateAuthUI() {
   } else {
     btn.textContent = 'Log in'; btn.classList.remove('logout-btn-nav'); btn.classList.add('auth-btn');
     const activePage = document.querySelector('.page.active')?.id;
-    const protectedPages = ['page-dashboard','page-classroom','page-teacher','page-profile','page-streaks','page-routine'];
+    const protectedPages = ['page-dashboard','page-classroom','page-teacher','page-profile','page-streaks','page-routine','page-reference','page-certificate'];
     if (protectedPages.includes(activePage)) goToPage('home');
   }
 }
@@ -131,11 +132,16 @@ async function handleAuth() {
   }
 }
 
-document.querySelectorAll('.nav-tab[data-page]').forEach(tab => { tab.onclick = () => { const page = tab.dataset.page; if (['classroom','teacher','profile','streaks','routine','dashboard'].includes(page) && !currentUser) { goToPage('auth'); return; } goToPage(page); }; });
+document.querySelectorAll('.nav-tab[data-page]').forEach(tab => { tab.onclick = () => { const page = tab.dataset.page; if (['classroom','teacher','profile','streaks','routine','dashboard','reference','certificate'].includes(page) && !currentUser) { goToPage('auth'); closeNavMore(); return; } goToPage(page); closeNavMore(); }; });
+
+function toggleNavMore(e) { e.stopPropagation(); document.querySelector('.nav-more-wrap')?.classList.toggle('open'); }
+function closeNavMore() { document.querySelector('.nav-more-wrap')?.classList.remove('open'); }
+document.addEventListener('click', (e) => { if (!e.target.closest('.nav-more-wrap')) closeNavMore(); });
 
 function goToPage(pageId) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const tabBtn = document.querySelector(`.nav-tab[data-page="${pageId}"]`); if (tabBtn) tabBtn.classList.add('active');
+  if (tabBtn && tabBtn.closest('.nav-more-menu')) document.getElementById('nav-more-btn')?.classList.add('active');
   const pageEl = document.getElementById('page-' + pageId); if (pageEl) pageEl.classList.add('active');
   if (pageId === 'classroom') renderClassroomGrid();
   if (pageId === 'dashboard') renderDashboard();
@@ -144,6 +150,8 @@ function goToPage(pageId) {
   if (pageId === 'sounds') buildAllSoundsGrids();
   if (pageId === 'community') loadPosts();
   if (pageId === 'routine') renderRoutine();
+  if (pageId === 'reference') renderReferenceLibrary();
+  if (pageId === 'certificate') renderCertificate();
   if (pageId === 'profile') { const p = dbProfiles.find(x => x.id === currentUser?.id); if (p) document.getElementById('profile-username').value = p.username || ''; }
   window.scrollTo(0, 0);
 }
@@ -154,11 +162,12 @@ async function fetchData() {
     const userEmail = currentUser?.email?.toLowerCase() || '';
     const isTeacher = userEmail === TEACHER_EMAIL.toLowerCase();
 
-    const [rMod, rSub, rLes, rProg] = await Promise.all([
+    const [rMod, rSub, rLes, rProg, rSound] = await Promise.all([
       sb.from('modules').select('*').order('order_index'),
       sb.from('submodules').select('*').order('order_index'),
       sb.from('lessons').select('*').order('order_index'),
-      sb.from('student_progress').select('*').eq('user_id', currentUser.id)
+      sb.from('student_progress').select('*').eq('user_id', currentUser.id),
+      sb.from('soundboard_items').select('*').order('order_index')
     ]);
 
     dbModules = (rMod?.data || []).filter(m => isTeacher || !m.is_private ||
@@ -166,6 +175,7 @@ async function fetchData() {
     dbSubmodules = rSub?.data || [];
     dbLessons = rLes?.data || [];
     dbProgress = rProg?.data || [];
+    dbSoundboard = rSound?.data || [];
 
     renderClassroomGrid(); updateModuleSelect(); if (isTeacher) renderManageList();
 
