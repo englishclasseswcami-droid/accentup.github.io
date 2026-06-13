@@ -102,6 +102,15 @@ function renderDashboard() {
         </div>`).join('')
     : `<div class="dash-empty">No modules yet.</div>`;
 
+  const isProgramComplete = dbLessons.length > 0 && dbProgress.length >= dbLessons.length;
+  const certificateHtml = isProgramComplete
+    ? `<div class="dash-card" style="margin-top:1.25rem;background:linear-gradient(135deg,var(--brand-light),var(--surface));text-align:center;padding:1.5rem">
+        <div style="font-size:32px;margin-bottom:6px">🎓</div>
+        <div style="font-weight:800;color:var(--text);margin-bottom:4px">Congrats — you completed the program!</div>
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px">Your Certificate of Completion is ready.</div>
+        <button class="primary-btn" style="width:auto;padding:10px 24px" onclick="goToPage('certificate')">🎓 View certificate</button>
+       </div>` : '';
+
   page.innerHTML = `
     <div class="dash-greeting">${greeting}, <strong>${esc(name)}</strong> 👋</div>
     <div class="dash-sub">Here's your progress at a glance</div>
@@ -112,6 +121,7 @@ function renderDashboard() {
           <div class="dash-card-label">▶ Continue learning</div>
           ${continueHtml}
         </div>
+        ${certificateHtml}
       </div>
       <div>
         <div class="dash-card" style="margin-bottom:1.25rem">
@@ -132,4 +142,89 @@ function openDashLesson(lessonId, moduleId) {
     openModule(moduleId);
     setTimeout(() => showLesson(lessonId), 300);
   }, 100);
+}
+
+/* ══════════════════════════════════════════
+   REFERENCE LIBRARY — searchable index of all Soundboard items
+══════════════════════════════════════════ */
+function renderReferenceLibrary() {
+  const list = document.getElementById('reference-list'); if (!list) return;
+  const query = (document.getElementById('reference-search')?.value || '').trim().toLowerCase();
+
+  // Group items by module > submodule
+  const groups = [];
+  dbModules.forEach(m => {
+    dbSubmodules.filter(s => s.module_id === m.id).forEach(sub => {
+      let items = dbSoundboard.filter(s => s.submodule_id === sub.id);
+      if (query) items = items.filter(it => it.text.toLowerCase().includes(query) || (it.ipa||'').toLowerCase().includes(query));
+      if (items.length) groups.push({ label: `${m.title} › ${sub.title}`, items });
+    });
+  });
+
+  if (!groups.length) { list.innerHTML = `<div style="color:var(--text-light);font-size:14px;text-align:center;padding:3rem 0">${query ? 'No matches found.' : 'No Soundboard content yet — check back soon!'}</div>`; return; }
+
+  list.innerHTML = groups.map(g => {
+    const lastSpan = g.items.length % 2 !== 0;
+    const cells = g.items.map((item, i) => {
+      const rowIdx = Math.floor(i / 2); const altClass = rowIdx % 2 === 1 ? ' alt' : ''; const spanClass = (lastSpan && i === g.items.length - 1) ? ' span-full' : '';
+      return `<div class="soundboard-cell${altClass}${spanClass}"><div class="soundboard-cell-text"><span class="soundboard-word">${esc(item.text)}</span>${item.ipa ? `<span class="soundboard-ipa">${esc(item.ipa)}</span>` : ''}</div><button class="soundboard-play" id="sb-play-${item.id}" onclick="playSoundboardAudio('${item.id}')" ${!item.audio_url ? 'disabled style="opacity:.35;cursor:default"' : ''}>▶</button></div>`;
+    }).join('');
+    return `<div class="ref-group-title">${esc(g.label)}</div><div class="soundboard-grid">${cells}</div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════
+   CERTIFICATE OF COMPLETION
+══════════════════════════════════════════ */
+function renderCertificate() {
+  const el = document.getElementById('certificate-content'); if (!el || !currentUser) return;
+  const profile = dbProfiles.find(p => p.id === currentUser.id);
+  const name = profile?.username || currentUser.email.split('@')[0];
+  const total = dbLessons.length; const done = dbProgress.length;
+
+  if (total === 0 || done < total) {
+    const pct = total ? Math.round(done/total*100) : 0;
+    el.innerHTML = `<div class="cert-wrap" style="text-align:center;padding:3rem 1rem">
+      <div style="font-size:48px;margin-bottom:1rem">🎓</div>
+      <h2 style="color:var(--text);font-weight:800;margin-bottom:8px">Your certificate is on its way!</h2>
+      <p style="color:var(--text-muted);font-size:14px;max-width:420px;margin:0 auto 1.25rem">Complete every lesson in the program to unlock your AccentUp Certificate of Completion — ready to share on LinkedIn.</p>
+      <div style="max-width:320px;margin:0 auto 1.25rem"><div class="course-card-progress-bar"><div class="course-card-progress-fill" style="width:${pct}%;background:var(--brand)"></div></div></div>
+      <div style="font-size:13px;font-weight:700;color:var(--brand)">${done} / ${total} lessons completed (${pct}%)</div>
+      <button class="outline-btn" style="margin-top:1.5rem" onclick="goToPage('classroom')">Continue learning →</button>
+    </div>`;
+    return;
+  }
+
+  const dates = dbProgress.map(p => p.created_at).filter(Boolean).sort();
+  const completedDate = dates.length ? new Date(dates[dates.length-1]) : new Date();
+  const dateStr = completedDate.toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+
+  el.innerHTML = `<div class="cert-wrap">
+    <div class="cert-card" id="cert-card-inner">
+      <div class="cert-logo"><span>accent<span class="logo-text-up">Up</span></span></div>
+      <div class="cert-eyebrow">Certificate of Completion</div>
+      <div class="cert-title">AccentUp Pronunciation Program</div>
+      <div class="cert-presented">This certifies that</div>
+      <div class="cert-name">${esc(name)}</div>
+      <div class="cert-desc">has successfully completed all modules of the AccentUp American English Pronunciation Program, demonstrating dedication to mastering clear, confident professional communication.</div>
+      <div class="cert-footer">
+        <div style="text-align:left"><div class="cert-sig">Camila</div><div>AccentUp — Pronunciation Coach</div></div>
+        <div style="text-align:right">${dateStr}</div>
+      </div>
+    </div>
+    <div class="cert-actions">
+      <button class="primary-btn" style="width:auto;padding:12px 28px" onclick="downloadCertificate()">⬇ Download as image</button>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:10px">Save it and share on LinkedIn — tag us and inspire others! 🎉</p>
+    </div>
+  </div>`;
+}
+
+function downloadCertificate() {
+  const node = document.getElementById('cert-card-inner'); if (!node || typeof html2canvas === 'undefined') return;
+  html2canvas(node, { scale: 2, backgroundColor: '#ffffff' }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = 'AccentUp-Certificate.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
 }
