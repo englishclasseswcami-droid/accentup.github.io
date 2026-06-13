@@ -36,13 +36,21 @@
   <div class="nav-tabs">
     <button class="nav-tab active" data-page="home" id="nav-home">Home</button>
     <button class="nav-tab" data-page="dashboard" id="nav-dashboard" style="display:none">Dashboard</button>
-    <button class="nav-tab" data-page="sounds" id="nav-sounds">Sounds</button>
     <button class="nav-tab" data-page="classroom" id="nav-classroom" style="display:none">Classroom</button>
     <button class="nav-tab" data-page="community" id="nav-community" style="display:none">Community</button>
-    <button class="nav-tab" data-page="routine" id="nav-routine-tab" style="display:none">📅 Routine</button>
-    <button class="nav-tab" data-page="streaks" id="nav-streaks-tab" style="display:none">🔥 Streaks</button>
-    <button class="nav-tab" data-page="profile" id="nav-profile-tab" style="display:none">Profile</button>
     <button class="nav-tab teacher-tab" id="nav-teacher-tab" data-page="teacher" style="display:none">Teacher ✦</button>
+
+    <div class="nav-more-wrap">
+      <button class="nav-tab nav-more-btn" id="nav-more-btn" onclick="toggleNavMore(event)">More <span class="nav-more-caret">▾</span></button>
+      <div class="nav-more-menu" id="nav-more-menu">
+        <button class="nav-tab" data-page="sounds" id="nav-sounds">Sounds</button>
+        <button class="nav-tab" data-page="routine" id="nav-routine-tab" style="display:none">📅 Routine</button>
+        <button class="nav-tab" data-page="reference" id="nav-reference-tab" style="display:none">📚 Reference</button>
+        <button class="nav-tab" data-page="streaks" id="nav-streaks-tab" style="display:none">🔥 Streaks</button>
+        <button class="nav-tab" data-page="profile" id="nav-profile-tab" style="display:none">Profile</button>
+      </div>
+    </div>
+
     <button class="nav-tab auth-btn" id="nav-auth-btn" onclick="handleNavAuth()">Log in</button>
   </div>
 </nav>
@@ -313,6 +321,16 @@
   <div style="text-align:center;padding:3rem;color:var(--text-muted)"><div style="font-size:32px;margin-bottom:8px">📅</div><div style="font-size:14px">Loading your routine...</div></div>
 </div>
 
+<div class="page" id="page-reference">
+  <div class="section-intro"><h2>📚 Reference Library</h2><p>Every word and phrase from the Soundboard, in one searchable place. Find it, hear it, before any meeting or presentation.</p></div>
+  <input type="text" id="reference-search" class="gate-input" placeholder="🔍 Search a word or phrase..." style="margin-bottom:1.5rem;max-width:420px" oninput="renderReferenceLibrary()"/>
+  <div id="reference-list"></div>
+</div>
+
+<div class="page" id="page-certificate">
+  <div id="certificate-content"></div>
+</div>
+
 <div class="page page-full" id="page-community">
   <div class="community-container">
     <div id="community-feed-view">
@@ -352,6 +370,10 @@
         <div class="c-nav-list" id="sidebar-render"></div>
       </aside>
       <main class="c-main">
+        <div id="lesson-breadcrumb-row" style="display:none;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px">
+          <div id="lesson-breadcrumb" class="lesson-breadcrumb" style="margin-bottom:0"></div>
+          <button class="speed-toggle" id="speed-toggle-btn" onclick="cyclePlaybackRate()" title="Playback speed for audio">⚡ 1x</button>
+        </div>
         <div id="view-welcome" class="c-empty-state"><div style="font-size:40px;margin-bottom:12px">👋</div><h2 style="color:var(--text);font-weight:800;margin-bottom:8px;font-size:18px">Welcome!</h2><p>Select a lesson from the menu on the left to get started.</p></div>
         <div id="view-video" style="display:none">
           <h2 id="cv-video-title" class="lesson-title-main"></h2><div id="cv-video-audios" class="lesson-audios-box" style="display:none"></div><div id="cv-video-player" class="video-container"></div><div id="cv-video-text" class="text-content-main ql-editor" style="border:none;padding:0;margin-top:1.5rem"></div><div id="cv-video-resources" class="resources-panel" style="display:none"></div><div class="lesson-complete-wrap"><button class="submit-btn" id="btn-complete-video" onclick="markCurrentLessonComplete()">Mark as complete</button></div>
@@ -373,11 +395,14 @@
           <div id="cv-task-resources" class="resources-panel" style="display:none"></div>
         </div>
 
-        <!-- Recording panel — shared across all lesson types -->
-        <div id="recording-panel" class="rec-panel" style="display:none">
+        <!-- Recording panel — floating widget, shared across all lesson types -->
+        <div id="recording-panel" class="rec-panel collapsed" style="display:none">
+          <button class="rec-fab" onclick="toggleRecPanel()">🎙</button>
+          <div class="rec-panel-body">
           <div class="rec-panel-header">
             <span class="rec-panel-title">🎙 Record your pronunciation</span>
             <span class="rec-prev-lbl" id="rec-prev-label"></span>
+            <button class="rec-panel-close" onclick="toggleRecPanel()">×</button>
           </div>
           <div id="rec-idle-view">
             <button class="rec-btn-start" onclick="startRecording()">⏺ Start recording</button>
@@ -405,6 +430,7 @@
             <div style="margin-top:8px">
               <button class="outline-btn" onclick="retakeRecording()" style="font-size:12px;padding:6px 14px">↺ Re-record</button>
             </div>
+          </div>
           </div>
         </div>
       </main>
@@ -460,6 +486,7 @@
           <button class="t-tab-btn" onclick="switchTTab('les',this)">📝 Lesson</button>
           <button class="t-tab-btn" onclick="switchTTab('routine',this)">📅 Routines</button>
           <button class="t-tab-btn" onclick="switchTTab('students',this)">👥 Students <span id="pending-badge" style="display:none;background:#e05252;color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:800;margin-left:4px"></span></button>
+          <button class="t-tab-btn" onclick="switchTTab('soundboard',this)">🔊 Soundboard</button>
         </div>
         <div class="t-tab-panel active" id="t-tab-mod">
           <h3 id="panel-title-mod" style="border:none;padding-bottom:0;margin-bottom:.9rem">📂 Create Module</h3>
@@ -493,7 +520,16 @@
           </div>
           <hr style="border:0;border-top:1px solid var(--skool-border);margin:1.25rem 0"/>
           <div id="fields-video"><span class="field-label">YouTube URL</span><input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..." style="margin-bottom:0;"/></div>
-          <div id="fields-text"><span class="field-label" id="text-field-label" style="margin-top:12px">Introduction / Instructions (optional)</span><div id="quill-editor-container"></div></div>
+          <div id="fields-text"><span class="field-label" id="text-field-label" style="margin-top:12px">Introduction / Instructions (optional)</span><div id="quill-editor-container"></div>
+            <div style="margin-top:8px">
+              <button type="button" class="secondary-btn" onclick="toggleSoundInsertPicker()" style="font-size:12px">🔊 Insert sound</button>
+              <div id="sb-insert-picker" style="display:none;align-items:center;gap:8px;margin-top:6px">
+                <select id="sb-insert-select" style="margin:0;flex:1;font-size:12px"></select>
+                <button type="button" class="primary-btn" onclick="confirmInsertSound()" style="margin:0;padding:7px 14px;font-size:12px;width:auto">Insert</button>
+              </div>
+              <p style="font-size:11px;color:var(--text-muted);margin:4px 0 0">Pick a word/phrase from this subfolder's Soundboard — a small ▶ button with its audio is inserted at your cursor. Make sure a Subfolder is selected above and it has items loaded in 🔊 Soundboard.</p>
+            </div>
+          </div>
           <div id="fields-embed" style="display:none"><span class="field-label">Embed code (iframe)</span><textarea id="t-les-embed-code" placeholder="Paste your iframe code here..." style="font-family:monospace;min-height:100px"></textarea></div>
           <div id="fields-task" style="display:none">
             <span class="field-label" style="margin-top: 1.5rem; margin-bottom: 8px;">Questions / Items</span>
@@ -534,6 +570,22 @@
           <div class="field-label" style="margin-top:1.5rem">Approved students</div>
           <div id="students-approved-list"></div>
         </div>
+        <div class="t-tab-panel" id="t-tab-soundboard">
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <div style="flex:1;min-width:160px"><span class="field-label" style="margin-top:0">Module</span><select id="sb-module-select" onchange="updateSoundboardSubfolderSelect()" style="margin-bottom:0"></select></div>
+            <div style="flex:1;min-width:160px"><span class="field-label" style="margin-top:0">Subfolder</span><select id="sb-submodule-select" onchange="renderSoundboardManager()" style="margin-bottom:0"></select></div>
+          </div>
+
+          <div id="soundboard-manager-area" style="display:none;margin-top:1.25rem">
+            <div class="field-label" style="margin-top:0">Bulk-add from Google Sheets</div>
+            <p style="font-size:12px;color:var(--text-muted);margin:-4px 0 8px">Select a range in your Sheet (word + optional IPA columns), copy it (Ctrl+C), and paste it below. Each row becomes a new item.</p>
+            <textarea id="sb-bulk-paste" placeholder="bit	/bɪt/&#10;sit	/sɪt/&#10;hit	/hɪt/" style="min-height:90px;font-family:monospace;font-size:13px"></textarea>
+            <button class="secondary-btn" onclick="bulkAddSoundboardItems()" style="margin-top:8px">+ Add pasted rows</button>
+
+            <div class="field-label" style="margin-top:1.5rem">Items in this subfolder</div>
+            <div id="soundboard-items-list"></div>
+          </div>
+        </div>
       </div>
     </div>
     <div>
@@ -546,6 +598,7 @@
 
 
 <!-- App scripts — order matters for dependencies -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="js/config.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/data.js"></script>
