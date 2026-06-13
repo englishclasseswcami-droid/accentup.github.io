@@ -59,6 +59,29 @@ function editLesson(id) {
   tempAudios = safeParseJSON(l.content); renderTempAudios(); const resArr = safeParseJSON(l.resources); document.getElementById('t-les-resources-current').textContent = resArr.length ? `${resArr.length} file(s) already attached` : ''; document.getElementById('panel-title-les').textContent = '✏️ Edit lesson'; document.getElementById('btn-cancel-les').style.display = 'inline-block'; window.scrollTo(0, 0);
 }
 function cancelEditLes() { document.getElementById('edit-les-id').value = ''; document.getElementById('t-les-title').value = ''; document.getElementById('t-les-video-url').value = ''; document.getElementById('t-les-embed-code').value = ''; document.getElementById('t-les-resources').value = ''; document.getElementById('t-les-resources-current').textContent = ''; quillEditor.root.innerHTML = ''; questionRows = []; tempAudios = []; openQStates = {}; renderQFields(); renderTempAudios(); document.getElementById('panel-title-les').textContent = '📝 Add Lesson'; document.getElementById('btn-cancel-les').style.display = 'none'; }
+
+let sbInsertCursorIndex = null;
+
+function toggleSoundInsertPicker() {
+  const picker = document.getElementById('sb-insert-picker');
+  const isHidden = picker.style.display === 'none' || !picker.style.display;
+  if (isHidden) {
+    const sel = quillEditor.getSelection(); sbInsertCursorIndex = sel ? sel.index : quillEditor.getLength();
+    const subId = document.getElementById('t-les-submodule').value;
+    const items = dbSoundboard.filter(s => s.submodule_id === subId);
+    const select = document.getElementById('sb-insert-select');
+    select.innerHTML = items.length ? items.map(it => `<option value="${it.id}">${esc(it.text)}${it.ipa ? ' '+esc(it.ipa) : ''}</option>`).join('') : '<option value="">No items in this subfolder yet</option>';
+    picker.style.display = 'flex';
+  } else { picker.style.display = 'none'; }
+}
+
+function confirmInsertSound() {
+  const select = document.getElementById('sb-insert-select'); const itemId = select.value; if (!itemId) return;
+  const index = sbInsertCursorIndex ?? quillEditor.getLength();
+  const token = `{{sound:${itemId}}} `;
+  quillEditor.insertText(index, token); quillEditor.setSelection(index + token.length);
+  document.getElementById('sb-insert-picker').style.display = 'none';
+}
 async function deleteLesson(id) { if (!confirm('Delete this lesson?')) return; await sb.from('lessons').delete().eq('id', id); fetchData(); }
 async function moveLesson(id, dir) { const les = dbLessons.find(l => l.id === id); if (!les) return; const siblings = dbLessons.filter(l => l.module_id === les.module_id && l.submodule_id === les.submodule_id); const idx = siblings.findIndex(l => l.id === id); const t = siblings[idx + dir]; if (!t) return; await sb.from('lessons').update({ order_index: t.order_index }).eq('id', id); await sb.from('lessons').update({ order_index: les.order_index }).eq('id', t.id); fetchData(); }
 
@@ -212,6 +235,7 @@ function switchTTab(name, btn) {
   if (name === 'les') { updateModuleSelect(); updateSubfolderSelect(); }
   if (name === 'routine') renderTeacherRoutineTab();
   if (name === 'students') renderStudentsTab();
+  if (name === 'soundboard') renderSoundboardTab();
 }
 
 /* ══════════════════════════════════════════
@@ -363,3 +387,96 @@ function renderManageList() {
   list.innerHTML = html;
 }
 
+
+/* ══════════════════════════════════════════
+   SOUNDBOARD MANAGER (Teacher)
+══════════════════════════════════════════ */
+function renderSoundboardTab() {
+  const modSel = document.getElementById('sb-module-select'); if (!modSel) return;
+  const prevMod = modSel.value;
+  modSel.innerHTML = '<option value="">— Select a module —</option>' + dbModules.map(m => `<option value="${esc(m.id)}">${esc(m.title)}</option>`).join('');
+  if (prevMod && dbModules.some(m => m.id === prevMod)) modSel.value = prevMod;
+  updateSoundboardSubfolderSelect();
+}
+
+function updateSoundboardSubfolderSelect() {
+  const modId = document.getElementById('sb-module-select').value;
+  const subSel = document.getElementById('sb-submodule-select');
+  const prevSub = subSel.value;
+  const subs = dbSubmodules.filter(s => s.module_id === modId);
+  subSel.innerHTML = '<option value="">— Select a subfolder —</option>' + subs.map(s => `<option value="${esc(s.id)}">${esc(s.title)}</option>`).join('');
+  if (prevSub && subs.some(s => s.id === prevSub)) subSel.value = prevSub;
+  renderSoundboardManager();
+}
+
+function renderSoundboardManager() {
+  const subId = document.getElementById('sb-submodule-select').value;
+  const area = document.getElementById('soundboard-manager-area');
+  if (!subId) { area.style.display = 'none'; return; }
+  area.style.display = 'block';
+  const list = document.getElementById('soundboard-items-list');
+  const items = dbSoundboard.filter(s => s.submodule_id === subId);
+  list.innerHTML = items.length ? items.map(item => `
+    <div class="sb-manage-row" id="sb-row-${item.id}">
+      <input type="text" id="sb-text-${item.id}" value="${esc(item.text)}" placeholder="word / phrase" oninput="markSoundboardDirty('${item.id}')"/>
+      <input type="text" id="sb-ipa-${item.id}" class="sb-ipa-input" value="${esc(item.ipa||'')}" placeholder="/ipa/" oninput="markSoundboardDirty('${item.id}')"/>
+      ${item.audio_url ? `<audio controls src="${esc(item.audio_url)}"></audio>` : `<span class="sb-audio-label">No audio yet</span>`}
+      <input type="file" accept="audio/*" style="font-size:11px;max-width:130px" onchange="uploadSoundboardAudio(event,'${item.id}')"/>
+      <button class="primary-btn" id="sb-save-${item.id}" onclick="saveSoundboardItem('${item.id}')" style="margin:0;padding:7px 14px;font-size:12px;width:auto;opacity:.4" disabled>💾 Save</button>
+      <button class="q-card-delete" onclick="deleteSoundboardItem('${item.id}')">×</button>
+    </div>`).join('') : `<div style="color:var(--text-light);font-size:13px;padding:.5rem 0">No items yet. Paste rows above to get started.</div>`;
+}
+
+function markSoundboardDirty(itemId) {
+  const btn = document.getElementById('sb-save-' + itemId);
+  if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.textContent = '💾 Save'; }
+}
+
+async function saveSoundboardItem(itemId) {
+  const text = document.getElementById('sb-text-' + itemId).value.trim();
+  const ipa = document.getElementById('sb-ipa-' + itemId).value.trim();
+  const btn = document.getElementById('sb-save-' + itemId);
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Saving...'; }
+  const { error } = await sb.from('soundboard_items').update({ text, ipa }).eq('id', itemId);
+  if (error) { alert('Error saving: ' + error.message); if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.textContent = '💾 Save'; } return; }
+  const item = dbSoundboard.find(s => s.id === itemId); if (item) { item.text = text; item.ipa = ipa; }
+  if (btn) { btn.textContent = '✅ Saved!'; btn.style.opacity = '.4'; setTimeout(() => { if (btn) btn.textContent = '💾 Save'; }, 1800); }
+}
+
+async function bulkAddSoundboardItems() {
+  const subId = document.getElementById('sb-submodule-select').value; if (!subId) return;
+  const raw = document.getElementById('sb-bulk-paste').value;
+  const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+  if (!lines.length) return;
+  const maxOrder = dbSoundboard.filter(s => s.submodule_id === subId).reduce((max, s) => Math.max(max, s.order_index || 0), -1);
+  const rows = lines.map((line, idx) => {
+    const cols = line.split('\t');
+    return { submodule_id: subId, text: (cols[0]||'').trim(), ipa: (cols[1]||'').trim(), order_index: maxOrder + 1 + idx };
+  }).filter(r => r.text);
+  if (!rows.length) return;
+  const { data, error } = await sb.from('soundboard_items').insert(rows).select();
+  if (error) { alert('Error adding items: ' + error.message); return; }
+  dbSoundboard.push(...(data || []));
+  document.getElementById('sb-bulk-paste').value = '';
+  renderSoundboardManager();
+}
+
+async function uploadSoundboardAudio(event, itemId) {
+  const file = event.target.files[0]; if (!file) return;
+  const fn = `sb_${itemId}_${Date.now()}.${file.name.split('.').pop()}`;
+  const { error: upErr } = await sb.storage.from('audios').upload(fn, file);
+  if (upErr) { alert('Upload error: ' + upErr.message); return; }
+  const url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
+  const { error } = await sb.from('soundboard_items').update({ audio_url: url }).eq('id', itemId);
+  if (error) { alert('Error saving: ' + error.message); return; }
+  const item = dbSoundboard.find(s => s.id === itemId); if (item) item.audio_url = url;
+  renderSoundboardManager();
+}
+
+async function deleteSoundboardItem(itemId) {
+  if (!confirm('Delete this item?')) return;
+  const { error } = await sb.from('soundboard_items').delete().eq('id', itemId);
+  if (error) { alert('Error: ' + error.message); return; }
+  dbSoundboard = dbSoundboard.filter(s => s.id !== itemId);
+  renderSoundboardManager();
+}
