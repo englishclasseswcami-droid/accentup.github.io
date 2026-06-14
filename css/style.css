@@ -609,3 +609,31 @@ footer strong{color:var(--brand)}
 .nav-more-menu{display:none;position:absolute;top:calc(100% + 6px);right:0;background:var(--surface);border:1px solid var(--skool-border);border-radius:var(--radius-sm);box-shadow:0 10px 30px rgba(0,0,0,.1);padding:6px;min-width:160px;flex-direction:column;gap:2px;z-index:50}
 .nav-more-wrap.open .nav-more-menu{display:flex}
 .nav-more-menu .nav-tab{width:100%;text-align:left;border-radius:8px;padding:8px 12px}
+
+/* Quill toolbar — table button icon */
+.ql-table::before{content:'⊞';font-size:15px;line-height:1}
+.ql-table.ql-active::before{color:var(--brand)}
+
+/* Tables — editor + student view */
+/* Tables — editor + student view */
+.ql-editor table,.c-main table,.cv-text-body table{width:100%!important;border-collapse:collapse!important;margin:1rem 0!important;font-size:14px!important;display:table!important}
+.ql-editor table tbody,.c-main table tbody,.cv-text-body table tbody{display:table-row-group!important}
+.ql-editor table tr,.c-main table tr,.cv-text-body table tr{display:table-row!important}
+.ql-editor table th,.c-main table th,.cv-text-body table th{display:table-cell!important;background:var(--brand-light)!important;color:var(--brand-dark)!important;font-weight:700!important;text-align:left!important;padding:9px 12px!important;border:1px solid var(--skool-border)!important}
+.ql-editor table td,.c-main table td,.cv-text-body table td{display:table-cell!important;padding:8px 12px!important;border:1px solid var(--skool-border)!important;vertical-align:top!important;line-height:1.5!important;min-width:80px!important}
+.ql-editor table tr:nth-child(even) td,.c-main table tr:nth-child(even) td,.cv-text-body table tr:nth-child(even) td{background:var(--bg)!important}
+
+/* Table builder inputs */
+.tbl-builder-table{border-collapse:collapse;margin-bottom:4px}
+.tbl-builder-table th input,.tbl-builder-table td input{border:1px solid var(--brand);border-radius:4px;padding:6px 8px;font-size:13px;font-weight:700;background:var(--brand-light);min-width:90px;width:100%;outline:none}
+.tbl-builder-table td input{border-color:var(--skool-border);background:#fff;font-weight:400}
+.tbl-builder-table th input:focus,.tbl-builder-table td input:focus{border-color:var(--brand);box-shadow:0 0 0 2px var(--brand-light)}
+.tbl-builder-table th,.tbl-builder-table td{padding:3px}
+
+/* Certificate print */
+@media print {
+  body > *:not(#page-certificate) { display: none !important; }
+  #page-certificate { display: block !important; }
+  .cert-actions { display: none !important; }
+  nav { display: none !important; }
+}
