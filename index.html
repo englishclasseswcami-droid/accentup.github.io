@@ -520,7 +520,29 @@
           </div>
           <hr style="border:0;border-top:1px solid var(--skool-border);margin:1.25rem 0"/>
           <div id="fields-video"><span class="field-label">YouTube URL</span><input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..." style="margin-bottom:0;"/></div>
-          <div id="fields-text"><span class="field-label" id="text-field-label" style="margin-top:12px">Introduction / Instructions (optional)</span><div id="quill-editor-container"></div>
+          <div id="fields-text"><span class="field-label" id="text-field-label" style="margin-top:12px">Introduction / Instructions (optional)</span>
+            <div id="quill-editor-container"></div>
+            <input type="hidden" id="quill-tables-html"/>
+
+            <!-- Table builder -->
+            <div id="table-builder-area" style="display:none;margin-top:12px;border:1px solid var(--skool-border);border-radius:var(--radius-sm);padding:1rem;background:var(--bg)">
+              <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:10px">⊞ Table editor — click any cell to edit</div>
+              <div id="table-builder-grid" style="overflow-x:auto"></div>
+              <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+                <button type="button" class="secondary-btn" onclick="addTableRow()" style="font-size:12px;padding:6px 12px">+ Row</button>
+                <button type="button" class="secondary-btn" onclick="addTableCol()" style="font-size:12px;padding:6px 12px">+ Column</button>
+                <button type="button" class="primary-btn" onclick="confirmTable()" style="font-size:12px;padding:6px 14px;width:auto;margin:0">✓ Add table to lesson</button>
+                <button type="button" class="outline-btn" onclick="cancelTableBuilder()" style="font-size:12px;padding:6px 12px">Cancel</button>
+              </div>
+            </div>
+
+            <!-- Saved tables preview -->
+            <div id="quill-tables-preview" style="display:none;margin-top:8px;border:1px solid var(--skool-border);border-radius:var(--radius-sm);padding:1rem;background:var(--bg)">
+              <div style="font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em">⊞ Tables saved in this lesson</div>
+              <div id="quill-tables-list"></div>
+              <button type="button" class="outline-btn" onclick="clearAllTables()" style="font-size:11px;padding:4px 12px;margin-top:8px">Remove all tables</button>
+            </div>
+
             <div style="margin-top:8px">
               <button type="button" class="secondary-btn" onclick="toggleSoundInsertPicker()" style="font-size:12px">🔊 Insert sound</button>
               <div id="sb-insert-picker" style="display:none;align-items:center;gap:8px;margin-top:6px">
@@ -598,7 +620,6 @@
 
 
 <!-- App scripts — order matters for dependencies -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="js/config.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/data.js"></script>
