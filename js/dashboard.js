@@ -213,18 +213,12 @@ function renderCertificate() {
       </div>
     </div>
     <div class="cert-actions">
-      <button class="primary-btn" style="width:auto;padding:12px 28px" onclick="downloadCertificate()">⬇ Download as image</button>
-      <p style="font-size:12px;color:var(--text-muted);margin-top:10px">Save it and share on LinkedIn — tag us and inspire others! 🎉</p>
+      <button class="primary-btn" style="width:auto;padding:12px 28px" onclick="downloadCertificate()">🖨 Print / Save as PDF</button>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:10px">Use "Save as PDF" in the print dialog to guardar como archivo — luego lo subís a LinkedIn. 🎉</p>
     </div>
   </div>`;
 }
 
 function downloadCertificate() {
-  const node = document.getElementById('cert-card-inner'); if (!node || typeof html2canvas === 'undefined') return;
-  html2canvas(node, { scale: 2, backgroundColor: '#ffffff' }).then(canvas => {
-    const link = document.createElement('a');
-    link.download = 'AccentUp-Certificate.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-  });
+  window.print();
 }

@@ -31,7 +31,9 @@ async function saveLesson() {
   if (!moduleId || !title) { alert('Fill in module and title.'); return; }
   const btn = document.getElementById('btn-save-les'); btn.disabled = true; btn.textContent = 'Saving...';
 
-  let payload = { module_id: moduleId, submodule_id: submodId || null, type, title, content: tempAudios, text_content: quillEditor.root.innerHTML };
+  const tablesHtml = document.getElementById('quill-tables-html')?.value || '';
+  const combinedContent = quillEditor.root.innerHTML + (tablesHtml ? tablesHtml : '');
+  let payload = { module_id: moduleId, submodule_id: submodId || null, type, title, content: tempAudios, text_content: combinedContent };
   if (type === 'video') { payload.video_url = buildYtUrl(document.getElementById('t-les-video-url').value.trim()); } 
   else if (type === 'embed') { payload.video_url = document.getElementById('t-les-embed-code').value.trim(); } 
   else if (type === 'task') { payload.task_type = 'mixed'; payload.task_content = questionRows; }
@@ -47,7 +49,16 @@ async function saveLesson() {
 
 function editLesson(id) {
   const l = dbLessons.find(x => x.id === id); if (!l) return;
-  document.getElementById('edit-les-id').value = l.id; document.getElementById('t-les-module').value = l.module_id; updateSubfolderSelect(); document.getElementById('t-les-submodule').value = l.submodule_id || ''; document.getElementById('t-les-type').value = l.type; document.getElementById('t-les-title').value = l.title; toggleLessonFields(); quillEditor.root.innerHTML = l.text_content || '';
+  document.getElementById('edit-les-id').value = l.id; document.getElementById('t-les-module').value = l.module_id; updateSubfolderSelect(); document.getElementById('t-les-submodule').value = l.submodule_id || ''; document.getElementById('t-les-type').value = l.type; document.getElementById('t-les-title').value = l.title; toggleLessonFields();
+  // Separate table HTML from Quill content
+  const fullHtml = l.text_content || '';
+  const tempDiv = document.createElement('div'); tempDiv.innerHTML = fullHtml;
+  const tables = tempDiv.querySelectorAll('table');
+  let tablesHtml = ''; tables.forEach(t => { tablesHtml += t.outerHTML; t.remove(); });
+  quillEditor.root.innerHTML = tempDiv.innerHTML;
+  const tablesField = document.getElementById('quill-tables-html');
+  if (tablesField) tablesField.value = tablesHtml;
+  refreshTablesPreview();
   if (l.type === 'video') { document.getElementById('t-les-video-url').value = parseYtDisplayUrl(l.video_url); }
   if (l.type === 'embed') { document.getElementById('t-les-embed-code').value = l.video_url || ''; }
   if (l.type === 'task') {
@@ -58,9 +69,95 @@ function editLesson(id) {
   }
   tempAudios = safeParseJSON(l.content); renderTempAudios(); const resArr = safeParseJSON(l.resources); document.getElementById('t-les-resources-current').textContent = resArr.length ? `${resArr.length} file(s) already attached` : ''; document.getElementById('panel-title-les').textContent = '✏️ Edit lesson'; document.getElementById('btn-cancel-les').style.display = 'inline-block'; window.scrollTo(0, 0);
 }
-function cancelEditLes() { document.getElementById('edit-les-id').value = ''; document.getElementById('t-les-title').value = ''; document.getElementById('t-les-video-url').value = ''; document.getElementById('t-les-embed-code').value = ''; document.getElementById('t-les-resources').value = ''; document.getElementById('t-les-resources-current').textContent = ''; quillEditor.root.innerHTML = ''; questionRows = []; tempAudios = []; openQStates = {}; renderQFields(); renderTempAudios(); document.getElementById('panel-title-les').textContent = '📝 Add Lesson'; document.getElementById('btn-cancel-les').style.display = 'none'; }
+function cancelEditLes() { document.getElementById('edit-les-id').value = ''; document.getElementById('t-les-title').value = ''; document.getElementById('t-les-video-url').value = ''; document.getElementById('t-les-embed-code').value = ''; document.getElementById('t-les-resources').value = ''; document.getElementById('t-les-resources-current').textContent = ''; quillEditor.root.innerHTML = ''; const tf = document.getElementById('quill-tables-html'); if (tf) tf.value = ''; refreshTablesPreview(); questionRows = []; tempAudios = []; openQStates = {}; renderQFields(); renderTempAudios(); document.getElementById('panel-title-les').textContent = '📝 Add Lesson'; document.getElementById('btn-cancel-les').style.display = 'none'; }
 
 let sbInsertCursorIndex = null;
+
+/* ── TABLE INSERT ── */
+/* ── TABLE BUILDER ── */
+let tableData = { rows: 3, cols: 3, cells: [] };
+
+function insertQuillTable() {
+  const rows = parseInt(prompt('Number of rows (including header):', '3'), 10);
+  const cols = parseInt(prompt('Number of columns:', '3'), 10);
+  if (!rows || !cols || rows < 1 || cols < 1 || isNaN(rows) || isNaN(cols)) return;
+  tableData = { rows, cols, cells: Array.from({length: rows}, () => Array(cols).fill('')) };
+  document.getElementById('table-builder-area').style.display = 'block';
+  renderTableBuilder();
+}
+
+function renderTableBuilder() {
+  const grid = document.getElementById('table-builder-grid'); if (!grid) return;
+  let html = '<table class="tbl-builder-table"><tbody>';
+  for (let r = 0; r < tableData.rows; r++) {
+    html += '<tr>';
+    for (let c = 0; c < tableData.cols; c++) {
+      const val = (tableData.cells[r]?.[c] || '').replace(/"/g, '&quot;');
+      const tag = r === 0 ? 'th' : 'td';
+      html += `<${tag}><input type="text" placeholder="${r===0?'Header':'Cell'} ${c+1}" value="${val}" data-r="${r}" data-c="${c}"/></${tag}>`;
+    }
+    html += '</tr>';
+  }
+  html += '</tbody></table>';
+  grid.innerHTML = html;
+  grid.querySelectorAll('input[data-r]').forEach(input => {
+    input.addEventListener('input', function() {
+      const r = parseInt(this.dataset.r); const c = parseInt(this.dataset.c);
+      if (!tableData.cells[r]) tableData.cells[r] = [];
+      tableData.cells[r][c] = this.value;
+    });
+  });
+}
+
+function addTableRow() {
+  tableData.rows++;
+  tableData.cells.push(Array(tableData.cols).fill(''));
+  renderTableBuilder();
+}
+
+function addTableCol() {
+  tableData.cols++;
+  tableData.cells.forEach(row => row.push(''));
+  renderTableBuilder();
+}
+
+function confirmTable() {
+  let html = '<table><tbody>';
+  for (let r = 0; r < tableData.rows; r++) {
+    html += '<tr>';
+    for (let c = 0; c < tableData.cols; c++) {
+      const val = tableData.cells[r]?.[c] || '';
+      html += r === 0 ? `<th>${val}</th>` : `<td>${val}</td>`;
+    }
+    html += '</tr>';
+  }
+  html += '</tbody></table>';
+  const field = document.getElementById('quill-tables-html');
+  field.value = (field.value || '') + html;
+  document.getElementById('table-builder-area').style.display = 'none';
+  refreshTablesPreview();
+}
+
+function cancelTableBuilder() {
+  document.getElementById('table-builder-area').style.display = 'none';
+  tableData = { rows: 3, cols: 3, cells: [] };
+}
+
+function refreshTablesPreview() {
+  const field = document.getElementById('quill-tables-html');
+  const preview = document.getElementById('quill-tables-preview');
+  const list = document.getElementById('quill-tables-list');
+  const html = field?.value || '';
+  if (!html) { if (preview) preview.style.display = 'none'; return; }
+  if (preview) preview.style.display = 'block';
+  if (list) list.innerHTML = html;
+}
+
+function clearAllTables() {
+  const field = document.getElementById('quill-tables-html');
+  if (field) field.value = '';
+  refreshTablesPreview();
+}
 
 function toggleSoundInsertPicker() {
   const picker = document.getElementById('sb-insert-picker');

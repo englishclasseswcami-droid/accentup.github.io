@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  try { quillEditor = new Quill('#quill-editor-container', { theme: 'snow', placeholder: 'Write your lesson content here...', modules: { toolbar: [[{ header: [1,2,3,4,false] }],['bold','italic','strike','code','blockquote','code-block'],[{ list:'ordered' },{ list:'bullet' }],['link','image','video'],['clean']] } }); } catch(e) { console.warn('Quill lesson init error:', e); }
+  try { quillEditor = new Quill('#quill-editor-container', { theme: 'snow', placeholder: 'Write your lesson content here...', modules: { toolbar: { container: [[{ header: [1,2,3,4,false] }],['bold','italic','strike','code','blockquote','code-block'],[{ list:'ordered' },{ list:'bullet' }],['link','image','video'],['clean'],['table']], handlers: { table: () => insertQuillTable() } } } }); } catch(e) { console.warn('Quill lesson init error:', e); }
   try { communityQuill = new Quill('#community-editor-container', { theme: 'snow', placeholder: 'Write your post here — you can add titles, bold text, links, YouTube videos and images...', modules: { toolbar: [[{ header: [1, 2, false] }], ['bold', 'italic', 'underline'], ['link', 'image', 'video'], [{ list: 'ordered' }, { list: 'bullet' }], ['clean']] } }); } catch(e) { console.warn('Quill community init error:', e); }
   try { editPostQuill = new Quill('#edit-post-editor-container', { theme: 'snow', modules: { toolbar: [['bold','italic'],['link'],['clean']] } }); } catch(e) { console.warn('Quill edit post init error:', e); }
   sb.auth.onAuthStateChange((event, session) => {
@@ -213,3 +213,4 @@ async function saveProfile() {
   await sb.from('user_profiles').upsert({ id: currentUser.id, username, avatar_url: avatarUrl }); await fetchData();
   btn.disabled = false; btn.textContent = 'Save profile'; alert('Profile updated!');
 }
+
