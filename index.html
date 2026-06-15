@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.quilljs.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com https://flfyifdaitfnxncoxzxe.supabase.co; style-src 'self' 'unsafe-inline' https://cdn.quilljs.com https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: blob: https:; connect-src 'self' https: wss:; media-src 'self' blob: https:; frame-src https://www.youtube.com https://player.vimeo.com;">
 <title>AccentUp — Master American English Pronunciation</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -34,7 +36,7 @@
     <span class="logo-dot"></span>
   </div>
   <div class="nav-tabs">
-    <button class="nav-tab active" data-page="home" id="nav-home">Home</button>
+    <button class="nav-tab active" data-page="sounds" id="nav-sounds">Sounds</button>
     <button class="nav-tab" data-page="dashboard" id="nav-dashboard" style="display:none">Dashboard</button>
     <button class="nav-tab" data-page="classroom" id="nav-classroom" style="display:none">Classroom</button>
     <button class="nav-tab" data-page="community" id="nav-community" style="display:none">Community</button>
@@ -43,7 +45,6 @@
     <div class="nav-more-wrap">
       <button class="nav-tab nav-more-btn" id="nav-more-btn" onclick="toggleNavMore(event)">More <span class="nav-more-caret">▾</span></button>
       <div class="nav-more-menu" id="nav-more-menu">
-        <button class="nav-tab" data-page="sounds" id="nav-sounds">Sounds</button>
         <button class="nav-tab" data-page="routine" id="nav-routine-tab" style="display:none">📅 Routine</button>
         <button class="nav-tab" data-page="reference" id="nav-reference-tab" style="display:none">📚 Reference</button>
         <button class="nav-tab" data-page="streaks" id="nav-streaks-tab" style="display:none">🔥 Streaks</button>
@@ -59,197 +60,8 @@
   <div style="text-align:center;padding:3rem;color:var(--text-muted);font-size:14px">Loading dashboard...</div>
 </div>
 
-<div class="page active lp-page" id="page-home">
-
-  <!-- ── HERO ── -->
-  <section class="lp-hero">
-    <div class="lp-container lp-hero-inner">
-      <div style="text-align:left">
-        <span class="lp-tag">For professional women · Intermediate / Advanced English</span>
-        <h1 class="lp-h1">Speak English with the same <em>authority</em> you have in your native language.</h1>
-        <p class="lp-subtitle">You already know the grammar and have the vocabulary, but your lack of confidence when speaking is hitting a career ceiling. Unlock your oral fluency in 6 months with AccentUp.</p>
-        <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn">👉 Let's chat on WhatsApp</a>
-        <span class="lp-micro">Personalized, 1-on-1 6-month program · Strictly limited spots</span>
-      </div>
-      <div class="lp-hero-visual">
-        <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Professional woman speaking confidently" class="lp-hero-img"/>
-        <div class="lp-hero-badge">
-          <div class="lp-hero-badge-num">6</div>
-          <div class="lp-hero-badge-text">Month<br>Program</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── STATS BAR ── -->
-  <div class="lp-stats-bar">
-    <div class="lp-container">
-      <div class="lp-stats-grid">
-        <div class="lp-stat"><strong>1-on-1</strong><span>Live Sessions</span></div>
-        <div class="lp-stat"><strong>24/7</strong><span>Platform Access</span></div>
-        <div class="lp-stat"><strong>6</strong><span>Months to Fluency</span></div>
-        <div class="lp-stat"><strong>100%</strong><span>Personalized</span></div>
-      </div>
-    </div>
-  </div>
-
   <!-- ── PAIN POINTS ── -->
-  <section class="lp-section cream">
-    <div class="lp-container">
-      <h2 class="lp-h2">Your resume says "Advanced English"<br>but everyday reality feels completely different...</h2>
-      <p class="lp-p">If you are here, it's probably because these thoughts cross your mind more often than you'd like to admit:</p>
-      <div class="lp-quotes-grid">
-        <div class="lp-speech-bubble"><p>"I hate when someone says 'What?' and I have to repeat myself."</p></div>
-        <div class="lp-speech-bubble"><p>"I sound angry even when I'm not."</p></div>
-        <div class="lp-speech-bubble"><p>"I sound so much smarter in my first language."</p></div>
-        <div class="lp-speech-bubble"><p>"I understand so much… but when I speak, I can only express half of it."</p></div>
-        <div class="lp-speech-bubble"><p>"I've been learning English for years, and I still get stuck."</p></div>
-        <div class="lp-speech-bubble"><p>"I know the answer, but I usually keep it to myself."</p></div>
-      </div>
-      <div class="lp-bridge">
-        <div class="lp-bridge-text">
-          <p>You stay quieter than you'd like in meetings or social situations. You feel like the most interesting part of you is missing. Over time, this starts to affect more than your English. You feel less confident. Less present.</p>
-          <p>The truth is, conventional English courses focus heavily on theory. Rules. Word lists. Spelling.</p>
-          <p><strong>But speaking isn't theory. Speaking is physical.</strong></p>
-        </div>
-        <div class="lp-bridge-img"><img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?q=80&w=800&auto=format&fit=crop" alt="Professional woman"/></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── METHODOLOGY ── -->
-  <section class="lp-section">
-    <div class="lp-container">
-      <span class="lp-section-badge" style="color:var(--brand);background:var(--brand-light);border-color:var(--brand-light)">The AccentUp Method</span>
-      <h2 class="lp-h2">Forget traditional English courses.<br>Speaking is a physical skill.</h2>
-      <p class="lp-p">AccentUp is designed around a unique 3-step framework that shifts you from just "knowing" English to actually owning it.</p>
-      <div class="lp-mech-grid">
-        <div class="lp-mech-card">
-          <div class="lp-mech-icon">🧏</div>
-          <span class="lp-mech-step">STEP 1</span>
-          <h3>HEAR IT</h3>
-          <p>Decode the real language. Before you can say a sound, you need to truly hear it. We analyze English through its sound system using materials you actually enjoy — your favorite series, movies, TED Talks, or songs.</p>
-        </div>
-        <div class="lp-mech-card">
-          <div class="lp-mech-icon">🌐</div>
-          <span class="lp-mech-step">STEP 2</span>
-          <h3>OWN IT</h3>
-          <p>Intentional practice. This is where the physical training happens. We practice real-world pronunciation by diving deep into connected speech, linking, and natural intonation through intensive shadowing techniques.</p>
-        </div>
-        <div class="lp-mech-card">
-          <div class="lp-mech-icon">👄</div>
-          <span class="lp-mech-step">STEP 3</span>
-          <h3>SAY IT</h3>
-          <p>Automate your speech. We simulate your real professional life: practicing upcoming presentations, simulating high-stakes meetings, and role-playing interviews. Speak under pressure without getting stuck.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── COMPARISON ── -->
-  <section class="lp-section cream">
-    <div class="lp-container">
-      <h2 class="lp-h2">Why AccentUp works where other courses fail</h2>
-      <p class="lp-p">Most English programs treat speaking as a side effect of studying. AccentUp treats it as a skill you build with intention.</p>
-      <div class="lp-compare-grid">
-        <div class="lp-compare-col bad">
-          <div class="lp-compare-header">Traditional English Learning ❌</div>
-          <div class="lp-compare-item"><span>❌</span><p>Focuses on information and rules, assuming that understanding automatically leads to speaking.</p></div>
-          <div class="lp-compare-item"><span>❌</span><p>Prioritizes reading and writing instead of intentional speaking practice.</p></div>
-          <div class="lp-compare-item"><span>❌</span><p>Treats mistakes as something to be avoided at all costs.</p></div>
-          <div class="lp-compare-item"><span>❌</span><p>Ignores confidence, fear, and mindset — assuming it will come naturally with fluency.</p></div>
-          <div class="lp-compare-item"><span>❌</span><p>Creates reliance on constant feedback and always needing "the next course" to improve.</p></div>
-        </div>
-        <div class="lp-compare-col good">
-          <div class="lp-compare-header">AccentUp: Hear It. Own It. Say It. ✅</div>
-          <div class="lp-compare-item"><span>✅</span><p>Focuses on practical spoken English and trains speaking as a physical skill.</p></div>
-          <div class="lp-compare-item"><span>✅</span><p>Prioritizes pronunciation, rhythm, intonation, and real-life communication.</p></div>
-          <div class="lp-compare-item"><span>✅</span><p>Treats mistakes as a natural and necessary part of the learning process.</p></div>
-          <div class="lp-compare-item"><span>✅</span><p>Builds confidence and a growth mindset as skills you intentionally develop.</p></div>
-          <div class="lp-compare-item"><span>✅</span><p>Teaches you how to recognize your own patterns and take full ownership of your progress.</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── THE OFFER ── -->
-  <section class="lp-section blue">
-    <div class="lp-container">
-      <span class="lp-section-badge">The Program</span>
-      <h2 class="lp-h2">The AccentUp 6-Month Mentorship</h2>
-      <p class="lp-p" style="color:rgba(255,255,255,0.78)">A personalized, 1-on-1 coaching program designed to permanently transform the way you speak English.</p>
-      <div class="lp-offer-core">
-        <div class="lp-core-card">
-          <div class="lp-core-icon">🎤</div>
-          <h4>Live 60-Minute 1-on-1 Sessions</h4>
-          <p>Highly focused, private coaching sessions with instant, actionable feedback. No generic lessons — we work directly on your oral roadblocks.</p>
-        </div>
-        <div class="lp-core-card">
-          <div class="lp-core-icon">💻</div>
-          <h4>The AccentUp Interactive Platform</h4>
-          <p>24/7 access to our custom-built platform featuring step-by-step explainer videos, phonetic charts, and interactive practice exercises.</p>
-        </div>
-      </div>
-      <div class="lp-bonuses-label">🎁 Exclusive Bonuses Included</div>
-      <div class="lp-bonuses-grid">
-        <div class="lp-bonus-item"><span>📅</span><div><strong>Personalized Weekly Routine</strong><p>A customized training plan to keep improving your pronunciation on your own time.</p></div></div>
-        <div class="lp-bonus-item"><span>🎬</span><div><strong>"Pronunciation Weekly Requests"</strong><p>A weekly video series addressing the exact words, sounds, or phrases you requested.</p></div></div>
-        <div class="lp-bonus-item"><span>👥</span><div><strong>The Private Community</strong><p>Access to our exclusive member network to share wins, exchange resources, and practice together.</p></div></div>
-        <div class="lp-bonus-item"><span>🔑</span><div><strong>Extended Platform Access</strong><p>An extra 3 months of full access to review and solidify your progress after the program ends.</p></div></div>
-        <div class="lp-bonus-item"><span>🚀</span><div><strong>"Boost Your Practice" Masterclass</strong><p>A special video training on how to optimize your study time for maximum results.</p></div></div>
-      </div>
-      <div class="lp-price-box">
-        <p class="lp-price-label">Your Investment in Your Career</p>
-        <div class="lp-price">$530,000 ARS</div>
-        <p class="lp-price-sub">or 3 monthly payments of $200,000 ARS</p>
-        <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn">👉 Secure your spot on WhatsApp</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── ABOUT CAMILA ── -->
-  <section class="lp-section">
-    <div class="lp-container">
-      <div class="lp-mentor">
-        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop" alt="Camila — Pronunciation Coach" class="lp-mentor-img"/>
-        <div class="lp-mentor-text">
-          <span class="lp-section-badge" style="color:var(--brand);background:var(--brand-light);border-color:var(--brand-light)">Your Coach</span>
-          <h2 class="lp-h2" style="text-align:left;margin-bottom:1rem">Hi, I'm Camila. And I know exactly what's holding your English back.</h2>
-          <p>For years, I've watched incredibly talented, intelligent professional women shrink in meeting rooms or avoid speaking up because they felt insecure about their English pronunciation.</p>
-          <p>They had the vocabulary. They knew the grammar. But the traditional education system completely ignored the most important part of communication: <strong>the physical skill of speaking with authority.</strong></p>
-          <p>I created AccentUp because I was tired of seeing brilliant women hit a language ceiling in their careers. My mission is to give you the exact framework, tools, and feedback you need to stop overthinking every word and start speaking with the confidence and clarity your professional talent deserves.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── FINAL CTA ── -->
-  <section class="lp-final-cta">
-    <div class="lp-container">
-      <span class="lp-section-badge">Limited Spots Available</span>
-      <h2 class="lp-h2">Ready to stop holding back<br>and start speaking up?</h2>
-      <p>Your ideas deserve to be heard. Your career deserves to grow. Let's find out if AccentUp is the right fit for you — no pressure, no commitment, just a real conversation.</p>
-      <a href="https://wa.me/message/KUNJIAWCYFHVF1" target="_blank" class="lp-cta-btn" style="font-size:18px;padding:18px 44px">👉 Let's talk on WhatsApp</a>
-      <div class="lp-micro" style="margin-top:16px">Free 15-min discovery call · 1-on-1 program · Strictly limited spots</div>
-    </div>
-  </section>
-
-  <!-- ── FAQ ── -->
-  <section class="lp-section cream">
-    <div class="lp-container">
-      <h2 class="lp-h2">Frequently Asked Questions</h2>
-      <div class="lp-faq">
-        <details><summary>Is this program right for beginners?</summary><p>No. AccentUp is exclusively designed for professionals who already have an intermediate or advanced understanding of English grammar and vocabulary, but struggle with oral fluency, pronunciation, and confidence.</p></details>
-        <details><summary>I have a very busy schedule. How much time do I need to invest?</summary><p>The program is built for busy professionals. Alongside our highly focused 60-minute weekly live session, you will get a personalized routine using our 24/7 interactive platform. You don't need hours a day — you just need consistent, intentional practice (even 15 minutes a day makes a huge difference).</p></details>
-        <details><summary>Is this a group class or 1-on-1?</summary><p>This is a highly personalized, 1-on-1 mentorship. I work directly with you, using your own real-world materials (like your upcoming presentations or meetings) to tackle your specific blind spots.</p></details>
-        <details><summary>How do I secure my spot?</summary><p>Because this is a personalized 1-on-1 experience, I only work with a small number of students at a time to ensure the highest quality of feedback. Click the button below to reach out to me directly on WhatsApp so we can see if you are a good fit for the program!</p></details>
-      </div>
-    </div>
-  </section>
-
-</div>
-
-<div class="page" id="page-sounds">
+<div class="page active" id="page-sounds">
   <div class="section-intro"><h2>Sounds of American English</h2><p>Explore the 19 vowel sounds and 24 consonant sounds. Click any card to explore mouth position, spellings, and tips.</p></div>
   <div style="margin-bottom:1.5rem">
     <input type="text" id="sounds-search" placeholder="🔍  Search by sound, word, or name — e.g. /ɪ/, hit, Short I" oninput="filterSounds(this.value)" style="margin-bottom:0;border-radius:30px;padding:10px 18px;font-size:14px"/>
