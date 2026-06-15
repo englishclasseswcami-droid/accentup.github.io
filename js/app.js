@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  buildAllSoundsGrids();
   try { quillEditor = new Quill('#quill-editor-container', { theme: 'snow', placeholder: 'Write your lesson content here...', modules: { toolbar: { container: [[{ header: [1,2,3,4,false] }],['bold','italic','strike','code','blockquote','code-block'],[{ list:'ordered' },{ list:'bullet' }],['link','image','video'],['clean'],['table']], handlers: { table: () => insertQuillTable() } } } }); } catch(e) { console.warn('Quill lesson init error:', e); }
   try { communityQuill = new Quill('#community-editor-container', { theme: 'snow', placeholder: 'Write your post here — you can add titles, bold text, links, YouTube videos and images...', modules: { toolbar: [[{ header: [1, 2, false] }], ['bold', 'italic', 'underline'], ['link', 'image', 'video'], [{ list: 'ordered' }, { list: 'bullet' }], ['clean']] } }); } catch(e) { console.warn('Quill community init error:', e); }
   try { editPostQuill = new Quill('#edit-post-editor-container', { theme: 'snow', modules: { toolbar: [['bold','italic'],['link'],['clean']] } }); } catch(e) { console.warn('Quill edit post init error:', e); }
@@ -19,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function handleNavAuth() {
   if (currentUser) {
-    try { await sb.auth.signOut(); } catch(e) { console.error('Sign out error:', e); }
+    try { localStorage.removeItem('au_last_page'); await sb.auth.signOut(); } catch(e) { console.error('Sign out error:', e); }
   } else {
     goToPage('auth');
   }
@@ -30,12 +31,11 @@ function updateAuthUI() {
   const isTeacher = isLoggedIn && currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
 
   // Public tabs (always visible)
-  // 'home' and 'sounds' always shown when logged out; 'sounds' always shown
+  // Sounds is always shown (public landing)
 
   // App tabs visibility
   const show = (id, visible) => { const el = document.getElementById(id); if (el) el.style.display = visible ? 'inline-block' : 'none'; };
 
-  show('nav-home',       !isLoggedIn);
   show('nav-dashboard',  isLoggedIn && !isTeacher);
   show('nav-sounds',     true);
   show('nav-classroom',  isLoggedIn && !isTeacher);
@@ -55,7 +55,7 @@ function updateAuthUI() {
     btn.textContent = 'Log in'; btn.classList.remove('logout-btn-nav'); btn.classList.add('auth-btn');
     const activePage = document.querySelector('.page.active')?.id;
     const protectedPages = ['page-dashboard','page-classroom','page-teacher','page-profile','page-streaks','page-routine','page-reference','page-certificate'];
-    if (protectedPages.includes(activePage)) goToPage('home');
+    if (protectedPages.includes(activePage)) goToPage('sounds');
   }
 }
 
@@ -153,6 +153,7 @@ function goToPage(pageId) {
   if (pageId === 'reference') renderReferenceLibrary();
   if (pageId === 'certificate') renderCertificate();
   if (pageId === 'profile') { const p = dbProfiles.find(x => x.id === currentUser?.id); if (p) document.getElementById('profile-username').value = p.username || ''; }
+  if (!['auth','sounds'].includes(pageId)) localStorage.setItem('au_last_page', pageId);
   window.scrollTo(0, 0);
 }
 
@@ -201,6 +202,23 @@ async function fetchData() {
     }
     if (document.getElementById('page-streaks').classList.contains('active')) renderStreaks();
     if (document.getElementById('page-routine')?.classList.contains('active')) renderRoutine();
+
+    // Restore last visited page, or go to Dashboard/Teacher by default
+    const activePage = document.querySelector('.page.active')?.id;
+    const onLandingOrAuth = !activePage || activePage === 'page-sounds' || activePage === 'page-auth';
+    if (onLandingOrAuth) {
+      const isTeacherUser = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
+      if (isTeacherUser) { goToPage('teacher'); }
+      else {
+        const lastPage = localStorage.getItem('au_last_page');
+        const validPages = ['dashboard','classroom','community','routine','reference','streaks','profile','sounds','certificate'];
+        goToPage(lastPage && validPages.includes(lastPage) ? lastPage : 'dashboard');
+      }
+    } else {
+      // Already on a page (e.g. refresh) — re-render it with fresh data
+      const currentPageId = activePage?.replace('page-', '');
+      if (currentPageId && currentPageId !== 'sounds' && currentPageId !== 'auth') goToPage(currentPageId);
+    }
   } catch (error) { console.error("Error fetching data:", error); }
 }
 
@@ -213,4 +231,3 @@ async function saveProfile() {
   await sb.from('user_profiles').upsert({ id: currentUser.id, username, avatar_url: avatarUrl }); await fetchData();
   btn.disabled = false; btn.textContent = 'Save profile'; alert('Profile updated!');
 }
-
