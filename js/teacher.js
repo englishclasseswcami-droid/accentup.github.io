@@ -159,26 +159,6 @@ function clearAllTables() {
   refreshTablesPreview();
 }
 
-function toggleSoundInsertPicker() {
-  const picker = document.getElementById('sb-insert-picker');
-  const isHidden = picker.style.display === 'none' || !picker.style.display;
-  if (isHidden) {
-    const sel = quillEditor.getSelection(); sbInsertCursorIndex = sel ? sel.index : quillEditor.getLength();
-    const subId = document.getElementById('t-les-submodule').value;
-    const items = dbSoundboard.filter(s => s.submodule_id === subId);
-    const select = document.getElementById('sb-insert-select');
-    select.innerHTML = items.length ? items.map(it => `<option value="${it.id}">${esc(it.text)}${it.ipa ? ' '+esc(it.ipa) : ''}</option>`).join('') : '<option value="">No items in this subfolder yet</option>';
-    picker.style.display = 'flex';
-  } else { picker.style.display = 'none'; }
-}
-
-function confirmInsertSound() {
-  const select = document.getElementById('sb-insert-select'); const itemId = select.value; if (!itemId) return;
-  const index = sbInsertCursorIndex ?? quillEditor.getLength();
-  const token = `{{sound:${itemId}}} `;
-  quillEditor.insertText(index, token); quillEditor.setSelection(index + token.length);
-  document.getElementById('sb-insert-picker').style.display = 'none';
-}
 async function deleteLesson(id) { if (!confirm('Delete this lesson?')) return; await sb.from('lessons').delete().eq('id', id); fetchData(); }
 async function moveLesson(id, dir) { const les = dbLessons.find(l => l.id === id); if (!les) return; const siblings = dbLessons.filter(l => l.module_id === les.module_id && l.submodule_id === les.submodule_id); const idx = siblings.findIndex(l => l.id === id); const t = siblings[idx + dir]; if (!t) return; await sb.from('lessons').update({ order_index: t.order_index }).eq('id', id); await sb.from('lessons').update({ order_index: les.order_index }).eq('id', t.id); fetchData(); }
 
@@ -576,4 +556,75 @@ async function deleteSoundboardItem(itemId) {
   if (error) { alert('Error: ' + error.message); return; }
   dbSoundboard = dbSoundboard.filter(s => s.id !== itemId);
   renderSoundboardManager();
+}
+
+/* ══════════════════════════════════════════
+   SOUNDBOARD — BULK AUDIO UPLOAD
+══════════════════════════════════════════ */
+async function bulkUploadSoundboardAudios(event) {
+  const files = Array.from(event.target.files); if (!files.length) return;
+  const subId = document.getElementById('sb-submodule-select').value; if (!subId) return;
+  const statusEl = document.getElementById('sb-bulk-upload-status');
+  const items = dbSoundboard.filter(s => s.submodule_id === subId);
+
+  let matched = 0, skipped = 0, failed = 0;
+  statusEl.textContent = `Uploading 0 / ${files.length}...`;
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    // Match by filename (without extension) to item text
+    const nameKey = file.name.replace(/\.[^/.]+$/, '').replace(/_/g, ' ').toLowerCase().trim();
+    const item = items.find(it => it.text.toLowerCase().trim() === nameKey || it.text.toLowerCase().trim() === file.name.replace(/\.[^/.]+$/, '').toLowerCase().trim());
+
+    if (!item) { skipped++; statusEl.textContent = `Uploading ${i+1} / ${files.length}... (${skipped} unmatched)`; continue; }
+
+    const fn = `sb_${item.id}_${Date.now()}.${file.name.split('.').pop()}`;
+    const { error: upErr } = await sb.storage.from('audios').upload(fn, file);
+    if (upErr) { failed++; continue; }
+    const url = sb.storage.from('audios').getPublicUrl(fn).data.publicUrl;
+    const { error } = await sb.from('soundboard_items').update({ audio_url: url }).eq('id', item.id);
+    if (error) { failed++; continue; }
+    item.audio_url = url;
+    matched++;
+    statusEl.textContent = `Uploading ${i+1} / ${files.length}... (${matched} matched)`;
+  }
+
+  statusEl.innerHTML = `✅ Done — <strong>${matched} uploaded</strong>${skipped ? `, ${skipped} unmatched (check filename = word exactly)` : ''}${failed ? `, ${failed} failed` : ''}`;
+  event.target.value = '';
+  renderSoundboardManager();
+}
+
+/* ══════════════════════════════════════════
+   SOUNDBOARD — INSERT WITH CHECKBOXES
+══════════════════════════════════════════ */
+function toggleSoundInsertPicker() {
+  const picker = document.getElementById('sb-insert-picker');
+  const isHidden = picker.style.display === 'none' || !picker.style.display;
+  if (isHidden) {
+    const sel = quillEditor.getSelection(); sbInsertCursorIndex = sel ? sel.index : quillEditor.getLength();
+    const subId = document.getElementById('t-les-submodule').value;
+    const items = dbSoundboard.filter(s => s.submodule_id === subId);
+    const list = document.getElementById('sb-insert-checklist');
+    list.innerHTML = items.length
+      ? items.map(it => `<label style="display:flex;align-items:center;gap:8px;padding:5px 4px;cursor:pointer;font-size:13px"><input type="checkbox" data-id="${it.id}" style="width:auto;margin:0"/> ${esc(it.text)}${it.ipa ? ` <span style="color:var(--text-muted);font-family:monospace;font-size:11px">${esc(it.ipa)}</span>` : ''}</label>`).join('')
+      : '<div style="font-size:12px;color:var(--text-muted);padding:4px">No items in this subfolder yet.</div>';
+    picker.style.display = 'block';
+  } else {
+    picker.style.display = 'none';
+  }
+}
+
+function confirmInsertSound() {
+  const checked = document.querySelectorAll('#sb-insert-checklist input[type="checkbox"]:checked');
+  if (!checked.length) return;
+  let index = sbInsertCursorIndex ?? quillEditor.getLength();
+  checked.forEach(cb => {
+    const token = `{{sound:${cb.dataset.id}}}`;
+    quillEditor.insertText(index, token);
+    index += token.length;
+    quillEditor.insertText(index, '\n');
+    index += 1;
+  });
+  quillEditor.setSelection(index);
+  document.getElementById('sb-insert-picker').style.display = 'none';
 }
