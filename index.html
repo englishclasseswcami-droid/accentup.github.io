@@ -40,7 +40,7 @@
     <button class="nav-tab" data-page="dashboard" id="nav-dashboard" style="display:none">Dashboard</button>
     <button class="nav-tab" data-page="classroom" id="nav-classroom" style="display:none">Classroom</button>
     <button class="nav-tab" data-page="community" id="nav-community" style="display:none">Community</button>
-    <button class="nav-tab teacher-tab" id="nav-teacher-tab" data-page="teacher" style="display:none">Teacher ✦</button>
+    <button class="nav-tab teacher-tab" id="nav-teacher-tab" data-page="classroom" style="display:none">Teacher ✦</button>
 
     <div class="nav-more-wrap">
       <button class="nav-tab nav-more-btn" id="nav-more-btn" onclick="toggleNavMore(event)">More <span class="nav-more-caret">▾</span></button>
@@ -171,7 +171,10 @@
 
 <div class="page page-full" id="page-classroom">
   <div id="classroom-grid-view">
-    <div class="section-intro"><h2>Classroom</h2><p>Select a folder to see its lessons and activities.</p></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
+      <div class="section-intro" style="margin-bottom:0"><h2>Classroom</h2><p>Select a folder to see its lessons and activities.</p></div>
+      <button id="classroom-admin-btn" onclick="goToPage('teacher')" style="display:none;background:var(--surface);border:1px solid var(--skool-border);border-radius:var(--radius-sm);padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;color:var(--text-muted);gap:6px;align-items:center">⚙️ Admin</button>
+    </div>
     <div class="course-grid" id="classroom-modules-grid"><div style="color:var(--text-light);font-size:14px;grid-column:1/-1;text-align:center;padding:3rem 0">Loading...</div></div>
   </div>
   <div id="classroom-player-view" style="display:none">
@@ -293,92 +296,11 @@
     <div>
       <div class="t-panel" style="padding-bottom:1rem">
         <div class="t-tabs">
-          <button class="t-tab-btn active" onclick="switchTTab('mod',this)">📂 Module</button>
-          <button class="t-tab-btn" onclick="switchTTab('sub',this)">📁 Subfolder</button>
-          <button class="t-tab-btn" onclick="switchTTab('les',this)">📝 Lesson</button>
-          <button class="t-tab-btn" onclick="switchTTab('routine',this)">📅 Routines</button>
+          <button class="t-tab-btn active" onclick="switchTTab('routine',this)">📅 Routines</button>
           <button class="t-tab-btn" onclick="switchTTab('students',this)">👥 Students <span id="pending-badge" style="display:none;background:#e05252;color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:800;margin-left:4px"></span></button>
           <button class="t-tab-btn" onclick="switchTTab('soundboard',this)">🔊 Soundboard</button>
         </div>
-        <div class="t-tab-panel active" id="t-tab-mod">
-          <h3 id="panel-title-mod" style="border:none;padding-bottom:0;margin-bottom:.9rem">📂 Create Module</h3>
-          <input type="hidden" id="edit-mod-id" value=""/>
-          <div style="display:flex; gap:12px; margin-bottom:8px">
-            <div style="flex:1"><span class="field-label" style="margin-top:0">Module name</span><input type="text" id="t-mod-title" placeholder="e.g. Pronunciation Basics" style="margin-bottom:0"/></div>
-            <div style="flex:1"><span class="field-label" style="margin-top:0">Access Control</span><label style="font-size:13px;display:flex;align-items:center;gap:6px;height:35px;margin:0"><input type="checkbox" id="t-mod-private" onchange="document.getElementById('t-mod-emails-wrap').style.display = this.checked ? 'block' : 'none'" style="width:auto;margin:0"/> Make module private</label></div>
-          </div>
-          <div id="t-mod-emails-wrap" style="display:none; margin-bottom:12px;"><span class="field-label">Allowed emails (comma separated)</span><textarea id="t-mod-emails" placeholder="e.g. student1@gmail.com, student2@yahoo.com" style="min-height:60px;"></textarea></div>
-          <div style="display:flex;gap:8px; margin-top:12px;"><button class="primary-btn" style="margin-top:0;" onclick="saveModule()">Save module</button><button class="secondary-btn" id="btn-cancel-mod" style="display:none;" onclick="cancelEditMod()">Cancel</button></div>
-        </div>
-        <div class="t-tab-panel" id="t-tab-sub">
-          <h3 id="panel-title-sub" style="border:none;padding-bottom:0;margin-bottom:.9rem">📁 Create Subfolder</h3>
-          <input type="hidden" id="edit-sub-id" value=""/>
-          <div style="display:flex; gap:12px; margin-bottom:8px">
-            <div style="flex:1"><span class="field-label" style="margin-top:0">Inside module</span><select id="t-sub-parent" style="margin-bottom:0"></select></div>
-            <div style="flex:1"><span class="field-label" style="margin-top:0">Subfolder name</span><input type="text" id="t-sub-title" placeholder="e.g. 1. The American R" style="margin-bottom:0"/></div>
-          </div>
-          <div style="display:flex;gap:8px; margin-top:12px;"><button class="primary-btn" style="background:var(--brand-mid); margin-top:0;" onclick="saveSubmodule()">Save subfolder</button><button class="secondary-btn" id="btn-cancel-sub" style="display:none;" onclick="cancelEditSub()">Cancel</button></div>
-        </div>
-        <div class="t-tab-panel" id="t-tab-les">
-          <h3 id="panel-title-les" style="border:none;padding-bottom:0;margin-bottom:.9rem">📝 Add Lesson</h3>
-          <input type="hidden" id="edit-les-id" value=""/>
-          <div style="display:flex; gap:12px; margin-bottom:12px">
-            <div style="flex:1"><span class="field-label" style="margin-top:0">Module</span><select id="t-les-module" onchange="updateSubfolderSelect()" style="margin-bottom:0"></select></div>
-            <div style="flex:1"><span class="field-label" style="margin-top:0">Subfolder (optional)</span><select id="t-les-submodule" style="margin-bottom:0"></select></div>
-          </div>
-          <div style="display:flex; gap:12px; margin-bottom:12px">
-            <div style="flex:1"><span class="field-label" style="margin-top:0">Lesson type</span><select id="t-les-type" onchange="toggleLessonFields()" style="margin-bottom:0"><option value="video">📺 Video</option><option value="text">📄 Reading material</option><option value="task">📝 Interactive exercise</option><option value="embed">🌐 Embed</option></select></div>
-            <div style="flex:2"><span class="field-label" style="margin-top:0">Lesson title</span><input type="text" id="t-les-title" placeholder="e.g. Lesson 1 — Short I vs Long E" style="margin-bottom:0"/></div>
-          </div>
-          <hr style="border:0;border-top:1px solid var(--skool-border);margin:1.25rem 0"/>
-          <div id="fields-video"><span class="field-label">YouTube URL</span><input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..." style="margin-bottom:0;"/></div>
-          <div id="fields-text"><span class="field-label" id="text-field-label" style="margin-top:12px">Introduction / Instructions (optional)</span>
-            <div id="quill-editor-container"></div>
-            <div style="margin-top:8px;display:flex;gap:8px">
-              <button type="button" class="secondary-btn" onclick="toggleSoundInsertPicker()" style="font-size:12px">🔊 Insert sound</button>
-              <div id="sb-insert-picker" style="display:none;margin-top:6px;border:1px solid var(--skool-border);border-radius:var(--radius-sm);padding:10px;background:var(--bg)">
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-                  <span style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase">Select sounds to insert</span>
-                  <div style="display:flex;gap:6px">
-                    <button type="button" class="outline-btn" onclick="document.querySelectorAll('#sb-insert-checklist input').forEach(c=>c.checked=true)" style="font-size:11px;padding:3px 10px">All</button>
-                    <button type="button" class="outline-btn" onclick="document.querySelectorAll('#sb-insert-checklist input').forEach(c=>c.checked=false)" style="font-size:11px;padding:3px 10px">None</button>
-                  </div>
-                </div>
-                <div id="sb-insert-checklist" style="max-height:180px;overflow-y:auto;margin-bottom:8px"></div>
-                <button type="button" class="primary-btn" onclick="confirmInsertSound()" style="margin:0;padding:7px 14px;font-size:12px;width:auto">Insert selected</button>
-                <button type="button" class="outline-btn" onclick="document.getElementById('sb-insert-picker').style.display='none'" style="font-size:12px;padding:7px 12px;margin-left:6px">Cancel</button>
-              </div>
-              <p style="font-size:11px;color:var(--text-muted);margin:4px 0 0">Pick a word/phrase from this subfolder's Soundboard — a small ▶ button with its audio is inserted at your cursor. Make sure a Subfolder is selected above and it has items loaded in 🔊 Soundboard.</p>
-            </div>
-          </div>
-          <div id="fields-embed" style="display:none"><span class="field-label">Embed code (iframe)</span><textarea id="t-les-embed-code" placeholder="Paste your iframe code here..." style="font-family:monospace;min-height:100px"></textarea></div>
-          <div id="fields-task" style="display:none">
-            <span class="field-label" style="margin-top: 1.5rem; margin-bottom: 8px;">Questions / Items</span>
-            <div id="q-builder"></div>
-            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top: 1rem;">
-              <button class="secondary-btn" onclick="addQuestion('multiple_choice')">+ Multiple Choice</button>
-              <button class="secondary-btn" onclick="addQuestion('fill_in_blank')">+ Fill in Blanks</button>
-              <button class="secondary-btn" onclick="addQuestion('short_answer')">+ Short Text Answer</button>
-              <button class="secondary-btn" onclick="addQuestion('open_answer')">+ Open Answer</button>
-              <button class="secondary-btn" onclick="addQuestion('dictation')">+ Dictation</button>
-              <button class="secondary-btn" onclick="addQuestion('drag_drop_text')">+ Drag &amp; Drop (Text)</button>
-              <button class="secondary-btn" onclick="addQuestion('drag_drop')">+ Drag &amp; Drop (Categories)</button>
-            </div>
-          </div>
-          <div style="margin-top:1.25rem;background:#F0FDF4;padding:14px;border-radius:var(--radius-sm);border:1px solid #BBF7D0">
-            <p style="font-size:12px;font-weight:700;color:#166534;margin-bottom:4px">🎧 Lesson audio examples</p>
-            <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Add clickable audios for practice words or examples.</p>
-            <div class="audio-add-row"><input type="text" id="t-audio-label" placeholder="Label (e.g. Word 1)" style="margin-bottom:0;flex:1"/><input type="file" id="t-audio-file" accept="audio/*" style="margin-bottom:0;width:auto;flex:1"/><button class="secondary-btn" id="btn-add-audio" onclick="addSharedAudio()">+ Add</button></div>
-            <div id="t-shared-audios-render"></div>
-          </div>
-          <div style="margin-top:1.25rem;background:#FFF9F6;padding:14px;border-radius:var(--radius-sm);border:1px solid var(--accent)">
-            <p style="font-size:12px;font-weight:700;color:var(--accent-dark);margin-bottom:4px">📎 Attach resources (PDFs, guides, images)</p>
-            <input type="file" id="t-les-resources" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" multiple/>
-            <div id="t-les-resources-current" style="font-size:11px;color:var(--text-muted);margin-top:-4px"></div>
-          </div>
-          <div style="display:flex;gap:8px;margin-top:1rem;"><button class="primary-btn" onclick="saveLesson()" id="btn-save-les" style="margin-top:0">Save lesson</button><button class="secondary-btn" id="btn-cancel-les" style="display:none;margin-top:0" onclick="cancelEditLes()">Cancel</button></div>
-        </div>
-        <div class="t-tab-panel" id="t-tab-routine">
+        <div class="t-tab-panel active" id="t-tab-routine">
           <div class="field-label" style="margin-top:0">Student</div>
           <select id="routine-student-select" onchange="loadStudentRoutineForEdit(this.value)">
             <option value="">— Select a student to edit her routine —</option>
@@ -414,9 +336,6 @@
         </div>
       </div>
     </div>
-    <div>
-      <div class="t-panel"><h3>🛠 Content manager</h3><div id="t-manage-list"><div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div></div></div>
-    </div>
   </div>
 </div>
 
@@ -436,6 +355,98 @@
 <script src="js/sounds.js"></script>
 <script src="js/routine.js"></script>
 <script src="js/dashboard.js"></script>
+
+<!-- Teacher content editor overlay (full screen) -->
+<div id="lesson-editor-overlay" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:150;overflow-y:auto">
+  <div style="max-width:860px;margin:0 auto;padding:1.5rem 1rem 4rem">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;border-bottom:1px solid var(--skool-border);padding-bottom:1rem">
+      <button onclick="closeEditorOverlay()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-muted);line-height:1">←</button>
+      <h2 id="overlay-title" style="font-size:18px;font-weight:800;color:var(--text);margin:0;flex:1">Add Lesson</h2>
+      <button class="primary-btn" onclick="saveLesson()" style="margin:0;width:auto;padding:8px 24px">Save lesson</button>
+      <button class="secondary-btn" id="btn-cancel-les" onclick="cancelEditLes()" style="margin:0;display:none">Cancel</button>
+    </div>
+    <input type="hidden" id="edit-les-id" value=""/>
+    <div style="display:flex;gap:12px;margin-bottom:12px">
+      <div style="flex:1"><span class="field-label" style="margin-top:0">Module</span><select id="t-les-module" onchange="updateSubfolderSelect()" style="margin-bottom:0"></select></div>
+      <div style="flex:1"><span class="field-label" style="margin-top:0">Subfolder (optional)</span><select id="t-les-submodule" style="margin-bottom:0"></select></div>
+    </div>
+    <div style="display:flex;gap:12px;margin-bottom:12px">
+      <div style="flex:1"><span class="field-label" style="margin-top:0">Lesson type</span><select id="t-les-type" onchange="toggleLessonFields()" style="margin-bottom:0"><option value="video">📺 Video</option><option value="text">📄 Reading material</option><option value="task">📝 Interactive exercise</option><option value="embed">🌐 Embed</option></select></div>
+      <div style="flex:2"><span class="field-label" style="margin-top:0">Lesson title</span><input type="text" id="t-les-title" placeholder="e.g. Lesson 1 — Short I vs Long E" style="margin-bottom:0"/></div>
+    </div>
+    <hr style="border:0;border-top:1px solid var(--skool-border);margin:1.25rem 0"/>
+    <div id="fields-video"><span class="field-label">YouTube URL</span><input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..." style="margin-bottom:0;"/></div>
+    <div id="fields-text"><span class="field-label" id="text-field-label" style="margin-top:12px">Introduction / Instructions (optional)</span>
+      <div id="quill-editor-container"></div>
+      <div style="margin-top:8px;display:flex;gap:8px">
+        <button type="button" class="secondary-btn" onclick="toggleSoundInsertPicker()" style="font-size:12px">🔊 Insert sound</button>
+        <div id="sb-insert-picker" style="display:none;margin-top:6px;border:1px solid var(--skool-border);border-radius:var(--radius-sm);padding:10px;background:var(--bg)">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase">Select sounds to insert</span>
+            <div style="display:flex;gap:6px">
+              <button type="button" class="outline-btn" onclick="document.querySelectorAll('#sb-insert-checklist input').forEach(c=>c.checked=true)" style="font-size:11px;padding:3px 10px">All</button>
+              <button type="button" class="outline-btn" onclick="document.querySelectorAll('#sb-insert-checklist input').forEach(c=>c.checked=false)" style="font-size:11px;padding:3px 10px">None</button>
+            </div>
+          </div>
+          <div id="sb-insert-checklist" style="max-height:180px;overflow-y:auto;margin-bottom:8px"></div>
+          <button type="button" class="primary-btn" onclick="confirmInsertSound()" style="margin:0;padding:7px 14px;font-size:12px;width:auto">Insert selected</button>
+          <button type="button" class="outline-btn" onclick="document.getElementById('sb-insert-picker').style.display='none'" style="font-size:12px;padding:7px 12px;margin-left:6px">Cancel</button>
+        </div>
+        <p style="font-size:11px;color:var(--text-muted);margin:4px 0 0">Pick a word/phrase from this subfolder's Soundboard.</p>
+      </div>
+    </div>
+    <div id="fields-embed" style="display:none"><span class="field-label">Embed code (iframe)</span><textarea id="t-les-embed-code" placeholder="Paste your iframe code here..." style="font-family:monospace;min-height:100px"></textarea></div>
+    <div id="fields-task" style="display:none">
+      <span class="field-label" style="margin-top:1.5rem;margin-bottom:8px">Questions / Items</span>
+      <div id="q-builder"></div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:1rem">
+        <button class="secondary-btn" onclick="addQuestion('multiple_choice')">+ Multiple Choice</button>
+        <button class="secondary-btn" onclick="addQuestion('fill_in_blank')">+ Fill in Blanks</button>
+        <button class="secondary-btn" onclick="addQuestion('short_answer')">+ Short Text Answer</button>
+        <button class="secondary-btn" onclick="addQuestion('open_answer')">+ Open Answer</button>
+        <button class="secondary-btn" onclick="addQuestion('dictation')">+ Dictation</button>
+        <button class="secondary-btn" onclick="addQuestion('drag_drop_text')">+ Drag &amp; Drop (Text)</button>
+        <button class="secondary-btn" onclick="addQuestion('drag_drop')">+ Drag &amp; Drop (Categories)</button>
+      </div>
+    </div>
+    <div style="margin-top:1.25rem;background:#F0FDF4;padding:14px;border-radius:var(--radius-sm);border:1px solid #BBF7D0">
+      <p style="font-size:12px;font-weight:700;color:#166534;margin-bottom:4px">🎧 Lesson audio examples</p>
+      <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Add clickable audios for practice words or examples.</p>
+      <div class="audio-add-row"><input type="text" id="t-audio-label" placeholder="Label (e.g. Word 1)" style="margin-bottom:0;flex:1"/><input type="file" id="t-audio-file" accept="audio/*" style="margin-bottom:0;width:auto;flex:1"/><button class="secondary-btn" id="btn-add-audio" onclick="addSharedAudio()">+ Add</button></div>
+      <div id="t-shared-audios-render"></div>
+    </div>
+    <div style="margin-top:1.25rem;background:#FFF9F6;padding:14px;border-radius:var(--radius-sm);border:1px solid var(--accent)">
+      <p style="font-size:12px;font-weight:700;color:var(--accent-dark);margin-bottom:4px">📎 Attach resources (PDFs, guides, images)</p>
+      <input type="file" id="t-les-resources" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" multiple/>
+      <div id="t-les-resources-current" style="font-size:11px;color:var(--text-muted);margin-top:-4px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Teacher module/subfolder slide panel -->
+<div id="teacher-side-panel" style="display:none;position:fixed;right:0;top:0;bottom:0;width:min(400px,100vw);background:var(--surface);border-left:1px solid var(--skool-border);z-index:140;overflow-y:auto;padding:1.5rem;box-shadow:-10px 0 40px rgba(0,0,0,.12)">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
+    <span id="side-panel-title" style="font-size:16px;font-weight:800;color:var(--text)">Add Module</span>
+    <button onclick="closeSidePanel()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-muted)">×</button>
+  </div>
+  <div id="side-panel-mod" style="display:none">
+    <input type="hidden" id="edit-mod-id" value=""/>
+    <span class="field-label" style="margin-top:0">Module name</span>
+    <input type="text" id="t-mod-title" placeholder="e.g. Pronunciation Basics"/>
+    <label style="font-size:13px;display:flex;align-items:center;gap:6px;margin-bottom:12px;cursor:pointer"><input type="checkbox" id="t-mod-private" onchange="document.getElementById('t-mod-emails-wrap').style.display=this.checked?'block':'none'" style="width:auto;margin:0"/> Make module private</label>
+    <div id="t-mod-emails-wrap" style="display:none;margin-bottom:12px"><span class="field-label">Allowed emails (comma separated)</span><textarea id="t-mod-emails" placeholder="student1@gmail.com, student2@gmail.com" style="min-height:60px"></textarea></div>
+    <div style="display:flex;gap:8px"><button class="primary-btn" style="margin-top:0" onclick="saveModule()">Save module</button><button class="secondary-btn" id="btn-cancel-mod" style="display:none;margin-top:0" onclick="cancelEditMod()">Cancel</button></div>
+  </div>
+  <div id="side-panel-sub" style="display:none">
+    <input type="hidden" id="edit-sub-id" value=""/>
+    <span class="field-label" style="margin-top:0">Inside module</span>
+    <select id="t-sub-parent" style="margin-bottom:12px"></select>
+    <span class="field-label" style="margin-top:0">Subfolder name</span>
+    <input type="text" id="t-sub-title" placeholder="e.g. 1. The American R"/>
+    <div style="display:flex;gap:8px"><button class="primary-btn" style="margin-top:0;background:var(--brand-mid)" onclick="saveSubmodule()">Save subfolder</button><button class="secondary-btn" id="btn-cancel-sub" style="display:none;margin-top:0" onclick="cancelEditSub()">Cancel</button></div>
+  </div>
+</div>
+<div id="teacher-side-overlay" onclick="closeSidePanel()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.2);z-index:139"></div>
 
 <!-- Table builder modal -->
 <div id="table-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center">

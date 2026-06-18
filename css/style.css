@@ -196,7 +196,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .private-badge{position:absolute;top:1rem;right:1rem;background:var(--red-light);color:var(--red-dark);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em}
 .classroom-container{display:flex;gap:1.5rem;min-height:75vh;align-items:flex-start}
 @media(max-width:768px){.classroom-container{flex-direction:column}}
-.c-sidebar{width:280px;flex-shrink:0}
+.c-sidebar{width:320px;flex-shrink:0}
 @media(max-width:768px){.c-sidebar{width:100%}}
 .c-progress-box{background:var(--surface);border:1px solid var(--skool-border);border-radius:var(--radius-sm);padding:1rem 1.1rem;margin-bottom:1rem}
 .c-course-title{font-size:15px;font-weight:800;color:var(--text)}
@@ -243,7 +243,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .c-sidebar{position:sticky;top:1rem}
 @media(max-width:768px){.c-sidebar{position:static}}
 .c-subfolder-group{margin-bottom:6px;border-radius:var(--radius-sm);overflow:hidden}
-.c-subfolder-header{display:flex;align-items:center;gap:8px;padding:9px 10px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);cursor:pointer;border-radius:var(--radius-sm);transition:background .15s;user-select:none}
+.c-subfolder-header{display:flex;align-items:center;gap:8px;padding:9px 10px;font-size:12px;font-weight:700;color:var(--text);cursor:pointer;border-radius:var(--radius-sm);transition:background .15s;user-select:none}
 .c-subfolder-header:hover{background:var(--bg)}
 .c-subfolder-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .c-chevron{display:inline-block;font-size:11px;color:var(--text-light);transition:transform .25s ease;flex-shrink:0}
@@ -252,13 +252,13 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .c-subfolder-body.open{max-height:2000px;opacity:1}
 
 /* Breadcrumb above lesson content */
-.lesson-breadcrumb{display:none;align-items:center;gap:6px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--brand)}
+.lesson-breadcrumb{display:none;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--brand)}
 .speed-toggle{flex-shrink:0;background:var(--bg);border:1px solid var(--skool-border);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;color:var(--text-muted);cursor:pointer;transition:all .15s}
 .speed-toggle:hover{border-color:var(--brand);color:var(--brand)}
 .speed-toggle.active{background:var(--brand-light);border-color:var(--brand);color:var(--brand-dark)}
 
 /* Fluid fade-in transition when switching lessons */
-.c-main.fade-in{animation:cmFadeIn .35s ease}
+.c-main{padding-top:.5rem}.c-main.fade-in{animation:cmFadeIn .35s ease}
 @keyframes cmFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
 /* Question/Task step badges */
@@ -266,10 +266,10 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 .ex-question-block:hover{box-shadow:0 4px 16px rgba(0,0,0,.06)}
 .ex-q-num{display:inline-flex;align-items:center;gap:6px;background:var(--brand);color:#fff;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px;box-shadow:0 2px 6px rgba(45,42,232,.25)}
 .c-subfolder-group{margin-bottom:12px}
-.c-subfolder-header{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:4px}
+.c-subfolder-header{display:flex;justify-content:space-between;align-items:center;padding:9px 10px;font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px}
 .c-subfolder-prog{background:var(--skool-border);padding:2px 6px;border-radius:10px;color:var(--text);font-size:10px}
 .c-subfolder-prog.done{background:var(--green-light);color:var(--green-dark)}
-.c-item{padding:9px 12px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border-radius:var(--radius-sm);transition:all .15s;display:flex;align-items:center;gap:8px;border-left:2px solid transparent;justify-content:space-between;margin-bottom:2px}
+.c-item{padding:10px 12px;font-size:14px;font-weight:500;color:var(--text-muted);cursor:pointer;border-radius:var(--radius-sm);transition:all .15s;display:flex;align-items:center;gap:8px;border-left:2px solid transparent;justify-content:space-between;margin-bottom:3px}
 .c-item:hover{background:var(--surface);color:var(--brand);border-left-color:var(--brand)}
 .c-item.active{background:var(--surface);color:var(--brand);font-weight:700;border:1px solid var(--brand-light);border-left:2px solid var(--brand)}
 .c-item-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

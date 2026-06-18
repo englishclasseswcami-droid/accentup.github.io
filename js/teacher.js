@@ -45,13 +45,13 @@ function initDnd(containerEl, onEnd) {
 async function deleteModule(id) { if (!confirm('Delete this module and ALL its content?')) return; await sb.from('lessons').delete().eq('module_id', id); await sb.from('submodules').delete().eq('module_id', id); await sb.from('modules').delete().eq('id', id); fetchData(); }
 async function deleteSubmodule(id) { if (!confirm('Delete this subfolder? Lessons inside will stay in the main module.')) return; await sb.from('submodules').delete().eq('id', id); fetchData(); }
 async function deleteLesson(id) { if (!confirm('Delete this lesson?')) return; await sb.from('lessons').delete().eq('id', id); fetchData(); }
-async function saveModule() { const title = document.getElementById('t-mod-title').value.trim(); const editId = document.getElementById('edit-mod-id').value; const isPrivate = document.getElementById('t-mod-private').checked; const allowedEmails = document.getElementById('t-mod-emails').value.trim(); if (!title) { alert('Add a module name.'); return; } const payload = editId ? { title, is_private: isPrivate, allowed_emails: allowedEmails } : { title, order_index: dbModules.length, is_private: isPrivate, allowed_emails: allowedEmails }; const res = editId ? await sb.from('modules').update(payload).eq('id', editId) : await sb.from('modules').insert([payload]); if (res.error) { alert('Error: ' + res.error.message); return; } await fetchData(); alert(editId ? 'Module updated!' : 'Module created!'); cancelEditMod(); }
-function editModule(id) { const m = dbModules.find(x => x.id === id); if (!m) return; document.getElementById('t-mod-title').value = m.title; document.getElementById('edit-mod-id').value = m.id; document.getElementById('t-mod-private').checked = m.is_private; document.getElementById('t-mod-emails-wrap').style.display = m.is_private ? 'block' : 'none'; document.getElementById('t-mod-emails').value = m.allowed_emails || ''; document.getElementById('panel-title-mod').textContent = '✏️ Edit module'; document.getElementById('btn-cancel-mod').style.display = 'inline-block'; window.scrollTo(0, 0); }
-function cancelEditMod() { document.getElementById('t-mod-title').value = ''; document.getElementById('edit-mod-id').value = ''; document.getElementById('t-mod-private').checked = false; document.getElementById('t-mod-emails-wrap').style.display = 'none'; document.getElementById('t-mod-emails').value = ''; document.getElementById('panel-title-mod').textContent = '📂 Create Module'; document.getElementById('btn-cancel-mod').style.display = 'none'; }
+async function saveModule() { const title = document.getElementById('t-mod-title').value.trim(); const editId = document.getElementById('edit-mod-id').value; const isPrivate = document.getElementById('t-mod-private').checked; const allowedEmails = document.getElementById('t-mod-emails').value.trim(); if (!title) { alert('Add a module name.'); return; } const payload = editId ? { title, is_private: isPrivate, allowed_emails: allowedEmails } : { title, order_index: dbModules.length, is_private: isPrivate, allowed_emails: allowedEmails }; const res = editId ? await sb.from('modules').update(payload).eq('id', editId) : await sb.from('modules').insert([payload]); if (res.error) { alert('Error: ' + res.error.message); return; } closeSidePanel(); await fetchData(); }
+function editModule(id) { const m = dbModules.find(x => x.id === id); if (!m) return; openSidePanel('mod'); document.getElementById('t-mod-title').value = m.title; document.getElementById('edit-mod-id').value = m.id; document.getElementById('t-mod-private').checked = m.is_private; document.getElementById('t-mod-emails-wrap').style.display = m.is_private ? 'block' : 'none'; document.getElementById('t-mod-emails').value = m.allowed_emails || ''; document.getElementById('side-panel-title').textContent = '✏️ Edit module'; document.getElementById('btn-cancel-mod').style.display = 'inline-block'; }
+function cancelEditMod() { document.getElementById('t-mod-title').value = ''; document.getElementById('edit-mod-id').value = ''; document.getElementById('t-mod-private').checked = false; document.getElementById('t-mod-emails-wrap').style.display = 'none'; document.getElementById('t-mod-emails').value = ''; document.getElementById('btn-cancel-mod').style.display = 'none'; }
 
-async function saveSubmodule() { const title = document.getElementById('t-sub-title').value.trim(); const modId = document.getElementById('t-sub-parent').value; const editId = document.getElementById('edit-sub-id').value; if (!title || !modId) { alert('Select a module and add a name.'); return; } const orderIdx = dbSubmodules.filter(s => s.module_id === modId).length; const payload = editId ? { title, module_id: modId } : { title, module_id: modId, order_index: orderIdx }; const res = editId ? await sb.from('submodules').update(payload).eq('id', editId) : await sb.from('submodules').insert([payload]); if (res.error) { alert('Error: ' + res.error.message); return; } await fetchData(); alert(editId ? 'Subfolder updated!' : 'Subfolder created!'); cancelEditSub(); }
-function editSubmodule(id) { const s = dbSubmodules.find(x => x.id === id); if (!s) return; document.getElementById('t-sub-title').value = s.title; document.getElementById('t-sub-parent').value = s.module_id; document.getElementById('edit-sub-id').value = s.id; document.getElementById('panel-title-sub').textContent = '✏️ Edit subfolder'; document.getElementById('btn-cancel-sub').style.display = 'inline-block'; window.scrollTo(0, 0); }
-function cancelEditSub() { document.getElementById('t-sub-title').value = ''; document.getElementById('edit-sub-id').value = ''; document.getElementById('panel-title-sub').textContent = '📁 Create Subfolder'; document.getElementById('btn-cancel-sub').style.display = 'none'; }
+async function saveSubmodule() { const title = document.getElementById('t-sub-title').value.trim(); const modId = document.getElementById('t-sub-parent').value; const editId = document.getElementById('edit-sub-id').value; if (!title || !modId) { alert('Select a module and add a name.'); return; } const orderIdx = dbSubmodules.filter(s => s.module_id === modId).length; const payload = editId ? { title, module_id: modId } : { title, module_id: modId, order_index: orderIdx }; const res = editId ? await sb.from('submodules').update(payload).eq('id', editId) : await sb.from('submodules').insert([payload]); if (res.error) { alert('Error: ' + res.error.message); return; } closeSidePanel(); await fetchData(); }
+function editSubmodule(id) { const s = dbSubmodules.find(x => x.id === id); if (!s) return; openSidePanel('sub'); document.getElementById('t-sub-title').value = s.title; document.getElementById('t-sub-parent').value = s.module_id; document.getElementById('edit-sub-id').value = s.id; document.getElementById('side-panel-title').textContent = '✏️ Edit subfolder'; document.getElementById('btn-cancel-sub').style.display = 'inline-block'; }
+function cancelEditSub() { document.getElementById('t-sub-title').value = ''; document.getElementById('edit-sub-id').value = ''; document.getElementById('btn-cancel-sub').style.display = 'none'; }
 
 function toggleLessonFields() {
   const type = document.getElementById('t-les-type').value;
@@ -85,7 +85,7 @@ async function saveLesson() {
 
   const res = editId ? await sb.from('lessons').update(payload).eq('id', editId) : await sb.from('lessons').insert([payload]);
   btn.disabled = false; btn.textContent = 'Save lesson';
-  if (res.error) { alert('Error: ' + res.error.message); return; } alert('Lesson saved!'); cancelEditLes(); await fetchData();
+  if (res.error) { alert('Error: ' + res.error.message); return; } cancelEditLes(); await fetchData();
 }
 
 function editLesson(id) {
@@ -111,9 +111,10 @@ function editLesson(id) {
     questionRows.forEach(q => { if(q.type === 'multiple_choice' && !q.correctIndices) { q.correctIndices = typeof q.correctIndex === 'number' ? [q.correctIndex] : [0]; } });
     openQStates = {}; if(questionRows.length > 0) openQStates[0] = true; renderQFields();
   }
-  tempAudios = safeParseJSON(l.content); renderTempAudios(); const resArr = safeParseJSON(l.resources); document.getElementById('t-les-resources-current').textContent = resArr.length ? `${resArr.length} file(s) already attached` : ''; document.getElementById('panel-title-les').textContent = '✏️ Edit lesson'; document.getElementById('btn-cancel-les').style.display = 'inline-block'; window.scrollTo(0, 0);
+  tempAudios = safeParseJSON(l.content); renderTempAudios(); const resArr = safeParseJSON(l.resources); document.getElementById('t-les-resources-current').textContent = resArr.length ? `${resArr.length} file(s) already attached` : ''; document.getElementById('overlay-title').textContent = '✏️ Edit lesson'; document.getElementById('btn-cancel-les').style.display = 'inline-block';
+  document.getElementById('lesson-editor-overlay').style.display = 'block';
 }
-function cancelEditLes() { document.getElementById('edit-les-id').value = ''; document.getElementById('t-les-title').value = ''; document.getElementById('t-les-video-url').value = ''; document.getElementById('t-les-embed-code').value = ''; document.getElementById('t-les-resources').value = ''; document.getElementById('t-les-resources-current').textContent = ''; quillEditor.root.innerHTML = ''; lessonTables = {}; tableCounter = 0; questionRows = []; tempAudios = []; openQStates = {}; renderQFields(); renderTempAudios(); document.getElementById('panel-title-les').textContent = '📝 Add Lesson'; document.getElementById('btn-cancel-les').style.display = 'none'; }
+function cancelEditLes() { document.getElementById('edit-les-id').value = ''; document.getElementById('t-les-title').value = ''; document.getElementById('t-les-video-url').value = ''; document.getElementById('t-les-embed-code').value = ''; document.getElementById('t-les-resources').value = ''; document.getElementById('t-les-resources-current').textContent = ''; if (quillEditor) quillEditor.root.innerHTML = ''; lessonTables = {}; tableCounter = 0; questionRows = []; tempAudios = []; openQStates = {}; renderQFields(); renderTempAudios(); document.getElementById('overlay-title').textContent = 'Add Lesson'; document.getElementById('btn-cancel-les').style.display = 'none'; document.getElementById('lesson-editor-overlay').style.display = 'none'; }
 
 let sbInsertCursorIndex = null;
 
@@ -341,12 +342,45 @@ function addQuestion(type) {
   questionRows.push(newQ); Object.keys(openQStates).forEach(k => openQStates[k] = false); openQStates[questionRows.length - 1] = true; renderQFields();
 }
 
+/* ══════════════════════════════════════════
+   PANEL / OVERLAY HELPERS
+══════════════════════════════════════════ */
+function openSidePanel(mode, presetModuleId) {
+  document.getElementById('teacher-side-panel').style.display = 'block';
+  document.getElementById('teacher-side-overlay').style.display = 'block';
+  document.getElementById('side-panel-mod').style.display = mode === 'mod' ? 'block' : 'none';
+  document.getElementById('side-panel-sub').style.display = mode === 'sub' ? 'block' : 'none';
+  document.getElementById('side-panel-title').textContent = mode === 'mod' ? 'New Module' : 'New Subfolder';
+  if (mode === 'sub') { updateModuleSelect(); if (presetModuleId) document.getElementById('t-sub-parent').value = presetModuleId; }
+}
+
+function closeSidePanel() {
+  document.getElementById('teacher-side-panel').style.display = 'none';
+  document.getElementById('teacher-side-overlay').style.display = 'none';
+  cancelEditMod(); cancelEditSub();
+}
+
+function openLessonEditor(presetModuleId, presetSubId) {
+  document.getElementById('lesson-editor-overlay').style.display = 'block';
+  document.getElementById('overlay-title').textContent = 'Add Lesson';
+  document.getElementById('btn-cancel-les').style.display = 'none';
+  updateModuleSelect();
+  if (presetModuleId) { document.getElementById('t-les-module').value = presetModuleId; updateSubfolderSelect(); }
+  if (presetSubId) document.getElementById('t-les-submodule').value = presetSubId;
+  toggleLessonFields();
+  if (quillEditor) quillEditor.root.innerHTML = '';
+}
+
+function closeEditorOverlay() {
+  document.getElementById('lesson-editor-overlay').style.display = 'none';
+  cancelEditLes();
+}
+
 function switchTTab(name, btn) {
   document.querySelectorAll('.t-tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.t-tab-panel').forEach(p => p.classList.remove('active'));
   if (btn) btn.classList.add('active');
   document.getElementById('t-tab-' + name)?.classList.add('active');
-  if (name === 'les') { updateModuleSelect(); updateSubfolderSelect(); }
   if (name === 'routine') renderTeacherRoutineTab();
   if (name === 'students') renderStudentsTab();
   if (name === 'soundboard') renderSoundboardTab();
@@ -441,7 +475,7 @@ function renderManageList() {
           <span class="acc-header-label">📂 ${esc(m.title)}${privBadge} <span style="font-size:11px;font-weight:400;color:var(--text-muted)">${lesCount} lesson${lesCount!==1?'s':''}</span></span>
         </div>
         <div style="display:flex;align-items:center;gap:5px" onclick="event.stopPropagation()">
-          <button style="${btnS}" onclick="editModule('${esc(m.id)}');switchTTab('mod',document.querySelector('.t-tab-btn'))">✏️</button>
+          <button style="${btnS}" onclick="editModule('${esc(m.id)}')">✏️</button>
           <button style="${delS}" onclick="deleteModule('${esc(m.id)}')">🗑</button>
           <span class="acc-chevron" id="${chevId}">▼</span>
         </div>
@@ -459,7 +493,7 @@ function renderManageList() {
             <span class="acc-header-label" style="font-size:12px;font-weight:600;color:var(--text-muted)">📁 ${esc(s.title)} <span style="font-weight:400">${subLessons.length} lesson${subLessons.length!==1?'s':''}</span></span>
           </div>
           <div style="display:flex;align-items:center;gap:5px" onclick="event.stopPropagation()">
-            <button style="${btnS}" onclick="editSubmodule('${esc(s.id)}');switchTTab('sub',document.querySelectorAll('.t-tab-btn')[1])">✏️</button>
+            <button style="${btnS}" onclick="editSubmodule('${esc(s.id)}')">✏️</button>
             <button style="${delS}" onclick="deleteSubmodule('${esc(s.id)}')">🗑</button>
             <span class="acc-chevron" id="${sChevId}">▼</span>
           </div>
@@ -473,7 +507,7 @@ function renderManageList() {
             <span style="font-size:12px;color:var(--text)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span>
           </div>
           <div style="display:flex;gap:4px">
-            <button style="${btnS}" onclick="editLesson('${esc(l.id)}');switchTTab('les',document.querySelectorAll('.t-tab-btn')[2])">✏️</button>
+            <button style="${btnS}" onclick="editLesson('${esc(l.id)}')">✏️</button>
             <button style="${delS}" onclick="deleteLesson('${esc(l.id)}')">🗑</button>
           </div></div>`;
       });
@@ -490,7 +524,7 @@ function renderManageList() {
             <span style="font-size:12px;color:var(--text)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span>
           </div>
           <div style="display:flex;gap:4px">
-            <button style="${btnS}" onclick="editLesson('${esc(l.id)}');switchTTab('les',document.querySelectorAll('.t-tab-btn')[2])">✏️</button>
+            <button style="${btnS}" onclick="editLesson('${esc(l.id)}')">✏️</button>
             <button style="${delS}" onclick="deleteLesson('${esc(l.id)}')">🗑</button>
           </div></div>`;
       });

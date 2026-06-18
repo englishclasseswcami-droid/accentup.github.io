@@ -45,11 +45,13 @@ function updateAuthUI() {
   show('nav-streaks-tab', isLoggedIn);
   show('nav-profile-tab', isLoggedIn && !isTeacher);
   show('nav-teacher-tab', isTeacher);
+  const adminBtn = document.getElementById('classroom-admin-btn');
+  if (adminBtn) adminBtn.style.display = isTeacher ? 'flex' : 'none';
 
   if (isLoggedIn) {
     btn.textContent = 'Log out'; btn.classList.add('logout-btn-nav'); btn.classList.remove('auth-btn');
     if (document.getElementById('page-auth').classList.contains('active')) {
-      goToPage(isTeacher ? 'teacher' : 'dashboard');
+      goToPage(isTeacher ? 'classroom' : 'dashboard');
     }
   } else {
     btn.textContent = 'Log in'; btn.classList.remove('logout-btn-nav'); btn.classList.add('auth-btn');
@@ -145,7 +147,7 @@ function goToPage(pageId, scroll = true) {
   const pageEl = document.getElementById('page-' + pageId); if (pageEl) pageEl.classList.add('active');
   if (pageId === 'classroom') renderClassroomGrid();
   if (pageId === 'dashboard') renderDashboard();
-  if (pageId === 'teacher') { renderManageList(); updateModuleSelect(); updatePendingBadge(); }
+  if (pageId === 'teacher') { updatePendingBadge(); renderStudentsTab(); switchTTab('routine', document.querySelector('.t-tab-btn')); }
   if (pageId === 'streaks') renderStreaks();
   if (pageId === 'sounds') buildAllSoundsGrids();
   if (pageId === 'community') loadPosts();
@@ -208,7 +210,7 @@ async function fetchData() {
     const onLandingOrAuth = !activePage || activePage === 'page-sounds' || activePage === 'page-auth';
     if (onLandingOrAuth) {
       const isTeacherUser = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
-      if (isTeacherUser) { goToPage('teacher'); }
+      if (isTeacherUser) { goToPage('classroom'); }
       else {
         const lastPage = localStorage.getItem('au_last_page');
         const validPages = ['dashboard','classroom','community','routine','reference','streaks','profile','sounds','certificate'];
@@ -231,3 +233,4 @@ async function saveProfile() {
   await sb.from('user_profiles').upsert({ id: currentUser.id, username, avatar_url: avatarUrl }); await fetchData();
   btn.disabled = false; btn.textContent = 'Save profile'; alert('Profile updated!');
 }
+
