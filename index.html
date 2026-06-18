@@ -334,28 +334,7 @@
           <div id="fields-video"><span class="field-label">YouTube URL</span><input type="url" id="t-les-video-url" placeholder="https://www.youtube.com/watch?v=..." style="margin-bottom:0;"/></div>
           <div id="fields-text"><span class="field-label" id="text-field-label" style="margin-top:12px">Introduction / Instructions (optional)</span>
             <div id="quill-editor-container"></div>
-            <input type="hidden" id="quill-tables-html"/>
-
-            <!-- Table builder -->
-            <div id="table-builder-area" style="display:none;margin-top:12px;border:1px solid var(--skool-border);border-radius:var(--radius-sm);padding:1rem;background:var(--bg)">
-              <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:10px">⊞ Table editor — click any cell to edit</div>
-              <div id="table-builder-grid" style="overflow-x:auto"></div>
-              <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-                <button type="button" class="secondary-btn" onclick="addTableRow()" style="font-size:12px;padding:6px 12px">+ Row</button>
-                <button type="button" class="secondary-btn" onclick="addTableCol()" style="font-size:12px;padding:6px 12px">+ Column</button>
-                <button type="button" class="primary-btn" onclick="confirmTable()" style="font-size:12px;padding:6px 14px;width:auto;margin:0">✓ Add table to lesson</button>
-                <button type="button" class="outline-btn" onclick="cancelTableBuilder()" style="font-size:12px;padding:6px 12px">Cancel</button>
-              </div>
-            </div>
-
-            <!-- Saved tables preview -->
-            <div id="quill-tables-preview" style="display:none;margin-top:8px;border:1px solid var(--skool-border);border-radius:var(--radius-sm);padding:1rem;background:var(--bg)">
-              <div style="font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em">⊞ Tables saved in this lesson</div>
-              <div id="quill-tables-list"></div>
-              <button type="button" class="outline-btn" onclick="clearAllTables()" style="font-size:11px;padding:4px 12px;margin-top:8px">Remove all tables</button>
-            </div>
-
-            <div style="margin-top:8px">
+            <div style="margin-top:8px;display:flex;gap:8px">
               <button type="button" class="secondary-btn" onclick="toggleSoundInsertPicker()" style="font-size:12px">🔊 Insert sound</button>
               <div id="sb-insert-picker" style="display:none;margin-top:6px;border:1px solid var(--skool-border);border-radius:var(--radius-sm);padding:10px;background:var(--bg)">
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
@@ -457,6 +436,23 @@
 <script src="js/sounds.js"></script>
 <script src="js/routine.js"></script>
 <script src="js/dashboard.js"></script>
+
+<!-- Table builder modal -->
+<div id="table-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center">
+  <div style="background:var(--surface);border-radius:var(--radius);padding:1.5rem;width:min(90vw,700px);max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+      <span style="font-size:15px;font-weight:800;color:var(--text)">⊞ Table editor</span>
+      <button onclick="cancelTableBuilder()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-light)">×</button>
+    </div>
+    <div id="table-builder-grid" style="overflow-x:auto;margin-bottom:1rem"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button type="button" class="secondary-btn" onclick="addTableRow()" style="font-size:12px;padding:6px 12px">+ Row</button>
+      <button type="button" class="secondary-btn" onclick="addTableCol()" style="font-size:12px;padding:6px 12px">+ Column</button>
+      <button type="button" class="primary-btn" onclick="confirmTable()" style="font-size:12px;padding:6px 14px;width:auto;margin:0">✓ Insert table at cursor</button>
+      <button type="button" class="outline-btn" onclick="cancelTableBuilder()" style="font-size:12px;padding:6px 12px">Cancel</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
