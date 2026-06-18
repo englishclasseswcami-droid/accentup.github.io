@@ -91,8 +91,18 @@ async function saveLesson() {
 function editLesson(id) {
   const l = dbLessons.find(x => x.id === id); if (!l) return;
   document.getElementById('edit-les-id').value = l.id; document.getElementById('t-les-module').value = l.module_id; updateSubfolderSelect(); document.getElementById('t-les-submodule').value = l.submodule_id || ''; document.getElementById('t-les-type').value = l.type; document.getElementById('t-les-title').value = l.title; toggleLessonFields();
-  quillEditor.root.innerHTML = l.text_content || '';
+
+  // Extract <table> elements back to {{table:N}} tokens so they can be repositioned/replaced
   lessonTables = {}; tableCounter = 0;
+  const tmp = document.createElement('div'); tmp.innerHTML = l.text_content || '';
+  tmp.querySelectorAll('table').forEach(tbl => {
+    tableCounter++;
+    const key = `table:${tableCounter}`;
+    lessonTables[key] = tbl.outerHTML;
+    const token = document.createTextNode(`{{${key}}}`);
+    tbl.replaceWith(token);
+  });
+  quillEditor.root.innerHTML = tmp.innerHTML;
   if (l.type === 'video') { document.getElementById('t-les-video-url').value = parseYtDisplayUrl(l.video_url); }
   if (l.type === 'embed') { document.getElementById('t-les-embed-code').value = l.video_url || ''; }
   if (l.type === 'task') {
