@@ -67,6 +67,16 @@ function updateSpeedToggleLabel() {
   btn.textContent = `⚡ ${playbackRate}x`; btn.classList.toggle('active', playbackRate !== 1);
 }
 
+function injectTableTokens(html) {
+  if (!html || !html.includes('{{table:')) return html || '';
+  // Tables are stored inline in text_content as actual HTML after the token is resolved
+  // For already-saved lessons, tokens were replaced at save time — this handles any remaining ones
+  if (typeof lessonTables !== 'undefined') {
+    return html.replace(/\{\{table:(\d+)\}\}/g, (match, num) => lessonTables[`table:${num}`] || '');
+  }
+  return html.replace(/\{\{table:\d+\}\}/g, '');
+}
+
 function injectSoundboardTokens(html) {
   if (!html || !html.includes('{{sound:')) return html || '';
   return html.replace(/\{\{sound:([a-zA-Z0-9-]+)\}\}/g, (match, id) => {
@@ -146,14 +156,14 @@ function showLesson(lessonId) {
   if (currentLesson.type === 'video') {
     document.getElementById('view-video').style.display = 'block'; document.getElementById('cv-video-title').textContent = currentLesson.title;
     document.getElementById('cv-video-player').innerHTML = currentLesson.video_url ? `<iframe src="${esc(currentLesson.video_url)}" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe>` : '<div style="color:#fff;padding:2rem;text-align:center">No video</div>';
-    document.getElementById('cv-video-text').innerHTML = injectSoundboardTokens(currentLesson.text_content); renderAudios('cv-video-audios', audios); renderResources('cv-video-resources', resources); updateCompleteButton('btn-complete-video', isDone);
+    document.getElementById('cv-video-text').innerHTML = injectTableTokens(injectSoundboardTokens(currentLesson.text_content)); renderAudios('cv-video-audios', audios); renderResources('cv-video-resources', resources); updateCompleteButton('btn-complete-video', isDone);
   } else if (currentLesson.type === 'text') {
-    document.getElementById('view-text').style.display = 'block'; document.getElementById('cv-text-title').textContent = currentLesson.title; document.getElementById('cv-text-content').innerHTML = injectSoundboardTokens(currentLesson.text_content); renderAudios('cv-text-audios', audios); renderResources('cv-text-resources', resources); updateCompleteButton('btn-complete-text', isDone);
+    document.getElementById('view-text').style.display = 'block'; document.getElementById('cv-text-title').textContent = currentLesson.title; document.getElementById('cv-text-content').innerHTML = injectTableTokens(injectSoundboardTokens(currentLesson.text_content)); renderAudios('cv-text-audios', audios); renderResources('cv-text-resources', resources); updateCompleteButton('btn-complete-text', isDone);
   } else if (currentLesson.type === 'embed') {
-    document.getElementById('view-embed').style.display = 'block'; document.getElementById('cv-embed-title').textContent = currentLesson.title; document.getElementById('cv-embed-text').innerHTML = injectSoundboardTokens(currentLesson.text_content); document.getElementById('cv-embed-container').innerHTML = currentLesson.video_url || ''; renderAudios('cv-embed-audios', audios); renderResources('cv-embed-resources', resources); updateCompleteButton('btn-complete-embed', isDone);
+    document.getElementById('view-embed').style.display = 'block'; document.getElementById('cv-embed-title').textContent = currentLesson.title; document.getElementById('cv-embed-text').innerHTML = injectTableTokens(injectSoundboardTokens(currentLesson.text_content)); document.getElementById('cv-embed-container').innerHTML = currentLesson.video_url || ''; renderAudios('cv-embed-audios', audios); renderResources('cv-embed-resources', resources); updateCompleteButton('btn-complete-embed', isDone);
   } else if (currentLesson.type === 'task') {
     studentAnswers = {}; selectedDragChips = {}; document.getElementById('view-exercise').style.display = 'block'; document.getElementById('player-title').textContent = currentLesson.title;
-    const taskTextEl = document.getElementById('cv-task-text'); if (taskTextEl) { const hasContent = currentLesson.text_content && currentLesson.text_content !== '<p><br></p>'; taskTextEl.innerHTML = hasContent ? injectSoundboardTokens(currentLesson.text_content) : ''; taskTextEl.style.display = hasContent ? 'block' : 'none'; }
+    const taskTextEl = document.getElementById('cv-task-text'); if (taskTextEl) { const hasContent = currentLesson.text_content && currentLesson.text_content !== '<p><br></p>'; taskTextEl.innerHTML = hasContent ? injectTableTokens(injectSoundboardTokens(currentLesson.text_content)) : ''; taskTextEl.style.display = hasContent ? 'block' : 'none'; }
     document.getElementById('submit-btn').disabled = isDone; document.getElementById('submit-btn').style.display = isDone ? 'none' : 'inline-block'; document.getElementById('retry-btn').style.display = isDone ? 'inline-block' : 'none'; document.getElementById('score-area').innerHTML = '';
     renderAudios('cv-task-audios', audios); renderPlayerQuestions(isDone); renderResources('cv-task-resources', resources);
     if (isDone) { const prev = dbProgress.find(p => p.lesson_id === lessonId); if (prev) showScore(prev.score, prev.total_questions, [], true); }
