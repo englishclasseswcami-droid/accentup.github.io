@@ -637,3 +637,11 @@ footer strong{color:var(--brand)}
   .cert-actions { display: none !important; }
   nav { display: none !important; }
 }
+
+/* Drag-and-drop Content Manager */
+.dnd-item{transition:opacity .15s,box-shadow .15s}
+.dnd-item.dragging{opacity:.4;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.dnd-item.drag-over{border-top:2px solid var(--brand)!important}
+.dnd-handle{cursor:grab;padding:2px 6px;font-size:14px;color:var(--text-light);line-height:1;user-select:none;flex-shrink:0}
+.dnd-handle:hover{color:var(--brand)}
+.dnd-handle:active{cursor:grabbing}
