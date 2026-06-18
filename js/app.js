@@ -138,7 +138,7 @@ function toggleNavMore(e) { e.stopPropagation(); document.querySelector('.nav-mo
 function closeNavMore() { document.querySelector('.nav-more-wrap')?.classList.remove('open'); }
 document.addEventListener('click', (e) => { if (!e.target.closest('.nav-more-wrap')) closeNavMore(); });
 
-function goToPage(pageId) {
+function goToPage(pageId, scroll = true) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const tabBtn = document.querySelector(`.nav-tab[data-page="${pageId}"]`); if (tabBtn) tabBtn.classList.add('active');
   if (tabBtn && tabBtn.closest('.nav-more-menu')) document.getElementById('nav-more-btn')?.classList.add('active');
@@ -154,7 +154,7 @@ function goToPage(pageId) {
   if (pageId === 'certificate') renderCertificate();
   if (pageId === 'profile') { const p = dbProfiles.find(x => x.id === currentUser?.id); if (p) document.getElementById('profile-username').value = p.username || ''; }
   if (!['auth','sounds'].includes(pageId)) localStorage.setItem('au_last_page', pageId);
-  window.scrollTo(0, 0);
+  if (scroll) window.scrollTo(0, 0);
 }
 
 async function fetchData() {
@@ -217,7 +217,7 @@ async function fetchData() {
     } else {
       // Already on a page (e.g. refresh) — re-render it with fresh data
       const currentPageId = activePage?.replace('page-', '');
-      if (currentPageId && currentPageId !== 'sounds' && currentPageId !== 'auth') goToPage(currentPageId);
+      if (currentPageId && currentPageId !== 'sounds' && currentPageId !== 'auth') goToPage(currentPageId, false);
     }
   } catch (error) { console.error("Error fetching data:", error); }
 }
