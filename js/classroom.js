@@ -173,20 +173,6 @@ function injectSoundboardTokens(html) {
   });
 }
 
-function playSoundboardAudio(itemId) {
-  const item = dbSoundboard.find(s => s.id === itemId); if (!item || !item.audio_url) return;
-  if (soundboardAudioEl && soundboardAudioEl._itemId === itemId && !soundboardAudioEl.paused) { stopSoundboardAudio(); return; }
-  stopSoundboardAudio();
-  soundboardAudioEl = new Audio(item.audio_url); soundboardAudioEl._itemId = itemId; soundboardAudioEl.playbackRate = playbackRate;
-  const btn = document.getElementById('sb-play-' + itemId); if (btn) btn.classList.add('playing');
-  soundboardAudioEl.play().catch(()=>{});
-  soundboardAudioEl.onended = () => { if (btn) btn.classList.remove('playing'); soundboardAudioEl = null; };
-}
-
-function stopSoundboardAudio() {
-  if (soundboardAudioEl) { soundboardAudioEl.pause(); const prevBtn = document.getElementById('sb-play-' + soundboardAudioEl._itemId); if (prevBtn) prevBtn.classList.remove('playing'); soundboardAudioEl = null; }
-}
-
 function renderAudios(panelId, list) { const el = document.getElementById(panelId); if (!el) return; const arr = safeParseJSON(list); if (!arr.length) { el.style.display = 'none'; return; } el.style.display = 'block'; el.innerHTML = arr.map(a => `<div class="lesson-audio-row"><span class="lesson-audio-label">🔊 ${esc(a.label)}</span><audio controls src="${esc(a.url)}"></audio></div>`).join(''); el.querySelectorAll('audio').forEach(aEl => aEl.playbackRate = playbackRate); }
 function renderResources(panelId, list) { const el = document.getElementById(panelId); if (!el) return; const arr = safeParseJSON(list); if (!arr.length) { el.style.display = 'none'; return; } el.style.display = 'block'; el.innerHTML = `<div class="resources-heading">Resources</div><div class="resources-list">${arr.map(r => `<a href="${esc(r.url)}" target="_blank" class="resource-link">📎 ${esc(r.name)}</a>`).join('')}</div>`; }
 function updateCompleteButton(btnId, isDone) { const btn = document.getElementById(btnId); if (!btn) return; btn.textContent = isDone ? 'Completed ✅' : 'Mark as complete'; btn.style.background = isDone ? 'var(--green)' : 'var(--brand)'; btn.disabled = isDone; }
