@@ -4,15 +4,27 @@ document.addEventListener('DOMContentLoaded', () => {
   try { communityQuill = new Quill('#community-editor-container', { theme: 'snow', placeholder: 'Write your post here — you can add titles, bold text, links, YouTube videos and images...', modules: { toolbar: [[{ header: [1, 2, false] }], ['bold', 'italic', 'underline'], ['link', 'image', 'video'], [{ list: 'ordered' }, { list: 'bullet' }], ['clean']] } }); } catch(e) { console.warn('Quill community init error:', e); }
   try { editPostQuill = new Quill('#edit-post-editor-container', { theme: 'snow', modules: { toolbar: [['bold','italic'],['link'],['clean']] } }); } catch(e) { console.warn('Quill edit post init error:', e); }
   sb.auth.onAuthStateChange((event, session) => {
-    currentUser = session?.user || null;
-    if (event === 'PASSWORD_RECOVERY') {
-      goToPage('auth');
-      document.getElementById('auth-view-main').style.display = 'none';
-      document.getElementById('auth-view-reset-request').style.display = 'none';
-      document.getElementById('auth-view-reset-confirm').style.display = 'block';
-      return;
+    try {
+      currentUser = session?.user || null;
+      if (event === 'PASSWORD_RECOVERY') {
+        goToPage('auth');
+        document.getElementById('auth-view-main').style.display = 'none';
+        document.getElementById('auth-view-reset-request').style.display = 'none';
+        document.getElementById('auth-view-reset-confirm').style.display = 'block';
+        return;
+      }
+      updateAuthUI(); if (currentUser) fetchData();
+      else {
+        buildAllSoundsGrids();
+        const protectedPagesNoAuth = ['dashboard','classroom','teacher','profile','streaks','routine','reference','certificate'];
+        const hashPageNoAuth = window.location.hash.slice(1);
+        if (protectedPagesNoAuth.includes(hashPageNoAuth)) goToPage('auth', false); else goToPage('sounds', false);
+      }
+    } catch(e) {
+      console.error('Auth state handling error:', e);
+    } finally {
+      const loader = document.getElementById('au-loading'); if (loader) { loader.style.opacity='0'; setTimeout(()=>{ if(loader.parentNode) loader.remove(); },200); }
     }
-    updateAuthUI(); if (currentUser) fetchData();
   });
   renderQFields(); toggleLessonFields();
 });
@@ -20,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function handleNavAuth() {
   if (currentUser) {
-    try { localStorage.removeItem('au_last_page'); await sb.auth.signOut(); } catch(e) { console.error('Sign out error:', e); }
+    try { await sb.auth.signOut(); } catch(e) { console.error('Sign out error:', e); }
   } else {
     goToPage('auth');
   }
@@ -114,6 +126,13 @@ async function updatePassword() {
   alert('Password updated! Welcome back.');
   updateAuthUI();
   if (currentUser) fetchData();
+  else {
+    buildAllSoundsGrids();
+    const protectedPagesNoAuth = ['dashboard','classroom','teacher','profile','streaks','routine','reference','certificate'];
+    const hashPageNoAuth = window.location.hash.slice(1);
+    if (protectedPagesNoAuth.includes(hashPageNoAuth)) goToPage('auth', false); else goToPage('sounds', false);
+    const loader = document.getElementById('au-loading'); if (loader) { loader.style.opacity='0'; setTimeout(()=>{ if(loader.parentNode) loader.remove(); },200); }
+  }
 }
 
 async function handleAuth() {
@@ -145,6 +164,8 @@ function goToPage(pageId, scroll = true) {
   const tabBtn = document.querySelector(`.nav-tab[data-page="${pageId}"]`); if (tabBtn) tabBtn.classList.add('active');
   if (tabBtn && tabBtn.closest('.nav-more-menu')) document.getElementById('nav-more-btn')?.classList.add('active');
   const pageEl = document.getElementById('page-' + pageId); if (pageEl) pageEl.classList.add('active');
+  // Hide loading overlay
+  const loader = document.getElementById('au-loading'); if (loader) { loader.style.opacity = '0'; setTimeout(() => loader.remove(), 200); }
   if (pageId === 'classroom') renderClassroomGrid();
   if (pageId === 'dashboard') renderDashboard();
   if (pageId === 'teacher') { updatePendingBadge(); renderStudentsTab(); switchTTab('routine', document.querySelector('.t-tab-btn')); }
@@ -155,7 +176,7 @@ function goToPage(pageId, scroll = true) {
   if (pageId === 'reference') renderReferenceLibrary();
   if (pageId === 'certificate') renderCertificate();
   if (pageId === 'profile') { const p = dbProfiles.find(x => x.id === currentUser?.id); if (p) document.getElementById('profile-username').value = p.username || ''; }
-  if (!['auth','sounds'].includes(pageId)) localStorage.setItem('au_last_page', pageId);
+  if (!['auth'].includes(pageId)) { try { history.replaceState(null,'','#'+pageId); } catch(e){} }
   if (scroll) window.scrollTo(0, 0);
 }
 
@@ -205,22 +226,16 @@ async function fetchData() {
     if (document.getElementById('page-streaks').classList.contains('active')) renderStreaks();
     if (document.getElementById('page-routine')?.classList.contains('active')) renderRoutine();
 
-    // Restore last visited page, or go to Dashboard/Teacher by default
-    const activePage = document.querySelector('.page.active')?.id;
-    const onLandingOrAuth = !activePage || activePage === 'page-sounds' || activePage === 'page-auth';
-    if (onLandingOrAuth) {
-      const isTeacherUser = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
-      if (isTeacherUser) { goToPage('classroom'); }
-      else {
-        const lastPage = localStorage.getItem('au_last_page');
-        const validPages = ['dashboard','classroom','community','routine','reference','streaks','profile','sounds','certificate'];
-        goToPage(lastPage && validPages.includes(lastPage) ? lastPage : 'dashboard');
-      }
-    } else {
-      // Already on a page (e.g. refresh) — re-render it with fresh data
-      const currentPageId = activePage?.replace('page-', '');
-      if (currentPageId && currentPageId !== 'sounds' && currentPageId !== 'auth') goToPage(currentPageId, false);
-    }
+    // Restore page from URL hash — survives refresh automatically
+    const validPages = ['dashboard','classroom','community','routine','reference','streaks','profile','sounds','certificate','teacher'];
+    const isTeacherUser = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
+    const defaultPage = isTeacherUser ? 'classroom' : 'dashboard';
+    const hashPage = window.location.hash.slice(1);
+    const targetPage = hashPage && validPages.includes(hashPage) ? hashPage : defaultPage;
+    // Protect student-only pages from teacher and vice versa
+    const studentOnly = ['dashboard','routine','streaks','profile','certificate'];
+    const finalPage = (isTeacherUser && studentOnly.includes(targetPage)) ? 'classroom' : targetPage;
+    goToPage(finalPage, false);
   } catch (error) { console.error("Error fetching data:", error); }
 }
 

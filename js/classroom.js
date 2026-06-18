@@ -65,10 +65,79 @@ function hideAllViews() { ['view-welcome','view-video','view-text','view-exercis
    SOUNDBOARD — embedded per-subfolder word/phrase practice
 ══════════════════════════════════════════ */
 let soundboardAudioEl = null;
+let soundboardRafId = null;
+let soundboardLoopEnabled = false;
 
-/* ══════════════════════════════════════════
-   PLAYBACK SPEED — applies to soundboard + lesson audio
-══════════════════════════════════════════ */
+function fmtSbTime(s) { if (!s || isNaN(s)) return '0:00'; const m = Math.floor(s/60); return `${m}:${String(Math.floor(s%60)).padStart(2,'0')}`; }
+
+function playSoundboardAudio(itemId) {
+  const item = dbSoundboard.find(s => s.id === itemId); if (!item || !item.audio_url) return;
+  // Toggle pause/resume on same item
+  if (soundboardAudioEl && soundboardAudioEl._itemId === itemId) {
+    if (!soundboardAudioEl.paused) { soundboardAudioEl.pause(); sbMiniSetState(false); }
+    else { soundboardAudioEl.play(); sbMiniSetState(true); sbRafStart(); }
+    return;
+  }
+  stopSoundboardAudio();
+  soundboardAudioEl = new Audio(item.audio_url); soundboardAudioEl._itemId = itemId;
+  soundboardAudioEl.playbackRate = playbackRate; soundboardAudioEl.loop = soundboardLoopEnabled;
+  // Show mini player
+  const mp = document.getElementById('sb-mini-player'); if (mp) mp.style.display = 'flex';
+  const title = document.getElementById('sb-mp-title'); if (title) title.textContent = item.text + (item.ipa ? ' '+item.ipa : '');
+  const fill = document.getElementById('sb-mp-fill'); if (fill) fill.style.width = '0%';
+  sbMiniSetState(true);
+  soundboardAudioEl.play().catch(()=>{});
+  soundboardAudioEl.onended = () => { if (!soundboardLoopEnabled) { sbMiniSetState(false); if (soundboardRafId) cancelAnimationFrame(soundboardRafId); } };
+  sbRafStart();
+}
+
+function sbRafStart() {
+  if (soundboardRafId) cancelAnimationFrame(soundboardRafId);
+  function tick() {
+    if (!soundboardAudioEl) return;
+    const fill = document.getElementById('sb-mp-fill'); const time = document.getElementById('sb-mp-time');
+    const dur = soundboardAudioEl.duration || 0; const cur = soundboardAudioEl.currentTime || 0;
+    if (fill) fill.style.width = dur ? (cur/dur*100)+'%' : '0%';
+    if (time) time.textContent = fmtSbTime(cur) + ' / ' + fmtSbTime(dur);
+    if (!soundboardAudioEl.paused) soundboardRafId = requestAnimationFrame(tick);
+  }
+  soundboardRafId = requestAnimationFrame(tick);
+}
+
+function sbMiniSetState(playing) {
+  const btn = document.getElementById('sb-mp-btn'); if (btn) btn.textContent = playing ? '⏸' : '▶';
+  // Update inline play buttons
+  document.querySelectorAll('.soundboard-inline-play.playing').forEach(b => b.classList.remove('playing'));
+  if (playing && soundboardAudioEl) { const b = document.getElementById('sb-play-'+soundboardAudioEl._itemId); if (b) b.classList.add('playing'); }
+}
+
+function sbMiniToggle() {
+  if (!soundboardAudioEl) return;
+  if (!soundboardAudioEl.paused) { soundboardAudioEl.pause(); sbMiniSetState(false); }
+  else { soundboardAudioEl.play(); sbMiniSetState(true); sbRafStart(); }
+}
+
+function sbMiniSeek(event, barEl) {
+  if (!soundboardAudioEl || !soundboardAudioEl.duration) return;
+  const rect = barEl.getBoundingClientRect();
+  soundboardAudioEl.currentTime = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width)) * soundboardAudioEl.duration;
+}
+
+function sbMiniToggleLoop() {
+  soundboardLoopEnabled = !soundboardLoopEnabled;
+  if (soundboardAudioEl) soundboardAudioEl.loop = soundboardLoopEnabled;
+  const btn = document.getElementById('sb-mp-loop'); if (btn) { btn.style.background = soundboardLoopEnabled ? 'rgba(255,255,255,.25)' : 'none'; btn.style.color = soundboardLoopEnabled ? '#fff' : 'rgba(255,255,255,.7)'; }
+}
+
+function sbMiniClose() {
+  stopSoundboardAudio();
+  const mp = document.getElementById('sb-mini-player'); if (mp) mp.style.display = 'none';
+}
+
+function stopSoundboardAudio() {
+  if (soundboardAudioEl) { soundboardAudioEl.pause(); sbMiniSetState(false); soundboardAudioEl = null; }
+  if (soundboardRafId) { cancelAnimationFrame(soundboardRafId); soundboardRafId = null; }
+}
 const PLAYBACK_RATES = [1, 0.75, 1.25];
 function cyclePlaybackRate() {
   const idx = PLAYBACK_RATES.indexOf(playbackRate);
@@ -83,6 +152,9 @@ function updateSpeedToggleLabel() {
   btn.textContent = `⚡ ${playbackRate}x`; btn.classList.toggle('active', playbackRate !== 1);
 }
 
+/* ══════════════════════════════════════════
+   PLAYBACK SPEED — applies to soundboard + lesson audio
+══════════════════════════════════════════ */
 function injectTableTokens(html) {
   if (!html || !html.includes('{{table:')) return html || '';
   // Tables are stored inline in text_content as actual HTML after the token is resolved

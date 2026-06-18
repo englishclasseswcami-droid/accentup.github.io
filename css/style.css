@@ -215,9 +215,9 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.
 
 /* Soundboard */
 .soundboard-panel{margin:1.25rem 0;background:var(--surface);border:1px solid var(--skool-border);border-radius:var(--radius);padding:1.25rem}
-.soundboard-inline-play{display:inline-flex;align-items:center;gap:5px;background:var(--brand-light);color:var(--brand-dark);border:1px solid var(--brand);border-radius:20px;padding:3px 13px;font-size:13px;font-weight:700;cursor:pointer;vertical-align:middle;transition:background .15s,color .15s,transform .1s;margin:2px 4px}
+.soundboard-inline-play{display:inline-flex;align-items:center;gap:5px;background:var(--brand-light);color:var(--brand-dark);border:1px solid var(--brand);border-radius:20px;padding:4px 13px;font-size:13px;font-weight:700;cursor:pointer;vertical-align:middle;transition:background .15s,color .15s;margin:2px 4px}
 .soundboard-inline-play:hover{background:var(--brand);color:#fff}
-.soundboard-inline-play.playing{background:var(--green,#1D9E75);color:#fff;border-color:var(--green,#1D9E75)}
+.soundboard-inline-play.playing{background:var(--brand);color:#fff;border-color:var(--brand)}
 .soundboard-inline-play:disabled{opacity:.35;cursor:default}
 .soundboard-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--text-light);margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .soundboard-grid{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--skool-border);border-radius:var(--radius-sm);overflow:hidden}

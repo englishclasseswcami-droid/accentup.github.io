@@ -13,6 +13,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>#au-loading{position:fixed;inset:0;background:var(--bg,#f5f5f5);z-index:9999;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:14px;color:#999;transition:opacity .2s}</style>
+<div id="au-loading">Loading...</div>
+<script>setTimeout(function(){ var l=document.getElementById('au-loading'); if(l){ l.style.opacity='0'; setTimeout(function(){ if(l.parentNode) l.remove(); },200); } }, 4000);</script>
 <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
@@ -409,12 +412,8 @@
         <button class="secondary-btn" onclick="addQuestion('drag_drop')">+ Drag &amp; Drop (Categories)</button>
       </div>
     </div>
-    <div style="margin-top:1.25rem;background:#F0FDF4;padding:14px;border-radius:var(--radius-sm);border:1px solid #BBF7D0">
-      <p style="font-size:12px;font-weight:700;color:#166534;margin-bottom:4px">🎧 Lesson audio examples</p>
-      <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Add clickable audios for practice words or examples.</p>
-      <div class="audio-add-row"><input type="text" id="t-audio-label" placeholder="Label (e.g. Word 1)" style="margin-bottom:0;flex:1"/><input type="file" id="t-audio-file" accept="audio/*" style="margin-bottom:0;width:auto;flex:1"/><button class="secondary-btn" id="btn-add-audio" onclick="addSharedAudio()">+ Add</button></div>
-      <div id="t-shared-audios-render"></div>
-    </div>
+    <!-- Hidden inputs kept for backward compatibility with existing lessons -->
+    <div style="display:none"><input type="text" id="t-audio-label"/><input type="file" id="t-audio-file" accept="audio/*"/><button id="btn-add-audio" onclick="addSharedAudio()"></button><div id="t-shared-audios-render"></div></div>
     <div style="margin-top:1.25rem;background:#FFF9F6;padding:14px;border-radius:var(--radius-sm);border:1px solid var(--accent)">
       <p style="font-size:12px;font-weight:700;color:var(--accent-dark);margin-bottom:4px">📎 Attach resources (PDFs, guides, images)</p>
       <input type="file" id="t-les-resources" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" multiple/>
@@ -463,6 +462,20 @@
       <button type="button" class="outline-btn" onclick="cancelTableBuilder()" style="font-size:12px;padding:6px 12px">Cancel</button>
     </div>
   </div>
+</div>
+
+<!-- Soundboard mini-player — fixed bottom bar -->
+<div id="sb-mini-player" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:130;background:var(--brand-dark,#1a1870);color:#fff;padding:10px 20px;box-shadow:0 -4px 20px rgba(0,0,0,.2);align-items:center;gap:14px">
+  <button id="sb-mp-btn" onclick="sbMiniToggle()" style="flex-shrink:0;width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.6);background:rgba(255,255,255,.15);color:#fff;font-size:16px;cursor:pointer">▶</button>
+  <span id="sb-mp-title" style="font-size:13px;font-weight:700;min-width:80px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0"></span>
+  <div style="flex:1;display:flex;flex-direction:column;gap:4px">
+    <div id="sb-mp-bar" onclick="sbMiniSeek(event,this)" style="height:5px;background:rgba(255,255,255,.25);border-radius:3px;cursor:pointer;position:relative">
+      <div id="sb-mp-fill" style="position:absolute;left:0;top:0;height:100%;background:#fff;border-radius:3px;width:0%;pointer-events:none"></div>
+    </div>
+  </div>
+  <span id="sb-mp-time" style="font-size:11px;font-weight:600;opacity:.8;white-space:nowrap;flex-shrink:0">0:00 / 0:00</span>
+  <button id="sb-mp-loop" onclick="sbMiniToggleLoop()" title="Loop" style="flex-shrink:0;background:none;border:1px solid rgba(255,255,255,.35);border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;color:rgba(255,255,255,.7)">↺ Loop</button>
+  <button onclick="sbMiniClose()" style="flex-shrink:0;background:none;border:none;color:rgba(255,255,255,.5);font-size:18px;cursor:pointer;padding:0 4px">×</button>
 </div>
 
 </body>
