@@ -1,17 +1,57 @@
 /* ══════════════════════════════════════════
    TEACHER — MODULES / SUBMODULES / LESSONS
 ══════════════════════════════════════════ */
+
+/* ── Drag-and-drop reorder (no fetchData, preserves accordion state) ── */
+let openAccordions = new Set();
+
+async function reorderItems(table, items) {
+  await Promise.all(items.map((item, i) => sb.from(table).update({ order_index: i }).eq('id', item.id)));
+}
+
+async function onDragEndModule(orderedIds) {
+  const reordered = orderedIds.map(id => dbModules.find(m => m.id === id)).filter(Boolean);
+  reordered.forEach((m, i) => m.order_index = i);
+  dbModules = reordered;
+  await reorderItems('modules', reordered);
+  renderManageList();
+}
+
+async function onDragEndSubmodule(moduleId, orderedIds) {
+  const reordered = orderedIds.map(id => dbSubmodules.find(s => s.id === id)).filter(Boolean);
+  reordered.forEach((s, i) => s.order_index = i);
+  await reorderItems('submodules', reordered);
+  renderManageList();
+}
+
+async function onDragEndLesson(moduleId, subId, orderedIds) {
+  const reordered = orderedIds.map(id => dbLessons.find(l => l.id === id)).filter(Boolean);
+  reordered.forEach((l, i) => l.order_index = i);
+  await reorderItems('lessons', reordered);
+  renderManageList();
+}
+
+function initDnd(containerEl, onEnd) {
+  let dragEl = null;
+  containerEl.querySelectorAll('.dnd-item').forEach(item => {
+    const handle = item.querySelector('.dnd-handle');
+    if (handle) { handle.addEventListener('mousedown', () => { item.draggable = true; }); handle.addEventListener('mouseup', () => { item.draggable = false; }); } else { item.draggable = true; }
+    item.addEventListener('dragstart', e => { dragEl = item; setTimeout(() => item.classList.add('dragging'), 0); e.dataTransfer.effectAllowed = 'move'; });
+    item.addEventListener('dragend', () => { item.classList.remove('dragging'); item.draggable = false; containerEl.querySelectorAll('.dnd-item').forEach(i => i.classList.remove('drag-over')); const ids = [...containerEl.querySelectorAll('.dnd-item')].map(i => i.dataset.id); onEnd(ids); dragEl = null; });
+    item.addEventListener('dragover', e => { e.preventDefault(); if (dragEl && dragEl !== item) { containerEl.querySelectorAll('.dnd-item').forEach(i => i.classList.remove('drag-over')); item.classList.add('drag-over'); const all = [...containerEl.querySelectorAll('.dnd-item')]; const fromIdx = all.indexOf(dragEl); const toIdx = all.indexOf(item); if (fromIdx < toIdx) item.after(dragEl); else item.before(dragEl); } });
+  });
+}
+
+async function deleteModule(id) { if (!confirm('Delete this module and ALL its content?')) return; await sb.from('lessons').delete().eq('module_id', id); await sb.from('submodules').delete().eq('module_id', id); await sb.from('modules').delete().eq('id', id); fetchData(); }
+async function deleteSubmodule(id) { if (!confirm('Delete this subfolder? Lessons inside will stay in the main module.')) return; await sb.from('submodules').delete().eq('id', id); fetchData(); }
+async function deleteLesson(id) { if (!confirm('Delete this lesson?')) return; await sb.from('lessons').delete().eq('id', id); fetchData(); }
 async function saveModule() { const title = document.getElementById('t-mod-title').value.trim(); const editId = document.getElementById('edit-mod-id').value; const isPrivate = document.getElementById('t-mod-private').checked; const allowedEmails = document.getElementById('t-mod-emails').value.trim(); if (!title) { alert('Add a module name.'); return; } const payload = editId ? { title, is_private: isPrivate, allowed_emails: allowedEmails } : { title, order_index: dbModules.length, is_private: isPrivate, allowed_emails: allowedEmails }; const res = editId ? await sb.from('modules').update(payload).eq('id', editId) : await sb.from('modules').insert([payload]); if (res.error) { alert('Error: ' + res.error.message); return; } await fetchData(); alert(editId ? 'Module updated!' : 'Module created!'); cancelEditMod(); }
 function editModule(id) { const m = dbModules.find(x => x.id === id); if (!m) return; document.getElementById('t-mod-title').value = m.title; document.getElementById('edit-mod-id').value = m.id; document.getElementById('t-mod-private').checked = m.is_private; document.getElementById('t-mod-emails-wrap').style.display = m.is_private ? 'block' : 'none'; document.getElementById('t-mod-emails').value = m.allowed_emails || ''; document.getElementById('panel-title-mod').textContent = '✏️ Edit module'; document.getElementById('btn-cancel-mod').style.display = 'inline-block'; window.scrollTo(0, 0); }
 function cancelEditMod() { document.getElementById('t-mod-title').value = ''; document.getElementById('edit-mod-id').value = ''; document.getElementById('t-mod-private').checked = false; document.getElementById('t-mod-emails-wrap').style.display = 'none'; document.getElementById('t-mod-emails').value = ''; document.getElementById('panel-title-mod').textContent = '📂 Create Module'; document.getElementById('btn-cancel-mod').style.display = 'none'; }
-async function deleteModule(id) { if (!confirm('Delete this module and ALL its content?')) return; await sb.from('lessons').delete().eq('module_id', id); await sb.from('submodules').delete().eq('module_id', id); await sb.from('modules').delete().eq('id', id); fetchData(); }
-async function moveModule(id, dir) { const idx = dbModules.findIndex(m => m.id === id); const t = dbModules[idx + dir]; if (!t) return; await sb.from('modules').update({ order_index: t.order_index }).eq('id', id); await sb.from('modules').update({ order_index: dbModules[idx].order_index }).eq('id', t.id); fetchData(); }
 
 async function saveSubmodule() { const title = document.getElementById('t-sub-title').value.trim(); const modId = document.getElementById('t-sub-parent').value; const editId = document.getElementById('edit-sub-id').value; if (!title || !modId) { alert('Select a module and add a name.'); return; } const orderIdx = dbSubmodules.filter(s => s.module_id === modId).length; const payload = editId ? { title, module_id: modId } : { title, module_id: modId, order_index: orderIdx }; const res = editId ? await sb.from('submodules').update(payload).eq('id', editId) : await sb.from('submodules').insert([payload]); if (res.error) { alert('Error: ' + res.error.message); return; } await fetchData(); alert(editId ? 'Subfolder updated!' : 'Subfolder created!'); cancelEditSub(); }
 function editSubmodule(id) { const s = dbSubmodules.find(x => x.id === id); if (!s) return; document.getElementById('t-sub-title').value = s.title; document.getElementById('t-sub-parent').value = s.module_id; document.getElementById('edit-sub-id').value = s.id; document.getElementById('panel-title-sub').textContent = '✏️ Edit subfolder'; document.getElementById('btn-cancel-sub').style.display = 'inline-block'; window.scrollTo(0, 0); }
 function cancelEditSub() { document.getElementById('t-sub-title').value = ''; document.getElementById('edit-sub-id').value = ''; document.getElementById('panel-title-sub').textContent = '📁 Create Subfolder'; document.getElementById('btn-cancel-sub').style.display = 'none'; }
-async function deleteSubmodule(id) { if (!confirm('Delete this subfolder? Lessons inside will stay in the main module.')) return; await sb.from('submodules').delete().eq('id', id); fetchData(); }
-async function moveSubmodule(id, dir) { const sub = dbSubmodules.find(s => s.id === id); if (!sub) return; const siblings = dbSubmodules.filter(s => s.module_id === sub.module_id); const idx = siblings.findIndex(s => s.id === id); const t = siblings[idx + dir]; if (!t) return; await sb.from('submodules').update({ order_index: t.order_index }).eq('id', id); await sb.from('submodules').update({ order_index: sub.order_index }).eq('id', t.id); fetchData(); }
 
 function toggleLessonFields() {
   const type = document.getElementById('t-les-type').value;
@@ -31,8 +71,9 @@ async function saveLesson() {
   if (!moduleId || !title) { alert('Fill in module and title.'); return; }
   const btn = document.getElementById('btn-save-les'); btn.disabled = true; btn.textContent = 'Saving...';
 
-  const tablesHtml = document.getElementById('quill-tables-html')?.value || '';
-  const combinedContent = quillEditor.root.innerHTML + (tablesHtml ? tablesHtml : '');
+  // Resolve {{table:N}} tokens to actual HTML before saving
+  let combinedContent = quillEditor.root.innerHTML;
+  combinedContent = combinedContent.replace(/\{\{table:(\d+)\}\}/g, (match, num) => lessonTables[`table:${num}`] || '');
   let payload = { module_id: moduleId, submodule_id: submodId || null, type, title, content: tempAudios, text_content: combinedContent };
   if (type === 'video') { payload.video_url = buildYtUrl(document.getElementById('t-les-video-url').value.trim()); } 
   else if (type === 'embed') { payload.video_url = document.getElementById('t-les-embed-code').value.trim(); } 
@@ -50,15 +91,8 @@ async function saveLesson() {
 function editLesson(id) {
   const l = dbLessons.find(x => x.id === id); if (!l) return;
   document.getElementById('edit-les-id').value = l.id; document.getElementById('t-les-module').value = l.module_id; updateSubfolderSelect(); document.getElementById('t-les-submodule').value = l.submodule_id || ''; document.getElementById('t-les-type').value = l.type; document.getElementById('t-les-title').value = l.title; toggleLessonFields();
-  // Separate table HTML from Quill content
-  const fullHtml = l.text_content || '';
-  const tempDiv = document.createElement('div'); tempDiv.innerHTML = fullHtml;
-  const tables = tempDiv.querySelectorAll('table');
-  let tablesHtml = ''; tables.forEach(t => { tablesHtml += t.outerHTML; t.remove(); });
-  quillEditor.root.innerHTML = tempDiv.innerHTML;
-  const tablesField = document.getElementById('quill-tables-html');
-  if (tablesField) tablesField.value = tablesHtml;
-  refreshTablesPreview();
+  quillEditor.root.innerHTML = l.text_content || '';
+  lessonTables = {}; tableCounter = 0;
   if (l.type === 'video') { document.getElementById('t-les-video-url').value = parseYtDisplayUrl(l.video_url); }
   if (l.type === 'embed') { document.getElementById('t-les-embed-code').value = l.video_url || ''; }
   if (l.type === 'task') {
@@ -69,20 +103,24 @@ function editLesson(id) {
   }
   tempAudios = safeParseJSON(l.content); renderTempAudios(); const resArr = safeParseJSON(l.resources); document.getElementById('t-les-resources-current').textContent = resArr.length ? `${resArr.length} file(s) already attached` : ''; document.getElementById('panel-title-les').textContent = '✏️ Edit lesson'; document.getElementById('btn-cancel-les').style.display = 'inline-block'; window.scrollTo(0, 0);
 }
-function cancelEditLes() { document.getElementById('edit-les-id').value = ''; document.getElementById('t-les-title').value = ''; document.getElementById('t-les-video-url').value = ''; document.getElementById('t-les-embed-code').value = ''; document.getElementById('t-les-resources').value = ''; document.getElementById('t-les-resources-current').textContent = ''; quillEditor.root.innerHTML = ''; const tf = document.getElementById('quill-tables-html'); if (tf) tf.value = ''; refreshTablesPreview(); questionRows = []; tempAudios = []; openQStates = {}; renderQFields(); renderTempAudios(); document.getElementById('panel-title-les').textContent = '📝 Add Lesson'; document.getElementById('btn-cancel-les').style.display = 'none'; }
+function cancelEditLes() { document.getElementById('edit-les-id').value = ''; document.getElementById('t-les-title').value = ''; document.getElementById('t-les-video-url').value = ''; document.getElementById('t-les-embed-code').value = ''; document.getElementById('t-les-resources').value = ''; document.getElementById('t-les-resources-current').textContent = ''; quillEditor.root.innerHTML = ''; lessonTables = {}; tableCounter = 0; questionRows = []; tempAudios = []; openQStates = {}; renderQFields(); renderTempAudios(); document.getElementById('panel-title-les').textContent = '📝 Add Lesson'; document.getElementById('btn-cancel-les').style.display = 'none'; }
 
 let sbInsertCursorIndex = null;
 
-/* ── TABLE INSERT ── */
-/* ── TABLE BUILDER ── */
+/* ── TABLE BUILDER — token-based, modal ── */
 let tableData = { rows: 3, cols: 3, cells: [] };
+let tableCursorIndex = null;
+let lessonTables = {}; // { 'table:1': '<table>...</table>', ... }
+let tableCounter = 0;
 
 function insertQuillTable() {
   const rows = parseInt(prompt('Number of rows (including header):', '3'), 10);
   const cols = parseInt(prompt('Number of columns:', '3'), 10);
   if (!rows || !cols || rows < 1 || cols < 1 || isNaN(rows) || isNaN(cols)) return;
   tableData = { rows, cols, cells: Array.from({length: rows}, () => Array(cols).fill('')) };
-  document.getElementById('table-builder-area').style.display = 'block';
+  const sel = quillEditor.getSelection(); tableCursorIndex = sel ? sel.index : quillEditor.getLength();
+  const overlay = document.getElementById('table-modal-overlay');
+  overlay.style.display = 'flex';
   renderTableBuilder();
 }
 
@@ -109,58 +147,47 @@ function renderTableBuilder() {
   });
 }
 
-function addTableRow() {
-  tableData.rows++;
-  tableData.cells.push(Array(tableData.cols).fill(''));
-  renderTableBuilder();
-}
-
-function addTableCol() {
-  tableData.cols++;
-  tableData.cells.forEach(row => row.push(''));
-  renderTableBuilder();
-}
+function addTableRow() { tableData.rows++; tableData.cells.push(Array(tableData.cols).fill('')); renderTableBuilder(); }
+function addTableCol() { tableData.cols++; tableData.cells.forEach(row => row.push('')); renderTableBuilder(); }
 
 function confirmTable() {
   let html = '<table><tbody>';
   for (let r = 0; r < tableData.rows; r++) {
     html += '<tr>';
     for (let c = 0; c < tableData.cols; c++) {
-      const val = tableData.cells[r]?.[c] || '';
+      const val = (tableData.cells[r]?.[c] || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
       html += r === 0 ? `<th>${val}</th>` : `<td>${val}</td>`;
     }
     html += '</tr>';
   }
   html += '</tbody></table>';
-  const field = document.getElementById('quill-tables-html');
-  field.value = (field.value || '') + html;
-  document.getElementById('table-builder-area').style.display = 'none';
-  refreshTablesPreview();
-}
 
-function cancelTableBuilder() {
-  document.getElementById('table-builder-area').style.display = 'none';
+  tableCounter++;
+  const tokenKey = `table:${tableCounter}`;
+  lessonTables[tokenKey] = html;
+
+  const index = tableCursorIndex ?? quillEditor.getLength();
+  const token = `{{${tokenKey}}}`;
+  quillEditor.insertText(index, token);
+  quillEditor.insertText(index + token.length, '\n');
+  quillEditor.setSelection(index + token.length + 1);
+
+  document.getElementById('table-modal-overlay').style.display = 'none';
   tableData = { rows: 3, cols: 3, cells: [] };
 }
 
-function refreshTablesPreview() {
-  const field = document.getElementById('quill-tables-html');
-  const preview = document.getElementById('quill-tables-preview');
-  const list = document.getElementById('quill-tables-list');
-  const html = field?.value || '';
-  if (!html) { if (preview) preview.style.display = 'none'; return; }
-  if (preview) preview.style.display = 'block';
-  if (list) list.innerHTML = html;
+function cancelTableBuilder() {
+  document.getElementById('table-modal-overlay').style.display = 'none';
+  tableData = { rows: 3, cols: 3, cells: [] };
 }
 
-function clearAllTables() {
-  const field = document.getElementById('quill-tables-html');
-  if (field) field.value = '';
-  refreshTablesPreview();
+function injectTableTokens(html) {
+  if (!html || !html.includes('{{table:')) return html || '';
+  return html.replace(/\{\{table:(\d+)\}\}/g, (match, num) => {
+    return lessonTables[`table:${num}`] || '';
+  });
 }
 
-async function deleteLesson(id) { if (!confirm('Delete this lesson?')) return; await sb.from('lessons').delete().eq('id', id); fetchData(); }
-async function moveLesson(id, dir) { const les = dbLessons.find(l => l.id === id); if (!les) return; const siblings = dbLessons.filter(l => l.module_id === les.module_id && l.submodule_id === les.submodule_id); const idx = siblings.findIndex(l => l.id === id); const t = siblings[idx + dir]; if (!t) return; await sb.from('lessons').update({ order_index: t.order_index }).eq('id', id); await sb.from('lessons').update({ order_index: les.order_index }).eq('id', t.id); fetchData(); }
 
 /* ── SHARED AUDIOS ── */
 async function addSharedAudio() { 
@@ -381,87 +408,110 @@ function toggleAcc(bodyId, chevronId) {
 function renderManageList() {
   const list = document.getElementById('t-manage-list');
   if (!list) return;
-  if (!dbModules.length) {
-    list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div>';
-    return;
-  }
+  if (!dbModules.length) { list.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:1rem 0;text-align:center">No content yet.</div>'; return; }
   const iconMap = { video:'📺', text:'📄', task:'📝', embed:'🌐' };
   const btnS = 'background:none;border:1px solid var(--border);border-radius:4px;padding:2px 7px;font-size:11px;cursor:pointer;color:var(--text-muted)';
   const delS = 'background:none;border:1px solid #ffb3b3;border-radius:4px;padding:2px 7px;font-size:11px;cursor:pointer;color:#e05252';
 
-  let html = '';
+  // Save open accordion state
+  const openBodies = new Set([...list.querySelectorAll('.acc-body')].filter(el => el.offsetHeight > 0).map(el => el.id));
+
+  let html = '<div id="dnd-modules">';
   dbModules.forEach((m) => {
-    const mLessons  = dbLessons.filter(l => l.module_id === m.id);
-    const mSubs     = dbSubmodules.filter(s => s.module_id === m.id);
+    const mLessons = dbLessons.filter(l => l.module_id === m.id);
+    const mSubs = dbSubmodules.filter(s => s.module_id === m.id);
     const privBadge = m.is_private ? ' <span style="font-size:10px;background:var(--brand);color:#fff;padding:1px 6px;border-radius:99px">Private</span>' : '';
-    const bodyId  = `acc-mod-body-${m.id}`;
-    const chevId  = `acc-mod-chev-${m.id}`;
+    const bodyId = `acc-mod-body-${m.id}`; const chevId = `acc-mod-chev-${m.id}`;
     const lesCount = mLessons.length;
 
-    html += `
-    <div style="border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;overflow:hidden">
+    html += `<div class="dnd-item" data-id="${m.id}" style="border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;overflow:hidden">
       <div class="acc-header" onclick="toggleAcc('${bodyId}','${chevId}')">
-        <span class="acc-header-label">📂 ${esc(m.title)}${privBadge} <span style="font-size:11px;font-weight:400;color:var(--text-muted)">${lesCount} lesson${lesCount!==1?'s':''}</span></span>
+        <div style="display:flex;align-items:center;gap:6px;overflow:hidden">
+          <span class="dnd-handle" title="Drag to reorder">⠿</span>
+          <span class="acc-header-label">📂 ${esc(m.title)}${privBadge} <span style="font-size:11px;font-weight:400;color:var(--text-muted)">${lesCount} lesson${lesCount!==1?'s':''}</span></span>
+        </div>
         <div style="display:flex;align-items:center;gap:5px" onclick="event.stopPropagation()">
-          <button style="${btnS}" onclick="moveModule('${esc(m.id)}',-1)">▲</button>
-          <button style="${btnS}" onclick="moveModule('${esc(m.id)}',1)">▼</button>
           <button style="${btnS}" onclick="editModule('${esc(m.id)}');switchTTab('mod',document.querySelector('.t-tab-btn'))">✏️</button>
           <button style="${delS}" onclick="deleteModule('${esc(m.id)}')">🗑</button>
           <span class="acc-chevron" id="${chevId}">▼</span>
         </div>
       </div>
-      <div class="acc-body" id="${bodyId}">`;
+      <div class="acc-body" id="${bodyId}">
+        <div id="dnd-subs-${m.id}">`;
 
     mSubs.forEach(s => {
       const subLessons = mLessons.filter(l => l.submodule_id === s.id);
-      const sBodyId = `acc-sub-body-${s.id}`;
-      const sChevId = `acc-sub-chev-${s.id}`;
-      html += `
-        <div style="border-top:1px solid var(--border)">
-          <div class="acc-header" style="border-radius:0;background:var(--surface);padding:7px 12px 7px 20px" onclick="toggleAcc('${sBodyId}','${sChevId}')">
+      const sBodyId = `acc-sub-body-${s.id}`; const sChevId = `acc-sub-chev-${s.id}`;
+      html += `<div class="dnd-item" data-id="${s.id}" style="border-top:1px solid var(--border)">
+        <div class="acc-header" style="border-radius:0;background:var(--surface);padding:7px 12px 7px 20px" onclick="toggleAcc('${sBodyId}','${sChevId}')">
+          <div style="display:flex;align-items:center;gap:6px;overflow:hidden">
+            <span class="dnd-handle" title="Drag to reorder">⠿</span>
             <span class="acc-header-label" style="font-size:12px;font-weight:600;color:var(--text-muted)">📁 ${esc(s.title)} <span style="font-weight:400">${subLessons.length} lesson${subLessons.length!==1?'s':''}</span></span>
-            <div style="display:flex;align-items:center;gap:5px" onclick="event.stopPropagation()">
-              <button style="${btnS}" onclick="moveSubmodule('${esc(s.id)}',-1)">▲</button>
-              <button style="${btnS}" onclick="moveSubmodule('${esc(s.id)}',1)">▼</button>
-              <button style="${btnS}" onclick="editSubmodule('${esc(s.id)}');switchTTab('sub',document.querySelectorAll('.t-tab-btn')[1])">✏️</button>
-              <button style="${delS}" onclick="deleteSubmodule('${esc(s.id)}')">🗑</button>
-              <span class="acc-chevron" id="${sChevId}">▼</span>
-            </div>
           </div>
-          <div class="acc-body" id="${sBodyId}">`;
+          <div style="display:flex;align-items:center;gap:5px" onclick="event.stopPropagation()">
+            <button style="${btnS}" onclick="editSubmodule('${esc(s.id)}');switchTTab('sub',document.querySelectorAll('.t-tab-btn')[1])">✏️</button>
+            <button style="${delS}" onclick="deleteSubmodule('${esc(s.id)}')">🗑</button>
+            <span class="acc-chevron" id="${sChevId}">▼</span>
+          </div>
+        </div>
+        <div class="acc-body" id="${sBodyId}">
+          <div id="dnd-les-${s.id}">`;
       subLessons.forEach(l => {
-        html += `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:5px 12px 5px 32px;border-top:1px dashed var(--border);background:var(--surface)">
-          <span style="font-size:12px;color:var(--text)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span>
+        html += `<div class="dnd-item" data-id="${l.id}" style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:5px 12px 5px 32px;border-top:1px dashed var(--border);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:6px;overflow:hidden;flex:1">
+            <span class="dnd-handle" title="Drag to reorder">⠿</span>
+            <span style="font-size:12px;color:var(--text)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span>
+          </div>
           <div style="display:flex;gap:4px">
-            <button style="${btnS}" onclick="moveLesson('${esc(l.id)}',-1)">▲</button>
-            <button style="${btnS}" onclick="moveLesson('${esc(l.id)}',1)">▼</button>
             <button style="${btnS}" onclick="editLesson('${esc(l.id)}');switchTTab('les',document.querySelectorAll('.t-tab-btn')[2])">✏️</button>
             <button style="${delS}" onclick="deleteLesson('${esc(l.id)}')">🗑</button>
           </div></div>`;
       });
-      html += `</div></div>`;
+      html += `</div></div></div>`;
     });
 
     const orphans = mLessons.filter(l => !l.submodule_id);
-    orphans.forEach(l => {
-      html += `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:5px 12px 5px 20px;border-top:1px dashed var(--border);background:var(--surface)">
-        <span style="font-size:12px;color:var(--text)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span>
-        <div style="display:flex;gap:4px">
-          <button style="${btnS}" onclick="moveLesson('${esc(l.id)}',-1)">▲</button>
-          <button style="${btnS}" onclick="moveLesson('${esc(l.id)}',1)">▼</button>
-          <button style="${btnS}" onclick="editLesson('${esc(l.id)}');switchTTab('les',document.querySelectorAll('.t-tab-btn')[2])">✏️</button>
-          <button style="${delS}" onclick="deleteLesson('${esc(l.id)}')">🗑</button>
-        </div></div>`;
-    });
-
-    if (!mSubs.length && !mLessons.length) {
-      html += `<div style="padding:8px 20px;font-size:12px;color:var(--text-muted);border-top:1px solid var(--border)">No lessons yet.</div>`;
+    if (orphans.length) {
+      html += `<div id="dnd-les-${m.id}-orphan">`;
+      orphans.forEach(l => {
+        html += `<div class="dnd-item" data-id="${l.id}" style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:5px 12px 5px 20px;border-top:1px dashed var(--border);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:6px;overflow:hidden;flex:1">
+            <span class="dnd-handle" title="Drag to reorder">⠿</span>
+            <span style="font-size:12px;color:var(--text)">${iconMap[l.type]||'📄'} ${esc(l.title)}</span>
+          </div>
+          <div style="display:flex;gap:4px">
+            <button style="${btnS}" onclick="editLesson('${esc(l.id)}');switchTTab('les',document.querySelectorAll('.t-tab-btn')[2])">✏️</button>
+            <button style="${delS}" onclick="deleteLesson('${esc(l.id)}')">🗑</button>
+          </div></div>`;
+      });
+      html += `</div>`;
     }
 
-    html += `</div></div>`;
+    if (!mSubs.length && !mLessons.length) html += `<div style="padding:8px 20px;font-size:12px;color:var(--text-muted);border-top:1px solid var(--border)">No lessons yet.</div>`;
+    html += `</div></div></div>`;
   });
+  html += '</div>';
 
   list.innerHTML = html;
+
+  // Restore accordion state
+  openBodies.forEach(id => { const el = document.getElementById(id); if (el) { el.style.maxHeight = el.scrollHeight + 'px'; el.style.overflow = 'visible'; const chevId = id.replace('body','chev'); const chev = document.getElementById(chevId); if (chev) chev.style.transform = 'rotate(180deg)'; } });
+
+  // Init DnD for modules
+  const modContainer = document.getElementById('dnd-modules');
+  if (modContainer) initDnd(modContainer, ids => onDragEndModule(ids));
+
+  // Init DnD for submodules per module
+  dbModules.forEach(m => {
+    const subContainer = document.getElementById(`dnd-subs-${m.id}`);
+    if (subContainer) initDnd(subContainer, ids => onDragEndSubmodule(m.id, ids));
+    dbSubmodules.filter(s => s.module_id === m.id).forEach(s => {
+      const lesContainer = document.getElementById(`dnd-les-${s.id}`);
+      if (lesContainer) initDnd(lesContainer, ids => onDragEndLesson(m.id, s.id, ids));
+    });
+    const orphanContainer = document.getElementById(`dnd-les-${m.id}-orphan`);
+    if (orphanContainer) initDnd(orphanContainer, ids => onDragEndLesson(m.id, null, ids));
+  });
 }
 
 
