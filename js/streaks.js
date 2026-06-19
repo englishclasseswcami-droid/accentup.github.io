@@ -35,7 +35,7 @@ async function renderStreaks() {
   if (isTeacher) {
     const [rAllProg, rAllRec] = await Promise.all([
       sb.from('student_progress').select('user_id,lesson_id,created_at'),
-      sb.from('recordings').select('user_id,duration_seconds')
+      sb.from('recordings').select('user_id,lesson_id,url,duration_seconds,created_at')
     ]);
     const allProg = rAllProg?.data || [];
     const allRec  = rAllRec?.data || [];
@@ -67,6 +67,20 @@ async function renderStreaks() {
           <span style="font-size:11px;font-weight:700;color:${color};white-space:nowrap">${mPct}%</span>
         </div>`;
       }).join('');
+      const studentRecs = allRec.filter(r => r.user_id === s.id).sort((a,b) => new Date(b.created_at||0) - new Date(a.created_at||0));
+      const recordingsHtml = studentRecs.length
+        ? `<div class="stu-rec-list">` + studentRecs.map(r => {
+            const lesson = dbLessons.find(l => l.id === r.lesson_id);
+            const dateStr = r.created_at ? new Date(r.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric' }) : '';
+            const fileName = `${(s.username||'student').replace(/\s+/g,'_')}_${(lesson?.title||'recording').replace(/\s+/g,'_')}.webm`;
+            return `<div class="stu-rec-row">
+              <span class="stu-rec-title">🎙 ${esc(lesson?.title || 'Untitled lesson')}</span>
+              <span class="stu-rec-date">${dateStr}</span>
+              <audio controls src="${esc(r.url)}" style="height:30px;max-width:170px"></audio>
+              <a href="${esc(r.url)}" download="${esc(fileName)}" class="stu-rec-download" title="Download recording">⬇</a>
+            </div>`;
+          }).join('') + `</div>`
+        : `<div style="font-size:12px;color:var(--text-muted);padding:4px 0">No recordings yet.</div>`;
       return `<div>
         <div class="streak-stu-row" onclick="toggleStudentDetail('${s.id}')">
           <div class="post-avatar" style="width:30px;height:30px;font-size:12px;flex-shrink:0">${renderAvatarHTML(s.id, s.username||'Student')}</div>
@@ -77,7 +91,12 @@ async function renderStreaks() {
           <span style="font-size:11px;color:var(--text-muted);white-space:nowrap">${done}/${totalLessons}</span>
           <span style="font-size:11px;color:var(--text-muted)">▾</span>
         </div>
-        <div class="stu-detail" id="stu-det-${s.id}">${moduleDetail || '<div style="font-size:12px;color:var(--text-muted);padding:4px 0">No activity yet.</div>'}</div>
+        <div class="stu-detail" id="stu-det-${s.id}">
+          <div class="stu-detail-section-title">📊 Module progress</div>
+          ${moduleDetail || '<div style="font-size:12px;color:var(--text-muted);padding:4px 0 12px">No activity yet.</div>'}
+          <div class="stu-detail-section-title" style="margin-top:14px">🎙 Recordings</div>
+          ${recordingsHtml}
+        </div>
       </div>`;
     }).join('');
     return;
@@ -124,4 +143,3 @@ function toggleStudentDetail(id) {
 }
 
 function renderTeacherProgress() { /* moved to Streaks page */ }
-
