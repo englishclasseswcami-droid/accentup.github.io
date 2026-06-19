@@ -168,7 +168,14 @@ function goToPage(pageId, scroll = true) {
   const loader = document.getElementById('au-loading'); if (loader) { loader.style.opacity = '0'; setTimeout(() => loader.remove(), 200); }
   if (pageId === 'classroom') renderClassroomGrid();
   if (pageId === 'dashboard') renderDashboard();
-  if (pageId === 'teacher') { updatePendingBadge(); renderStudentsTab(); switchTTab('routine', document.querySelector('.t-tab-btn')); }
+  if (pageId === 'teacher') {
+    updatePendingBadge();
+    const activeTTab = document.querySelector('.t-tab-panel.active')?.id;
+    if (activeTTab === 't-tab-students') renderStudentsTab();
+    else if (activeTTab === 't-tab-soundboard') renderSoundboardTab();
+    else if (activeTTab === 't-tab-routine') renderTeacherRoutineTab();
+    else switchTTab('routine', document.querySelector('.t-tab-btn'));
+  }
   if (pageId === 'streaks') renderStreaks();
   if (pageId === 'sounds') buildAllSoundsGrids();
   if (pageId === 'community') loadPosts();
@@ -233,7 +240,7 @@ async function fetchData() {
     const hashPage = window.location.hash.slice(1);
     const targetPage = hashPage && validPages.includes(hashPage) ? hashPage : defaultPage;
     // Protect student-only pages from teacher and vice versa
-    const studentOnly = ['dashboard','routine','streaks','profile','certificate'];
+    const studentOnly = ['dashboard','routine','profile','certificate'];
     const finalPage = (isTeacherUser && studentOnly.includes(targetPage)) ? 'classroom' : targetPage;
     goToPage(finalPage, false);
   } catch (error) { console.error("Error fetching data:", error); }
@@ -248,4 +255,3 @@ async function saveProfile() {
   await sb.from('user_profiles').upsert({ id: currentUser.id, username, avatar_url: avatarUrl }); await fetchData();
   btn.disabled = false; btn.textContent = 'Save profile'; alert('Profile updated!');
 }
-
