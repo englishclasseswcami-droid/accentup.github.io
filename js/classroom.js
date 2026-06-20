@@ -9,12 +9,18 @@ function renderClassroomGrid() {
   if (!dbModules.length) { grid.innerHTML = '<div style="color:var(--text-light);font-size:14px;grid-column:1/-1;text-align:center;padding:3rem 0">No content yet!</div>'; return; }
   const isTeacher = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase();
   grid.innerHTML = (isTeacher ? `<div class="course-card course-card-new" onclick="openSidePanel('mod')" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:2px dashed var(--skool-border);background:transparent;color:var(--text-muted);cursor:pointer;min-height:140px" onmouseenter="this.style.borderColor='var(--brand)';this.style.color='var(--brand)'" onmouseleave="this.style.borderColor='var(--skool-border)';this.style.color='var(--text-muted)'"><span style="font-size:28px">➕</span><span style="font-size:13px;font-weight:700">New Module</span></div>` : '') +
+  `<div id="dnd-modules-grid" style="display:contents">` +
   dbModules.map((m, i) => {
     const color = MODULE_COLORS[i % MODULE_COLORS.length]; const icon = MODULE_ICONS[i % MODULE_ICONS.length];
     const modLessons = dbLessons.filter(l => l.module_id === m.id); const total = modLessons.length; const done = modLessons.filter(l => dbProgress.some(p => p.lesson_id === l.id)).length; const pct = total === 0 ? 0 : Math.round(done / total * 100);
-    const teacherControls = isTeacher ? `<div style="display:flex;gap:6px;margin-top:10px" onclick="event.stopPropagation()"><button onclick="editModule('${m.id}')" style="font-size:11px;background:none;border:1px solid var(--skool-border);border-radius:6px;padding:3px 10px;cursor:pointer;color:var(--text-muted)">✏️ Edit</button><button onclick="deleteModule('${m.id}')" style="font-size:11px;background:none;border:1px solid #ffb3b3;border-radius:6px;padding:3px 10px;cursor:pointer;color:#e05252">🗑</button></div>` : '';
-    return `<div class="course-card" onclick="openModule('${m.id}')" style="--accent:${color}">${m.is_private ? `<span class="private-badge">Private</span>` : ''}<div class="course-card-icon">${icon}</div><div class="course-card-title">${esc(m.title)}</div><div class="course-card-desc">${done} of ${total} lesson${total !== 1 ? 's' : ''} completed</div><div class="course-card-progress-wrap"><div class="course-card-progress-bar"><div class="course-card-progress-fill" style="width:${pct}%"></div></div><span class="course-card-pct">${pct}%</span></div>${teacherControls}<div class="course-card-arrow">→</div></div>`;
-  }).join('');
+    const teacherControls = isTeacher ? `<div style="display:flex;align-items:center;gap:6px;margin-top:10px" onclick="event.stopPropagation()">${isTeacher ? `<span class="dnd-handle" title="Drag to reorder" style="margin-right:auto">⠿</span>` : ''}<button onclick="editModule('${m.id}')" style="font-size:11px;background:none;border:1px solid var(--skool-border);border-radius:6px;padding:3px 10px;cursor:pointer;color:var(--text-muted)">✏️ Edit</button><button onclick="deleteModule('${m.id}')" style="font-size:11px;background:none;border:1px solid #ffb3b3;border-radius:6px;padding:3px 10px;cursor:pointer;color:#e05252">🗑</button></div>` : '';
+    return `<div class="course-card${isTeacher?' dnd-item':''}" data-id="${m.id}" onclick="openModule('${m.id}')" style="--accent:${color}">${m.is_private ? `<span class="private-badge">Private</span>` : ''}<div class="course-card-icon">${icon}</div><div class="course-card-title">${esc(m.title)}</div><div class="course-card-desc">${done} of ${total} lesson${total !== 1 ? 's' : ''} completed</div><div class="course-card-progress-wrap"><div class="course-card-progress-bar"><div class="course-card-progress-fill" style="width:${pct}%"></div></div><span class="course-card-pct">${pct}%</span></div>${teacherControls}<div class="course-card-arrow">→</div></div>`;
+  }).join('') + `</div>`;
+
+  if (isTeacher) {
+    const dndGrid = document.getElementById('dnd-modules-grid');
+    if (dndGrid) initDnd(dndGrid, ids => onDragEndModule(ids));
+  }
 }
 function openModule(moduleId) {
   activeModuleId = moduleId; document.getElementById('classroom-grid-view').style.display = 'none'; document.getElementById('classroom-player-view').style.display = 'block'; document.getElementById('sidebar-mod-title').textContent = dbModules.find(m => m.id === moduleId)?.title || '';
@@ -29,31 +35,46 @@ function openModule(moduleId) {
 function backToClassroomGrid() { document.getElementById('classroom-grid-view').style.display = 'block'; document.getElementById('classroom-player-view').style.display = 'none'; hideAllViews(); activeModuleId = null; }
 function renderSidebar(moduleId) {
   const sidebar = document.getElementById('sidebar-render'); const subs = dbSubmodules.filter(s => s.module_id === moduleId); const iconMap = { video:'📺', text:'📄', task:'📝', embed:'🌐' }; const isTeacher = currentUser?.email?.toLowerCase() === TEACHER_EMAIL.toLowerCase(); let html = '';
+  const handle = isTeacher ? `<span class="dnd-handle" title="Drag to reorder">⠿</span>` : '';
 
   if (isTeacher) {
     html += `<div style="display:flex;gap:6px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--skool-border)"><button onclick="openSidePanel('sub','${moduleId}')" style="flex:1;font-size:12px;font-weight:700;background:var(--surface);border:1px dashed var(--skool-border);border-radius:8px;padding:7px;cursor:pointer;color:var(--text-muted)" onmouseenter="this.style.borderColor='var(--brand)';this.style.color='var(--brand)'" onmouseleave="this.style.borderColor='var(--skool-border)';this.style.color='var(--text-muted)'">+ Subfolder</button><button onclick="openLessonEditor('${moduleId}',null)" style="flex:1;font-size:12px;font-weight:700;background:var(--surface);border:1px dashed var(--skool-border);border-radius:8px;padding:7px;cursor:pointer;color:var(--text-muted)" onmouseenter="this.style.borderColor='var(--brand)';this.style.color='var(--brand)'" onmouseleave="this.style.borderColor='var(--skool-border)';this.style.color='var(--text-muted)'">+ Lesson</button></div>`;
   }
 
+  html += `<div id="dnd-subs-${moduleId}">`;
   subs.forEach(sub => {
     const subLessons = dbLessons.filter(l => l.module_id === moduleId && l.submodule_id === sub.id); if (!subLessons.length && !isTeacher) return;
     const doneCount = subLessons.filter(l => dbProgress.some(p => p.lesson_id === l.id)).length; const pct = subLessons.length ? Math.round(doneCount / subLessons.length * 100) : 0;
     const isOpen = sidebarOpenSubs.has(sub.id);
-    html += `<div class="c-subfolder-group"><div class="c-subfolder-header" onclick="toggleSidebarFolder('${sub.id}')"><span class="c-chevron ${isOpen?'open':''}">▸</span><span class="c-subfolder-title">${esc(sub.title)}</span><span class="c-subfolder-prog ${pct===100?'done':''}">${pct}%</span>${isTeacher?`<span onclick="event.stopPropagation()" style="display:flex;gap:3px;margin-left:4px"><button onclick="editSubmodule('${sub.id}')" style="font-size:10px;background:none;border:1px solid var(--skool-border);border-radius:4px;padding:1px 5px;cursor:pointer;color:var(--text-muted)">✏️</button><button onclick="deleteSubmodule('${sub.id}')" style="font-size:10px;background:none;border:1px solid #ffb3b3;border-radius:4px;padding:1px 5px;cursor:pointer;color:#e05252">🗑</button></span>`:''}
+    html += `<div class="c-subfolder-group${isTeacher?' dnd-item':''}" data-id="${sub.id}"><div class="c-subfolder-header" onclick="toggleSidebarFolder('${sub.id}')">${handle}<span class="c-chevron ${isOpen?'open':''}">▸</span><span class="c-subfolder-title">${esc(sub.title)}</span><span class="c-subfolder-prog ${pct===100?'done':''}">${pct}%</span>${isTeacher?`<span onclick="event.stopPropagation()" style="display:flex;gap:3px;margin-left:4px"><button onclick="editSubmodule('${sub.id}')" style="font-size:10px;background:none;border:1px solid var(--skool-border);border-radius:4px;padding:1px 5px;cursor:pointer;color:var(--text-muted)">✏️</button><button onclick="deleteSubmodule('${sub.id}')" style="font-size:10px;background:none;border:1px solid #ffb3b3;border-radius:4px;padding:1px 5px;cursor:pointer;color:#e05252">🗑</button></span>`:''}
 </div><div class="c-subfolder-body ${isOpen?'open':''}">`;
     if (isTeacher) html += `<div style="padding:4px 8px 6px"><button onclick="openLessonEditor('${moduleId}','${sub.id}')" style="font-size:11px;font-weight:700;background:none;border:1px dashed var(--skool-border);border-radius:6px;padding:4px 10px;cursor:pointer;color:var(--text-muted);width:100%" onmouseenter="this.style.borderColor='var(--brand)';this.style.color='var(--brand)'" onmouseleave="this.style.borderColor='var(--skool-border)';this.style.color='var(--text-muted)'">+ Add lesson</button></div>`;
-    subLessons.forEach(l => { const isDone = dbProgress.some(p => p.lesson_id === l.id); html += `<div class="c-item" id="item-${l.id}" onclick="showLesson('${l.id}')"><div style="display:flex;align-items:center;gap:8px;overflow:hidden;flex:1"><span>${iconMap[l.type]||'📄'}</span><span class="c-item-title">${esc(l.title)}</span></div><div style="display:flex;align-items:center;gap:4px">${isDone?'<span>✅</span>':'<span style="font-size:10px">⚪</span>'}${isTeacher?`<span onclick="event.stopPropagation()" style="display:flex;gap:2px"><button onclick="editLesson('${l.id}')" style="font-size:9px;background:none;border:1px solid var(--skool-border);border-radius:3px;padding:1px 4px;cursor:pointer;color:var(--text-muted)">✏️</button><button onclick="deleteLesson('${l.id}')" style="font-size:9px;background:none;border:1px solid #ffb3b3;border-radius:3px;padding:1px 4px;cursor:pointer;color:#e05252">🗑</button></span>`:''}</div></div>`; });
-    html += '</div></div>';
+    html += `<div id="dnd-les-${sub.id}">`;
+    subLessons.forEach(l => { const isDone = dbProgress.some(p => p.lesson_id === l.id); html += `<div class="c-item${isTeacher?' dnd-item':''}" id="item-${l.id}" data-id="${l.id}" onclick="showLesson('${l.id}')"><div style="display:flex;align-items:center;gap:8px;overflow:hidden;flex:1">${handle}<span>${iconMap[l.type]||'📄'}</span><span class="c-item-title">${esc(l.title)}</span></div><div style="display:flex;align-items:center;gap:4px">${isDone?'<span>✅</span>':'<span style="font-size:10px">⚪</span>'}${isTeacher?`<span onclick="event.stopPropagation()" style="display:flex;gap:2px"><button onclick="editLesson('${l.id}')" style="font-size:9px;background:none;border:1px solid var(--skool-border);border-radius:3px;padding:1px 4px;cursor:pointer;color:var(--text-muted)">✏️</button><button onclick="deleteLesson('${l.id}')" style="font-size:9px;background:none;border:1px solid #ffb3b3;border-radius:3px;padding:1px 4px;cursor:pointer;color:#e05252">🗑</button></span>`:''}</div></div>`; });
+    html += '</div></div></div>';
   });
+  html += `</div>`;
 
   const orphans = dbLessons.filter(l => l.module_id === moduleId && !l.submodule_id);
   if (orphans.length) {
-    html += '<div class="c-subfolder-body open">';
-    orphans.forEach(l => { const isDone = dbProgress.some(p => p.lesson_id === l.id); html += `<div class="c-item" id="item-${l.id}" onclick="showLesson('${l.id}')"><div style="display:flex;align-items:center;gap:8px;overflow:hidden;flex:1"><span>${iconMap[l.type]||'📄'}</span><span class="c-item-title">${esc(l.title)}</span></div><div style="display:flex;align-items:center;gap:4px">${isDone?'<span>✅</span>':'<span style="font-size:10px">⚪</span>'}${isTeacher?`<span onclick="event.stopPropagation()" style="display:flex;gap:2px"><button onclick="editLesson('${l.id}')" style="font-size:9px;background:none;border:1px solid var(--skool-border);border-radius:3px;padding:1px 4px;cursor:pointer;color:var(--text-muted)">✏️</button><button onclick="deleteLesson('${l.id}')" style="font-size:9px;background:none;border:1px solid #ffb3b3;border-radius:3px;padding:1px 4px;cursor:pointer;color:#e05252">🗑</button></span>`:''}</div></div>`; });
+    html += `<div id="dnd-les-${moduleId}-orphan">`;
+    orphans.forEach(l => { const isDone = dbProgress.some(p => p.lesson_id === l.id); html += `<div class="c-item${isTeacher?' dnd-item':''}" id="item-${l.id}" data-id="${l.id}" onclick="showLesson('${l.id}')"><div style="display:flex;align-items:center;gap:8px;overflow:hidden;flex:1">${handle}<span>${iconMap[l.type]||'📄'}</span><span class="c-item-title">${esc(l.title)}</span></div><div style="display:flex;align-items:center;gap:4px">${isDone?'<span>✅</span>':'<span style="font-size:10px">⚪</span>'}${isTeacher?`<span onclick="event.stopPropagation()" style="display:flex;gap:2px"><button onclick="editLesson('${l.id}')" style="font-size:9px;background:none;border:1px solid var(--skool-border);border-radius:3px;padding:1px 4px;cursor:pointer;color:var(--text-muted)">✏️</button><button onclick="deleteLesson('${l.id}')" style="font-size:9px;background:none;border:1px solid #ffb3b3;border-radius:3px;padding:1px 4px;cursor:pointer;color:#e05252">🗑</button></span>`:''}</div></div>`; });
     html += '</div>';
   }
 
   sidebar.innerHTML = html || '<div style="font-size:12px;color:var(--text-light);text-align:center;margin-top:1rem">Empty module</div>';
   if (currentLesson) setActiveSidebarItem('item-' + currentLesson.id);
+
+  if (isTeacher) {
+    const subContainer = document.getElementById('dnd-subs-' + moduleId);
+    if (subContainer) initDnd(subContainer, ids => onDragEndSubmodule(moduleId, ids));
+    subs.forEach(sub => {
+      const lesContainer = document.getElementById('dnd-les-' + sub.id);
+      if (lesContainer) initDnd(lesContainer, ids => onDragEndLesson(moduleId, sub.id, ids));
+    });
+    const orphanContainer = document.getElementById('dnd-les-' + moduleId + '-orphan');
+    if (orphanContainer) initDnd(orphanContainer, ids => onDragEndLesson(moduleId, null, ids));
+  }
 }
 function toggleSidebarFolder(subId) {
   if (sidebarOpenSubs.has(subId)) sidebarOpenSubs.delete(subId); else sidebarOpenSubs.add(subId);
