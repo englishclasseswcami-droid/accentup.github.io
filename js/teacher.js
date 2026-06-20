@@ -14,21 +14,21 @@ async function onDragEndModule(orderedIds) {
   reordered.forEach((m, i) => m.order_index = i);
   dbModules = reordered;
   await reorderItems('modules', reordered);
-  renderManageList();
+  renderClassroomGrid();
 }
 
 async function onDragEndSubmodule(moduleId, orderedIds) {
   const reordered = orderedIds.map(id => dbSubmodules.find(s => s.id === id)).filter(Boolean);
   reordered.forEach((s, i) => s.order_index = i);
   await reorderItems('submodules', reordered);
-  renderManageList();
+  renderSidebar(moduleId);
 }
 
 async function onDragEndLesson(moduleId, subId, orderedIds) {
   const reordered = orderedIds.map(id => dbLessons.find(l => l.id === id)).filter(Boolean);
   reordered.forEach((l, i) => l.order_index = i);
   await reorderItems('lessons', reordered);
-  renderManageList();
+  renderSidebar(moduleId);
 }
 
 function initDnd(containerEl, onEnd) {
